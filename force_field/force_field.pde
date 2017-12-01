@@ -26,7 +26,7 @@ int type_field;
 
 // Using this variable to decide whether to draw all the stuff
 void settings() {
-  size(400,400,P2D);
+  size(640,480,P2D);
   // fullScreen(1) ;
   init_rope();
 
@@ -87,14 +87,16 @@ DRAW
 
 */
 void draw() {
-  warp_init(type_field, size_cell) ;
-  
-  catch_slider_value();
+  // warp_init_media(type_field, size_cell);
+  warp_init_video(type_field, size_cell);
+  video_draw();
+
+  slider_value();
   
   // background_rope(0,10);
   //  println(frameRate);
   //  if(mousePressed) cursor(CROSS); else noCursor();
-  if(!pause_is) update_force_field(); 
+  if(!pause_is && !interface_is()) update_force_field(); 
   cursor(CROSS);
 
  //  if(mouseY >= width) println(mouseY, width); else println(mouseY);
@@ -154,6 +156,9 @@ void keyPressed() {
 
   if(key == 'b') manage_border();
 
+
+  if(key == 'c') hide_interface();
+
   if(key == 'f') display_field();
 
   if(key == 'g') display_grid();
@@ -176,6 +181,8 @@ void keyPressed() {
     warp.reset(); 
     force_field.refresh();  
   }
+
+  if(key == 'v') video_play();
 
   if(key == 'w') {
     if(shader_filter_is) shader_filter_is = false ; else shader_filter_is = true ;

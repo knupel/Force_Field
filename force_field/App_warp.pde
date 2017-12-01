@@ -26,23 +26,28 @@ void warp_change_media() {
   select_folder();
 }
 
+/**
+ init for media or camera
+ */
+boolean init_video_is = false ;
+void warp_init_video(int type_field, int size_cell) {
+  init_video();
+  add_g_surface();
+  if(!init_video_is) {
+    build_force_field(type_field,size_cell, warp.get_image());
+    init_video_is = true ;
+    warp_media_loaded(true);
+  }
+}
 
 
-void warp_init(int type_field, int size_cell) {
+void warp_init_media(int type_field, int size_cell) {
   /**
   media warp
   */
   if(folder_selected_is()) {
     movie_warp_is(false);
-    if(warp.library() != null && warp.library_size() > 0 ) {
-      if(warp.get_name(0).equals(surface_g)) {
-        // nothing happen don't add a g surface, this security is necessary in case we add more media
-      } else {
-        warp.add_image(g, surface_g);
-      }
-    } else {
-      warp.add_image(g, surface_g); // take the first place in the list, "0" so when the list is used you must jump the "0"
-    }
+    add_g_surface();
     load_medias(true, "jpg", "JPG", "mp4", "avi", "mov");   
   }
   
@@ -74,8 +79,29 @@ void warp_init(int type_field, int size_cell) {
   }
 }
 
+void add_g_surface() {
+  if(warp.library() != null && warp.library_size() > 0 ) {
+    if(warp.get_name(0).equals(surface_g)) {
+      // nothing happen don't add a g surface, this security is necessary in case we add more media
+    } else {
+      warp.add_image(g, surface_g);
+    }
+  } else {
+    warp.add_image(g, surface_g); // take the first place in the list, "0" so when the list is used you must jump the "0"
+  }
+}
 
+
+
+
+
+/**
+warp draw
+*/
 void warp_draw() {
+  /**
+  media
+  */
   if(warp_media_loaded_is()) {
     if(movie_warp_is()) {
       warp.select_image(surface_g);
@@ -260,14 +286,4 @@ void animation() {
 
 
 
-// load media statement
-boolean warp_media_loaded_is ;
 
-boolean warp_media_loaded_is() {
-  return warp_media_loaded_is ;
-}
-
-
-void warp_media_loaded(boolean state) {
-  warp_media_loaded_is = state ;
-}

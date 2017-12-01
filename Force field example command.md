@@ -4,6 +4,9 @@ Command to manage the force exmaple
 key b 
 > FORCE FIELD: manage the vehicle rebirth on the canvas border
 
+key c 
+> INTERFACE : display or not the interface
+
 key f 
 > FORCE FIELD: display force field
 

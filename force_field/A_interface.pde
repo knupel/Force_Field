@@ -11,35 +11,50 @@ float power_channel;
 Vec4 rgba_slider ;
 float power_max ;
 
-
-float slider_width = 100 ;
+int slider_width = 100 ;
 
 
 void interface_setup() {
-	rgba_slider = Vec4();
+	rgba_slider = Vec4(1);
 	red_channel = 25;
 	green_channel = 25;
 	blue_channel = 25;
-	alpha_channel = 25;
-	int space = 10;
+	int space = 8;
+	int max = 1;
 	cp5 = new ControlP5(this);
-	cp5.addSlider("red_channel").setPosition(10,space).setRange(0,slider_width);
-	cp5.addSlider("green_channel").setPosition(10,space*3).setRange(0,slider_width);
-	cp5.addSlider("blue_channel").setPosition(10,space*5).setRange(0,slider_width);
-	cp5.addSlider("alpha_channel").setPosition(10,space*7).setRange(0,slider_width);
+	cp5.addSlider("red_channel").setPosition(10,space).setWidth(slider_width).setRange(0,max);
+	cp5.addSlider("green_channel").setPosition(10,space*3).setWidth(slider_width).setRange(0,max);
+	cp5.addSlider("blue_channel").setPosition(10,space*5).setWidth(slider_width).setRange(0,max);
 
-	cp5.addSlider("power_channel").setPosition(10,space*9).setRange(0,slider_width);
+	cp5.addSlider("power_channel").setPosition(10,space*9).setWidth(slider_width).setRange(0,max);
 }
 
-void catch_slider_value() {
+void slider_value() {
 
-	float r = red_channel / slider_width;
-	float g = green_channel / slider_width;
-	float b = blue_channel / slider_width;
-	float a = alpha_channel / slider_width;
-	rgba_slider.set(r,g,b,a);
+	float r = red_channel;
+	float g = green_channel ;
+	float b = blue_channel;
+	rgba_slider.set(red_channel,green_channel,blue_channel,1);
 
-	power_max = power_channel /slider_width *10f;
+	power_max = power_channel  *10f;
+
+	if(!interface_is()) cp5.hide() ; else cp5.show();
 }
+
+
+
+
+
+void hide_interface() {
+	if(interface_is) interface_is = false ; else interface_is = true;
+}
+
+
+boolean interface_is = false;
+boolean interface_is() {
+	return interface_is ;
+}
+
+
 
 

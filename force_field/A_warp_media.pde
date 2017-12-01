@@ -1,11 +1,27 @@
+/**
+common method media, video and camera
+*/
+// load media statement
+boolean warp_media_loaded_is ;
 
+boolean warp_media_loaded_is() {
+  return warp_media_loaded_is ;
+}
+
+void warp_media_loaded(boolean state) {
+  warp_media_loaded_is = state ;
+}
 
 /**
 video
 */
 import processing.video.*;
+// movie
 ArrayList<Movie> movie_warp_list;
 boolean play_movie_warp_is = true ;
+
+
+
 void play_movie_warp_is(boolean state) {
  play_movie_warp_is = state;
 }
@@ -116,6 +132,47 @@ void load_medias(boolean sub_folder, String... type) {
       }    
     }
   }
+}
+
+
+
+
+
+
+
+
+
+
+/**
+video
+*/
+Capture video;
+
+void init_video() {
+  if(video == null) {
+    video = new Capture(this, g.width, g.height);
+  }
+}
+
+/*
+boolean camera_is() {
+  return camera.available();
+}
+*/
+
+
+void video_draw() {
+  if (video.available()) {
+    video.read() ;
+    image(video);
+  }
+  if(video != null && video_play_is ) video.start() ; else video.stop();
+}
+
+boolean video_play_is = true ;
+void video_play() {
+  if(video_play_is) video_play_is = false ; else video_play_is = true ;
+
 }
 
 
