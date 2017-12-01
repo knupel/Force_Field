@@ -31,48 +31,12 @@ void settings() {
   init_rope();
 
   size_cell = 10;
- // type_field = r.FLUID;
+// type_field = r.FLUID;
   // type_field = r.GRAVITY; /* you can also use HOLE constant */
-  type_field = r.MAGNETIC;
-  // type_field = r.PERLIN;
+   type_field = r.MAGNETIC;
+ // type_field = r.PERLIN;
 // type_field = r.CHAOS;
 }
-
-
-
-/**
-
-PROBLEM TO GO FROM MOVIE TO PICTURE, when the we try to load a new pics
-
-PROBLEM TO GO FROM MOVIE TO PICTURE, when the we try to load a new pics
-
-PROBLEM TO GO FROM MOVIE TO PICTURE, when the we try to load a new pics
-
-PROBLEM TO GO FROM MOVIE TO PICTURE, when the we try to load a new pics
-
-PROBLEM TO GO FROM MOVIE TO PICTURE, when the we try to load a new pics
-
-PROBLEM TO GO FROM MOVIE TO PICTURE, when the we try to load a new pics
-
-PROBLEM TO GO FROM MOVIE TO PICTURE, when the we try to load a new pics
-
-PROBLEM TO GO FROM MOVIE TO PICTURE, when the we try to load a new pics
-
-PROBLEM TO GO FROM MOVIE TO PICTURE, when the we try to load a new pics
-
-PROBLEM TO GO FROM MOVIE TO PICTURE, when the we try to load a new pics
-
-PROBLEM TO GO FROM MOVIE TO PICTURE, when the we try to load a new pics
-
-PROBLEM TO GO FROM MOVIE TO PICTURE, when the we try to load a new pics
-
-*/
-
-
-
-
-
-
 
 
 
@@ -87,6 +51,7 @@ void setup() {
   background(0);
   // noCursor();
   // warp_instruction();
+  interface_setup();
 
   /**
   force field setting
@@ -123,6 +88,8 @@ DRAW
 */
 void draw() {
   warp_init(type_field, size_cell) ;
+  
+  catch_slider_value();
   
   // background_rope(0,10);
   //  println(frameRate);

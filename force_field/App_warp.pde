@@ -168,14 +168,16 @@ void refresh_warp() {
   rgba.z = abs(sin(frameCount * .005));
   rgba.w = abs(sin(frameCount * .001));
   */
-
+   
+   /*
   rgba.x = sin(frameCount * .001);
   rgba.y = cos(frameCount * .002);
   rgba.z = sin(frameCount * .005);
   rgba.w = sin(frameCount * .001);
+  */
 
-  // rgba.set(rgba_x,rgba_y,rgba_z,rgba_w);
-  rgba.mult(2);
+  rgba.set(rgba_slider);
+  rgba.mult(power_max);
   warp.refresh(rgba);
   
   /**
