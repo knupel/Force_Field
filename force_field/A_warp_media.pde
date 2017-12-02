@@ -4,7 +4,7 @@ common method media, video and camera
 // load media statement
 boolean warp_media_loaded_is ;
 
-boolean warp_media_loaded_is() {
+boolean warp_media_is() {
   return warp_media_loaded_is ;
 }
 
@@ -23,7 +23,7 @@ boolean play_movie_warp_is = true ;
 
 
 void play_movie_warp_is(boolean state) {
- play_movie_warp_is = state;
+  play_movie_warp_is = state;
 }
 
 boolean play_movie_warp_is() {
@@ -54,7 +54,6 @@ void load_movie(String movie_path) {
     Movie new_movie = new Movie(this, movie_path);
     movie_warp_list.add(new_movie);
     movie_warp_is(true);
-
   }
 }
 
@@ -68,13 +67,7 @@ void display_movie() {
     ref_movie = which_movie ;
     get_movie_warp(which_movie).loop();
     image(get_movie_warp(which_movie),0,0);
-    /*
-    if(keyPressed || mousePressed) {
-      start_movie_is = true ;
-    }
-    */
-  }
-  
+  } 
 }
 
 // Called every time a new frame is available to read
@@ -83,7 +76,7 @@ void movieEvent(Movie m) {
 }
 
 Movie get_movie_warp(int target) {
-  if(target < movie_warp_list.size()) {
+  if(target < movie_warp_list.size() && target >= 0) {
     return movie_warp_list.get(target);
   } else return null ;
   
@@ -148,31 +141,54 @@ video
 */
 Capture video;
 
-void init_video() {
-  if(video == null) {
-    video = new Capture(this, g.width, g.height);
+void init_video(int w, int h) {
+  if(video == null ) {
+    video = new Capture(this, w,h);
+  } else if(video.width != w && video.height != h) {
+    video = new Capture(this, w,h);
   }
 }
 
-/*
-boolean camera_is() {
-  return camera.available();
-}
-*/
 
-
-void video_draw() {
-  if (video.available()) {
-    video.read() ;
-    image(video);
+void display_video() {
+  if (video_warp_is()) {
+    if(video != null && video_warp_is()) {
+      warp_media_loaded(true);
+      video.start(); 
+    } else if(video.width != width && video.height != height) {
+      init_video(width,height);
+    } else {
+      init_video(width,height);
+      video.stop();
+    }
+    
+    if (video.available()) {
+      warp_media_loaded(true);
+      video.read();
+      image(video);
+    } else {
+      //
+    }    
   }
-  if(video != null && video_play_is ) video.start() ; else video.stop();
 }
 
-boolean video_play_is = true ;
-void video_play() {
+boolean video_available() {
+  return video.available();
+}
+
+void play_video(boolean play) {
+  video_play_is = play ;
+}
+
+
+boolean video_play_is = false;
+void play_video_switch() {
   if(video_play_is) video_play_is = false ; else video_play_is = true ;
+}
 
+
+boolean video_warp_is() {
+  return video_play_is;
 }
 
 

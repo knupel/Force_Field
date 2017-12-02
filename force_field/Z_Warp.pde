@@ -59,11 +59,15 @@ class Warp {
   }
 
   public int get_width() {
-    return img_manager.get().width;
+    if(img_manager.get() != null) {
+      return img_manager.get().width;
+    } else return 0 ;
   }
 
   public int get_height() {
-    return img_manager.get().height;
+    if(img_manager.get() != null) {
+      return img_manager.get().height;
+    } else return 0 ;
   }
   
   public PImage get_image() {
@@ -72,7 +76,9 @@ class Warp {
   
 
   public int library_size() {
-    return img_manager.size();
+    if(img_manager != null) {
+      return img_manager.size();
+    } else return -1;
   }
 
   public ROPImage_Manager library() {
@@ -182,7 +188,7 @@ class Warp {
   }
 
   private void draw(PImage target) {
-    set(target);
+    if(target != null) set(target);
     buffer_img.pixels = buffering(pg).pixels;
     buffer_img.updatePixels();
   }
@@ -197,9 +203,9 @@ class Warp {
 
     reset_img = false;
 
-    if(pg == null) { 
+    if(pg == null && img_manager.get() != null) { 
       set(img_manager.get());
-    } else  {
+    } else if(img_manager.get() != null) {
       update(img_manager.get(), ff, intensity);
     }
   }

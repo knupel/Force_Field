@@ -31,9 +31,9 @@ void settings() {
   init_rope();
 
   size_cell = 10;
-// type_field = r.FLUID;
+type_field = r.FLUID;
   // type_field = r.GRAVITY; /* you can also use HOLE constant */
-   type_field = r.MAGNETIC;
+ //  type_field = r.MAGNETIC;
  // type_field = r.PERLIN;
 // type_field = r.CHAOS;
 }
@@ -87,19 +87,19 @@ DRAW
 
 */
 void draw() {
-  // warp_init_media(type_field, size_cell);
-  warp_init_video(type_field, size_cell);
-  video_draw();
-
-  slider_value();
-  
-  // background_rope(0,10);
-  //  println(frameRate);
-  //  if(mousePressed) cursor(CROSS); else noCursor();
-  if(!pause_is && !interface_is()) update_force_field(); 
+  // println("library", warp.library_size());
   cursor(CROSS);
+  /*
+  interface
+  */
+  slider_value();
+  if(!pause_is && !interface_is()) update_force_field(); 
 
- //  if(mouseY >= width) println(mouseY, width); else println(mouseY);
+  /*
+  warp
+  */
+  warp_init(type_field, size_cell);
+  // video_draw();
 
   warp_draw();
    
@@ -150,12 +150,13 @@ KEYPRESSED
 
 
 void keyPressed() {
+  println("keyPressed", frameCount);
   if(key == 'a') {
     warp_add_media();
+    play_video(false);
   }
 
   if(key == 'b') manage_border();
-
 
   if(key == 'c') hide_interface();
 
@@ -169,6 +170,7 @@ void keyPressed() {
 
   if(key == 'n') {
     warp_change_media();
+    play_video(false);
   }
 
   if(key == 'p') {
@@ -182,7 +184,7 @@ void keyPressed() {
     force_field.refresh();  
   }
 
-  if(key == 'v') video_play();
+  if(key == 'v') play_video_switch();
 
   if(key == 'w') {
     if(shader_filter_is) shader_filter_is = false ; else shader_filter_is = true ;

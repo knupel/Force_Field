@@ -4,10 +4,14 @@ boolean effect_is ;
 boolean shader_filter_is = false;
 boolean init_warp_is = false;
 String surface_g = "";
+int ref_warp_w, ref_warp_h ;
+
 
 
 void warp_setup() {
-  surface_g = "movie";
+  ref_warp_w = width; 
+  ref_warp_h = height;
+  surface_g = "surface g";
   warp.load_shader();
   warp_instruction(); 
 }
@@ -29,14 +33,28 @@ void warp_change_media() {
 /**
  init for media or camera
  */
+void warp_init(int type_field, int size_cell) {
+  if((folder_selected_is() || !init_warp_is) && !video_warp_is() ) {
+    warp_init_media(type_field, size_cell);
+  } else if(video_warp_is()) {
+    warp_init_video(type_field, size_cell);
+  } else if(!warp_media_is()){
+    build_force_field(type_field,size_cell);
+  }
+}
+
+
 boolean init_video_is = false ;
 void warp_init_video(int type_field, int size_cell) {
-  init_video();
+  init_video(width,height);
   add_g_surface();
   if(!init_video_is) {
+    println("warp init video");
     build_force_field(type_field,size_cell, warp.get_image());
     init_video_is = true ;
     warp_media_loaded(true);
+  } else {
+    // build_force_field(type_field,size_cell);
   }
 }
 
@@ -51,42 +69,40 @@ void warp_init_media(int type_field, int size_cell) {
     load_medias(true, "jpg", "JPG", "mp4", "avi", "mov");   
   }
   
-
   // pg = createGraphics(width,height,P2D);
   // warp.add_image(pg, "truc");
  // warp.select_image("alien");
 
+  if(movie_warp_is() && get_movie_warp(which_movie) != null && get_movie_warp(which_movie).width != 0 && get_movie_warp(which_movie).height != 0) {
+    ref_warp_w = get_movie_warp(which_movie).width;
+    ref_warp_h = get_movie_warp(which_movie).height;
+  } else if(warp.get_width() > 0 && warp.get_height() > 0) {
+    ref_warp_w = warp.get_width();
+    ref_warp_h = warp.get_height(); 
+  }
 
-  if(warp_media_loaded_is()) {
-    int w = 1 ;
-    int h = 1 ;
-    if(movie_warp_is() && get_movie_warp(which_movie) != null && get_movie_warp(which_movie).width != 0 && get_movie_warp(which_movie).height != 0) {
-      w = get_movie_warp(which_movie).width;
-      h = get_movie_warp(which_movie).height;
-    } else {
-      w = warp.get_width();
-      h = warp.get_height(); 
-    }
-    if(width != w || height != h) {
-      println("warp initialization");
-      init_warp_is = true ;
-      set_size(w,h);
-      warp.reset(); 
-      build_force_field(type_field,size_cell, warp.get_image());
-    }
-  } else {
-    build_force_field(type_field,size_cell);
+  if(width != ref_warp_w || height != ref_warp_h) {
+    println("warp init media");
+    init_warp_is = true ;
+    set_size(ref_warp_w,ref_warp_h);
+    warp.reset(); 
+    build_force_field(type_field,size_cell, warp.get_image());
   }
 }
 
+/*
+local method
+*/
 void add_g_surface() {
   if(warp.library() != null && warp.library_size() > 0 ) {
     if(warp.get_name(0).equals(surface_g)) {
       // nothing happen don't add a g surface, this security is necessary in case we add more media
     } else {
+      println("add g surface");
       warp.add_image(g, surface_g);
     }
   } else {
+    println("add g surface");
     warp.add_image(g, surface_g); // take the first place in the list, "0" so when the list is used you must jump the "0"
   }
 }
@@ -102,13 +118,24 @@ void warp_draw() {
   /**
   media
   */
-  if(warp_media_loaded_is()) {
-    if(movie_warp_is()) {
+  // println(movie_warp_is(), video_warp_is());
+  if(warp_media_is()) {
+     if (video_warp_is()) {
+      movie_warp_is(false);
+      //video.start();
+      println("video", video_warp_is(),video.available(), video.width,video.height);
       warp.select_image(surface_g);
-      display_movie();   
+      display_video(); 
+    } else if(movie_warp_is()) {
+      warp.select_image(surface_g);
+      play_video(false);
+      display_movie();
     } else {
+      play_video(false);
+      movie_warp_is(false);
       warp.select_image(which_img);
     }
+    warp_show();
 
     /**
     animation
@@ -124,9 +151,16 @@ void warp_draw() {
     /*
     update_vehicle(force_field);
     show_vehicle();
-    */
+    */    
+    // init_warp_is = false ;
+  }
+  init_warp_is = false ;
+  // end of security loaded media 
+}
 
-    /**
+
+void warp_show() {
+  /**
     SHOW IMAGE WARPED via FORCE FIELD
     */
     refresh_warp();
@@ -144,10 +178,7 @@ void warp_draw() {
       // here we need to have a full turn without display to charge pixel "g / surface 
       warp.show(force_field, intensity);
     }
-    init_warp_is = false ;
-  }
-  // end of security loaded media
-  
+
 }
 
 
@@ -174,7 +205,10 @@ void warp_instruction() {
   textAlign(CENTER);
   background(255);
   fill(0) ;
+  int text_size = 12 ;
+  textSize(text_size);
   text("PRESS 'N' TO SELECT MEDIA FOLDER", width/2, height/2);
+  text("PRESS 'V' TO SELECT CAMERA", width/2, height/2 +(text_size *1.5));
 }
 
 
