@@ -140,13 +140,14 @@ void load_medias(boolean sub_folder, String... type) {
 video
 */
 Capture video;
+iVec2 video_size ;
 
 void init_video(int w, int h) {
   if(video == null ) {
-    video = new Capture(this, w,h);
-  } else if(video.width != w && video.height != h) {
-    video = new Capture(this, w,h);
-  }
+    // video = new Capture(this, w,h);
+    video = new Capture(this,Capture.list()[0]);
+    video_size = iVec2(width,height);
+  } 
 }
 
 
@@ -155,17 +156,19 @@ void display_video() {
     if(video != null && video_warp_is()) {
       warp_media_loaded(true);
       video.start(); 
-    } else if(video.width != width && video.height != height) {
-      init_video(width,height);
-    } else {
-      init_video(width,height);
+    }  else {
       video.stop();
     }
     
     if (video.available()) {
       warp_media_loaded(true);
       video.read();
-      image(video);
+      PImage temp = video.get().copy();
+      if(video_size.x != width && video_size.y != height) {
+        video_size.set(width,height);
+      }
+      temp.resize(video_size.x,video_size.y);
+      image(temp);
     } else {
       //
     }    

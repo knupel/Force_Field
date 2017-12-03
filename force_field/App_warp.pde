@@ -118,12 +118,9 @@ void warp_draw() {
   /**
   media
   */
-  // println(movie_warp_is(), video_warp_is());
   if(warp_media_is()) {
      if (video_warp_is()) {
       movie_warp_is(false);
-      //video.start();
-      println("video", video_warp_is(),video.available(), video.width,video.height);
       warp.select_image(surface_g);
       display_video(); 
     } else if(movie_warp_is()) {
