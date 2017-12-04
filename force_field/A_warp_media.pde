@@ -144,7 +144,6 @@ iVec2 video_size ;
 
 void init_video(int w, int h) {
   if(video == null ) {
-    // video = new Capture(this, w,h);
     video = new Capture(this,Capture.list()[0]);
     video_size = iVec2(width,height);
   } 

@@ -3,7 +3,7 @@ ROPE - Romanesco processing environment –
 * Copyleft (c) 2014-2017 
 * Stan le Punk > http://stanlepunk.xyz/
 Rope UTILS  2015 – 2017
-v 1.34.1
+v 1.35.0
 Rope – Romanesco Processing Environment – 
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Rope
@@ -304,8 +304,37 @@ class Constant_list {
 
 
 /**
-FOLDER MANAGER
-v 0.0.2
+FOLDER & FILE MANAGER
+v 0.1.0
+*/
+/*
+FILE PART
+*/
+String selected_path_input = null;
+boolean input_selected_is;
+
+void select_file() {
+  select_file("");
+}
+
+void select_file(String message) {
+  // folder_selected_is = true ;
+  selectInput(message, "input_selected");
+}
+
+void input_selected(File selection) {
+  if (selection == null) {
+    println("Window was closed or the user hit cancel.");
+  } else {
+    println("Input path is:" +selection.getAbsolutePath());
+    selected_path_input = selection.getAbsolutePath();
+    input_selected_is = true;
+  }
+}
+
+
+/*
+FOLDER PART
 */
 String selected_path_folder = null;
 boolean folder_selected_is;

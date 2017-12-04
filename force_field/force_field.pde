@@ -31,9 +31,9 @@ void settings() {
   init_rope();
 
   size_cell = 10;
-type_field = r.FLUID;
+// type_field = r.FLUID;
   // type_field = r.GRAVITY; /* you can also use HOLE constant */
- //  type_field = r.MAGNETIC;
+type_field = r.MAGNETIC;
  // type_field = r.PERLIN;
 // type_field = r.CHAOS;
 }
@@ -92,7 +92,6 @@ void draw() {
   /*
   interface
   */
-  slider_value();
   if(!pause_is && !interface_is()) update_force_field(); 
 
   /*
@@ -100,8 +99,7 @@ void draw() {
   */
   warp_init(type_field, size_cell);
   // video_draw();
-
-  warp_draw();
+  warp_draw(tempo_display, rgba_channel);
    
    /**
    INFO
@@ -114,6 +112,8 @@ void draw() {
 
   if(force_field != null) force_field.reverse_is(false);
   // reset_force_field();
+
+  interface_value();
 }
 /**
 END DRAW
@@ -152,7 +152,8 @@ KEYPRESSED
 void keyPressed() {
   println("keyPressed", frameCount);
   if(key == 'a') {
-    warp_add_media();
+    // @see if(key == 'n')
+    warp_add_media_folder();
     play_video(false);
   }
 
@@ -169,7 +170,8 @@ void keyPressed() {
   if(key == 'i') display_info();
 
   if(key == 'n') {
-    warp_change_media();
+    // @see if(key == 'a')
+    warp_change_media_folder();
     play_video(false);
   }
 

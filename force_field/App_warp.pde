@@ -1,6 +1,5 @@
 Warp warp = new Warp();
 
-boolean effect_is ;
 boolean shader_filter_is = false;
 boolean init_warp_is = false;
 String surface_g = "";
@@ -16,11 +15,33 @@ void warp_setup() {
   warp_instruction(); 
 }
 
-void warp_add_media() {
+/**
+ add or changer folder or file
+*/
+/*
+file part
+*/
+void warp_add_media_file() {
+  select_file();
+}
+
+void warp_change_media_file() {
+  if(get_files() != null) {
+    warp_media_loaded(false);
+    get_files().clear();
+    warp.image_library_clear();
+    movie_library_clear();
+  }
+  select_file();
+}
+/*
+folder part
+*/
+void warp_add_media_folder() {
   select_folder();
 }
 
-void warp_change_media() {
+void warp_change_media_folder() {
   if(get_files() != null) {
     warp_media_loaded(false);
     get_files().clear();
@@ -29,6 +50,9 @@ void warp_change_media() {
   }
   select_folder();
 }
+
+
+
 
 /**
  init for media or camera
@@ -53,16 +77,11 @@ void warp_init_video(int type_field, int size_cell) {
     build_force_field(type_field,size_cell, warp.get_image());
     init_video_is = true ;
     warp_media_loaded(true);
-  } else {
-    // build_force_field(type_field,size_cell);
-  }
+  } 
 }
 
 
 void warp_init_media(int type_field, int size_cell) {
-  /**
-  media warp
-  */
   if(folder_selected_is()) {
     movie_warp_is(false);
     add_g_surface();
@@ -114,25 +133,10 @@ void add_g_surface() {
 /**
 warp draw
 */
-void warp_draw() {
-  /**
-  media
-  */
+void warp_draw(int tempo, Vec4 channel_rgba) {
   if(warp_media_is()) {
-     if (video_warp_is()) {
-      movie_warp_is(false);
-      warp.select_image(surface_g);
-      display_video(); 
-    } else if(movie_warp_is()) {
-      warp.select_image(surface_g);
-      play_video(false);
-      display_movie();
-    } else {
-      play_video(false);
-      movie_warp_is(false);
-      warp.select_image(which_img);
-    }
-    warp_show();
+    if(frameCount%tempo == 0 ) warp_media_display();
+    if(warp.library_size() > 0 && force_field != null) warp_show(channel_rgba);
 
     /**
     animation
@@ -156,34 +160,57 @@ void warp_draw() {
 }
 
 
-void warp_show() {
+void warp_media_display() {
+  if (video_warp_is()) {
+    movie_warp_is(false);
+    warp.select_image(surface_g);
+    display_video(); 
+  } else if(movie_warp_is()) {
+    warp.select_image(surface_g);
+    play_video(false);
+    display_movie();
+  } else {
+    play_video(false);
+    movie_warp_is(false);
+    warp.select_image(which_img);
+  }
+}
+
+
+void warp_show(Vec4 channel_rgba) {
   /**
-    SHOW IMAGE WARPED via FORCE FIELD
-    */
-    refresh_warp();
-   // warp_effect_test();
-   
-    /**
-    SHADER ENGINE
-    */
-    warp.shader_init();
-    warp.shader_filter(shader_filter_is);
-    warp.shader_mode(0);
+  SHOW IMAGE WARPED via FORCE FIELD
+  */
+  warp.refresh(channel_rgba);
+  // refresh_warp(channel_rgba);
+ // warp_post_effect_test();
+ 
+  /**
+  SHADER ENGINE
+  */
+  warp.shader_init();
+  warp.shader_filter(shader_filter_is);
+  warp.shader_mode(0);
 
-    float intensity = 0.9 ;
-    if(!init_warp_is) {
-      // here we need to have a full turn without display to charge pixel "g / surface 
-      warp.show(force_field, intensity);
-    }
-
+  float intensity = 0.9 ;
+  if(!init_warp_is) {
+    // here we need to have a full turn without display to charge pixel "g / surface 
+    warp.show(force_field, intensity);
+  }
 }
 
 
 
+
+
+
 /**
-effect test
+
+post effect test
+
 */
-void warp_effect_test() {
+boolean effect_is ;
+void warp_post_effect_test() {
   Vec4 fx = Vec4(1);
   if(effect_is) warp.effect_multiply(true, fx.x,fx.y,fx.z,fx.w); else warp.effect_multiply(false);
   if(effect_is) warp.effect_overlay(true, fx.x,fx.y,fx.z,fx.w); else warp.effect_overlay(false);
@@ -194,6 +221,11 @@ void warp_effect_test() {
     effect_is = false;
   }
 }
+
+
+
+
+
 
 /**
 instruction
@@ -210,7 +242,7 @@ void warp_instruction() {
 
 
 
-void refresh_warp() {
+void refresh_warp(Vec4 channel_rgba) {
   
   Vec4 rgba = Vec4();
   /*
@@ -233,9 +265,9 @@ void refresh_warp() {
   rgba.w = sin(frameCount * .001);
   */
 
-  rgba.set(rgba_slider);
-  rgba.mult(power_max);
-  warp.refresh(rgba);
+  //rgba.set(channel_rgba);
+  //rgba.mult(power_channel_max);
+  warp.refresh(channel_rgba);
   
   /**
   refresh value simple

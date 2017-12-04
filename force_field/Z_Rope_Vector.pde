@@ -3,7 +3,7 @@ ROPE - Romanesco processing environment –
 * Copyleft (c) 2014-2017 
 * Stan le Punk > http://stanlepunk.xyz/
 ROPE vector
-v 2.6.4.2
+v 2.6.5.0
 Rope – Romanesco Processing Environment: 2015–2017
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Rope
@@ -1010,7 +1010,7 @@ class iVec6 extends iVec {
 
 /**
 Vec class
-v 1.14.0
+v 1.15.0
 2015-2017
 Vector with a float precision
 
@@ -1061,8 +1061,7 @@ public abstract class Vec implements Rope_Constants {
 
 
 /**
-VEC 2
-v 1.0.0
+Vec 2
 */
 public class Vec2 extends Vec {
 
@@ -1182,7 +1181,6 @@ public class Vec2 extends Vec {
    
   /**
   multiplication
-  v 0.0.2
   */
   /**
   * multiply Vector by different float value 
@@ -1214,7 +1212,6 @@ public class Vec2 extends Vec {
   
   /**
   division
-  v 0.0.3
   */
   /**
   * divide Vector by a float value 
@@ -1473,10 +1470,16 @@ public class Vec2 extends Vec {
   * return mapping vector
   * @return Vec2
   */
-  public Vec2 mapVec(float minIn, float maxIn, float minOut, float maxOut) {
+  public Vec2 map_vec(float minIn, float maxIn, float minOut, float maxOut) {
     x = map(x,minIn, maxIn, minOut, maxOut);
-    y = map(y,minIn, maxIn, minOut, maxOut);
-    
+    y = map(y,minIn, maxIn, minOut, maxOut);  
+    set(x,y) ;
+    return this ;
+  }
+
+  public Vec2 map_vec(Vec2 minIn, Vec2 maxIn, Vec2 minOut, Vec2 maxOut) {
+    x = map(x,minIn.x, maxIn.x, minOut.x, maxOut.x);
+    y = map(y,minIn.y, maxIn.y, minOut.y, maxOut.y);   
     set(x,y) ;
     return this ;
   }
@@ -2137,11 +2140,19 @@ class Vec3 extends Vec {
   * Mapped Vector
   * @return Vec3
   */
-  Vec3 mapVec(float minIn, float maxIn, float minOut, float maxOut) {
-    x = map(x, minIn, maxIn, minOut, maxOut) ;
-    y = map(y, minIn, maxIn, minOut, maxOut) ;
-    z = map(z, minIn, maxIn, minOut, maxOut) ;
+  public Vec3 map_vec(float minIn, float maxIn, float minOut, float maxOut) {
+    x = map(x,minIn,maxIn,minOut,maxOut) ;
+    y = map(y,minIn,maxIn,minOut,maxOut) ;
+    z = map(z,minIn,maxIn,minOut,maxOut) ;
 
+    set(x,y,z) ;
+    return this ;
+  }
+
+  public Vec3 map_vec(Vec3 minIn, Vec3 maxIn, Vec3 minOut, Vec3 maxOut) {
+    x = map(x,minIn.x,maxIn.x,minOut.x,maxOut.x);
+    y = map(y,minIn.y,maxIn.y,minOut.y,maxOut.y);   
+    z = map(z,minIn.z,maxIn.z,minOut.z,maxOut.z);   
     set(x,y,z) ;
     return this ;
   }
@@ -2773,14 +2784,22 @@ class Vec4 extends Vec {
   * return mapping vector
   * @return Vec4
   */
-  Vec4 mapVec(float minIn, float maxIn, float minOut, float maxOut) {
-    x = map(x, minIn, maxIn, minOut, maxOut);
-    y = map(y, minIn, maxIn, minOut, maxOut);
-    z = map(z, minIn, maxIn, minOut, maxOut);
-    w = map(w, minIn, maxIn, minOut, maxOut);
-    
-    set(x,y,z,w) ;
-    return this ;
+  public Vec4 map_vec(float minIn, float maxIn, float minOut, float maxOut) {
+    x = map(x,minIn,maxIn,minOut,maxOut);
+    y = map(y,minIn,maxIn,minOut,maxOut);
+    z = map(z,minIn,maxIn,minOut,maxOut);
+    w = map(w,minIn,maxIn,minOut,maxOut);
+    set(x,y,z,w);
+    return this;
+  }
+
+  public Vec4 map_vec(Vec4 minIn, Vec4 maxIn, Vec4 minOut, Vec4 maxOut) {
+    x = map(x,minIn.x,maxIn.x,minOut.x,maxOut.x);
+    y = map(y,minIn.y,maxIn.y,minOut.y,maxOut.y);   
+    z = map(z,minIn.z,maxIn.z,minOut.z,maxOut.z);   
+    w = map(w,minIn.w,maxIn.w,minOut.w,maxOut.w);
+    set(x,y,z,w);
+    return this;
   }
 
   /**
@@ -3806,14 +3825,14 @@ Map
 * return mapping vector
 * @return Vec
 */
-Vec2 mapVec(Vec2 v,float minIn, float maxIn, float minOut, float maxOut) {
+Vec2 map_vec(Vec2 v,float minIn, float maxIn, float minOut, float maxOut) {
   if(v != null) {
     float x = map(v.x, minIn, maxIn, minOut, maxOut) ;
     float y = map(v.y, minIn, maxIn, minOut, maxOut) ;
     return new Vec2(x,y) ;
   } else return null ;
 }
-Vec3 mapVec(Vec3 v,float minIn, float maxIn, float minOut, float maxOut) {
+Vec3 map_vec(Vec3 v,float minIn, float maxIn, float minOut, float maxOut) {
   if(v != null) {
     float x = map(v.x, minIn, maxIn, minOut, maxOut) ;
     float y = map(v.y, minIn, maxIn, minOut, maxOut) ;
@@ -3821,7 +3840,7 @@ Vec3 mapVec(Vec3 v,float minIn, float maxIn, float minOut, float maxOut) {
     return new Vec3(x,y,z) ;
   } else return null ;
 }
-Vec4 mapVec(Vec4 v,float minIn, float maxIn, float minOut, float maxOut) {
+Vec4 map_vec(Vec4 v,float minIn, float maxIn, float minOut, float maxOut) {
   if(v != null) {
     float x = map(v.x, minIn, maxIn, minOut, maxOut) ;
     float y = map(v.y, minIn, maxIn, minOut, maxOut) ;
