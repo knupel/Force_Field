@@ -23,15 +23,15 @@ int slider_width = 100 ;
 
 void interface_setup() {
 	rgba_channel = Vec4(1);
-	red_channel = .15;
-	green_channel = .15;
-	blue_channel = .15;
+	red_channel = .0;
+	green_channel = .5;
+	blue_channel = .9;
 
 	red_cycling = 0;
 	green_cycling = 0;
 	blue_cycling = 0;
 
-	power_channel = .1;
+	power_channel = .6;
 	int space = 8;
 	int max = 1;
 	cp5 = new ControlP5(this);

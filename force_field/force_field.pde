@@ -95,16 +95,9 @@ void draw() {
   interface
   */
   if(!pause_is && !interface_is()) {
-    boolean bool_1 = false ;
-    boolean bool_2 = false ;
-    // if(mousePressed && mouseButton == LEFT) bool_1 = true ;
-    // if(mousePressed && mouseButton == RIGHT) bool_2 = true ;
-    if(mousePressed) {
-      bool_1 = true ;
-      bool_2 = true ;
-    }
-    update_force_field_spot_is(bool_1, bool_2);
-    update_force_field_spot_coord(Vec2(mouseX,mouseY),Vec2(width -mouseX, height -mouseY));
+    force_field_spot_condition();
+    force_field_spot_coord();
+    
     update_force_field(); 
   }
 
@@ -112,7 +105,7 @@ void draw() {
   warp
   */
   warp_init(type_field, size_cell);
-  warp_init_spot(2);
+  warp_init_spot(4);
   // video_draw();
   warp_draw(tempo_display, rgba_channel);
    
@@ -135,7 +128,56 @@ END DRAW
 */
 
 
+void force_field_spot_coord() {
+  Vec2 pos_1 = Vec2(mouseX,mouseY);
+  Vec2 pos_2 = Vec2(width -mouseX, height -mouseY);
+  Vec2 pos_3 = Vec2(mouseX, height -mouseY);
+  Vec2 pos_4 = Vec2(width -mouseX, mouseY);
+  update_force_field_spot_coord(pos_1,pos_2,pos_3,pos_4);
+}
 
+
+void force_field_spot_condition() {
+  boolean bool_1 = false ;
+  boolean bool_2 = false ;
+  boolean bool_3 = false ;
+  boolean bool_4 = false ;
+  boolean bool_5 = false ;
+  // if(mousePressed && mouseButton == LEFT) bool_1 = true ;
+  // if(mousePressed && mouseButton == RIGHT) bool_2 = true ;
+  if(mousePressed) {
+    bool_1 = true ;
+    bool_2 = true ;
+    bool_3 = true ;
+    bool_4 = true ;
+  }
+  update_force_field_spot_is(bool_1, bool_2, bool_3, bool_4);
+}
+
+
+void force_field_spot_radius() {
+  int rad_1 = 30;
+  int rad_2 = 30;
+  int rad_3 = 30;
+  int rad_4 = 30;
+  update_force_field_spot_radius(rad_1,rad_2,rad_3,rad_4);
+}
+
+void force_field_spot_tesla() {
+  int tsl_1 = 30;
+  int tsl_2 = -30;
+  int tsl_3 = 30;
+  int tsl_4 = -30;
+  update_force_field_spot_tesla(tsl_1,tsl_2,tsl_3,tsl_4);
+}
+
+void force_field_spot_mass() {
+  int m_1 = 30;
+  int m_2 = 30;
+  int m_3 = 30;
+  int m_4 = 30;
+  update_force_field_spot_mass(m_1,m_2,m_3,m_4);
+}
 
 
 
