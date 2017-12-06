@@ -59,13 +59,13 @@ void interface_value() {
   float cb = 1.;
   if(red_cycling != 0) {
   	cr = sin(frameCount *(red_cycling *red_cycling *.1)); 
-  } else red_cycling = 1. ;
+  }
   if(green_cycling != 0) {
   	cg = sin(frameCount *(green_cycling *green_cycling *.1)); 
-  } else green_cycling = 1. ;
+  }
   if(blue_cycling != 0) {
   	cb = sin(frameCount *(blue_cycling *blue_cycling *.1)); 
-  } else blue_cycling = 1. ;
+  }
 
   if(abs_cycling) {
   	cr = abs(cr) ;
@@ -82,12 +82,10 @@ void interface_value() {
   
 	rgba_channel.mult(power_channel_max);
 	
-	rgba_channel.set(sin_val.map_vec(Vec4(0), Vec4(1), Vec4(.01), rgba_channel));
-	// rgba_channel.mult(red_cycling,green_cycling,blue_cycling,1);
-	// println(rgba_channel);
-
-
-
+	float min_src = 0 ;
+	float max_src = 1 ;
+	float min_dst = .01 ;
+	rgba_channel.set(sin_val.map_vec(Vec4(min_src), Vec4(max_src), Vec4(min_dst), rgba_channel));
 
 	tempo_display = int(tempo_refresh *10 +1);
 
@@ -102,7 +100,7 @@ void interface_value() {
 	}
 }
 
-
+// void controlEvent(ControlEvent theEvent) {
 public void controlEvent(ControlEvent theEvent) {
   if(theEvent.getController().getName().equals("absolute_cycling")){
   	if(abs_cycling) {
@@ -110,7 +108,6 @@ public void controlEvent(ControlEvent theEvent) {
   	} else {
   		abs_cycling = true ;
   	}
-  	println(abs_cycling);
   }
 }
 

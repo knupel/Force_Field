@@ -2,7 +2,7 @@
 Force Field
 refactoring by Stan le Punk
 http://stanlepunk.xyz/
-v 1.2.2
+v 1.3.0
 */
 /**
 Run on Processing 3.3.6
@@ -36,6 +36,7 @@ public class Force_field implements Rope_Constants {
 
   private float mass_field = 1. ;
 
+  private ArrayList<Boolean> reset_ref_spot_position_list;
   private ArrayList<Spot> spot_list ;
 
   private ArrayList<Spot> spot_mag_north_list ;
@@ -144,6 +145,8 @@ public class Force_field implements Rope_Constants {
 
   private void init_spot() {
     spot_list = new ArrayList<Spot>();
+    reset_ref_spot_position_list = new ArrayList<Boolean>();
+
     if(this.type == MAGNETIC) {
       spot_mag_north_list = new ArrayList<Spot>();
       spot_mag_south_list = new ArrayList<Spot>();
@@ -154,13 +157,17 @@ public class Force_field implements Rope_Constants {
   public void add_spot(int num) {
     for(int i = 0 ; i < num ; i++) {
       Spot spot = new Spot() ;
-      spot_list.add(spot) ;
+      spot_list.add(spot);
+      boolean bool = false ;
+      reset_ref_spot_position_list.add(bool);
     }
   }
 
   public void add_spot() {
     Spot spot = new Spot() ;
     spot_list.add(spot) ;
+    boolean bool = false ;
+    reset_ref_spot_position_list.add(bool);
   }
 
   private void manage_list_mag() {
@@ -456,8 +463,7 @@ public class Force_field implements Rope_Constants {
         } if(type == GRAVITY) {
           for(Spot s : spot_list) {
             theta = theta_2D(Vec2(x,y),Vec2(s.get_pos()));
-          }
-          
+          }          
         }
         // Polar to cartesian coordinate
         field[x][y] = Vec2(cos(theta),sin(theta)); 
@@ -472,10 +478,14 @@ public class Force_field implements Rope_Constants {
   reset
   v 0.0.1
   */
-  private boolean reset_ref_spot_position;
+  // private boolean reset_ref_spot_position_list;
+
+  public void ref_spot(int which_one) {
+    reset_ref_spot_position_list.set(which_one,true);
+  }
 
   public void ref_spot() {
-    reset_ref_spot_position = true;
+    reset_ref_spot_position_list.set(0,true);
   }
 
 
@@ -527,8 +537,10 @@ public class Force_field implements Rope_Constants {
   */
   public void update() {
     if(type == FLUID) {
+      int which_one = 0 ;
       for(Spot s : spot_list) {
-        update_fluid_spot(ns_2D, s.get_pos());
+        update_fluid_spot(ns_2D, s.get_pos(), which_one);
+        which_one++;
       }
       ns_2D.update(frequence, viscosity, diffusion) ;
       update_fluid_field(ns_2D);
@@ -547,7 +559,6 @@ public class Force_field implements Rope_Constants {
     if(n instanceof Navier_Stokes_2D) {
       Navier_Stokes_2D ns = (Navier_Stokes_2D)n ;
       sum_activities = 0;
-      // println(ns.get_NX(),ns.get_NY());
 
       for(int x = 0 ; x < ns.get_NX() ; x++) {
         for(int y = 0 ; y < ns.get_NY() ; y++) {
@@ -748,15 +759,18 @@ public class Force_field implements Rope_Constants {
   v 0.1.0
   */
   public int get_spot_num() {
-    return spot_list.size();
+    if(spot_list != null) return spot_list.size();
+    else return -1;
   }
 
   public int get_spot_south_num() {
-    return spot_mag_south_list.size();
+    if(spot_mag_south_list != null) return spot_mag_south_list.size();
+    else return -1;
   }
 
   public int get_spot_north_num() {
-    return spot_mag_north_list.size();
+    if(spot_mag_north_list != null) return spot_mag_north_list.size();
+    else return -1;
   }
   /**
   * get spot position
@@ -785,7 +799,6 @@ public class Force_field implements Rope_Constants {
     for(int i = 0 ; i < spot_list.size() ; i++) {
       Spot s = spot_list.get(i) ;
       pos[i] = Vec2(s.get_raw_pos()).copy();
-      // pos[i].add(Vec2(canvas_pos));
     }
     return pos;  
   }
@@ -802,7 +815,6 @@ public class Force_field implements Rope_Constants {
   * get spot size
   */
   public Vec2 [] get_spot_size() {
-    // return get_spot_size(0); 
     Vec2 [] size = new Vec2[spot_list.size()] ;
     for(int i = 0 ; i < spot_list.size() ; i++) {
       Spot s = spot_list.get(i) ;
@@ -1086,21 +1098,21 @@ public class Force_field implements Rope_Constants {
   */
   /**
   update_fluid_spot
-  v 0.1.0
-  */ 
-  private void update_fluid_spot(Navier_Stokes n, Vec spot_pos) {
+  v 0.2.0
+  */
+  private void update_fluid_spot(Navier_Stokes n, Vec spot_pos, int which_one) {
     if(n instanceof Navier_Stokes_2D) {
       Navier_Stokes_2D ns = (Navier_Stokes_2D)n;
       Vec2 c = Vec2(canvas);
       Vec2 c_pos = Vec2(canvas_pos);
       Vec2 target = Vec2(spot_pos);
-      update_fluid_spot_2D(ns, target, c, c_pos);
+      update_fluid_spot_2D(ns, target, c, c_pos, which_one);
     } else if(n instanceof Navier_Stokes_3D) {
       Navier_Stokes_3D ns = (Navier_Stokes_3D)n;
       Vec3 target = Vec3(spot_pos);
       Vec3 c = Vec3(canvas);
       Vec3 c_pos = Vec3(canvas_pos);
-      update_fluid_spot_3D(ns, target, c, c_pos);     
+      update_fluid_spot_3D(ns, target, c, c_pos, which_one);     
     }
   }
 
@@ -1121,11 +1133,10 @@ public class Force_field implements Rope_Constants {
     }
   }
   
-  
-  private void update_fluid_spot_2D(Navier_Stokes_2D ns, Vec2 target, Vec2 canvas, Vec2 canvas_pos) {
-    if(pos_ref_2D == null || reset_ref_spot_position) {
+  private void update_fluid_spot_2D(Navier_Stokes_2D ns, Vec2 target, Vec2 canvas, Vec2 canvas_pos, int which_one) {
+    if(pos_ref_2D == null || reset_ref_spot_position_list.get(which_one)) {
       pos_fluid_spot_ref(target);
-      reset_ref_spot_position = false;
+      reset_ref_spot_position_list.set(which_one,false);
     } 
     
     Vec2 vel = sub(target, pos_ref_2D);
@@ -1138,16 +1149,15 @@ public class Force_field implements Rope_Constants {
     vel.y = (abs(vel.y) > limit_vel)? 
     Math.signum(vel.y) *limit_vel : 
     vel.y;
-    // println(target_cell.x, target_cell.y, vel.x, vel.y);
     ns.apply_force(target_cell.x, target_cell.y, vel.x, vel.y);
 
     pos_fluid_spot_ref(target);
   }
-
-  private void update_fluid_spot_3D(Navier_Stokes_3D ns, Vec3 target, Vec3 canvas, Vec3 canvas_pos) {
-    if(pos_ref_3D == null || reset_ref_spot_position) {
+  
+  private void update_fluid_spot_3D(Navier_Stokes_3D ns, Vec3 target, Vec3 canvas, Vec3 canvas_pos, int which_one) {
+    if(pos_ref_3D == null || reset_ref_spot_position_list.get(which_one)) {
       pos_fluid_spot_ref(target);
-      reset_ref_spot_position = false;
+      reset_ref_spot_position_list.set(which_one,false);
     } 
 
     Vec3 cell = canvas.div(ns.get_N());

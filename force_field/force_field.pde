@@ -31,9 +31,9 @@ void settings() {
   init_rope();
 
   size_cell = 10;
-// type_field = r.FLUID;
+type_field = r.FLUID;
   // type_field = r.GRAVITY; /* you can also use HOLE constant */
-type_field = r.MAGNETIC;
+// type_field = r.MAGNETIC;
  // type_field = r.PERLIN;
 // type_field = r.CHAOS;
 }
@@ -68,7 +68,9 @@ void setup() {
   /**
   classic build
   */
+
   // build_force_field(type_field,size_cell);
+  // num_spot_force_field(2); 
 
   /**
   vehicle example
@@ -92,12 +94,25 @@ void draw() {
   /*
   interface
   */
-  if(!pause_is && !interface_is()) update_force_field(); 
+  if(!pause_is && !interface_is()) {
+    boolean bool_1 = false ;
+    boolean bool_2 = false ;
+    // if(mousePressed && mouseButton == LEFT) bool_1 = true ;
+    // if(mousePressed && mouseButton == RIGHT) bool_2 = true ;
+    if(mousePressed) {
+      bool_1 = true ;
+      bool_2 = true ;
+    }
+    update_force_field_spot_is(bool_1, bool_2);
+    update_force_field_spot_coord(Vec2(mouseX,mouseY),Vec2(width -mouseX, height -mouseY));
+    update_force_field(); 
+  }
 
   /*
   warp
   */
   warp_init(type_field, size_cell);
+  warp_init_spot(2);
   // video_draw();
   warp_draw(tempo_display, rgba_channel);
    
