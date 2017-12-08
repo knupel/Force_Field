@@ -5,13 +5,17 @@ v 0.1.0
 */
 Force_field force_field;
 
+float freq_ff;
+float visc_ff;
+float diff_ff;
+
 /**
 init
 */
 boolean force_field_init_is ;
-void init_force_field(int type, int resolution, PImage src) {
+void init_ff(int type, int resolution, PImage src) {
   if(!force_field_init_is) {
-    build_force_field(type, resolution, src);
+    build_ff(type, resolution, src);
     force_field_init_is = true ;
   }
 }
@@ -29,7 +33,7 @@ v 0.0.5
 add spot
 * it's use for force field GRAVITY, MAGNETIC and FLUID
 */
-void num_spot_force_field(int num) {
+void num_spot_ff(int num) {
   if(force_field != null && num > force_field.get_spot_num() ) {
     println("add", num, "spot to force field");
     force_field.add_spot(num);
@@ -49,11 +53,11 @@ type_force_field CHAOS, PERLIN or FLUID
 /**
 * classic build
 */
-void build_force_field(int type_force_field, int resolution) {
-  build_force_field(type_force_field, resolution, null);
+void build_ff(int type_force_field, int resolution) {
+  build_ff(type_force_field, resolution, null);
 }
 
-void build_force_field(int type_force_field, int resolution, PImage src) {
+void build_ff(int type_force_field, int resolution, PImage src) {
   iVec2 canvas = iVec2();
   iVec2 canvas_pos = iVec2();
   if(src != null) {
@@ -68,16 +72,19 @@ void build_force_field(int type_force_field, int resolution, PImage src) {
   }
 
   if(type_force_field == r.GRAVITY) {
-    build_force_field_gravity(resolution, canvas_pos, canvas);
+    build_ff_gravity(resolution, canvas_pos, canvas);
     if(force_field.get_spot_num() < 1) printErr("void build_force_field() There is no spot added for your force Field, this force field need one to work") ;  
   } else if (type_force_field == r.MAGNETIC) {
-    build_force_field_magnetic(resolution, canvas_pos, canvas);
+    build_ff_magnetic(resolution, canvas_pos, canvas);
     if(force_field.get_spot_num() < 1) printErr("void build_force_field() There is no spot added for your force Field, this force field need one to work") ;
   } else if (type_force_field == r.FLUID) {
-    build_force_field_fluid(resolution, canvas_pos, canvas);
+    build_ff_fluid(resolution, canvas_pos, canvas);
+    freq_ff = 2/frameRate;
+    visc_ff = .001;;
+    diff_ff = 1.;
     if(force_field.get_spot_num() < 1) printErr("void build_force_field() There is no spot added for your force Field, this force field need one to work") ;
   } else {
-    build_force_field_classic(type_force_field, resolution, canvas_pos, canvas);
+    build_ff_classic(type_force_field, resolution, canvas_pos, canvas);
   }
 }
 /**
@@ -87,20 +94,20 @@ v 0.0.2
 /**
 * build classic
 */
-void build_force_field_classic(int type_force_field, int resolution, iVec2 canvas_pos, iVec2 canvas) {
+void build_ff_classic(int type_force_field, int resolution, iVec2 canvas_pos, iVec2 canvas) {
   force_field = new Force_field(resolution, canvas_pos, canvas, type_force_field);
 }
 /**
 * buid force field FLUID
 */
-void build_force_field_fluid(int resolution, iVec2 canvas_pos, iVec2 canvas) {
+void build_ff_fluid(int resolution, iVec2 canvas_pos, iVec2 canvas) {
   force_field = new Force_field(resolution, canvas_pos, canvas, r.FLUID);
   
 }
 /**
 * build force field image source to generate the vector field
 */
-void build_force_field_img(PImage img) {
+void build_ff_img(PImage img) {
   int resolution = 20 ;
   iVec2 canvas_pos = iVec2() ;
   force_field = new Force_field(resolution, canvas_pos, img, r.BLUE);
@@ -108,13 +115,13 @@ void build_force_field_img(PImage img) {
 /**
 * build force field gravity
 */
-void build_force_field_gravity(int resolution, iVec2 canvas_pos, iVec2 canvas) {
+void build_ff_gravity(int resolution, iVec2 canvas_pos, iVec2 canvas) {
   force_field = new Force_field(resolution, canvas_pos, canvas, r.GRAVITY);
 }
 /**
 * build force field magnetic
 */
-void build_force_field_magnetic(int resolution, iVec2 canvas_pos, iVec2 canvas) {
+void build_ff_magnetic(int resolution, iVec2 canvas_pos, iVec2 canvas) {
   force_field = new Force_field(resolution, canvas_pos, canvas, r.MAGNETIC);
 }
 
@@ -132,7 +139,7 @@ void build_force_field_magnetic(int resolution, iVec2 canvas_pos, iVec2 canvas) 
 UPDATE
 v 0.1.0
 */
-void update_force_field() {
+void update_ff() {
   /**
   WHAT IS IT ??????
 
@@ -160,7 +167,7 @@ void update_force_field() {
     } else if(force_field.get_type() == r.MAGNETIC) {
       update_ff_magnetic();
     } else {
-      update_field() ;
+      update_ff_classic() ;
     }
   } else {
     printErrTempo(180, "the force field is not init, maybe the media is not loaded ?");
@@ -171,7 +178,7 @@ void update_force_field() {
 /**
 CLASSIC FIELD, like CHAOS, PERLIN
 */
-void update_field() {
+void update_ff_classic() {
   force_field.update();
 
   float angle = map(mouseY, 0,height, -PI, PI) ;
@@ -188,9 +195,9 @@ void update_field() {
 FLUID CASE
 */
 void update_ff_fluid() {
-  force_field.set_frequence(2/frameRate);
-  force_field.set_viscosity(.001); // back to normal
-  force_field.set_diffusion(1.);
+  force_field.set_frequence(freq_ff);
+  force_field.set_viscosity(visc_ff); // back to normal
+  force_field.set_diffusion(diff_ff);
   
   for(int i = 0 ; i < force_field.spot_list.size() && i < spot_list_coord.size() ; i++) {
     if(i < spot_list_is.size()) {
@@ -307,6 +314,33 @@ void update_ff_gravity() {
   force_field.update() ;
 }
 */
+
+/**
+update value
+*/
+void update_value_ff_fluid(float freq, float visc, float diff) {
+    /*
+  force_field.set_frequence(2/frameRate);
+  force_field.set_viscosity(.001); // back to normal
+  force_field.set_diffusion(1.);
+  */
+
+  freq_ff = freq *.05 ;
+  visc_ff = visc *visc *visc *visc;
+  // diff_ff = diff *10.;
+  diff_ff = diff;
+
+  
+  println("freq", freq_ff);
+  println("visc", visc_ff);
+  println("diff", diff_ff);
+  
+/*
+    freq_ff = 2/frameRate;
+  visc_ff = .001;
+  diff_ff = 1.;
+  */
+}
 
 
 /**

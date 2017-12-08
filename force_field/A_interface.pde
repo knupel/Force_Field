@@ -1,27 +1,48 @@
 import controlP5.*;
-ControlP5 cp5;
+ControlP5 cp_main, cp_fluid;
 
-float red_channel ;
-float green_channel ;
-float blue_channel ;
 
-float red_cycling ;
-float green_cycling ;
-float blue_cycling ;
+// global slider
+float red_channel;
+float green_channel;
+float blue_channel;
 
-boolean abs_cycling = true ;
+float power_channel;
+float power_channel_max;
+
+float red_cycling;
+float green_cycling;
+float blue_cycling;
+
+boolean abs_cycling = true;
 
 float tempo_refresh;
 
-float power_channel;
+// fluid slider
+float frequence;
+float viscosity;
+float diffusion;
+
+Vec2 pos_gui ;
+Vec2 size_gui ;
 
 
-float power_channel_max ;
-
-int slider_width = 100 ;
 
 
-void interface_setup() {
+void interface_setup(Vec2 pos, Vec2 size) {
+	pos_gui = pos.copy();
+	size_gui = size.copy();
+	int sw = 100 ;
+	int space = 8;
+	int max = 1;
+
+  slider_main(space, max, sw, 2);
+  slider_fluid(space, max, sw, 30);
+}
+
+void slider_main(int space, int max, int sw, int start_pos) {
+	cp_main = new ControlP5(this);
+
 	rgba_channel = Vec4(1);
 	red_channel = .0;
 	green_channel = .5;
@@ -32,21 +53,30 @@ void interface_setup() {
 	blue_cycling = 0;
 
 	power_channel = .6;
-	int space = 8;
-	int max = 1;
-	cp5 = new ControlP5(this);
-	cp5.addSlider("red_channel").setPosition(10,space).setWidth(slider_width).setRange(0,max);
-	cp5.addSlider("green_channel").setPosition(10,space*3).setWidth(slider_width).setRange(0,max);
-	cp5.addSlider("blue_channel").setPosition(10,space*5).setWidth(slider_width).setRange(0,max);
 
-	cp5.addSlider("power_channel").setPosition(10,space*7).setWidth(slider_width).setRange(0,max);
+	cp_main.addSlider("red_channel").setPosition(10,space *(start_pos+1)).setWidth(sw).setRange(0,max);
+	cp_main.addSlider("green_channel").setPosition(10,space*(start_pos+3)).setWidth(sw).setRange(0,max);
+	cp_main.addSlider("blue_channel").setPosition(10,space*(start_pos+5)).setWidth(sw).setRange(0,max);
 
-	cp5.addSlider("red_cycling").setPosition(10,space*10).setWidth(slider_width).setRange(0,max);
-	cp5.addSlider("green_cycling").setPosition(10,space*12).setWidth(slider_width).setRange(0,max);
-	cp5.addSlider("blue_cycling").setPosition(10,space*14).setWidth(slider_width).setRange(0,max);
-	cp5.addButton("absolute_cycling").setValue(0).setPosition(10,space*16).setSize(slider_width,10);
+	cp_main.addSlider("power_channel").setPosition(10,space*(start_pos+7)).setWidth(sw).setRange(0,max);
 
-	cp5.addSlider("tempo_refresh").setPosition(10,space*19).setWidth(slider_width).setRange(0,max).setNumberOfTickMarks(20);
+	cp_main.addSlider("red_cycling").setPosition(10,space*(start_pos+10)).setWidth(sw).setRange(0,max);
+	cp_main.addSlider("green_cycling").setPosition(10,space*(start_pos+12)).setWidth(sw).setRange(0,max);
+	cp_main.addSlider("blue_cycling").setPosition(10,space*(start_pos+14)).setWidth(sw).setRange(0,max);
+	cp_main.addButton("absolute_cycling").setValue(0).setPosition(10,space*(start_pos+16)).setSize(sw,10);
+
+	cp_main.addSlider("tempo_refresh").setPosition(10,space*(start_pos+19)).setWidth(sw).setRange(0,max).setNumberOfTickMarks(20);
+}
+
+
+void slider_fluid(int space, int max, int sw, int start_pos) {
+	cp_fluid = new ControlP5(this);
+	frequence = .1;
+	viscosity = .1;
+	diffusion = .1;
+	cp_fluid.addSlider("frequence").setPosition(10,space*start_pos).setWidth(sw).setRange(0,max);
+  cp_fluid.addSlider("viscosity").setPosition(10,space*(start_pos+2)).setWidth(sw).setRange(0,max);
+  cp_fluid.addSlider("diffusion").setPosition(10,space*(start_pos+4)).setWidth(sw).setRange(0,max);
 }
 
 
@@ -54,6 +84,8 @@ void interface_setup() {
 Vec4 rgba_channel ;
 int tempo_display ;
 void interface_value() {
+	update_value_ff_fluid(frequence, viscosity, diffusion);
+
   float cr = 1.;
   float cg = 1.;
   float cb = 1.;
@@ -89,15 +121,31 @@ void interface_value() {
 
 	tempo_display = int(tempo_refresh *10 +1);
 
+}
 
+
+void interface_display(Vec2 pos, Vec2 size) {
+	pos_gui.set(pos);
+	size_gui.set(size);
 	if(!interface_is()) { 
-		cp5.hide() ; 
+		cp_main.hide();
+		cp_fluid.hide();
 	} else {
-		cp5.show();
+		cp_main.show();
+		if(get_type_ff() == r.FLUID) cp_fluid.show();
 		fill(0,125);
 		noStroke();
-		rect(0,0,200,height);
+		rect(pos_gui,size_gui);
 	}
+}
+
+
+Vec2 get_pos_interface() {
+	return pos_gui;
+}
+
+Vec2 get_size_interface() {
+	return size_gui;
 }
 
 // void controlEvent(ControlEvent theEvent) {

@@ -63,7 +63,7 @@ void warp_init(int type_field, int size_cell) {
   } else if(video_warp_is()) {
     warp_init_video(type_field, size_cell);
   } else if(!warp_media_is()){
-    build_force_field(type_field,size_cell);
+    build_ff(type_field,size_cell);
   }
 }
 
@@ -75,7 +75,7 @@ void warp_init_video(int type_field, int size_cell) {
   add_g_surface();
   if(!init_video_is) {
     println("warp init video");
-    build_force_field(type_field,size_cell, warp.get_image());
+    build_ff(type_field,size_cell, warp.get_image());
     init_video_is = true ;
     warp_media_loaded(true);
   } 
@@ -106,7 +106,7 @@ void warp_init_media(int type_field, int size_cell) {
     init_warp_is = true ;
     set_size(ref_warp_w,ref_warp_h);
     warp.reset(); 
-    build_force_field(type_field,size_cell, warp.get_image());
+    build_ff(type_field,size_cell, warp.get_image());
   }
 }
 

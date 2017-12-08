@@ -16,6 +16,7 @@ Via Reynolds: http://www.red3d.com/cwr/steer/FlowFollow.html
 Stable fluids from Jos Stam's work on the Navier-Stokes equation
 */
 boolean pause_is ;
+boolean use_leapmotion = false ;
 
 PGraphics pg ;
 
@@ -27,13 +28,13 @@ int type_field;
 // Using this variable to decide whether to draw all the stuff
 void settings() {
   size(640,480,P2D);
-  // fullScreen(1) ;
+  // fullScreen(P2D, 1) ;
   init_rope();
 
   size_cell = 10;
 type_field = r.FLUID;
 //   type_field = r.GRAVITY; /* you can also use HOLE constant */
-// type_field = r.MAGNETIC;
+//type_field = r.MAGNETIC;
  // type_field = r.PERLIN;
 // type_field = r.CHAOS;
 }
@@ -51,8 +52,8 @@ void setup() {
   background(0);
   // noCursor();
   // warp_instruction();
-  interface_setup();
-  leap_setup();
+
+  if(use_leapmotion) leap_setup();
 
   /**
   force field setting
@@ -82,6 +83,7 @@ void setup() {
   build_vehicle(num_vehicle);
   */
   set_info(false);
+  interface_setup(Vec2(0), Vec2(200,height));
 }
 
 
@@ -90,17 +92,33 @@ DRAW
 
 */
 void draw() {
-  // println("library", warp.library_size());
   cursor(CROSS);
-  leap_update();
+  if(use_leapmotion) leap_update();
+
   /*
-  interface
+  update force field
   */
-  if(!pause_is && !interface_is()) {
-    // force_field_spot_condition();
-    force_field_spot_condition_leapmotion();
-    // force_field_spot_coord();
-    force_field_spot_coord_leapmotion();
+  /* 
+  condition to update force field
+  */
+  boolean run_is = true;
+  boolean inside_gui = inside(get_pos_interface(), get_size_interface(), Vec2(mouseX,mouseY));
+  if(inside_gui) run_is = false ;
+  if(interface_is() && inside_gui) run_is = false ;
+  if(!interface_is()) run_is = true ;
+  if(use_leapmotion) run_is = true ;
+  if(pause_is) run_is = false ;
+
+
+  if(run_is) { 
+    if(use_leapmotion) {
+      force_field_spot_condition_leapmotion();
+      force_field_spot_coord_leapmotion();
+    } else {
+      force_field_spot_condition();
+      force_field_spot_coord();
+    }
+
     if(get_type_ff() == r.FLUID) {
       //
     } else if(get_type_ff() == r.MAGNETIC) {
@@ -110,14 +128,14 @@ void draw() {
       force_field_spot_diam();
       force_field_spot_mass();
     }   
-    update_force_field(); 
+    update_ff(); 
   }
 
   /*
   warp
   */
   warp_init(type_field, size_cell);
-  num_spot_force_field(4); 
+  num_spot_ff(4); 
   warp_draw(tempo_display, rgba_channel);
    
    /**
@@ -133,6 +151,7 @@ void draw() {
   // reset_force_field();
 
   interface_value();
+  interface_display(Vec2(0), Vec2(200,height));
 }
 /**
 END DRAW
@@ -192,18 +211,20 @@ void force_field_spot_coord() {
 }
 
 void force_field_spot_condition() {
-  boolean [] bool = new boolean[get_spot_num_ff()];
-  for(int i = 0 ; i < bool.length ; i++) {
-    bool[i] = false ;
-  }
-  // if(mousePressed && mouseButton == LEFT) bool_1 = true ;
-  // if(mousePressed && mouseButton == RIGHT) bool_2 = true ;
-  if(mousePressed) {
+  if(get_spot_num_ff() > 0) {
+    boolean [] bool = new boolean[get_spot_num_ff()];
     for(int i = 0 ; i < bool.length ; i++) {
       bool[i] = false ;
     }
+    // if(mousePressed && mouseButton == LEFT) bool_1 = true ;
+    // if(mousePressed && mouseButton == RIGHT) bool_2 = true ;
+    if(mousePressed) {
+      for(int i = 0 ; i < bool.length ; i++) {
+        bool[i] = true ;
+      }
+    }
+    update_spot_ff_is(bool);
   }
-  update_spot_ff_is(bool);
 }
 
 
