@@ -2,7 +2,7 @@
 Force Field
 refactoring by Stan le Punk
 http://stanlepunk.xyz/
-v 1.3.0
+v 1.3.1
 */
 /**
 Run on Processing 3.3.6
@@ -198,7 +198,7 @@ public class Force_field implements Rope_Constants {
 
   /**
   public set spot
-  v 0.0.6
+  v 0.1.0
   */
 
   public void set_spot(float pos_x, float pos_y, float size_x, float size_y) {
@@ -219,7 +219,7 @@ public class Force_field implements Rope_Constants {
 
   public void set_spot(Vec2 pos, Vec2 size, int which_one) {
     set_spot_pos(pos.x,pos.y,which_one);
-    set_spot_size(size.x,size.y,which_one);
+    set_spot_diam(size.x,size.y,which_one);
   }
 
   /*
@@ -275,31 +275,31 @@ public class Force_field implements Rope_Constants {
   /*
   * spot size
   */
-   public void set_spot_size(float x, float y) {
+   public void set_spot_diam(float x, float y) {
     for(int i = 0 ; i < spot_list.size() ; i++) {
-      set_spot_size(x,y,i);  
+      set_spot_diam(x,y,i);  
     }
   }
 
-  public void set_spot_size(Vec2 size) {
+  public void set_spot_diam(Vec2 size) {
     for(int i = 0 ; i <spot_list.size() ; i++) {
-      set_spot_size(size.x,size.y,i);
+      set_spot_diam(size.x,size.y,i);
     }
   }
 
-  public void set_spot_size(float x, float y, int which_one) {
-    set_spot_size(Vec2(x,y),which_one);  
+  public void set_spot_diam(float x, float y, int which_one) {
+    set_spot_diam(Vec2(x,y),which_one);  
   }
   /*
   * main method set size
   */
-  public void set_spot_size(Vec2 size, int which_one) {
+  public void set_spot_diam(Vec2 size, int which_one) {
     Vec2 final_size = size.copy();
     if(which_one < spot_list.size()) {
       Spot spot = spot_list.get(which_one);
       spot.set_size(final_size);
     } else {
-      System.err.println("void set_spot_size(): No Spot match with your target, you must add new spot in the list before set it");
+      System.err.println("void set_spot_diam(): No Spot match with your target, you must add new spot in the list before set it");
     }  
   }
 

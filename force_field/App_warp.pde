@@ -67,9 +67,6 @@ void warp_init(int type_field, int size_cell) {
   }
 }
 
-void warp_init_spot(int num) {
-  num_spot_force_field(num); 
-}
 
 
 boolean init_video_is = false ;

@@ -7,6 +7,21 @@ void set_size(int w, int h) {
   }
 }
 
+/**
+leap motion
+*/
+FingerLeap finger ;
+
+void leap_setup() {
+  finger = new FingerLeap() ;
+}
+
+void leap_update() {
+  finger.update();
+
+}
+
+
 
 
 

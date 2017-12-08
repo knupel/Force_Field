@@ -101,13 +101,13 @@ void set_spot_pos(int x, int y, int which_one);
 
 set spot size
 --
-void set_spot_size(iVec size);
+void set_spot_diam(iVec size);
 
-void set_spot_size(iVec size, int which_one);
+void set_spot_diam(iVec size, int which_one);
 
-void set_spot_size(int x, int y);
+void set_spot_diam(int x, int y);
 
-void set_spot_size(nt x, int y, int which_one);
+void set_spot_diam(nt x, int y, int which_one);
 
 
 set calm down

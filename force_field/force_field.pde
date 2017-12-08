@@ -32,7 +32,7 @@ void settings() {
 
   size_cell = 10;
 type_field = r.FLUID;
-  // type_field = r.GRAVITY; /* you can also use HOLE constant */
+//   type_field = r.GRAVITY; /* you can also use HOLE constant */
 // type_field = r.MAGNETIC;
  // type_field = r.PERLIN;
 // type_field = r.CHAOS;
@@ -52,6 +52,7 @@ void setup() {
   // noCursor();
   // warp_instruction();
   interface_setup();
+  leap_setup();
 
   /**
   force field setting
@@ -91,13 +92,24 @@ DRAW
 void draw() {
   // println("library", warp.library_size());
   cursor(CROSS);
+  leap_update();
   /*
   interface
   */
   if(!pause_is && !interface_is()) {
-    force_field_spot_condition();
-    force_field_spot_coord();
-    
+    // force_field_spot_condition();
+    force_field_spot_condition_leapmotion();
+    // force_field_spot_coord();
+    force_field_spot_coord_leapmotion();
+    if(get_type_ff() == r.FLUID) {
+      //
+    } else if(get_type_ff() == r.MAGNETIC) {
+      force_field_spot_diam();
+      force_field_spot_tesla();
+    } else if(get_type_ff() == r.GRAVITY) {
+      force_field_spot_diam();
+      force_field_spot_mass();
+    }   
     update_force_field(); 
   }
 
@@ -105,8 +117,7 @@ void draw() {
   warp
   */
   warp_init(type_field, size_cell);
-  warp_init_spot(4);
-  // video_draw();
+  num_spot_force_field(4); 
   warp_draw(tempo_display, rgba_channel);
    
    /**
@@ -128,55 +139,98 @@ END DRAW
 */
 
 
+
+
+Vec2 [] pos_finger ;
+void force_field_spot_coord_leapmotion() {
+  // init var
+  if(pos_finger == null && get_spot_num_ff() > 0) {
+    pos_finger = new Vec2[get_spot_num_ff()];
+    for(int i = 0 ; i < pos_finger.length ; i++) {
+      pos_finger[i] = Vec2(width/2,height/2);
+    }
+  }
+
+  if(finger.is() && pos_finger != null) {
+    for(int i = 0 ; i < finger.get_num() && i < get_spot_num_ff() ; i++) {
+      if(finger.visible()[i]) {
+        float x = finger.get_pos()[i].x;
+        float y = finger.get_pos()[i].y;
+        y = map(y,0,1,1,0);
+        pos_finger[i] = Vec2(x,y);
+        pos_finger[i].mult(width,height);
+      }
+    }
+    update_spot_ff_coord(pos_finger);
+  }
+}
+
+
+void force_field_spot_condition_leapmotion() {
+  if(get_spot_num_ff() > 0) {
+    boolean [] bool = new boolean[get_spot_num_ff()];
+    for(int i = 0 ; i < bool.length ; i++) {
+      bool[i] = false ;
+    }
+    // if(mousePressed && mouseButton == LEFT) bool_1 = true ;
+    // if(mousePressed && mouseButton == RIGHT) bool_2 = true ;
+    if(finger.is()) {
+      for(int i = 0 ; i < finger.get_num() && i < get_spot_num_ff() ; i++) {
+        if(finger.visible()[i]) bool[i] = true ; else bool[i] = false ;
+      }
+    }
+    update_spot_ff_is(bool);
+  }
+}
+
 void force_field_spot_coord() {
   Vec2 pos_1 = Vec2(mouseX,mouseY);
   Vec2 pos_2 = Vec2(width -mouseX, height -mouseY);
   Vec2 pos_3 = Vec2(mouseX, height -mouseY);
   Vec2 pos_4 = Vec2(width -mouseX, mouseY);
-  update_force_field_spot_coord(pos_1,pos_2,pos_3,pos_4);
+  update_spot_ff_coord(pos_1,pos_2,pos_3,pos_4);
 }
 
-
 void force_field_spot_condition() {
-  boolean bool_1 = false ;
-  boolean bool_2 = false ;
-  boolean bool_3 = false ;
-  boolean bool_4 = false ;
-  boolean bool_5 = false ;
+  boolean [] bool = new boolean[get_spot_num_ff()];
+  for(int i = 0 ; i < bool.length ; i++) {
+    bool[i] = false ;
+  }
   // if(mousePressed && mouseButton == LEFT) bool_1 = true ;
   // if(mousePressed && mouseButton == RIGHT) bool_2 = true ;
   if(mousePressed) {
-    bool_1 = true ;
-    bool_2 = true ;
-    bool_3 = true ;
-    bool_4 = true ;
+    for(int i = 0 ; i < bool.length ; i++) {
+      bool[i] = false ;
+    }
   }
-  update_force_field_spot_is(bool_1, bool_2, bool_3, bool_4);
+  update_spot_ff_is(bool);
 }
 
 
-void force_field_spot_radius() {
-  int rad_1 = 30;
-  int rad_2 = 30;
-  int rad_3 = 30;
-  int rad_4 = 30;
-  update_force_field_spot_radius(rad_1,rad_2,rad_3,rad_4);
+void force_field_spot_diam() {
+  int size = get_resultion_ff()/2 ;
+  int rad_1 = size;
+  int rad_2 = size;
+  int rad_3 = size;
+  int rad_4 = size;
+  update_spot_ff_diam(rad_1,rad_2,rad_3,rad_4);
 }
 
 void force_field_spot_tesla() {
-  int tsl_1 = 30;
-  int tsl_2 = -30;
-  int tsl_3 = 30;
-  int tsl_4 = -30;
-  update_force_field_spot_tesla(tsl_1,tsl_2,tsl_3,tsl_4);
+  int tesla = 10 ;
+  int tsl_1 = tesla;
+  int tsl_2 = -tesla;
+  int tsl_3 = tesla;
+  int tsl_4 = -tesla;
+  update_spot_ff_tesla(tsl_1,tsl_2,tsl_3,tsl_4);
 }
 
 void force_field_spot_mass() {
   int m_1 = 30;
-  int m_2 = 30;
+  int m_2 = 100;
   int m_3 = 30;
-  int m_4 = 30;
-  update_force_field_spot_mass(m_1,m_2,m_3,m_4);
+  int m_4 = 10;
+  update_spot_ff_mass(m_1,m_2,m_3,m_4);
 }
 
 

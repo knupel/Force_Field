@@ -132,132 +132,6 @@ void build_force_field_magnetic(int resolution, iVec2 canvas_pos, iVec2 canvas) 
 UPDATE
 v 0.1.0
 */
-/**
-spot manager
-position 
-condition 
-tesla
-size
-*/
-ArrayList<Vec2> spot_list_coord;
-void update_force_field_spot_coord(Vec2... spot_xy) {
-  if(spot_list_coord == null) {
-    spot_list_coord = new ArrayList<Vec2>();
-    for(int i = 0 ; i < spot_xy.length ; i++) {
-      Vec2 coord = spot_xy[i] ;
-      spot_list_coord.add(coord);
-    }
-  } else {
-    if(spot_list_coord.size() < spot_xy.length) {
-      for(int i = spot_xy.length - spot_list_coord.size() ; i < spot_xy.length ; i++) {
-        Vec2 coord = spot_xy[i] ;
-        spot_list_coord.add(coord);
-      }
-    } else {
-      for(int i = 0 ; i < spot_xy.length ; i++) {
-        spot_list_coord.get(i).set(spot_xy[i]);
-      }
-    }
-  }
-}
-
-
-ArrayList<Boolean> spot_list_is;
-void update_force_field_spot_is(boolean... spot_is) {
-  if(spot_list_is == null) {
-    spot_list_is = new ArrayList<Boolean>();
-    for(int i = 0 ; i < spot_is.length ; i++) {
-      boolean bool_is = spot_is[i] ;
-      spot_list_is.add(bool_is);
-    }
-  } else {
-    if(spot_list_is.size() < spot_is.length) {
-      for(int i = spot_is.length - spot_list_is.size() ; i < spot_is.length ; i++) {
-        boolean bool_is = spot_is[i] ;
-        spot_list_is.add(bool_is);
-      }
-    } else {
-      for(int i = 0 ; i < spot_is.length ; i++) {
-        spot_list_is.set(i,spot_is[i]);
-      }
-    }
-  }
-}
-
-ArrayList<Integer> spot_list_tesla;
-void update_force_field_spot_tesla(int... tesla) {
-  if(spot_list_tesla == null) {
-    spot_list_tesla = new ArrayList<Integer>();
-    for(int i = 0 ; i < tesla.length ; i++) {
-      int t = tesla[i] ;
-      spot_list_tesla.add(t);
-    }
-  } else {
-    if(spot_list_tesla.size() < tesla.length) {
-      for(int i = tesla.length - spot_list_tesla.size() ; i < tesla.length ; i++) {
-        int t = tesla[i] ;
-        spot_list_tesla.add(t);
-      }
-    } else {
-      for(int i = 0 ; i < tesla.length ; i++) {
-        spot_list_tesla.set(i,tesla[i]);
-      }
-    }
-  }
-}
-
-ArrayList<Integer> spot_list_radius;
-void update_force_field_spot_radius(int... radius) {
-  if(spot_list_radius == null) {
-    spot_list_radius = new ArrayList<Integer>();
-    for(int i = 0 ; i < radius.length ; i++) {
-      int rad = radius[i] ;
-      spot_list_radius.add(rad);
-    }
-  } else {
-    if(spot_list_radius.size() < radius.length) {
-      for(int i = radius.length - spot_list_radius.size() ; i < radius.length ; i++) {
-        int rad = radius[i] ;
-        spot_list_radius.add(rad);
-      }
-    } else {
-      for(int i = 0 ; i < radius.length ; i++) {
-        spot_list_radius.set(i,radius[i]);
-      }
-    }
-  }
-}
-
-
-ArrayList<Integer> spot_list_mass;
-void update_force_field_spot_mass(int... mass) {
-  if(spot_list_mass == null) {
-    spot_list_mass = new ArrayList<Integer>();
-    for(int i = 0 ; i < mass.length ; i++) {
-      int m = mass[i] ;
-      spot_list_mass.add(m);
-    }
-  } else {
-    if(spot_list_mass.size() < mass.length) {
-      for(int i = mass.length - spot_list_mass.size() ; i < mass.length ; i++) {
-        int m = mass[i] ;
-        spot_list_mass.add(m);
-      }
-    } else {
-      for(int i = 0 ; i < mass.length ; i++) {
-        spot_list_mass.set(i,mass[i]);
-      }
-    }
-  }
-}
-
-
-
-
-
-
-
-
 void update_force_field() {
   /**
   WHAT IS IT ??????
@@ -269,10 +143,10 @@ void update_force_field() {
   
   // update spot if there is no coord in the list
   if(spot_list_coord == null) {
-    update_force_field_spot_coord(Vec2(width/2,height/2));
+    update_spot_ff_coord(Vec2(width/2,height/2));
   }
   if(spot_list_is == null) { 
-    update_force_field_spot_is(true);
+    update_spot_ff_is(true);
   }
 
 
@@ -314,7 +188,6 @@ void update_field() {
 FLUID CASE
 */
 void update_ff_fluid() {
-
   force_field.set_frequence(2/frameRate);
   force_field.set_viscosity(.001); // back to normal
   force_field.set_diffusion(1.);
@@ -324,6 +197,7 @@ void update_ff_fluid() {
       if(spot_list_is.get(i)) {
         force_field.set_spot_pos(spot_list_coord.get(i),i);
       } else {
+        // this two lines are specifics to fluid system
         force_field.ref_spot(i);
         force_field.set_spot_pos(spot_list_coord.get(i),i);
       }
@@ -342,38 +216,20 @@ void update_ff_fluid() {
 /**
 MAGNETIC CASE
 */
-Vec2 pole_pos_A, pole_pos_B ;
 void update_ff_magnetic() {
-  if(pole_pos_A == null) pole_pos_A = Vec2(random(width),random(height));
-  if(pole_pos_B == null) pole_pos_B = Vec2(random(width),random(height));
-  // Vec2 target = Vec2(mouseX,mouseY);
-  
-  if(mousePressed && mouseButton == LEFT) pole_pos_A.set(mouseX,mouseY);
-  if(mousePressed && mouseButton == RIGHT) pole_pos_B.set(mouseX,mouseY);
-   
-  /*
-  Vec2 pole_pos_A = Vec2(width/2,height/3);
-  Vec2 pole_pos_B = Vec2(width/2,height -(height/3));
-  */
+  for(int i = 0 ; i < force_field.spot_list.size() && i < spot_list_coord.size() ; i++) {
+    force_field.set_spot_tesla(spot_list_tesla.get(i),i);
+    force_field.set_spot_diam(spot_list_diam.get(i),i);
 
-  int max = force_field.get_resolution() /2;
-  Vec2 size = Vec2(max);
-
- 
-  // int charge = (int)abs((sin(frameCount *.0001)*MAX_INT));
-  int charge = 10;
-  force_field.set_spot_tesla(charge,0);
-  force_field.set_spot_tesla(-charge,1);
-   
-  force_field.set_spot_size(size,0);
-  force_field.set_spot_size(size,1);
-
-  force_field.set_spot_pos(pole_pos_A,0);
-  force_field.set_spot_pos(pole_pos_B,1);
-
-  // force_field.change_dir() ;
+    if(i < spot_list_is.size()) {
+      if(spot_list_is.get(i)) {
+        force_field.set_spot_pos(spot_list_coord.get(i),i);
+      } 
+    } else {
+      force_field.set_spot_pos(spot_list_coord.get(i),i);
+    }
+  }
   force_field.update();
-
 }
 
 
@@ -390,6 +246,27 @@ void update_ff_magnetic() {
 /**
 GRAVITY CASE
 */
+void update_ff_gravity() {
+  force_field.set_calm(.5);
+
+  for(int i = 0 ; i < force_field.spot_list.size() && i < spot_list_coord.size() ; i++) {
+    force_field.set_spot_mass(spot_list_mass.get(i),i);
+    force_field.set_spot_diam(spot_list_diam.get(i),i);
+
+    if(i < spot_list_is.size()) {
+      if(spot_list_is.get(i)) {
+        force_field.set_spot_pos(spot_list_coord.get(i),i);
+      } 
+    } else {
+      force_field.set_spot_pos(spot_list_coord.get(i),i);
+    }
+  }
+  force_field.update();
+}
+
+
+
+/*
 Vec2 pole_pos_C ;
 void update_ff_gravity() {
   Vec2 target = Vec2(mouseX,mouseY);
@@ -407,19 +284,6 @@ void update_ff_gravity() {
     pole_pos_C.set(Vec2(r.RANDOM_ZERO,width,height));
   }
 
-  /*
-  Vec2 pole_pos_A = Vec2(width/2,height/3);
-  Vec2 pole_pos_B = Vec2(width/2,height -(height/3));
-  */
-
-  /*
-  int min = 2 ;
-  int max = force_field.get_resolution();
-  float s_x = random(min,max);
-  float s_y = random(min,max);
-  Vec2 size = Vec2(s_x,s_y);
-  */
-
   Vec2 size = Vec2(10);
 
   force_field.set_calm(.5);
@@ -428,9 +292,9 @@ void update_ff_gravity() {
   force_field.set_spot_pos(pole_pos_B, 1) ;
   force_field.set_spot_pos(pole_pos_C, 2) ;
 
-  force_field.set_spot_size(size, 0);
-  force_field.set_spot_size(size, 1);
-  force_field.set_spot_size(size, 2);
+  force_field.set_spot_diam(size, 0);
+  force_field.set_spot_diam(size, 1);
+  force_field.set_spot_diam(size, 2);
    
   // int diam = abs(int(height *sin(frameCount *.001)))/2;
   int mass_1 = 50 ;
@@ -442,6 +306,145 @@ void update_ff_gravity() {
 
   force_field.update() ;
 }
+*/
+
+
+/**
+Update spot
+--
+spot manager
+position 
+condition 
+tesla
+size
+*/
+ArrayList<Vec2> spot_list_coord;
+void update_spot_ff_coord(Vec2... spot_xy) {
+  if(spot_list_coord == null) {
+    spot_list_coord = new ArrayList<Vec2>();
+    for(int i = 0 ; i < spot_xy.length ; i++) {
+      Vec2 coord = spot_xy[i] ;
+      spot_list_coord.add(coord);
+    }
+  } else {
+    if(spot_list_coord.size() < spot_xy.length) {
+      for(int i = spot_xy.length - spot_list_coord.size() ; i < spot_xy.length ; i++) {
+        Vec2 coord = spot_xy[i] ;
+        spot_list_coord.add(coord);
+      }
+    } else {
+      for(int i = 0 ; i < spot_xy.length ; i++) {
+        if(spot_list_coord.get(i) != null) spot_list_coord.get(i).set(spot_xy[i]);
+      }
+    }
+  }
+}
+
+
+ArrayList<Boolean> spot_list_is;
+void update_spot_ff_is(boolean... spot_is) {
+  if(spot_list_is == null) {
+    spot_list_is = new ArrayList<Boolean>();
+    for(int i = 0 ; i < spot_is.length ; i++) {
+      boolean bool_is = spot_is[i] ;
+      spot_list_is.add(bool_is);
+    }
+  } else {
+    if(spot_list_is.size() < spot_is.length) {
+      for(int i = spot_is.length - spot_list_is.size() ; i < spot_is.length ; i++) {
+        boolean bool_is = spot_is[i] ;
+        spot_list_is.add(bool_is);
+      }
+    } else {
+      for(int i = 0 ; i < spot_is.length ; i++) {
+        spot_list_is.set(i,spot_is[i]);
+      }
+    }
+  }
+}
+
+ArrayList<Integer> spot_list_tesla;
+void update_spot_ff_tesla(int... tesla) {
+  if(spot_list_tesla == null) {
+    spot_list_tesla = new ArrayList<Integer>();
+    for(int i = 0 ; i < tesla.length ; i++) {
+      int t = tesla[i] ;
+      spot_list_tesla.add(t);
+    }
+  } else {
+    if(spot_list_tesla.size() < tesla.length) {
+      for(int i = tesla.length - spot_list_tesla.size() ; i < tesla.length ; i++) {
+        int t = tesla[i] ;
+        spot_list_tesla.add(t);
+      }
+    } else {
+      for(int i = 0 ; i < tesla.length ; i++) {
+        spot_list_tesla.set(i,tesla[i]);
+      }
+    }
+  }
+}
+
+ArrayList<Integer> spot_list_diam;
+void update_spot_ff_diam(int... diam) {
+  if(spot_list_diam == null) {
+    spot_list_diam = new ArrayList<Integer>();
+    for(int i = 0 ; i < diam.length ; i++) {
+      int d = diam[i] ;
+      spot_list_diam.add(d);
+    }
+  } else {
+    if(spot_list_diam.size() < diam.length) {
+      for(int i = diam.length - spot_list_diam.size() ; i < diam.length ; i++) {
+        int d = diam[i] ;
+        spot_list_diam.add(d);
+      }
+    } else {
+      for(int i = 0 ; i < diam.length ; i++) {
+        spot_list_diam.set(i,diam[i]);
+      }
+    }
+  }
+}
+
+
+ArrayList<Integer> spot_list_mass;
+void update_spot_ff_mass(int... mass) {
+  if(spot_list_mass == null) {
+    spot_list_mass = new ArrayList<Integer>();
+    for(int i = 0 ; i < mass.length ; i++) {
+      int m = mass[i] ;
+      spot_list_mass.add(m);
+    }
+  } else {
+    if(spot_list_mass.size() < mass.length) {
+      for(int i = mass.length - spot_list_mass.size() ; i < mass.length ; i++) {
+        int m = mass[i] ;
+        spot_list_mass.add(m);
+      }
+    } else {
+      for(int i = 0 ; i < mass.length ; i++) {
+        spot_list_mass.set(i,mass[i]);
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -451,15 +454,27 @@ void update_ff_gravity() {
 
 
 /**
-
-RESET
-
+get
 */
-/*
-void reset_force_field() {
-  force_field.reset() ;
+
+int get_type_ff() {
+  if(force_field != null ) {
+    return force_field.get_type();
+  } else return -1;
 }
-*/
+
+int get_resultion_ff() {
+  if(force_field != null ) {
+    return force_field.get_resolution();
+  } else return -1;
+}
+
+int get_spot_num_ff() {
+  if(force_field != null) {
+    return force_field.get_spot_num();
+  } else return -1;
+}
+
 
 
 
