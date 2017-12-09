@@ -57,9 +57,9 @@ void warp_change_media_folder() {
 /**
  init for media or camera
  */
-void warp_init(int type_field, int size_cell) {
+void warp_init(int type_field, int size_cell, boolean change_size_is) {
   if((folder_selected_is() || !init_warp_is) && !video_warp_is() ) {
-    warp_init_media(type_field, size_cell);
+    warp_init_media(type_field, size_cell, change_size_is);
   } else if(video_warp_is()) {
     warp_init_video(type_field, size_cell);
   } else if(!warp_media_is()){
@@ -82,11 +82,25 @@ void warp_init_video(int type_field, int size_cell) {
 }
 
 
-void warp_init_media(int type_field, int size_cell) {
+void warp_init_media(int type_field, int size_cell, boolean change_size_is) {
   if(folder_selected_is()) {
     movie_warp_is(false);
     add_g_surface();
     load_medias(true, "jpg", "JPG", "mp4", "avi", "mov");   
+    if(!change_size_is) {
+      /**
+      resize and cut the image to the window, to have all image to the same with and height
+
+
+
+
+      not just a fit
+
+      see the problem on the tab Z_warp
+      line 203
+      */
+      warp.image_library_fit(g);
+    }
   }
   
   // pg = createGraphics(width,height,P2D);
@@ -101,11 +115,14 @@ void warp_init_media(int type_field, int size_cell) {
     ref_warp_h = warp.get_height(); 
   }
 
-  if(width != ref_warp_w || height != ref_warp_h) {
+  if(change_size_is && (width != ref_warp_w || height != ref_warp_h)) {
     println("warp init media");
     init_warp_is = true ;
     set_size(ref_warp_w,ref_warp_h);
     warp.reset(); 
+    build_ff(type_field,size_cell, warp.get_image());
+  } else if(!change_size_is && !build_ff_is()) {
+    println("warp init classic");
     build_ff(type_field,size_cell, warp.get_image());
   }
 }
@@ -134,6 +151,9 @@ void add_g_surface() {
 /**
 warp draw
 */
+/*
+main method
+*/
 void warp_draw(int tempo, Vec4 channel_rgba) {
   if(warp_media_is()) {
     if(frameCount%tempo == 0 ) warp_media_display();
@@ -160,7 +180,9 @@ void warp_draw(int tempo, Vec4 channel_rgba) {
   // end of security loaded media 
 }
 
-
+/*
+follower method
+*/
 void warp_media_display() {
   if (video_warp_is()) {
     movie_warp_is(false);

@@ -1,11 +1,16 @@
-// misc
-boolean change_size_is = true ;
+/**
+change size window
+*/
 void set_size(int w, int h) {
-  if(change_size_is || width != w || height != h) {
+  if(change_size_window_is && (width != w || height != h)) {
     surface.setSize(w,h);
-    change_size_is = false ;
   }
 }
+
+
+
+
+
 
 /**
 leap motion

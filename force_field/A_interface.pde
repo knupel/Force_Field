@@ -44,15 +44,15 @@ void slider_main(int space, int max, int sw, int start_pos) {
 	cp_main = new ControlP5(this);
 
 	rgba_channel = Vec4(1);
-	red_channel = .0;
-	green_channel = .5;
+	red_channel = .9;
+	green_channel = .9;
 	blue_channel = .9;
 
 	red_cycling = 0;
 	green_cycling = 0;
 	blue_cycling = 0;
 
-	power_channel = .6;
+	power_channel = .3;
 
 	cp_main.addSlider("red_channel").setPosition(10,space *(start_pos+1)).setWidth(sw).setRange(0,max);
 	cp_main.addSlider("green_channel").setPosition(10,space*(start_pos+3)).setWidth(sw).setRange(0,max);
@@ -71,9 +71,9 @@ void slider_main(int space, int max, int sw, int start_pos) {
 
 void slider_fluid(int space, int max, int sw, int start_pos) {
 	cp_fluid = new ControlP5(this);
-	frequence = .1;
-	viscosity = .1;
-	diffusion = .1;
+	frequence = .3;
+	viscosity = .3;
+	diffusion = .3;
 	cp_fluid.addSlider("frequence").setPosition(10,space*start_pos).setWidth(sw).setRange(0,max);
   cp_fluid.addSlider("viscosity").setPosition(10,space*(start_pos+2)).setWidth(sw).setRange(0,max);
   cp_fluid.addSlider("diffusion").setPosition(10,space*(start_pos+4)).setWidth(sw).setRange(0,max);

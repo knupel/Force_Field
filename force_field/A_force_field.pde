@@ -126,6 +126,13 @@ void build_ff_magnetic(int resolution, iVec2 canvas_pos, iVec2 canvas) {
 }
 
 
+boolean build_ff_is() {
+  if(force_field != null) {
+    return force_field.is() ;
+  } else return false;
+}
+
+
 
 
 
@@ -318,22 +325,17 @@ void update_ff_gravity() {
 /**
 update value
 */
-void update_value_ff_fluid(float freq, float visc, float diff) {
-    /*
-  force_field.set_frequence(2/frameRate);
-  force_field.set_viscosity(.001); // back to normal
-  force_field.set_diffusion(1.);
-  */
+void update_value_ff_fluid(float freq_norm, float visc_norm, float diff_norm) {
+  freq_ff = freq_norm *.05 ;
+  visc_ff = visc_norm *visc_norm *visc_norm *visc_norm;
+  // diff_ff = diff_norm *10.;
+  diff_ff = diff_norm;
 
-  freq_ff = freq *.05 ;
-  visc_ff = visc *visc *visc *visc;
-  // diff_ff = diff *10.;
-  diff_ff = diff;
-
-  
+  /*
   println("freq", freq_ff);
   println("visc", visc_ff);
   println("diff", diff_ff);
+  */
   
 /*
     freq_ff = 2/frameRate;

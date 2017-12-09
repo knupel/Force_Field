@@ -16,23 +16,31 @@ Via Reynolds: http://www.red3d.com/cwr/steer/FlowFollow.html
 Stable fluids from Jos Stam's work on the Navier-Stokes equation
 */
 boolean pause_is ;
-boolean use_leapmotion = false ;
+boolean use_leapmotion = false;
+
+boolean fullScreen_is = false;
+boolean change_size_window_is = false;
 
 PGraphics pg ;
 
 int size_cell ;
 int type_field;
 
-
-
 // Using this variable to decide whether to draw all the stuff
 void settings() {
-  size(640,480,P2D);
-  // fullScreen(P2D, 1) ;
-  init_rope();
-
+  if(fullScreen_is) {
+    fullScreen(P2D) ;   
+  } else {
+    size(640,480,P2D);
+  }
+  // fullScreen(P2D, 1) ;  
+  // init_rope();
   size_cell = 10;
-type_field = r.FLUID;
+  if(fullScreen_is) {
+    size_cell *= 2;
+  }
+  type_field = r.FLUID;
+
 //   type_field = r.GRAVITY; /* you can also use HOLE constant */
 //type_field = r.MAGNETIC;
  // type_field = r.PERLIN;
@@ -134,7 +142,7 @@ void draw() {
   /*
   warp
   */
-  warp_init(type_field, size_cell);
+  warp_init(type_field, size_cell, change_size_window_is);
   num_spot_ff(4); 
   warp_draw(tempo_display, rgba_channel);
    

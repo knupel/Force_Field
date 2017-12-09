@@ -67,6 +67,9 @@ public class Force_field implements Rope_Constants {
   private float sum_activities ;
 
 
+  boolean is ;
+
+
 
   
 
@@ -83,6 +86,7 @@ public class Force_field implements Rope_Constants {
   public Force_field(int resolution, iVec2 canvas_pos, iVec2 canvas, int type) {
     this.resolution = resolution;
     this.type = type ;
+    this.is = true ;
     set_canvas(iVec2(resolution/2 +canvas_pos.x, resolution/2 +canvas_pos.y), iVec2(canvas.x,canvas.y));
     cols = NX = canvas.x/resolution;
     rows = NY = canvas.y/resolution +1;
@@ -114,6 +118,7 @@ public class Force_field implements Rope_Constants {
   public Force_field(int resolution, iVec2 canvas_pos, PImage img, int component_sorting) {
     this.resolution = resolution;
     this.type = IMAGE ;
+    this.is = true ;
     // Determine the number of columns and rows based on sketch's width and height
     set_canvas(iVec2(resolution/2 +canvas_pos.x, resolution/2 +canvas_pos.y), iVec2(img.width,img.height));
     cols = canvas.x/resolution;
@@ -920,6 +925,18 @@ public class Force_field implements Rope_Constants {
   public int get_type() {
     return type;
   }
+
+  /**
+  is 
+  */
+    /**
+  * return is the force field are build or not
+  * @return boolean
+  */
+  public boolean is() {
+    return is;
+  }
+
 
 
 

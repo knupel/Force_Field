@@ -3,198 +3,11 @@ ROPE - Romanesco processing environment –
 * Copyleft (c) 2014-2017 
 * Stan le Punk > http://stanlepunk.xyz/
 Rope UTILS  2015 – 2017
-v 1.35.0
+v 1.36.0
 Rope – Romanesco Processing Environment – 
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Rope
 */
-
-
-/**
-PImage manager library
-v 0.4.0
-*/
-class ROPImage_Manager {
-  ArrayList<ROPImage> library ;
-  int which_img;
-
-  private void build() {
-    if(library == null) {
-      library = new ArrayList<ROPImage>();
-    }
-  }
-
-  public void load(String... path_img) {
-    build();
-    for(int i = 0 ; i <path_img.length ; i++) {
-      //Image img = loadImage(img_src[i]);
-      ROPImage rop_img = new ROPImage(path_img[i]);
-      //println(img.width, img_src[i]);
-      library.add(rop_img);
-    }  
-  }
-
-  public void add(PImage img_src) {
-    build();
-    ROPImage rop_img = new ROPImage(img_src);
-    library.add(rop_img);
-  }
-
-  public void add(PImage img_src, String name) {
-    build();
-    ROPImage rop_img = new ROPImage(img_src, name);
-    library.add(rop_img);
-  }
-
-  public void clear() {
-    if(library != null) {
-      library.clear();
-    }
-  }
-
-  public ArrayList<ROPImage> list() {
-    return library;
-  }
-
-  public void select(int which_one) {
-    which_img = which_one ;
-  }
-
-  public void select(String target_name) {
-    if(library.size() > 0) {
-      for(int i = 0 ; i < library.size() ; i++) {
-        if(target_name.equals(library.get(i).name)) {
-          which_img = i ;
-          break ;
-        }
-      }
-    } else {
-      printErr("the String target name don't match with any name of image library") ;
-    }
-  }
-
-
-  public int size() {
-    if(library != null) {
-      return library.size() ;
-    } else return -1 ;  
-  }
-
-  public void set(PImage src_img, int target) {
-    build();
-    if(target < library.size()) {
-      if(src_img.width == get(target).width && src_img.height == get(target).height){
-        get(target).pixels = src_img.pixels ;
-        get(target).updatePixels();
-      } else {
-        get(target).resize(src_img.width, src_img.height);
-        get(target).pixels = src_img.pixels ;
-        get(target).updatePixels();
-      }
-    } else {
-      printErr("Neither target image match with your request");
-    }
-  }
-
-  public void set(PImage src_img, String target_name) {
-    build();
-    if(library.size() > 0) {
-      if(src_img.width == get(target_name).width && src_img.height == get(target_name).height){
-        get(target_name).pixels = src_img.pixels ;
-        get(target_name).updatePixels();
-      } else {
-        get(target_name).resize(src_img.width, src_img.height);
-        get(target_name).pixels = src_img.pixels ;
-        get(target_name).updatePixels();
-      }
-    } else {
-      printErr("Neither target image match with your request");
-    }
-  }
-
-  public String get_name(int target) {
-    if(library.size() > 0) {
-      return library.get(target).get_name() ;
-    } else return null ;
-  }
-
-  public int get_rank(String target_name) {
-    if(library.size() > 0) {
-      int rank = 0 ;
-      for(int i = 0 ; i < library.size() ; i++) {
-        String final_name = target_name.split("/")[target_name.split("/").length -1].split("\\.")[0] ;
-        if(final_name.equals(library.get(i).name) ) {
-          rank = i ;
-          break;
-        } 
-      }
-      return rank;
-    } else return -1;
-  }
-
-  public PImage get() {
-    if(library != null && library.size() > 0 ) {
-      if(which_img < library.size()) return library.get(which_img).img; 
-      else return library.get(0).img; 
-    } else return null ;
-  }
-
-  public PImage get(int target){
-    if(target < library.size()) {
-      return library.get(target).img;
-    } else return null;
-  }
-
-  public PImage get(String target_name){
-    if(library.size() > 0) {
-      int target = 0 ;
-      for(int i = 0 ; i < library.size() ; i++) {
-        String final_name = target_name.split("/")[target_name.split("/").length -1].split("\\.")[0] ;
-        if(final_name.equals(library.get(i).name) ) {
-          target = i ;
-          break;
-        } 
-      }
-      return get(target);
-    } else return null;
-  }
-
-
-  // private class
-  private class ROPImage {
-    private PImage img ;
-    private String name = "no name" ;
-
-    private ROPImage(String path) {
-      this.name = path.split("/")[path.split("/").length -1].split("\\.")[0] ;
-      this.img = loadImage(path);
-    }
-
-    private ROPImage(PImage img) {
-      this.img = img;
-    }
-
-    private ROPImage(PImage img, String name) {
-      this.img = img;
-      this.name = name;
-    }
-
-    public String get_name() {
-      return name ;
-    }
-
-    public PImage get_image() {
-      return img ;
-    }
-
-
-  }
-}
-
-
-
-
-
 
 
 
@@ -664,12 +477,217 @@ PImage loadImageBMP(String fileName) {
 
 /**
 ROPE IMAGE
-v 0.3.0
+v 0.4.0
 */
+
+
+/**
+PImage manager library
+v 0.4.0
+*/
+class ROPImage_Manager {
+  ArrayList<ROPImage> library ;
+  int which_img;
+
+  private void build() {
+    if(library == null) {
+      library = new ArrayList<ROPImage>();
+    }
+  }
+
+  public void load(String... path_img) {
+    build();
+    for(int i = 0 ; i <path_img.length ; i++) {
+      //Image img = loadImage(img_src[i]);
+      ROPImage rop_img = new ROPImage(path_img[i]);
+      //println(img.width, img_src[i]);
+      library.add(rop_img);
+    }  
+  }
+
+  public void add(PImage img_src) {
+    build();
+    ROPImage rop_img = new ROPImage(img_src);
+    library.add(rop_img);
+  }
+
+  public void add(PImage img_src, String name) {
+    build();
+    ROPImage rop_img = new ROPImage(img_src, name);
+    library.add(rop_img);
+  }
+
+  public void clear() {
+    if(library != null) {
+      library.clear();
+    }
+  }
+
+  public ArrayList<ROPImage> list() {
+    return library;
+  }
+
+  public void select(int which_one) {
+    which_img = which_one ;
+  }
+
+  public void select(String target_name) {
+    if(library.size() > 0) {
+      for(int i = 0 ; i < library.size() ; i++) {
+        if(target_name.equals(library.get(i).name)) {
+          which_img = i ;
+          break ;
+        }
+      }
+    } else {
+      printErr("the String target name don't match with any name of image library") ;
+    }
+  }
+
+
+  public int size() {
+    if(library != null) {
+      return library.size() ;
+    } else return -1 ;  
+  }
+
+  public void set(PImage src_img, int target) {
+    build();
+    if(target < library.size()) {
+      if(src_img.width == get(target).width && src_img.height == get(target).height){
+        get(target).pixels = src_img.pixels ;
+        get(target).updatePixels();
+      } else {
+        get(target).resize(src_img.width, src_img.height);
+        get(target).pixels = src_img.pixels ;
+        get(target).updatePixels();
+      }
+    } else {
+      printErr("Neither target image match with your request");
+    }
+  }
+
+  public void set(PImage src_img, String target_name) {
+    build();
+    if(library.size() > 0) {
+      if(src_img.width == get(target_name).width && src_img.height == get(target_name).height){
+        get(target_name).pixels = src_img.pixels ;
+        get(target_name).updatePixels();
+      } else {
+        get(target_name).resize(src_img.width, src_img.height);
+        get(target_name).pixels = src_img.pixels ;
+        get(target_name).updatePixels();
+      }
+    } else {
+      printErr("Neither target image match with your request");
+    }
+  }
+
+  public String get_name(int target) {
+    if(library.size() > 0) {
+      return library.get(target).get_name() ;
+    } else return null ;
+  }
+
+  public int get_rank(String target_name) {
+    if(library.size() > 0) {
+      int rank = 0 ;
+      for(int i = 0 ; i < library.size() ; i++) {
+        String final_name = target_name.split("/")[target_name.split("/").length -1].split("\\.")[0] ;
+        if(final_name.equals(library.get(i).name) ) {
+          rank = i ;
+          break;
+        } 
+      }
+      return rank;
+    } else return -1;
+  }
+
+  public PImage get() {
+    if(library != null && library.size() > 0 ) {
+      if(which_img < library.size()) return library.get(which_img).img; 
+      else return library.get(0).img; 
+    } else return null ;
+  }
+
+  public PImage get(int target){
+    if(target < library.size()) {
+      return library.get(target).img;
+    } else return null;
+  }
+
+  public PImage get(String target_name){
+    if(library.size() > 0) {
+      int target = 0 ;
+      for(int i = 0 ; i < library.size() ; i++) {
+        String final_name = target_name.split("/")[target_name.split("/").length -1].split("\\.")[0] ;
+        if(final_name.equals(library.get(i).name) ) {
+          target = i ;
+          break;
+        } 
+      }
+      return get(target);
+    } else return null;
+  }
+
+
+  // private class
+  private class ROPImage {
+    private PImage img ;
+    private String name = "no name" ;
+
+    private ROPImage(String path) {
+      this.name = path.split("/")[path.split("/").length -1].split("\\.")[0] ;
+      this.img = loadImage(path);
+    }
+
+    private ROPImage(PImage img) {
+      this.img = img;
+    }
+
+    private ROPImage(PImage img, String name) {
+      this.img = img;
+      this.name = name;
+    }
+
+    public String get_name() {
+      return name ;
+    }
+
+    public PImage get_image() {
+      return img ;
+    }
+  }
+}
+
+/**
+resize image
+v 0.0.1
+*/
+/**
+* resize your picture proportionaly to the window sketch of the a specificic PGraphics
+*/
+void image_resize(PImage src) {
+  image_resize(src,g);
+}
+
+
+void image_resize(PImage src, PGraphics pg) {
+  float ratio_w = pg.width / (float)src.width;
+  float ratio_h = pg.height / (float)src.height;
+  if(ratio_w > ratio_h) {
+    src.resize(ceil(src.width *ratio_w), ceil(src.height *ratio_w));
+  } else {
+    src.resize(ceil(src.width *ratio_h), ceil(src.height *ratio_h));  
+  }
+}
+
+
+
 
 /**
 IMAGE
-v 0.1.4.0
+v 0.1.5.0
 */
 
 /**
@@ -679,6 +697,29 @@ v 0.1.4.0
 void image(PImage img) {
   if(img != null) image(img, 0, 0);
   else printErr("Object PImage pass to method image() is null");
+}
+
+
+void image(PImage img, int where) {
+  float x = 0 ;
+  float y = 0 ;
+  if(where == CENTER) {
+    x = (width /2.) -(img.width /2.);
+    y = (height /2.) -(img.height /2.);   
+  } else if(where == LEFT) {
+    x = 0;
+    y = (height /2.) -(img.height /2.);
+  } else if(where == RIGHT) {
+    x = width -img.width;
+    y = (height /2.) -(img.height /2.);
+  } else if(where == TOP) {
+    x = (width /2.) -(img.width /2.);
+    y = 0;
+  } else if(where == BOTTOM) {
+    x = (width /2.) -(img.width /2.);
+    y = height -img.height; 
+  }
+  image(img,x,y);
 }
 
 void image(PImage img, float coor) {
