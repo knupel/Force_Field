@@ -153,6 +153,16 @@ class Warp {
     }
   }
 
+  public void image_library_crop(PGraphics pg) {
+    for(int i = 0 ; i < img_manager.size() ;i++) {
+      PImage temp = image_copy_window(img_manager.get(i), CENTER).copy();
+      img_manager.get(i).resize(temp.width,temp.height);
+      temp.loadPixels();
+      img_manager.get(i).pixels = temp.pixels;
+      img_manager.get(i).updatePixels();
+    }
+  }
+
 
 
 

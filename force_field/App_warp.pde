@@ -88,18 +88,8 @@ void warp_init_media(int type_field, int size_cell, boolean change_size_is) {
     add_g_surface();
     load_medias(true, "jpg", "JPG", "mp4", "avi", "mov");   
     if(!change_size_is) {
-      /**
-      resize and cut the image to the window, to have all image to the same with and height
-
-
-
-
-      not just a fit
-
-      see the problem on the tab Z_warp
-      line 203
-      */
       warp.image_library_fit(g);
+      warp.image_library_crop(g);
     }
   }
   

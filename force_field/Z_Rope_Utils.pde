@@ -3,7 +3,7 @@ ROPE - Romanesco processing environment –
 * Copyleft (c) 2014-2017 
 * Stan le Punk > http://stanlepunk.xyz/
 Rope UTILS  2015 – 2017
-v 1.36.0
+v 1.37.0
 Rope – Romanesco Processing Environment – 
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Rope
@@ -477,7 +477,7 @@ PImage loadImageBMP(String fileName) {
 
 /**
 ROPE IMAGE
-v 0.4.0
+v 0.5.0
 */
 
 
@@ -680,6 +680,34 @@ void image_resize(PImage src, PGraphics pg) {
   } else {
     src.resize(ceil(src.width *ratio_h), ceil(src.height *ratio_h));  
   }
+}
+
+/**
+copy window
+v 0.0.1
+*/
+PImage image_copy_window(PImage src, int where) {
+  return image_copy_window(src, g, where);
+}
+
+PImage image_copy_window(PImage src, PGraphics pg, int where) {
+  int x = 0 ;
+  int y = 0 ;
+  if(where == CENTER) {
+    x = (src.width -pg.width) /2 ;
+    y = (src.height -pg.height) /2 ;   
+  } else if(where == LEFT) {
+    y = (src.height -pg.height) /2 ; 
+  } else if(where == RIGHT) { 
+    x = src.width -pg.width ;
+    y = (src.height -pg.height) /2 ;   
+  } else if(where == TOP) {
+    x = (src.width -pg.width) /2 ;   
+  } else if(where == BOTTOM) { 
+    x = (src.width -pg.width) /2 ;
+    y = src.height -pg.height;   
+  }  
+  return src.get(x, y, pg.width, pg.height); 
 }
 
 
