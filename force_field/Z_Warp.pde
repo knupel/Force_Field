@@ -193,12 +193,6 @@ class Warp {
   Follower method
   */
   private void set(PImage target) {
-    /*
-    println("window",width,height);
-    println("target before",target.width,target.height);
-    image_resize(target);
-    println("target after",target.width,target.height);
-    */
     if(get_renderer_name(getGraphics()).equals(P3D) || get_renderer_name(getGraphics()).equals(P2D)) {
       buffer_img = createImage(target.width, target.height, ARGB);
       pg = createGraphics(target.width, target.height, get_renderer_name(getGraphics()));
@@ -211,19 +205,6 @@ class Warp {
 
   private void update(PImage target, Force_field ff, float intensity) {
     PImage inc = target.copy(); 
-    /**
-
-
-    ping pong problem in link with
-    the tab App_warp, when the images library is fit to the window
-    line 102
-
-
-    */
-    println("update target",target.width,target.height);
-    println("update buffer_img",buffer_img.width,buffer_img.height);
-    println("update inc",inc.width,inc.height);
-    println("update pg",pg.width,pg.height);
     rendering(pg, buffer_img, inc, force_field, intensity);   
 
     buffer_img.pixels = buffering(pg).pixels;

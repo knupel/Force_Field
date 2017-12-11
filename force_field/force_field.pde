@@ -26,6 +26,9 @@ PGraphics pg ;
 int size_cell ;
 int type_field;
 
+int which_cam = 0 ; // 0 is the camera fullsize / max frameRate by default if there is camera plug is the external cam is catch
+
+
 // Using this variable to decide whether to draw all the stuff
 void settings() {
   if(fullScreen_is) {
@@ -142,7 +145,7 @@ void draw() {
   /*
   warp
   */
-  warp_init(type_field, size_cell, change_size_window_is);
+  warp_init(type_field, size_cell, which_cam, change_size_window_is);
   num_spot_ff(4); 
   warp_draw(tempo_display, rgba_channel);
    

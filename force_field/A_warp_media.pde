@@ -57,16 +57,29 @@ void load_movie(String movie_path) {
   }
 }
 
+float ratio_display_video = 1. ;
+void warp_video_window(PGraphics pg) {
+  if(get_movie_warp(which_movie) != null) ratio_display_video = pg.width / (float)get_movie_warp(which_movie).width ;
+}
 
 int ref_movie ;
-void display_movie() {
+void display_movie(PGraphics pg) {
   if(movie_warp_list != null && get_movie_warp(which_movie) != null) {
     if(ref_movie != which_movie) {
       get_movie_warp(which_movie).stop();
     }
     ref_movie = which_movie ;
     get_movie_warp(which_movie).loop();
-    image(get_movie_warp(which_movie),0,0);
+    //println(ratio_display_video);
+    if(ratio_display_video != 1.) {
+      int w = ceil(get_movie_warp(which_movie).width *ratio_display_video);
+      int h = ceil(get_movie_warp(which_movie).height *ratio_display_video);
+      float y = (pg.height /2 )- (h/2);
+      background(0);
+      image(get_movie_warp(which_movie),0,y,w,h);
+    } else {
+      image(get_movie_warp(which_movie),0,0);
+    }   
   } 
 }
 
@@ -142,9 +155,10 @@ video
 Capture video;
 iVec2 video_size ;
 
-void init_video(int w, int h) {
+void init_video(int w, int h, int which_cam) {
   if(video == null ) {
-    video = new Capture(this,Capture.list()[0]);
+    printArray(Capture.list());
+    video = new Capture(this,Capture.list()[which_cam]);
     video_size = iVec2(width,height);
   } 
 }
