@@ -18,12 +18,12 @@ Stable fluids from Jos Stam's work on the Navier-Stokes equation
 boolean pause_is ;
 boolean use_leapmotion = true;
 
-boolean fullScreen_is = true;
+boolean fullScreen_is = false;
 boolean change_size_window_is = false;
 
 PGraphics pg ;
 
-int size_cell ;
+
 int type_field;
 
 int which_cam = 0 ; // 0 is the camera fullsize / max frameRate by default if there is camera plug is the external cam is catch
@@ -36,12 +36,8 @@ void settings() {
   } else {
     size(640,480,P2D);
   }
-  // fullScreen(P2D, 1) ;  
-  // init_rope();
-  size_cell = 10;
-  if(fullScreen_is) {
-    size_cell *= 2;
-  }
+  set_cell_grid_ff(10);
+
   type_field = r.FLUID;
 
 //   type_field = r.GRAVITY; /* you can also use HOLE constant */
@@ -55,13 +51,15 @@ void settings() {
 
 
 
+
+
 /**
 SETUP
 
 */
 void setup() {
   background(0);
-  // noCursor();
+  noCursor();
   // warp_instruction();
 
   if(use_leapmotion) leap_setup();
@@ -103,7 +101,7 @@ DRAW
 
 */
 void draw() {
-  cursor(CROSS);
+  // cursor(CROSS);
   if(use_leapmotion) leap_update();
 
   /*
@@ -145,7 +143,10 @@ void draw() {
   /*
   warp
   */
-  warp_init(type_field, size_cell, which_cam, change_size_window_is);
+  warp_init(type_field, get_size_cell_ff(), which_cam, change_size_window_is);
+  // println(ff_is());
+
+
   num_spot_ff(4); 
   warp_draw(tempo_display, rgba_channel);
    
@@ -163,6 +164,11 @@ void draw() {
 
   interface_value();
   interface_display(Vec2(0), Vec2(200,height));
+    if(!ff_is()) {
+    println("new force field grid");
+    init_ff(get_type_ff(),get_size_cell_ff(),g);
+  }
+
 }
 /**
 END DRAW

@@ -12,6 +12,8 @@ void set_size(int w, int h) {
 
 
 
+
+
 /**
 leap motion
 */
@@ -23,7 +25,6 @@ void leap_setup() {
 
 void leap_update() {
   finger.update();
-
 }
 
 

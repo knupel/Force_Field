@@ -18,6 +18,8 @@ boolean abs_cycling = true;
 
 float tempo_refresh;
 
+float cell_force_field;
+
 // fluid slider
 float frequence;
 float viscosity;
@@ -37,7 +39,7 @@ void interface_setup(Vec2 pos, Vec2 size) {
 	int max = 1;
 
   slider_main(space, max, sw, 2);
-  slider_fluid(space, max, sw, 30);
+  slider_fluid(space, max, sw, 32);
 }
 
 void slider_main(int space, int max, int sw, int start_pos) {
@@ -54,6 +56,9 @@ void slider_main(int space, int max, int sw, int start_pos) {
 
 	power_channel = .3;
 
+
+	cell_force_field = .1 ;
+
 	cp_main.addSlider("red_channel").setPosition(10,space *(start_pos+1)).setWidth(sw).setRange(0,max);
 	cp_main.addSlider("green_channel").setPosition(10,space*(start_pos+3)).setWidth(sw).setRange(0,max);
 	cp_main.addSlider("blue_channel").setPosition(10,space*(start_pos+5)).setWidth(sw).setRange(0,max);
@@ -66,6 +71,8 @@ void slider_main(int space, int max, int sw, int start_pos) {
 	cp_main.addButton("absolute_cycling").setValue(0).setPosition(10,space*(start_pos+16)).setSize(sw,10);
 
 	cp_main.addSlider("tempo_refresh").setPosition(10,space*(start_pos+19)).setWidth(sw).setRange(0,max).setNumberOfTickMarks(20);
+
+	cp_main.addSlider("cell_force_field").setPosition(10,space*(start_pos+22)).setWidth(sw).setRange(0,max).setNumberOfTickMarks(20);
 }
 
 
@@ -85,7 +92,7 @@ Vec4 rgba_channel ;
 int tempo_display ;
 void interface_value() {
 	update_value_ff_fluid(frequence, viscosity, diffusion);
-
+  
   float cr = 1.;
   float cg = 1.;
   float cb = 1.;
@@ -120,6 +127,9 @@ void interface_value() {
 	rgba_channel.set(sin_val.map_vec(Vec4(min_src), Vec4(max_src), Vec4(min_dst), rgba_channel));
 
 	tempo_display = int(tempo_refresh *10 +1);
+  
+  int size = ceil(cell_force_field *50) +2;
+	set_cell_grid_ff(size);
 
 }
 

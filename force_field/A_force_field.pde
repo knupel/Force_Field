@@ -4,6 +4,7 @@ force field
 v 0.1.0
 */
 Force_field force_field;
+boolean force_field_init_is;
 
 float freq_ff;
 float visc_ff;
@@ -12,12 +13,52 @@ float diff_ff;
 /**
 init
 */
-boolean force_field_init_is ;
+
 void init_ff(int type, int resolution, PImage src) {
   if(!force_field_init_is) {
     build_ff(type, resolution, src);
     force_field_init_is = true ;
   }
+}
+
+
+boolean build_ff_is() {
+  if(force_field != null) {
+    return force_field.is() ;
+  } else return false;
+}
+
+
+boolean ff_is() {
+  return force_field_init_is ;
+}
+
+
+
+
+/**
+cell size
+*/
+int size_cell_ff_ref;
+int size_cell_ff;
+void set_cell_grid_ff(int size) {
+  if(fullScreen_is) {
+    size_cell_ff *= 2;
+  } else {
+    size_cell_ff = size;
+  }
+  if(size_cell_ff_ref != size_cell_ff) {
+   // println("tout devient faux", size_cell_ff_ref,size_cell_ff);
+    force_field_init_is = false;
+  }
+  size_cell_ff_ref = size;
+  if(fullScreen_is) {
+    size_cell_ff_ref *= 2;
+  }
+}
+
+int get_size_cell_ff() {
+  return size_cell_ff ;
 }
 
 
@@ -86,6 +127,8 @@ void build_ff(int type_force_field, int resolution, PImage src) {
   } else {
     build_ff_classic(type_force_field, resolution, canvas_pos, canvas);
   }
+
+  set_cell_grid_ff(resolution);
 }
 /**
 Different mode to build force field
@@ -96,12 +139,14 @@ v 0.0.2
 */
 void build_ff_classic(int type_force_field, int resolution, iVec2 canvas_pos, iVec2 canvas) {
   force_field = new Force_field(resolution, canvas_pos, canvas, type_force_field);
+  force_field_init_is = true ;
 }
 /**
 * buid force field FLUID
 */
 void build_ff_fluid(int resolution, iVec2 canvas_pos, iVec2 canvas) {
   force_field = new Force_field(resolution, canvas_pos, canvas, r.FLUID);
+  force_field_init_is = true ;
   
 }
 /**
@@ -111,26 +156,25 @@ void build_ff_img(PImage img) {
   int resolution = 20 ;
   iVec2 canvas_pos = iVec2() ;
   force_field = new Force_field(resolution, canvas_pos, img, r.BLUE);
+  force_field_init_is = true ;
 }
 /**
 * build force field gravity
 */
 void build_ff_gravity(int resolution, iVec2 canvas_pos, iVec2 canvas) {
   force_field = new Force_field(resolution, canvas_pos, canvas, r.GRAVITY);
+  force_field_init_is = true ;
 }
 /**
 * build force field magnetic
 */
 void build_ff_magnetic(int resolution, iVec2 canvas_pos, iVec2 canvas) {
   force_field = new Force_field(resolution, canvas_pos, canvas, r.MAGNETIC);
+  force_field_init_is = true ;
 }
 
 
-boolean build_ff_is() {
-  if(force_field != null) {
-    return force_field.is() ;
-  } else return false;
-}
+
 
 
 

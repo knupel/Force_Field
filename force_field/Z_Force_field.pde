@@ -84,12 +84,19 @@ public class Force_field implements Rope_Constants {
   constructor CLASSIC
   */
   public Force_field(int resolution, iVec2 canvas_pos, iVec2 canvas, int type) {
-    this.resolution = resolution;
+    if(resolution == 0) {
+      printErr("Contructor Force_field: resolution =", resolution, "instead the value 20 is used");
+      this.resolution = 20 ;
+    } else {
+      this.resolution = resolution;
+    }
+    
     this.type = type ;
     this.is = true ;
-    set_canvas(iVec2(resolution/2 +canvas_pos.x, resolution/2 +canvas_pos.y), iVec2(canvas.x,canvas.y));
-    cols = NX = canvas.x/resolution;
-    rows = NY = canvas.y/resolution +1;
+    set_canvas(iVec2(this.resolution/2 +canvas_pos.x, this.resolution/2 +canvas_pos.y), iVec2(canvas.x,canvas.y));
+
+    cols = NX = canvas.x/this.resolution;
+    rows = NY = canvas.y/this.resolution +1;
 
     init_field();
     init_spot();
