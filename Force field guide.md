@@ -1,5 +1,5 @@
 Force field guide
-v 0.0.2
+v 0.0.3
 --
 
 FORCE FIELD class
@@ -122,7 +122,10 @@ void wind(float angle, float force);
 >you can add a global 'wind' to your field, the argument angle is in radian
 
 
-
+Clear
+--
+clear_spot()
+> clear all the spot list
 
 
 Reset

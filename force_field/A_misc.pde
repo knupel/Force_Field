@@ -1,3 +1,23 @@
+
+
+
+
+void cursor_manager(boolean display) {
+  if(display) {
+    Vec2 pos = Vec2(mouseX,mouseY);
+    Vec2 size = Vec2(7);
+    int summits = 5 ;
+    fill(255);
+    stroke(0);
+    strokeWeight(.5);
+    star(pos, size, summits) ;
+    // cursor(CROSS);
+  } else {
+    noCursor();
+  }
+}
+
+
 /**
 change size window
 */

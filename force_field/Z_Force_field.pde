@@ -488,9 +488,16 @@ public class Force_field implements Rope_Constants {
 
   /**
   reset
-  v 0.0.1
+  v 0.1.0
   */
-  // private boolean reset_ref_spot_position_list;
+  public void clear_spot() {
+    if(reset_ref_spot_position_list != null) reset_ref_spot_position_list.clear();
+    if(spot_list != null) spot_list.clear();
+    if(spot_mag_north_list != null) spot_mag_north_list.clear();
+    if(spot_mag_south_list != null) spot_mag_south_list.clear();
+    if(spot_mag_neutral_list != null) spot_mag_neutral_list.clear();
+
+  }
 
   public void ref_spot(int which_one) {
     reset_ref_spot_position_list.set(which_one,true);

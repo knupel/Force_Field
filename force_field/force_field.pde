@@ -34,14 +34,16 @@ void settings() {
   if(fullScreen_is) {
     fullScreen(P2D) ;   
   } else {
-    size(640,480,P2D);
+    // size(900,600,P2D);
+    //size(1600,870,P2D); // 2eme écran mac portable
+    size(1600,855,P2D); // 2recopie écran
   }
   set_cell_grid_ff(10);
 
-  type_field = r.FLUID;
+  // type_field = r.FLUID;
 
 //   type_field = r.GRAVITY; /* you can also use HOLE constant */
-//type_field = r.MAGNETIC;
+type_field = r.MAGNETIC;
  // type_field = r.PERLIN;
 // type_field = r.CHAOS;
 }
@@ -59,7 +61,7 @@ SETUP
 */
 void setup() {
   background(0);
-  noCursor();
+  // noCursor();
   // warp_instruction();
 
   if(use_leapmotion) leap_setup();
@@ -112,13 +114,15 @@ void draw() {
   */
   boolean run_is = true;
   boolean inside_gui = inside(get_pos_interface(), get_size_interface(), Vec2(mouseX,mouseY));
-  if(inside_gui) run_is = false ;
-  if(interface_is() && inside_gui) run_is = false ;
-  if(!interface_is()) run_is = true ;
+
+  if(interface_is() && inside_gui) {
+    run_is = false ;  
+  } else if(!interface_is()) {
+    run_is = true ;
+  } 
+
   if(use_leapmotion) run_is = true ;
   if(pause_is) run_is = false ;
-
-
   if(run_is) { 
     if(use_leapmotion) {
       force_field_spot_condition_leapmotion();
@@ -144,10 +148,9 @@ void draw() {
   warp
   */
   warp_init(type_field, get_size_cell_ff(), which_cam, change_size_window_is);
-  // println(ff_is());
 
 
-  num_spot_ff(4); 
+  num_spot_ff(get_num_spot_gui()); 
   warp_draw(tempo_display, rgba_channel);
    
    /**
@@ -163,16 +166,18 @@ void draw() {
   // reset_force_field();
 
   interface_value();
-  interface_display(Vec2(0), Vec2(200,height));
-    if(!ff_is()) {
-    println("new force field grid");
+  interface_display(Vec2(0), Vec2(200,height),use_leapmotion);
+  if(!ff_is()) {
+    println("new force field grid, with cell size:", get_size_cell_ff());
     init_ff(get_type_ff(),get_size_cell_ff(),g);
   }
-
+  cursor_manager(interface_is());
 }
 /**
 END DRAW
 */
+
+
 
 
 
@@ -219,12 +224,49 @@ void force_field_spot_condition_leapmotion() {
   }
 }
 
+float distance ;
 void force_field_spot_coord() {
-  Vec2 pos_1 = Vec2(mouseX,mouseY);
-  Vec2 pos_2 = Vec2(width -mouseX, height -mouseY);
-  Vec2 pos_3 = Vec2(mouseX, height -mouseY);
-  Vec2 pos_4 = Vec2(width -mouseX, mouseY);
-  update_spot_ff_coord(pos_1,pos_2,pos_3,pos_4);
+  if(get_spot_num_ff() > 0) {
+    Vec2 [] pos = new Vec2[get_spot_num_ff()];
+    // case 1
+    if(get_spot_num_ff() == 1) {
+      pos[0] = Vec2(mouseX, mouseY);
+    }
+    // case 2
+    if(get_spot_num_ff() == 2) {
+      pos[1] = Vec2(width -mouseX, height -mouseY);
+    }
+    // case 3
+    if(get_spot_num_ff() > 2) {
+      int num_spot = get_spot_num_ff();
+      float range_angle = TAU - get_angle_mouse();
+      float step_angle = range_angle /num_spot;
+
+      distance += get_speed_mouse(); 
+      float final_angle = 0 ;
+      float radius = height /4 ;
+      for(int i = 0 ; i < pos.length ; i++) {
+        /*
+        growth system
+        final_angle += step_angle ; 
+        final_angle += distance;
+        Vec2 proj = projection(final_angle, get_radius_mouse());
+        */
+        final_angle = step_angle *i ; 
+        final_angle += distance;
+        Vec2 proj = projection(final_angle, get_radius_mouse());
+
+        
+        pos[i] = Vec2(proj);
+        pos[i].add(mouseX,mouseY);
+        
+        
+      }
+    }
+    // printErr(frameCount);
+    //printArray(pos);
+    update_spot_ff_coord(pos);
+  }
 }
 
 void force_field_spot_condition() {
@@ -246,29 +288,36 @@ void force_field_spot_condition() {
 
 
 void force_field_spot_diam() {
-  int size = get_resultion_ff()/2 ;
-  int rad_1 = size;
-  int rad_2 = size;
-  int rad_3 = size;
-  int rad_4 = size;
-  update_spot_ff_diam(rad_1,rad_2,rad_3,rad_4);
+  int diam_spot = get_resultion_ff()/2 ;
+  if(get_spot_num_ff() > 0) {
+    int [] diam = new int[get_spot_num_ff()];
+    for(int i = 0 ; i < diam.length ; i++) {
+      diam[i] = diam_spot ; 
+    }
+    update_spot_ff_diam(diam);
+  }
 }
 
 void force_field_spot_tesla() {
-  int tesla = 10 ;
-  int tsl_1 = tesla;
-  int tsl_2 = -tesla;
-  int tsl_3 = tesla;
-  int tsl_4 = -tesla;
-  update_spot_ff_tesla(tsl_1,tsl_2,tsl_3,tsl_4);
+  int charge_tesla = 10 ;
+  if(get_spot_num_ff() > 0) {
+    int [] tsl = new int[get_spot_num_ff()];
+    for(int i = 0 ; i < tsl.length ; i++) {
+      if(i%2 == 0) tsl[i] = charge_tesla ; else tsl[i] = -charge_tesla;
+    }
+    update_spot_ff_tesla(tsl);
+  }
 }
 
 void force_field_spot_mass() {
-  int m_1 = 30;
-  int m_2 = 100;
-  int m_3 = 30;
-  int m_4 = 10;
-  update_spot_ff_mass(m_1,m_2,m_3,m_4);
+  int mass = 10 ;
+  if(get_spot_num_ff() > 0) {
+    int [] m = new int[get_spot_num_ff()];
+    for(int i = 0 ; i < m.length ; i++) {
+      if(i%2 == 0) m[i] = mass ; else m[i] = mass *3;
+    }
+    update_spot_ff_mass(m);
+  }
 }
 
 
@@ -341,6 +390,8 @@ void keyPressed() {
     if(shader_filter_is) shader_filter_is = false ; else shader_filter_is = true ;
   }
 
+  if(key == 'x') change_type_ff() ;
+
   if(key == 'z') {
     force_field.reset();
   }
@@ -378,21 +429,3 @@ void keyPressed() {
     }       
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

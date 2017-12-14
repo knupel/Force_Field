@@ -10,6 +10,13 @@ float freq_ff;
 float visc_ff;
 float diff_ff;
 
+void change_type_ff() {
+  if(get_type_ff() == r.MAGNETIC) type_field = r.FLUID ; else type_field = r.MAGNETIC;
+  force_field_init_is = false ;
+  build_ff(type_field, get_resultion_ff());
+  num_spot_ff(get_spot_num_ff());
+}
+
 /**
 init
 */
@@ -74,10 +81,16 @@ v 0.0.5
 add spot
 * it's use for force field GRAVITY, MAGNETIC and FLUID
 */
+int num_spot_ff_ref ;
 void num_spot_ff(int num) {
-  if(force_field != null && num > force_field.get_spot_num() ) {
+  if(num != num_spot_ff_ref) {
+    force_field.clear_spot();
+  }
+  num_spot_ff_ref = num ;
+  if(force_field != null && num > force_field.get_spot_num()) {
     println("add", num, "spot to force field");
     force_field.add_spot(num);
+
   } else if(force_field == null) {
     if(frameCount < 3) { 
       printErr("num_spot_force_field() must be place after method build_force_field()");
@@ -127,7 +140,6 @@ void build_ff(int type_force_field, int resolution, PImage src) {
   } else {
     build_ff_classic(type_force_field, resolution, canvas_pos, canvas);
   }
-
   set_cell_grid_ff(resolution);
 }
 /**
@@ -275,19 +287,21 @@ void update_ff_fluid() {
 MAGNETIC CASE
 */
 void update_ff_magnetic() {
-  for(int i = 0 ; i < force_field.spot_list.size() && i < spot_list_coord.size() ; i++) {
-    force_field.set_spot_tesla(spot_list_tesla.get(i),i);
-    force_field.set_spot_diam(spot_list_diam.get(i),i);
+  // println(spot_list_tesla.size());
+    for(int i = 0 ; i < force_field.spot_list.size() && i < spot_list_coord.size() && i < spot_list_tesla.size(); i++) {
+      force_field.set_spot_tesla(spot_list_tesla.get(i),i);
+      force_field.set_spot_diam(spot_list_diam.get(i),i);
 
-    if(i < spot_list_is.size()) {
-      if(spot_list_is.get(i)) {
+      if(i < spot_list_is.size()) {
+        if(spot_list_is.get(i)) {
+          force_field.set_spot_pos(spot_list_coord.get(i),i);
+        } 
+      } else {
         force_field.set_spot_pos(spot_list_coord.get(i),i);
-      } 
-    } else {
-      force_field.set_spot_pos(spot_list_coord.get(i),i);
+      }
     }
-  }
-  force_field.update();
+    force_field.update();
+//   }  
 }
 
 
@@ -324,47 +338,7 @@ void update_ff_gravity() {
 
 
 
-/*
-Vec2 pole_pos_C ;
-void update_ff_gravity() {
-  Vec2 target = Vec2(mouseX,mouseY);
-  Vec2 pole_pos_A = target.copy();
 
-  // pos B revolution around the center canvas
-  float x = sin(frameCount *.001) *height/2 ;
-  float y = cos(frameCount *.001) *height/2 ;
-  Vec2 pole_pos_B = Vec2(x,y).add(width/2,height/2);
-
-  // randomize position of the third pole
-  if(pole_pos_C == null) pole_pos_C = Vec2(r.RANDOM_ZERO,width,height);
-  int when = (int)random(20,1600) ;
-  if(frameCount%when == 0) {
-    pole_pos_C.set(Vec2(r.RANDOM_ZERO,width,height));
-  }
-
-  Vec2 size = Vec2(10);
-
-  force_field.set_calm(.5);
-
-  force_field.set_spot_pos(pole_pos_A, 0) ;
-  force_field.set_spot_pos(pole_pos_B, 1) ;
-  force_field.set_spot_pos(pole_pos_C, 2) ;
-
-  force_field.set_spot_diam(size, 0);
-  force_field.set_spot_diam(size, 1);
-  force_field.set_spot_diam(size, 2);
-   
-  // int diam = abs(int(height *sin(frameCount *.001)))/2;
-  int mass_1 = 50 ;
-  int mass_2 = 10 ;
-  int mass_3 = 200;
-  force_field.set_spot_mass(mass_1, 0);
-  force_field.set_spot_mass(mass_2, 1);
-  force_field.set_spot_mass(mass_3, 2);
-
-  force_field.update() ;
-}
-*/
 
 /**
 update value
@@ -554,34 +528,3 @@ int get_spot_num_ff() {
     return force_field.get_spot_num();
   } else return -1;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
