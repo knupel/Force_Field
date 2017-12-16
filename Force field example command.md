@@ -1,6 +1,9 @@
   
 Command to manage the force exmaple
 --
+key a 
+> WARP : Add media to library warp
+
 key b 
 > FORCE FIELD: manage the vehicle rebirth on the canvas border
 
@@ -13,11 +16,19 @@ key f
 key g 
 > FORCE FIELD: display grid
 
+key h 
+> FORCE FIELD: display pole
+
 key i 
 > FORCE FIELD: display info
 
-key h 
-> FORCE FIELD: display pole
+key l 
+> FORCE FIELD: swith between mouse and leap motion
+
+key n 
+>WARP : load a new media library
+
+
   
 key p 
 > APPLICATION: save jpeg frame of the sketch
