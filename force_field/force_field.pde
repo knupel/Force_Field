@@ -16,7 +16,7 @@ Via Reynolds: http://www.red3d.com/cwr/steer/FlowFollow.html
 Stable fluids from Jos Stam's work on the Navier-Stokes equation
 */
 boolean pause_is ;
-boolean use_leapmotion = true;
+boolean use_leapmotion = false;
 
 boolean fullScreen_is = false;
 boolean change_size_window_is = false;
@@ -34,9 +34,9 @@ void settings() {
   if(fullScreen_is) {
     fullScreen(P2D) ;   
   } else {
-    // size(900,600,P2D);
-    //size(1600,870,P2D); // 2eme écran mac portable
-    size(1600,855,P2D); // 2recopie écran
+    size(900,600,P2D);
+    //size(1600,870,P2D); // 2eme écran macbook
+    // size(1600,855,P2D); // 2 recopie écran macbook
   }
   set_cell_grid_ff(10);
 
@@ -128,7 +128,7 @@ void draw() {
       force_field_spot_condition_leapmotion();
       force_field_spot_coord_leapmotion();
     } else {
-      force_field_spot_condition();
+      force_field_spot_condition(true);
       force_field_spot_coord();
     }
 
@@ -158,10 +158,7 @@ void draw() {
    */
   info(display_field, display_grid, display_pole);
 
-  /**
-  RESET
-  */
-
+ 
   if(force_field != null) force_field.reverse_is(false);
   // reset_force_field();
 
@@ -172,10 +169,30 @@ void draw() {
     init_ff(get_type_ff(),get_size_cell_ff(),g);
   }
   cursor_manager(interface_is());
+
+  diaporama(r.CHAOS);
 }
 /**
 END DRAW
 */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -193,7 +210,20 @@ void force_field_spot_coord_leapmotion() {
   }
 
   if(finger.is() && pos_finger != null) {
-    for(int i = 0 ; i < finger.get_num() && i < get_spot_num_ff() ; i++) {
+    for(int i = 0 ; i < get_spot_num_ff() ; i++) {
+      if(finger.visible()[i]) {
+        float x = finger.get_pos()[i].x;
+        float y = finger.get_pos()[i].y;
+        y = map(y,0,1,1,0);
+        pos_finger[i] = Vec2(x,y);
+        pos_finger[i].mult(width,height);
+      } else {
+        // pos_finger[i] = Vec2(-width,-height);
+        // println("finger",i,frameCount, pos_finger[i]);
+      }
+    }
+    /*
+    for(int i = 0 ; i < finger.get_num() && i < get_spot_num_ff() && i < pos_finger.length; i++) {
       if(finger.visible()[i]) {
         float x = finger.get_pos()[i].x;
         float y = finger.get_pos()[i].y;
@@ -202,6 +232,7 @@ void force_field_spot_coord_leapmotion() {
         pos_finger[i].mult(width,height);
       }
     }
+    */
     update_spot_ff_coord(pos_finger);
   }
 }
@@ -255,21 +286,16 @@ void force_field_spot_coord() {
         final_angle = step_angle *i ; 
         final_angle += distance;
         Vec2 proj = projection(final_angle, get_radius_mouse());
-
-        
+       
         pos[i] = Vec2(proj);
-        pos[i].add(mouseX,mouseY);
-        
-        
+        pos[i].add(mouseX,mouseY);        
       }
     }
-    // printErr(frameCount);
-    //printArray(pos);
     update_spot_ff_coord(pos);
   }
 }
 
-void force_field_spot_condition() {
+void force_field_spot_condition(boolean is) {
   if(get_spot_num_ff() > 0) {
     boolean [] bool = new boolean[get_spot_num_ff()];
     for(int i = 0 ; i < bool.length ; i++) {
@@ -277,7 +303,7 @@ void force_field_spot_condition() {
     }
     // if(mousePressed && mouseButton == LEFT) bool_1 = true ;
     // if(mousePressed && mouseButton == RIGHT) bool_2 = true ;
-    if(mousePressed) {
+    if(is) {
       for(int i = 0 ; i < bool.length ; i++) {
         bool[i] = true ;
       }
@@ -366,6 +392,8 @@ void keyPressed() {
   if(key == 'h') display_pole();
 
   if(key == 'i') display_info();
+
+  if(key == 'l') change_cursor_controller();
 
   if(key == 'n') {
     // @see if(key == 'a')

@@ -157,8 +157,9 @@ iVec2 video_size ;
 
 void init_video(int w, int h, int which_cam) {
   if(video == null ) {
-    printArray(Capture.list());
+    // printArray(Capture.list());
     video = new Capture(this,Capture.list()[which_cam]);
+   // video = new Capture(this,width,height);
     video_size = iVec2(width,height);
   } 
 }
@@ -176,16 +177,62 @@ void display_video() {
     if (video.available()) {
       warp_media_loaded(true);
       video.read();
-      PImage temp = video.get().copy();
-      if(video_size.x != width && video_size.y != height) {
-        video_size.set(width,height);
-      }
-      temp.resize(video_size.x,video_size.y);
-      image(temp);
+      // classic_video();
+      mirror_video(2);
+
     } else {
       //
     }    
   }
+}
+
+void classic_video() {
+  PImage temp = video.get().copy();
+  if(video_size.x != width && video_size.y != height) {
+    video_size.set(width,height);
+  }
+  temp.resize(video_size.x,video_size.y);
+  image(temp);
+}
+
+void mirror_video(int cellSize) {
+
+  
+  /*
+  if(video_size.x != width && video_size.y != height) {
+    video_size.set(width,height);
+  }
+  temp.resize(video_size.x,video_size.y);
+  */
+
+  int cols = video.width / cellSize;
+  int rows = video.height / cellSize;
+  PImage temp = createImage(cols,rows,RGB);
+  video.loadPixels();
+  for (int i = 0; i < cols; i++) {
+    for (int j = 0; j < rows; j++) {
+      // Where are we, pixel-wise?
+      int x = i *cellSize;
+      int y = j *cellSize;
+      int loc = (video.width - x - 1) + y *video.width; // Reversing x to mirror the image
+
+      float r = red(video.pixels[loc]);
+      float g = green(video.pixels[loc]);
+      float b = blue(video.pixels[loc]);
+      // Make a new color with an alpha component
+      // int target = (i*temp.width) + j ;
+      int target = (j*temp.width) + i ;
+
+      // println(target,temp.pixels.length);
+      if(target < temp.pixels.length) temp.pixels[target] = color(r,g,b);
+    }
+  }
+  temp.updatePixels();
+  if(video_size.x != width && video_size.y != height) {
+    video_size.set(width,height);
+  }
+  temp.resize(video_size.x,video_size.y);
+  image(temp);
 }
 
 boolean video_available() {

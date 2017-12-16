@@ -1,4 +1,12 @@
-
+int tempo_diaporama = 240 ;
+void diaporama(int type) {
+  if(warp.library_size() > 1) {
+    if(frameCount%tempo_diaporama == 0 ) {
+      tempo_diaporama = int(random(240,1200));
+      if(type == r.CHAOS) which_img = floor(random(warp.library_size()));
+    }
+  }  
+}
 
 
 
@@ -44,7 +52,12 @@ void leap_setup() {
 }
 
 void leap_update() {
+  if(finger == null) leap_setup() ;
   finger.update();
+}
+
+void change_cursor_controller() {
+  if(use_leapmotion) use_leapmotion = false ; else use_leapmotion = true ;
 }
 
 
