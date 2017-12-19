@@ -49,19 +49,11 @@ cell size
 int size_cell_ff_ref;
 int size_cell_ff;
 void set_cell_grid_ff(int size) {
-  if(fullScreen_is) {
-    size_cell_ff *= 2;
-  } else {
-    size_cell_ff = size;
-  }
+  size_cell_ff = size;
   if(size_cell_ff_ref != size_cell_ff) {
-   // println("tout devient faux", size_cell_ff_ref,size_cell_ff);
     force_field_init_is = false;
   }
   size_cell_ff_ref = size;
-  if(fullScreen_is) {
-    size_cell_ff_ref *= 2;
-  }
 }
 
 int get_size_cell_ff() {

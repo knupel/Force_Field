@@ -18,7 +18,7 @@ Stable fluids from Jos Stam's work on the Navier-Stokes equation
 boolean pause_is ;
 boolean use_leapmotion = false;
 
-boolean fullScreen_is = false;
+boolean fullScreen_is = true;
 boolean change_size_window_is = false;
 
 PGraphics pg ;
@@ -32,11 +32,12 @@ int which_cam = 0 ; // 0 is the camera fullsize / max frameRate by default if th
 // Using this variable to decide whether to draw all the stuff
 void settings() {
   if(fullScreen_is) {
-    fullScreen(P2D) ;   
+    // fullScreen(P2D,1);
+    fullScreen(P2D);      
   } else {
-    size(900,600,P2D);
+    //size(900,600,P2D);
     //size(1600,870,P2D); // 2eme écran macbook
-    // size(1600,855,P2D); // 2 recopie écran macbook
+    size(1900,1200,P2D); // 2 recopie écran macbook
   }
   set_cell_grid_ff(10);
 
@@ -147,7 +148,9 @@ void draw() {
   /*
   warp
   */
+  println(frameCount,get_size_cell_ff());
   warp_init(type_field, get_size_cell_ff(), which_cam, change_size_window_is);
+  println(frameCount,ff_is());
 
 
   num_spot_ff(get_num_spot_gui()); 
@@ -164,6 +167,8 @@ void draw() {
 
   interface_value();
   interface_display(Vec2(0), Vec2(200,height),use_leapmotion);
+  println(frameCount,get_size_cell_ff());
+  println(frameCount,ff_is());
   if(!ff_is()) {
     println("new force field grid, with cell size:", get_size_cell_ff());
     init_ff(get_type_ff(),get_size_cell_ff(),g);
