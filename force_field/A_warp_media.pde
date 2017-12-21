@@ -12,8 +12,11 @@ void warp_media_loaded(boolean state) {
   warp_media_loaded_is = state ;
 }
 
+
+
+
 /**
-video
+movie
 */
 import processing.video.*;
 // movie
@@ -40,7 +43,12 @@ boolean movie_warp_is() {
 }
 
 void movie_library_clear() {
-  if(movie_warp_list != null) movie_warp_list.clear();
+  if(movie_warp_list != null) {
+    play_movie_warp_is(false);
+    movie_warp_is(false);
+    if(get_movie_warp(which_movie) != null) get_movie_warp(which_movie).stop();
+    movie_warp_list.clear();
+  }
 }
 
 
@@ -69,8 +77,8 @@ void display_movie(PGraphics pg) {
       get_movie_warp(which_movie).stop();
     }
     ref_movie = which_movie ;
+    get_movie_warp(which_movie).read();
     get_movie_warp(which_movie).loop();
-    //println(ratio_display_video);
     if(ratio_display_video != 1.) {
       int w = ceil(get_movie_warp(which_movie).width *ratio_display_video);
       int h = ceil(get_movie_warp(which_movie).height *ratio_display_video);
@@ -83,13 +91,31 @@ void display_movie(PGraphics pg) {
   } 
 }
 
+
+void update_movie_warp_interface() {
+  if(get_movie_warp(which_movie) != null && header_movie != get_interface_norm_movie_pos()) {
+    float header = get_movie_warp(which_movie).duration() *header_movie;
+    get_movie_warp(which_movie).jump(header);
+  }
+
+  if(get_movie_warp(which_movie) != null) {
+    float norm_pos = get_movie_warp(which_movie).time() / get_movie_warp(which_movie).duration();
+    set_interface_norm_movie_pos(norm_pos);
+  }
+}
+
+
+
+
+
+
 // Called every time a new frame is available to read
 void movieEvent(Movie m) {
   if(play_movie_warp_is) m.read();
 }
 
 Movie get_movie_warp(int target) {
-  if(target < movie_warp_list.size() && target >= 0) {
+  if(movie_warp_list != null && target < movie_warp_list.size() && target >= 0) {
     return movie_warp_list.get(target);
   } else return null ;
   
@@ -223,7 +249,6 @@ void mirror_video(int cellSize) {
       // int target = (i*temp.width) + j ;
       int target = (j*temp.width) + i ;
 
-      // println(target,temp.pixels.length);
       if(target < temp.pixels.length) temp.pixels[target] = color(r,g,b);
     }
   }
@@ -236,7 +261,10 @@ void mirror_video(int cellSize) {
 }
 
 boolean video_available() {
-  return video.available();
+  if(video != null) {
+    return video.available();
+  } else return false;
+  
 }
 
 void play_video(boolean play) {

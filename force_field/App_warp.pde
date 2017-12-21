@@ -184,6 +184,7 @@ void warp_media_display() {
     display_video(); 
   } else if(movie_warp_is()) {
     warp.select_image(surface_g);
+    update_movie_warp_interface();
     play_video(false);
     display_movie(g);
   } else {
