@@ -92,15 +92,25 @@ void display_movie(PGraphics pg) {
 }
 
 
+float speed_movie_warp_ref = 1 ;
 void update_movie_warp_interface() {
-  if(get_movie_warp(which_movie) != null && header_movie != get_interface_norm_movie_pos()) {
+  if(get_movie_warp(which_movie) != null && header_movie != get_pos_movie_norm_gui()) {
     float header = get_movie_warp(which_movie).duration() *header_movie;
     get_movie_warp(which_movie).jump(header);
   }
 
   if(get_movie_warp(which_movie) != null) {
     float norm_pos = get_movie_warp(which_movie).time() / get_movie_warp(which_movie).duration();
-    set_interface_norm_movie_pos(norm_pos);
+    set_pos_movie_norm_gui(norm_pos);
+    if(speed_movie_warp_ref != get_speed_movie_gui()) {
+      speed_movie_warp_ref = get_speed_movie_gui() ;
+      if(speed_movie_warp_ref == 0) {
+        get_movie_warp(which_movie).pause() ;
+      } else {
+        get_movie_warp(which_movie).read() ;
+        get_movie_warp(which_movie).speed(speed_movie_warp_ref);
+      }   
+    }
   }
 }
 
@@ -118,7 +128,6 @@ Movie get_movie_warp(int target) {
   if(movie_warp_list != null && target < movie_warp_list.size() && target >= 0) {
     return movie_warp_list.get(target);
   } else return null ;
-  
 }
 
 

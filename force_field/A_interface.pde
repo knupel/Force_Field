@@ -36,6 +36,7 @@ float angle_mouse;
 
 // movie control
 float header_movie;
+float speed_movie;
 
 
 
@@ -56,20 +57,9 @@ void interface_setup(Vec2 pos, Vec2 size) {
   slider_movie(space, max, sw, 2, DOWN);
 }
 
-
-
-
-
-void slider_movie(int space, int max, int sw, int start_pos, int from) {
-	float pos_y = pos_slider_y(space, start_pos, from);
-
-	cp_movie = new ControlP5(this);
-	header_movie = 0 ;
-	cp_movie.addSlider("header_movie").setPosition(10,pos_y).setWidth(sw).setRange(0,max);
-}
-
-
-
+/*
+* main
+*/
 void slider_main(int space, int max, int sw, int start_pos, int from) {
 	cp_main = new ControlP5(this);
 
@@ -86,6 +76,7 @@ void slider_main(int space, int max, int sw, int start_pos, int from) {
   tempo_refresh = 1.;
 	cell_force_field = 25.;
 	spot_force_field = 5.;
+
 	cp_main.addSlider("red_channel").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(sw).setRange(0,max);
 	cp_main.addSlider("green_channel").setPosition(10,pos_slider_y(space, start_pos +2, from)).setWidth(sw).setRange(0,max);
 	cp_main.addSlider("blue_channel").setPosition(10,pos_slider_y(space, start_pos +4, from)).setWidth(sw).setRange(0,max);
@@ -107,22 +98,43 @@ void slider_main(int space, int max, int sw, int start_pos, int from) {
 	cp_main.addSlider("spot_force_field").setPosition(10,pos_slider_y(space, start_pos +24, from)).setWidth(sw).setRange(1,max_spot).setNumberOfTickMarks(max_spot);
 }
 
+/*
+* movie
+*/
+void slider_movie(int space, int max, int sw, int start_pos, int from) {
+	cp_movie = new ControlP5(this);
+	header_movie = 0 ;
+	speed_movie = 1;
+	int max_speed = 6 ;
 
+	cp_movie.addSlider("header_movie").setPosition(10,pos_slider_y(space, start_pos, from)).setWidth(sw).setRange(0,max);
+
+	cp_movie.addSlider("speed_movie").setPosition(10,pos_slider_y(space, start_pos +3, from)).setWidth(sw).setRange(-max_speed,max_speed).setNumberOfTickMarks((max_speed *8) +1);
+}
+
+
+/*
+* fluid
+*/
 void slider_fluid(int space, int max, int sw, int start_pos, int from) {
 	cp_fluid = new ControlP5(this);
 	frequence = .3;
 	viscosity = .3;
 	diffusion = .3;
+
 	cp_fluid.addSlider("frequence").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(sw).setRange(0,max);
   cp_fluid.addSlider("viscosity").setPosition(10,pos_slider_y(space, start_pos +2, from)).setWidth(sw).setRange(0,max);
   cp_fluid.addSlider("diffusion").setPosition(10,pos_slider_y(space, start_pos +4, from)).setWidth(sw).setRange(0,max);
 }
 
+/*
+* mouse device
+*/
 void slider_mouse(int space, int max, int sw, int start_pos, int from){
 	cp_mouse = new ControlP5(this);
 
-	radius_mouse = .3 ;
-	speed_mouse = 0. ;
+	radius_mouse = .3;
+	speed_mouse = 0.;
 	angle_mouse = 0.;
 
 	cp_mouse.addSlider("radius_mouse").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(sw).setRange(0,max);
@@ -202,14 +214,8 @@ void interface_update() {
 	cp_movie.getController("header_movie").setValue(movie_pos_normal);
 }
 
-float get_interface_norm_movie_pos() {
-	return movie_pos_normal ;
-}
 
-void set_interface_norm_movie_pos(float f) {
-	movie_pos_normal = f;
 
-}
 
 
 
@@ -229,11 +235,26 @@ float pos_slider_y(int space, int start_pos, int from) {
 	return pos_y ;
 }
 
-
+/**
+set GUI 
+value slider in the draw
+*/
+void set_pos_movie_norm_gui(float f) {
+	movie_pos_normal = f;
+}
 
 /**
-get gui
+get GUI
 */
+
+float get_pos_movie_norm_gui() {
+	return movie_pos_normal ;
+}
+
+float get_speed_movie_gui() {
+	return speed_movie ;
+}
+
 int get_num_spot_gui() {
 	return int(spot_force_field) ;
 }
@@ -249,6 +270,8 @@ float get_radius_mouse() {
 float get_angle_mouse() {
 	return angle_mouse;
 }
+
+
 
 /**
 display
