@@ -66,7 +66,6 @@ public class Force_field implements Rope_Constants {
 
   private float sum_activities ;
 
-
   boolean is ;
 
 
@@ -287,7 +286,7 @@ public class Force_field implements Rope_Constants {
   /*
   * spot size
   */
-   public void set_spot_diam(float x, float y) {
+  public void set_spot_diam(float x, float y) {
     for(int i = 0 ; i < spot_list.size() ; i++) {
       set_spot_diam(x,y,i);  
     }
@@ -608,7 +607,7 @@ public class Force_field implements Rope_Constants {
     }
   }
   /**
-  * mag
+  * magnetic
   */
   private void update_magnetic_field() {
     sum_activities = 0 ;
@@ -617,7 +616,7 @@ public class Force_field implements Rope_Constants {
         field[x][y] = flow(Vec2(x,y), field[x][y], spot_list);
         convert_force_field_to_texture(x,y,field[x][y].x,field[x][y].y);
 
-        sum_activities += field[x][y].sum() ;          
+        sum_activities += field[x][y].sum();        
       }
     }
   }

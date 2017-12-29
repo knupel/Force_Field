@@ -148,10 +148,10 @@ warp draw
 /*
 main method
 */
-void warp_draw(int tempo, Vec4 channel_rgba) {
+void warp_draw(int tempo, Vec4 rgba, float intensity) {
   if(warp_media_is()) {
     if(frameCount%tempo == 0 ) warp_media_display();
-    if(warp.library_size() > 0 && force_field != null) warp_show(channel_rgba);
+    if(warp.library_size() > 0 && force_field != null) warp_show(rgba, intensity);
 
     /**
     animation
@@ -195,11 +195,11 @@ void warp_media_display() {
 }
 
 
-void warp_show(Vec4 channel_rgba) {
+void warp_show(Vec4 channel_warp_rgba, float intensity_warp) {
   /**
   SHOW IMAGE WARPED via FORCE FIELD
   */
-  warp.refresh(channel_rgba);
+  warp.refresh(channel_warp_rgba);
   // refresh_warp(channel_rgba);
  // warp_post_effect_test();
  
@@ -210,10 +210,10 @@ void warp_show(Vec4 channel_rgba) {
   warp.shader_filter(shader_filter_is);
   warp.shader_mode(0);
 
-  float intensity = 0.9 ;
+  //float intensity_warp = 0.9 ;
   if(!init_warp_is) {
     // here we need to have a full turn without display to charge pixel "g / surface 
-    warp.show(force_field, intensity);
+    warp.show(force_field, intensity_warp);
   }
 }
 

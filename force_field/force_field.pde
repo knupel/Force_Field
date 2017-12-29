@@ -152,7 +152,7 @@ void draw() {
 
 
   num_spot_ff(get_num_spot_gui()); 
-  warp_draw(tempo_display, rgba_channel);
+  warp_draw(get_tempo_refresh_gui(), get_rgba_channel_gui(), get_warp_power_gui());
    
    /**
    INFO

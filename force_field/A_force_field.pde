@@ -125,9 +125,11 @@ void build_ff(int type_force_field, int resolution, PImage src) {
     if(force_field.get_spot_num() < 1) printErr("void build_force_field() There is no spot added for your force Field, this force field need one to work") ;
   } else if (type_force_field == r.FLUID) {
     build_ff_fluid(resolution, canvas_pos, canvas);
+    // default fluid value
     freq_ff = 2/frameRate;
     visc_ff = .001;;
     diff_ff = 1.;
+    
     if(force_field.get_spot_num() < 1) printErr("void build_force_field() There is no spot added for your force Field, this force field need one to work") ;
   } else {
     build_ff_classic(type_force_field, resolution, canvas_pos, canvas);
@@ -196,13 +198,14 @@ v 0.1.0
 */
 void update_ff() {
   /**
-  WHAT IS IT ??????
+  WHAT IS IT force_field.reverse_is(true) ??????
 
   */
   if(keyPressed) {
     if(key == ' ') force_field.reverse_is(true);
   }
   
+
   // update spot if there is no coord in the list
   if(spot_list_coord == null) {
     update_spot_ff_coord(Vec2(width/2,height/2));
@@ -225,7 +228,7 @@ void update_ff() {
       update_ff_classic() ;
     }
   } else {
-    printErrTempo(180, "the force field is not init, maybe the media is not loaded ?");
+    printErrTempo(240, "the force field is not init, maybe the media is not loaded ?");
   }
 
   
@@ -279,21 +282,19 @@ void update_ff_fluid() {
 MAGNETIC CASE
 */
 void update_ff_magnetic() {
-  // println(spot_list_tesla.size());
-    for(int i = 0 ; i < force_field.spot_list.size() && i < spot_list_coord.size() && i < spot_list_tesla.size(); i++) {
-      force_field.set_spot_tesla(spot_list_tesla.get(i),i);
-      force_field.set_spot_diam(spot_list_diam.get(i),i);
+  for(int i = 0 ; i < force_field.spot_list.size() && i < spot_list_coord.size() && i < spot_list_tesla.size(); i++) {
+    force_field.set_spot_tesla(spot_list_tesla.get(i),i);
+    force_field.set_spot_diam(spot_list_diam.get(i),i);
 
-      if(i < spot_list_is.size()) {
-        if(spot_list_is.get(i)) {
-          force_field.set_spot_pos(spot_list_coord.get(i),i);
-        } 
-      } else {
+    if(i < spot_list_is.size()) {
+      if(spot_list_is.get(i)) {
         force_field.set_spot_pos(spot_list_coord.get(i),i);
-      }
+      } 
+    } else {
+      force_field.set_spot_pos(spot_list_coord.get(i),i);
     }
-    force_field.update();
-//   }  
+  }
+  force_field.update();
 }
 
 
@@ -338,20 +339,7 @@ update value
 void update_value_ff_fluid(float freq_norm, float visc_norm, float diff_norm) {
   freq_ff = freq_norm *.05 ;
   visc_ff = visc_norm *visc_norm *visc_norm *visc_norm;
-  // diff_ff = diff_norm *10.;
   diff_ff = diff_norm;
-
-  /*
-  println("freq", freq_ff);
-  println("visc", visc_ff);
-  println("diff", diff_ff);
-  */
-  
-/*
-    freq_ff = 2/frameRate;
-  visc_ff = .001;
-  diff_ff = 1.;
-  */
 }
 
 

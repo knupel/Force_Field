@@ -10,6 +10,8 @@ float blue_channel;
 float power_channel;
 float power_channel_max;
 
+float warp_power;
+
 float red_cycling;
 float green_cycling;
 float blue_cycling;
@@ -73,6 +75,8 @@ void slider_main(int space, int max, int sw, int start_pos, int from) {
 	green_cycling = 0;
 	blue_cycling = 0;
 
+	warp_power = .9;
+
   tempo_refresh = 1.;
 	cell_force_field = 25.;
 	spot_force_field = 5.;
@@ -86,16 +90,19 @@ void slider_main(int space, int max, int sw, int start_pos, int from) {
 	cp_main.addSlider("red_cycling").setPosition(10,pos_slider_y(space, start_pos +9, from)).setWidth(sw).setRange(0,max);
 	cp_main.addSlider("green_cycling").setPosition(10,pos_slider_y(space, start_pos +11, from)).setWidth(sw).setRange(0,max);
 	cp_main.addSlider("blue_cycling").setPosition(10,pos_slider_y(space, start_pos +13, from)).setWidth(sw).setRange(0,max);
-	cp_main.addButton("absolute_cycling").setValue(0).setPosition(10,pos_slider_y(space, start_pos +15, from)).setSize(sw,10);
+
+	cp_main.addSlider("warp_power").setPosition(10,pos_slider_y(space, start_pos +15, from)).setWidth(sw).setRange(0,max);
+
+	cp_main.addButton("absolute_cycling").setValue(0).setPosition(10,pos_slider_y(space, start_pos +17, from)).setSize(sw,10);
   
   int max_tempo = 10 ;
-	cp_main.addSlider("tempo_refresh").setPosition(10,pos_slider_y(space, start_pos +18, from)).setWidth(sw).setRange(1,max_tempo).setNumberOfTickMarks(max_tempo);
+	cp_main.addSlider("tempo_refresh").setPosition(10,pos_slider_y(space, start_pos +20, from)).setWidth(sw).setRange(1,max_tempo).setNumberOfTickMarks(max_tempo);
   
   int max_cell = 50;
-	cp_main.addSlider("cell_force_field").setPosition(10,pos_slider_y(space, start_pos +21, from)).setWidth(sw).setRange(1,max_cell).setNumberOfTickMarks(max_cell);
+	cp_main.addSlider("cell_force_field").setPosition(10,pos_slider_y(space, start_pos +24, from)).setWidth(sw).setRange(1,max_cell).setNumberOfTickMarks(max_cell);
   
   int max_spot = 10 ;
-	cp_main.addSlider("spot_force_field").setPosition(10,pos_slider_y(space, start_pos +24, from)).setWidth(sw).setRange(1,max_spot).setNumberOfTickMarks(max_spot);
+	cp_main.addSlider("spot_force_field").setPosition(10,pos_slider_y(space, start_pos +27, from)).setWidth(sw).setRange(1,max_spot).setNumberOfTickMarks(max_spot);
 }
 
 /*
@@ -164,7 +171,7 @@ void slider_mouse(int space, int max, int sw, int start_pos, int from){
 update
 */
 Vec4 rgba_channel ;
-int tempo_display ;
+
 void interface_value() {
 	update_value_ff_fluid(frequence, viscosity, diffusion);
   
@@ -201,7 +208,6 @@ void interface_value() {
 	float min_dst = .01 ;
 	rgba_channel.set(sin_val.map_vec(Vec4(min_src), Vec4(max_src), Vec4(min_dst), rgba_channel));
 
-	tempo_display = ceil(tempo_refresh);
   
   int size = ceil(cell_force_field) +2;
   set_cell_grid_ff(size);
@@ -246,6 +252,17 @@ void set_pos_movie_norm_gui(float f) {
 /**
 get GUI
 */
+
+int get_tempo_refresh_gui() {
+	return ceil(tempo_refresh);
+}
+Vec4 get_rgba_channel_gui() {
+	return rgba_channel;
+} 
+float get_warp_power_gui() {
+	return warp_power;
+}
+
 
 float get_pos_movie_norm_gui() {
 	return movie_pos_normal ;
