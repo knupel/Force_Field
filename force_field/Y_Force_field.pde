@@ -2,7 +2,7 @@
 Force Field
 refactoring by Stan le Punk
 http://stanlepunk.xyz/
-v 1.3.1
+v 1.4.0
 */
 /**
 Run on Processing 3.3.6
@@ -26,7 +26,6 @@ int FLUID, CHAOS, PERLIN, HOLE, MAGNETIC, IMAGE
 /**
 At this moment the force field is available only in 2D mode
 */
-
 
 public class Force_field implements Rope_Constants {
 
@@ -106,7 +105,6 @@ public class Force_field implements Rope_Constants {
     if(type == FLUID) {
       // FLUID
       System.err.print("FLUID have square or cube canvas, the HEIGHT be used for the canvas side");
-      // field = new Vec2[N][N];
       int iteration = 20 ;
       ns_2D = new Navier_Stokes_2D(iVec2(NX,NY), iteration);
     } else if(type == MAGNETIC) {
@@ -131,7 +129,6 @@ public class Force_field implements Rope_Constants {
     cols = canvas.x/resolution;
     rows = canvas.y/resolution;
     field = new Vec4[cols][rows];
-    // field = new Vec2[cols][rows];
 
     init_texture(cols,rows);
 
@@ -153,7 +150,6 @@ public class Force_field implements Rope_Constants {
 
   private void init_field() {
     field = new Vec4[cols][rows];
-    // field = new Vec2[cols][rows];
     set_field(CHAOS);
   }
 
@@ -421,13 +417,11 @@ public class Force_field implements Rope_Constants {
 
   /**
   set field
-  v 0.0.3
+  v 0.1.0
   */
   // set field
   private void set_field(PImage img, int component_sorting) {
-    // println(component_sorting);
     img.loadPixels();
-    // loadPixels();
     sum_activities = 0;
     for(int x = 0 ; x < cols ; x++) {
       for(int y = 0 ; y < rows ; y++) {
@@ -447,8 +441,7 @@ public class Force_field implements Rope_Constants {
 
         float theta = map(sort, 0, g.colorModeZ, 0, TAU);
         // Polar to cartesian coordinate
-        field[x][y] = Vec4(cos(theta),sin(theta),0,0); 
-        // field[x][y] = Vec2(cos(theta),sin(theta));   
+        field[x][y] = Vec4(cos(theta),sin(theta),0,0);  
         sum_activities += field[x][y].sum() ;
       }
     }
@@ -469,22 +462,26 @@ public class Force_field implements Rope_Constants {
     sum_activities = 0 ;
     for (int x = 0 ; x < cols ; x++) {
       float yoff = 0;
+      float woff = 0;
       for (int y = 0 ; y < rows ; y++) {
         float theta = 0;
-        if(type == PERLIN ) {
+        float dist = 0 ;
+        if(type == PERLIN) {
           theta = map(noise(xoff,yoff),0,1,0,TWO_PI);
+          dist = noise(woff);
         } if(type == CHAOS) {
           theta = random(TAU);
+          dist = random(1);
         } if(type == GRAVITY) {
           for(Spot s : spot_list) {
             theta = theta_2D(Vec2(x,y),Vec2(s.get_pos()));
           }          
         }
         // Polar to cartesian coordinate
-        field[x][y] = Vec4(cos(theta),sin(theta),0,0); 
-        // field[x][y] = Vec2(cos(theta),sin(theta)); 
+        field[x][y] = Vec4(cos(theta),sin(theta),0,dist); 
         sum_activities += field[x][y].sum() ;     
         yoff += .1;
+        woff += .1;
       }
       xoff += .1;
     }
@@ -573,9 +570,23 @@ public class Force_field implements Rope_Constants {
     } else if(type == MAGNETIC) {
       manage_list_mag();
       update_magnetic_field();
-    }   
+    } else {
+      update_classic_field();
+
+    }  
   }
   
+  // update classic field texture
+  private void update_classic_field() {
+    sum_activities = 0 ;
+    for (int x = 0; x < cols ; x++) {
+      for (int y = 0; y < rows ; y++) {
+        Vec2 flow = Vec2(field[x][y].x,field[x][y].y).mult(field[x][y].w);
+        convert_force_field_to_texture(x,y,flow.x,flow.y);
+        sum_activities += field[x][y].sum() ;
+      }
+    }
+  }
 
 
   // update stable fluid
@@ -593,7 +604,6 @@ public class Force_field implements Rope_Constants {
           float dw = 0 ;
           field[x][y] = Vec4(dx,dy,dz,dw);
           convert_force_field_to_texture(x,y,dx,dy);
-
           sum_activities += field[x][y].sum() ;
         }
       }
@@ -610,9 +620,7 @@ public class Force_field implements Rope_Constants {
       for (int y = 0; y < rows ; y++) {
         Vec2 flow = flow(Vec2(x,y), Vec2(field[x][y].x,field[x][y].y), spot_list);
         field[x][y] = Vec4(flow.x,flow.y,0,0);
-        // field[x][y] = flow(Vec2(x,y), field[x][y], spot_list);
         convert_force_field_to_texture(x,y,field[x][y].x,field[x][y].y);
-
         sum_activities += field[x][y].sum() ;
       }
     }
@@ -626,9 +634,7 @@ public class Force_field implements Rope_Constants {
       for (int y = 0; y < rows ; y++) {
         Vec2 flow = flow(Vec2(x,y), Vec2(field[x][y].x,field[x][y].y), spot_list);
         field[x][y] = Vec4(flow.x,flow.y,0,0);
-        // field[x][y] = flow(Vec2(x,y), field[x][y], spot_list);
         convert_force_field_to_texture(x,y,field[x][y].x,field[x][y].y);
-
         sum_activities += field[x][y].sum();        
       }
     }
@@ -647,12 +653,6 @@ public class Force_field implements Rope_Constants {
     float dir_rad = atan2(vx,vy) ;
     float direction = map(dir_rad, -PI, PI, 0, g.colorModeX);
     int colour_dir = color(direction);
-    /*
-    if(frameCount%30 == 0) {
-     //println(frameCount, dir_rad, direction);
-     println("velocity", velocity);
-    }
-    */
     texture_direction.set(x,y,colour_dir);
   }
   

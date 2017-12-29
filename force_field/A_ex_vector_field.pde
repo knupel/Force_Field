@@ -19,8 +19,8 @@ void show_force_field(Force_field ff, float scale, boolean show_intensity_is) {
         Vec2 pos = Vec2(x *ff.get_resolution(), y *ff.get_resolution());
         pos.add(offset);
         Vec2 dir = Vec2(ff.field[x][y].x,ff.field[x][y].y);
+        if(ff.type != r.MAGNETIC && ff.type != r.FLUID && ff.type != r.GRAVITY) dir.mult(ff.field[x][y].w);
         pattern_force_field(dir, pos, ff.resolution *scale, show_intensity_is);
-        // pattern_force_field(ff.field[x][y], pos, ff.resolution *scale, show_intensity_is);
       }
     }
   }  

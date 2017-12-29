@@ -10,8 +10,26 @@ float freq_ff;
 float visc_ff;
 float diff_ff;
 
+
+int which_ff = 0 ;
 void change_type_ff() {
-  if(get_type_ff() == r.MAGNETIC) type_field = r.FLUID ; else type_field = r.MAGNETIC;
+
+  which_ff += 1 ;
+  if(which_ff > 4) which_ff = 0 ;
+
+  if(which_ff == 0 ) {
+    type_field = r.PERLIN ;
+  } else if(which_ff == 1) {
+    type_field = r.CHAOS;
+  } else if(which_ff == 2) {
+    type_field = r.FLUID;
+  } else if(which_ff == 3) {
+    type_field = r.MAGNETIC;
+  } else if(which_ff == 4) {
+    type_field = r.GRAVITY;
+  }
+
+  // if(get_type_ff() == r.MAGNETIC) type_field = r.FLUID ; else type_field = r.MAGNETIC;
   force_field_init_is = false ;
   build_ff(type_field, get_resultion_ff());
   num_spot_ff(get_spot_num_ff());
@@ -238,10 +256,11 @@ CLASSIC FIELD, like CHAOS, PERLIN
 */
 void update_ff_classic() {
   force_field.update();
-
+/*
   float angle = map(mouseY, 0,height, -PI, PI) ;
   float force = map(mouseX, 0,width, 0, 4) ;
   force_field.wind(angle,force);
+  */
 }
 
 
