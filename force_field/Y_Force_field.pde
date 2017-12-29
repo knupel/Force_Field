@@ -30,7 +30,8 @@ At this moment the force field is available only in 2D mode
 
 public class Force_field implements Rope_Constants {
 
-  private Vec2[][] field;
+  // private Vec2[][] field;
+  private Vec4[][] field;
   private PImage texture_velocity;
   private PImage texture_direction;
 
@@ -129,7 +130,8 @@ public class Force_field implements Rope_Constants {
     set_canvas(iVec2(resolution/2 +canvas_pos.x, resolution/2 +canvas_pos.y), iVec2(img.width,img.height));
     cols = canvas.x/resolution;
     rows = canvas.y/resolution;
-    field = new Vec2[cols][rows];
+    field = new Vec4[cols][rows];
+    // field = new Vec2[cols][rows];
 
     init_texture(cols,rows);
 
@@ -150,7 +152,8 @@ public class Force_field implements Rope_Constants {
   }
 
   private void init_field() {
-    field = new Vec2[cols][rows];
+    field = new Vec4[cols][rows];
+    // field = new Vec2[cols][rows];
     set_field(CHAOS);
   }
 
@@ -444,7 +447,8 @@ public class Force_field implements Rope_Constants {
 
         float theta = map(sort, 0, g.colorModeZ, 0, TAU);
         // Polar to cartesian coordinate
-        field[x][y] = Vec2(cos(theta),sin(theta));  
+        field[x][y] = Vec4(cos(theta),sin(theta),0,0); 
+        // field[x][y] = Vec2(cos(theta),sin(theta));   
         sum_activities += field[x][y].sum() ;
       }
     }
@@ -477,7 +481,8 @@ public class Force_field implements Rope_Constants {
           }          
         }
         // Polar to cartesian coordinate
-        field[x][y] = Vec2(cos(theta),sin(theta)); 
+        field[x][y] = Vec4(cos(theta),sin(theta),0,0); 
+        // field[x][y] = Vec2(cos(theta),sin(theta)); 
         sum_activities += field[x][y].sum() ;     
         yoff += .1;
       }
@@ -517,7 +522,8 @@ public class Force_field implements Rope_Constants {
   private void reset_force_field() {
     for (int x = 0; x < cols ; x++) {
       for (int y = 0; y < rows ; y++) {
-        field[x][y] = Vec2(0);
+        //field[x][y] = Vec2(0);
+        field[x][y] = Vec4(0);
         if(type == FLUID) {
           ns_2D.set_dx(x,y,0);
           ns_2D.set_dy(x,y,0);
@@ -582,7 +588,10 @@ public class Force_field implements Rope_Constants {
         for(int y = 0 ; y < ns.get_NY() ; y++) {
           float dx = ns.get_dx(x,y);
           float dy = ns.get_dy(x,y);
-          field[x][y] = Vec2(dx,dy);
+          // dz and dw serve to nothing in this case
+          float dz = 0 ;
+          float dw = 0 ;
+          field[x][y] = Vec4(dx,dy,dz,dw);
           convert_force_field_to_texture(x,y,dx,dy);
 
           sum_activities += field[x][y].sum() ;
@@ -599,7 +608,9 @@ public class Force_field implements Rope_Constants {
     sum_activities = 0 ;
     for (int x = 0; x < cols ; x++) {
       for (int y = 0; y < rows ; y++) {
-        field[x][y] = flow(Vec2(x,y), field[x][y], spot_list);
+        Vec2 flow = flow(Vec2(x,y), Vec2(field[x][y].x,field[x][y].y), spot_list);
+        field[x][y] = Vec4(flow.x,flow.y,0,0);
+        // field[x][y] = flow(Vec2(x,y), field[x][y], spot_list);
         convert_force_field_to_texture(x,y,field[x][y].x,field[x][y].y);
 
         sum_activities += field[x][y].sum() ;
@@ -613,7 +624,9 @@ public class Force_field implements Rope_Constants {
     sum_activities = 0 ;
     for (int x = 0; x < cols ; x++) {
       for (int y = 0; y < rows ; y++) {
-        field[x][y] = flow(Vec2(x,y), field[x][y], spot_list);
+        Vec2 flow = flow(Vec2(x,y), Vec2(field[x][y].x,field[x][y].y), spot_list);
+        field[x][y] = Vec4(flow.x,flow.y,0,0);
+        // field[x][y] = flow(Vec2(x,y), field[x][y], spot_list);
         convert_force_field_to_texture(x,y,field[x][y].x,field[x][y].y);
 
         sum_activities += field[x][y].sum();        
@@ -1030,7 +1043,8 @@ public class Force_field implements Rope_Constants {
           }        
         } else {
           // In most part of the cases
-          dir = field[x][y].copy();
+          // dir = field[x][y].copy();
+          dir = Vec2(field[x][y].x,field[x][y].y);
         } 
       }
     }
