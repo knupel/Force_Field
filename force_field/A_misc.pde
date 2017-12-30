@@ -3,19 +3,29 @@ void diaporama(int tempo_diaporama) {
 }
 
 void diaporama(int type, int tempo_diaporama) {
-  if(warp.library_size() > 1 && diap_is) {
-    if(frameCount%tempo_diaporama == 0 ) {
+  if(warp.library_size() > 1 && diaporama_is) {
+    if(frameCount%tempo_diaporama == 0) {
       tempo_diaporama = int(random(240,1200));
       if(type == r.CHAOS) {
         which_img = floor(random(warp.library_size()));
-      } else which_img++;
+        if(which_img >= warp.library_size()) {
+          // 0 is the surface g, not a media loaded
+          which_img = 1; 
+        }
+      } else{
+        which_img++;
+        if(which_img >= warp.library_size()) {
+          // 0 is the surface g, not a media loaded
+          which_img = 1; 
+        }
+      }
     }
   }  
 }
 
-boolean diap_is ;
+boolean diaporama_is ;
 void diaporama_is() {
-  diap_is = (true)? !diap_is  : diap_is ;
+  diaporama_is = (true)? !diaporama_is : diaporama_is ;
 }
 
 

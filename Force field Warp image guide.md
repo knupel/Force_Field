@@ -21,6 +21,12 @@ void select_image(int which_img);
 PImage get_image();
 >return the current image used to make a warpep effect
 
+String get_name();
+>return String name of the current warp image
+
+String get_name(int target);
+>return String name of the target warp image
+
 int image_bank_length() 
 
 

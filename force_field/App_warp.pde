@@ -12,7 +12,6 @@ void warp_setup() {
   ref_warp_h = height;
   surface_g = "surface g";
   warp.load_shader();
-  warp_instruction(); 
 }
 
 /**
@@ -245,18 +244,7 @@ void warp_post_effect_test() {
 
 
 
-/**
-instruction
-*/
-void warp_instruction() {
-  textAlign(CENTER);
-  background(255);
-  fill(0) ;
-  int text_size = 12 ;
-  textSize(text_size);
-  text("PRESS 'N' TO SELECT MEDIA FOLDER", width/2, height/2);
-  text("PRESS 'V' TO SELECT CAMERA", width/2, height/2 +(text_size *1.5));
-}
+
 
 
 

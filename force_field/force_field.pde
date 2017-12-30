@@ -18,16 +18,14 @@ Stable fluids from Jos Stam's work on the Navier-Stokes equation
 boolean pause_is ;
 boolean use_leapmotion = false;
 
-boolean fullScreen_is = false;
+boolean fullScreen_is = true;
 boolean change_size_window_is = false;
 
 PGraphics pg ;
 
-
 int type_field;
 
 int which_cam = 0 ; // 0 is the camera fullsize / max frameRate by default if there is camera plug is the external cam is catch
-
 
 // Using this variable to decide whether to draw all the stuff
 void settings() {
@@ -40,13 +38,11 @@ void settings() {
     // size(1900,1200,P2D); // 2 recopie écran macbook
   }
   set_cell_grid_ff(10);
-
   // type_field = r.FLUID;
-
-//   type_field = r.GRAVITY; /* you can also use HOLE constant */
-// type_field = r.MAGNETIC;
- type_field = r.PERLIN;
-// type_field = r.CHAOS;
+  //  type_field = r.GRAVITY; /* you can also use HOLE constant */
+  // type_field = r.MAGNETIC;
+  type_field = r.PERLIN;
+  // type_field = r.CHAOS;
 }
 
 
@@ -95,7 +91,8 @@ void setup() {
   build_vehicle(num_vehicle);
   */
   set_info(false);
-  interface_setup(Vec2(0), Vec2(200,height));
+  interface_setup(Vec2(0), Vec2(220,height));
+  warp_instruction(); 
 }
 
 
@@ -164,12 +161,12 @@ void draw() {
   // reset_force_field();
   interface_update();
   interface_value();
-  interface_display(Vec2(0), Vec2(200,height),use_leapmotion);
+  interface_display(use_leapmotion, force_field);
   if(!ff_is()) {
     println("new force field grid, with cell size:", get_size_cell_ff());
     init_ff(get_type_ff(),get_size_cell_ff(),g);
   }
-  
+
   cursor_manager(interface_is());
 
   diaporama(240);
@@ -246,8 +243,6 @@ void force_field_spot_condition_leapmotion() {
     for(int i = 0 ; i < bool.length ; i++) {
       bool[i] = false ;
     }
-    // if(mousePressed && mouseButton == LEFT) bool_1 = true ;
-    // if(mousePressed && mouseButton == RIGHT) bool_2 = true ;
     if(finger.is()) {
       for(int i = 0 ; i < finger.get_num() && i < get_spot_num_ff() ; i++) {
         if(finger.visible()[i]) bool[i] = true ; else bool[i] = false ;

@@ -34,16 +34,17 @@ public class Force_field implements Rope_Constants {
   private PImage texture_velocity;
   private PImage texture_direction;
 
-  private float mass_field = 1. ;
+  private float mass_field = 1.;
 
+  private ArrayList<Vec> spot_fluid_pos_ref;
   private ArrayList<Boolean> reset_ref_spot_pos_list_is;
-  private ArrayList<Spot> spot_list ;
+  private ArrayList<Spot> spot_list;
 
-  private ArrayList<Spot> spot_mag_north_list ;
-  private ArrayList<Spot> spot_mag_south_list ;
-  private ArrayList<Spot> spot_mag_neutral_list ;
+  private ArrayList<Spot> spot_mag_north_list;
+  private ArrayList<Spot> spot_mag_south_list;
+  private ArrayList<Spot> spot_mag_neutral_list;
 
-  private iVec2 canvas, canvas_pos ;
+  private iVec2 canvas, canvas_pos;
   private int cols, rows; // Columns and Rows
   private int resolution; // How large is each "cell" of the flow field
 
@@ -57,16 +58,16 @@ public class Force_field implements Rope_Constants {
   private float diffusion = .01;
   private float limit_vel = 100.;
 
-  private int type = PERLIN ;
-  private boolean border_is = false ;
+  private int type = PERLIN;
+  private boolean border_is = false;
 
-  private float calm = 1 ;
+  private float calm = 1;
 
-  private boolean reverse_is ;
+  private boolean reverse_is;
 
-  private float sum_activities ;
+  private float sum_activities;
 
-  boolean is ;
+  boolean is;
 
 
 
@@ -1142,41 +1143,32 @@ public class Force_field implements Rope_Constants {
 
 
 
-
-  private ArrayList<Vec2> spot_fluid_pos_ref_2D;
-  private ArrayList<Vec3> spot_fluid_pos_ref_3D;
-
   private void update_fluid_spot_ref(Navier_Stokes n, Vec pos_ref, int which_one) {
-    if(n instanceof Navier_Stokes_2D) {
-      // init list if necessary
-      if(spot_fluid_pos_ref_2D == null) {
-        spot_fluid_pos_ref_2D = new ArrayList<Vec2>();
-      }
-      // rebuilt ref list if necessary, in case the spot num change
-      if(spot_fluid_pos_ref_2D.size() != spot_list.size()) {
-        spot_fluid_pos_ref_2D.clear();
-        for(Spot s : spot_list) {
-          Vec2 pos = Vec2(s.get_pos().x, s.get_pos().y);
-          spot_fluid_pos_ref_2D.add(pos);
-        }
-      }
-      // update ref
-      spot_fluid_pos_ref_2D.set(which_one, Vec2(pos_ref));
-    } else if(n instanceof Navier_Stokes_3D) {
-      // 
-
+    // init
+    if(spot_fluid_pos_ref == null) {
+      spot_fluid_pos_ref = new ArrayList<Vec>();
     }
-    
+    // rebuilt ref list if necessary, in case the spot num change
+    if(spot_fluid_pos_ref.size() != spot_list.size()) {
+      spot_fluid_pos_ref.clear();
+      for(Spot s : spot_list) {
+        Vec pos = Vec2(s.get_pos());
+        spot_fluid_pos_ref.add(pos);
+      }
+    }
+
+    if(n instanceof Navier_Stokes_2D) {
+      spot_fluid_pos_ref.set(which_one, Vec2(pos_ref));
+    } else if(n instanceof Navier_Stokes_3D) {
+      spot_fluid_pos_ref.set(which_one, Vec3(pos_ref));
+    }   
   }
 
 
-  private Vec2 get_spot_fluid_ref_2D(int which_one) {
-    return spot_fluid_pos_ref_2D.get(which_one);
+  private Vec get_spot_fluid_ref(int which_one) {
+    return spot_fluid_pos_ref.get(which_one);
   }
 
-    private Vec3 get_spot_fluid_ref_3D(int which_one) {
-    return spot_fluid_pos_ref_3D.get(which_one);
-  }
 
 
   /**
@@ -1184,7 +1176,7 @@ public class Force_field implements Rope_Constants {
   */
   /**
   update_fluid_spot
-  v 0.2.0
+  v 0.2.1
   */
   private void update_fluid_spot(Navier_Stokes n, Vec spot_pos, int which_one) {
     if(n instanceof Navier_Stokes_2D) {
@@ -1209,8 +1201,8 @@ public class Force_field implements Rope_Constants {
   
   private void update_fluid_spot_2D(Navier_Stokes_2D ns, Vec2 target, Vec2 canvas, Vec2 canvas_pos, int which_one) {
     Vec2 pos_ref_2D = Vec2();
-    if(spot_fluid_pos_ref_2D != null || reset_ref_spot_pos_list_is.get(which_one)) {
-      pos_ref_2D = get_spot_fluid_ref_2D(which_one).copy();
+    if(spot_fluid_pos_ref != null || reset_ref_spot_pos_list_is.get(which_one)) {
+      pos_ref_2D = Vec2(get_spot_fluid_ref(which_one));
       reset_ref_spot_pos_list_is.set(which_one,false);
     } 
     

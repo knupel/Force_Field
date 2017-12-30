@@ -1,6 +1,6 @@
 /**
 Warp Image
-v 0.2.2
+v 0.3.0
 */
 
 class Warp {
@@ -52,8 +52,15 @@ class Warp {
   }
 
 
+  /**
+  get
+  */
   public String get_name(int target) {
     return img_manager.get_name(target) ;
+  }
+
+  public String get_name() {
+    return img_manager.get_name() ;
   }
 
   public int get_width() {

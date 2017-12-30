@@ -3,7 +3,7 @@ ROPE - Romanesco processing environment –
 * Copyleft (c) 2014-2017 
 * Stan le Punk > http://stanlepunk.xyz/
 Rope UTILS  2015 – 2017
-v 1.37.0
+v 1.37.1
 Rope – Romanesco Processing Environment – 
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Rope
@@ -483,7 +483,7 @@ v 0.5.0
 
 /**
 PImage manager library
-v 0.4.0
+v 0.4.1
 */
 class ROPImage_Manager {
   ArrayList<ROPImage> library ;
@@ -583,11 +583,19 @@ class ROPImage_Manager {
     }
   }
 
+  public String get_name() {
+    return get_name(which_img);
+  }
+
   public String get_name(int target) {
-    if(library.size() > 0) {
-      return library.get(target).get_name() ;
+    if(library != null && library.size() > 0) {
+      if(target < library.size()) {
+        return library.get(target).get_name() ;
+      } else return null ;
     } else return null ;
   }
+
+
 
   public int get_rank(String target_name) {
     if(library.size() > 0) {
@@ -603,6 +611,7 @@ class ROPImage_Manager {
     } else return -1;
   }
 
+
   public PImage get() {
     if(library != null && library.size() > 0 ) {
       if(which_img < library.size()) return library.get(which_img).img; 
@@ -611,7 +620,7 @@ class ROPImage_Manager {
   }
 
   public PImage get(int target){
-    if(target < library.size()) {
+    if(library != null && target < library.size()) {
       return library.get(target).img;
     } else return null;
   }
