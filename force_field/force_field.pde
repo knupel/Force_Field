@@ -169,9 +169,10 @@ void draw() {
     println("new force field grid, with cell size:", get_size_cell_ff());
     init_ff(get_type_ff(),get_size_cell_ff(),g);
   }
+  
   cursor_manager(interface_is());
 
-  diaporama(r.CHAOS);
+  diaporama(240);
 }
 /**
 END DRAW
@@ -385,6 +386,8 @@ void keyPressed() {
   if(key == 'b') manage_border();
 
   if(key == 'c') hide_interface();
+
+  if(key == 'd') diaporama_is();
 
   if(key == 'f') display_field();
 

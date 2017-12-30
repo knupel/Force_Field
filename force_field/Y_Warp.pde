@@ -3,7 +3,6 @@ Warp Image
 v 0.2.2
 */
 
-
 class Warp {
   private PImage buffer_img;
   private PGraphics pg;
@@ -13,7 +12,6 @@ class Warp {
   private ROPImage_Manager img_manager ;
 
   private boolean reset_img ;
-
 
   private PShader rope_warp_shader, rope_warp_blur;
 
@@ -102,6 +100,9 @@ class Warp {
     shader_warp_filter = filter_is ;
   }
 
+   // int mode = 0; // default mode is rendering
+   // mode = 500 ; // velocity mode
+   // mode = 501 ; // direction mode
   public void shader_mode(int which_mode) {
     shader_warp_mode = which_mode;
   }
@@ -213,9 +214,9 @@ class Warp {
     // to show texture used to warp the image
     boolean show_tex_is = false;
     if(show_tex_is) {
-      int pos_x = ff.direction_texture().width;
-      image(ff.velocity_texture());
-      image(ff.direction_texture(),pos_x,0);
+      int pos_x = ff.get_tex_direction().width;
+      image(ff.get_tex_velocity());
+      image(ff.get_tex_direction(),pos_x,0);
       if(pass2 != null) image(pass2,pos_x*2,0);
     } 
   }
@@ -392,13 +393,11 @@ class Warp {
       if (refresh_image_is) {
         result.beginDraw();
         if(refresh_mix_is) mix(result, buffer, inc, warp_img_refresh);
-        // 
         if(refresh_multiply_is) multiply(result,buffer,inc,refresh_multiply_value);
         if(refresh_overlay_is) overlay(result,buffer,inc,refresh_overlay_value);
         result.endDraw();
       }
       image(result);
-      // result.resetShader();
       result.beginDraw();
       warp_image_graphic_processor(result,inc,ff,intensity);
       if(effect_multiply_is) {
@@ -410,7 +409,6 @@ class Warp {
        overlay(result, result, result, effect_overlay_value);
       }
       result.endDraw();  
-      //result.resetShader();
     }
 
     // CPU: Computer Processor Unit rendering
@@ -423,8 +421,6 @@ class Warp {
       result.endDraw();
       image(result);  
     }
-    
-    //resetShader() ;
   }
 
 
@@ -444,15 +440,12 @@ class Warp {
   */
   // void warp_image_graphic_processor(PGraphics result, PImage tex, PImage inc, Vec4 ratio, Force_field ff, float intensity) {
   private void warp_image_graphic_processor(PGraphics result, PImage tex, Force_field ff, float intensity) {
-    float grid_w = ff.velocity_texture().width;
-    float grid_h = ff.velocity_texture().height;
+    float grid_w = ff.get_tex_velocity().width;
+    float grid_h = ff.get_tex_velocity().height;
 
-    PImage tex_dir_blur = ff.direction_texture().copy();
+    PImage tex_dir_blur = ff.get_tex_direction().copy();
     smooth_texture(int(grid_w), int(grid_h), tex_dir_blur);
    
-   //  int mode = 0; // default mode is rendering
-   // mode = 500 ; // velocity mode
-   // mode = 501 ; // direction mode
     rope_warp_shader.set("mode",shader_warp_mode);
     rope_warp_shader.set("intensity",intensity);
 
@@ -460,7 +453,7 @@ class Warp {
     rope_warp_shader.set("wh_renderer_ratio",1f/result.width, 1f/result.height);
 
     rope_warp_shader.set("texture",tex);
-    rope_warp_shader.set("vel_texture",ff.velocity_texture());
+    rope_warp_shader.set("vel_texture",ff.get_tex_velocity());
     rope_warp_shader.set("dir_texture",pass2);
     rope_warp_shader.set("filter_is",shader_warp_filter); // need give the commande to reverse the y axis in the glsl frag
 

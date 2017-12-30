@@ -10,6 +10,9 @@ key b
 key c 
 > INTERFACE : display or not the interface
 
+key d 
+> INTERFACE : used diaporama, by default the diaporama is off
+
 key f 
 > FORCE FIELD: display force field
 

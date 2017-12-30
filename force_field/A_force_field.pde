@@ -219,9 +219,11 @@ void update_ff() {
   WHAT IS IT force_field.reverse_is(true) ??????
 
   */
+  /*
   if(keyPressed) {
     if(key == ' ') force_field.reverse_is(true);
   }
+  */
   
 
   // update spot if there is no coord in the list

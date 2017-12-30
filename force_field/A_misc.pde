@@ -1,15 +1,30 @@
-int tempo_diaporama = 240 ;
-void diaporama(int type) {
-  if(warp.library_size() > 1) {
+void diaporama(int tempo_diaporama) {
+  diaporama(Integer.MAX_VALUE, tempo_diaporama);
+}
+
+void diaporama(int type, int tempo_diaporama) {
+  if(warp.library_size() > 1 && diap_is) {
     if(frameCount%tempo_diaporama == 0 ) {
       tempo_diaporama = int(random(240,1200));
-      if(type == r.CHAOS) which_img = floor(random(warp.library_size()));
+      if(type == r.CHAOS) {
+        which_img = floor(random(warp.library_size()));
+      } else which_img++;
     }
   }  
 }
 
+boolean diap_is ;
+void diaporama_is() {
+  diap_is = (true)? !diap_is  : diap_is ;
+}
 
 
+
+
+
+/**
+cursor manager
+*/
 void cursor_manager(boolean display) {
   if(display) {
     Vec2 pos = Vec2(mouseX,mouseY);

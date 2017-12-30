@@ -55,6 +55,12 @@ int get_resolution();
 
 int get_type();
 
+PImage get_tex_velocity();
+>return black and white image of the velocity
+
+PImage get_tex_direction();
+>return black and white image of the direction
+
 
 
 Set

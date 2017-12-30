@@ -2,7 +2,7 @@
 Force Field
 refactoring by Stan le Punk
 http://stanlepunk.xyz/
-v 1.4.0
+v 1.4.1
 */
 /**
 Run on Processing 3.3.6
@@ -36,7 +36,7 @@ public class Force_field implements Rope_Constants {
 
   private float mass_field = 1. ;
 
-  private ArrayList<Boolean> reset_ref_spot_position_list;
+  private ArrayList<Boolean> reset_ref_spot_pos_list_is;
   private ArrayList<Spot> spot_list ;
 
   private ArrayList<Spot> spot_mag_north_list ;
@@ -155,7 +155,7 @@ public class Force_field implements Rope_Constants {
 
   private void init_spot() {
     spot_list = new ArrayList<Spot>();
-    reset_ref_spot_position_list = new ArrayList<Boolean>();
+    reset_ref_spot_pos_list_is = new ArrayList<Boolean>();
 
     if(this.type == MAGNETIC) {
       spot_mag_north_list = new ArrayList<Spot>();
@@ -169,7 +169,7 @@ public class Force_field implements Rope_Constants {
       Spot spot = new Spot() ;
       spot_list.add(spot);
       boolean bool = false ;
-      reset_ref_spot_position_list.add(bool);
+      reset_ref_spot_pos_list_is.add(bool);
     }
   }
 
@@ -177,23 +177,7 @@ public class Force_field implements Rope_Constants {
     Spot spot = new Spot() ;
     spot_list.add(spot) ;
     boolean bool = false ;
-    reset_ref_spot_position_list.add(bool);
-  }
-
-  private void manage_list_mag() {
-    int total_sub_list = spot_mag_north_list.size() + spot_mag_south_list.size() + spot_mag_neutral_list.size() ;
-    if(total_sub_list < spot_list.size()) {
-      for(Spot s : spot_list) {
-        if(s.get_tesla() > 0 && total_sub_list < spot_list.size()) {
-          spot_mag_north_list.add(s) ;
-          total_sub_list++ ;
-        }
-        if(s.get_tesla() < 0 && total_sub_list < spot_list.size()) {
-          spot_mag_south_list.add(s) ;
-          total_sub_list++ ;
-        }
-      }
-    }  
+    reset_ref_spot_pos_list_is.add(bool);
   }
 
 
@@ -492,7 +476,7 @@ public class Force_field implements Rope_Constants {
   v 0.1.0
   */
   public void clear_spot() {
-    if(reset_ref_spot_position_list != null) reset_ref_spot_position_list.clear();
+    if(reset_ref_spot_pos_list_is != null) reset_ref_spot_pos_list_is.clear();
     if(spot_list != null) spot_list.clear();
     if(spot_mag_north_list != null) spot_mag_north_list.clear();
     if(spot_mag_south_list != null) spot_mag_south_list.clear();
@@ -501,11 +485,11 @@ public class Force_field implements Rope_Constants {
   }
 
   public void ref_spot(int which_one) {
-    reset_ref_spot_position_list.set(which_one,true);
+    reset_ref_spot_pos_list_is.set(which_one,true);
   }
 
   public void ref_spot() {
-    reset_ref_spot_position_list.set(0,true);
+    reset_ref_spot_pos_list_is.set(0,true);
   }
 
 
@@ -558,17 +542,13 @@ public class Force_field implements Rope_Constants {
   */
   public void update() {
     if(type == FLUID) {
-      int which_one = 0 ;
-      for(Spot s : spot_list) {
-        update_fluid_spot(ns_2D, s.get_pos(), which_one);
-        which_one++;
-      }
+      manage_spot_fluid();
       ns_2D.update(frequence, viscosity, diffusion) ;
       update_fluid_field(ns_2D);
     } else if(type == GRAVITY) {
       update_gravity_field();
     } else if(type == MAGNETIC) {
-      manage_list_mag();
+      manage_spot_mag();
       update_magnetic_field();
     } else {
       update_classic_field();
@@ -716,18 +696,19 @@ public class Force_field implements Rope_Constants {
 
 
   /**
-  get velocity texture
+  get velocity and direction texture
+  get texture can be used externaly
   */
-  PImage velocity_texture() {
+  public PImage get_tex_velocity() {
     return texture_velocity;
   }
 
-    /**
-  get direction texture
-  */
-  PImage direction_texture() {
+  public PImage get_tex_direction() {
     return texture_direction;
   }
+
+
+
 
   /**
   get activity
@@ -739,7 +720,7 @@ public class Force_field implements Rope_Constants {
   * @param float threshold is tolerance to start if there is an activity who can interest the rest of the world !
   */
   public boolean activity_is(float threshold) {
-    if(sum_activities < threshold  && sum_activities > -threshold) return false ; else return true ;
+    if(sum_activities < threshold && sum_activities > -threshold) return false ; else return true ;
   }
   /**
   * get_activity(), return true if the Force field is not equal to 0
@@ -1129,12 +1110,73 @@ public class Force_field implements Rope_Constants {
 
 
 
+  /**
+  update spot
+  */
+  private void manage_spot_mag() {
+    int total_sub_list = spot_mag_north_list.size() + spot_mag_south_list.size() + spot_mag_neutral_list.size() ;
+    if(total_sub_list < spot_list.size()) {
+      for(Spot s : spot_list) {
+        if(s.get_tesla() > 0 && total_sub_list < spot_list.size()) {
+          spot_mag_north_list.add(s) ;
+          total_sub_list++ ;
+        }
+        if(s.get_tesla() < 0 && total_sub_list < spot_list.size()) {
+          spot_mag_south_list.add(s) ;
+          total_sub_list++ ;
+        }
+      }
+    }  
+  }
+
+
+  private void manage_spot_fluid() {
+    int which_one = 0 ;
+    for(Spot s : spot_list) {
+      update_fluid_spot(ns_2D, s.get_pos(), which_one);
+      update_fluid_spot_ref(ns_2D, s.get_pos(), which_one);
+      which_one++;
+    }
+  }
 
 
 
 
 
+  private ArrayList<Vec2> spot_fluid_pos_ref_2D;
+  private ArrayList<Vec3> spot_fluid_pos_ref_3D;
 
+  private void update_fluid_spot_ref(Navier_Stokes n, Vec pos_ref, int which_one) {
+    if(n instanceof Navier_Stokes_2D) {
+      // init list if necessary
+      if(spot_fluid_pos_ref_2D == null) {
+        spot_fluid_pos_ref_2D = new ArrayList<Vec2>();
+      }
+      // rebuilt ref list if necessary, in case the spot num change
+      if(spot_fluid_pos_ref_2D.size() != spot_list.size()) {
+        spot_fluid_pos_ref_2D.clear();
+        for(Spot s : spot_list) {
+          Vec2 pos = Vec2(s.get_pos().x, s.get_pos().y);
+          spot_fluid_pos_ref_2D.add(pos);
+        }
+      }
+      // update ref
+      spot_fluid_pos_ref_2D.set(which_one, Vec2(pos_ref));
+    } else if(n instanceof Navier_Stokes_3D) {
+      // 
+
+    }
+    
+  }
+
+
+  private Vec2 get_spot_fluid_ref_2D(int which_one) {
+    return spot_fluid_pos_ref_2D.get(which_one);
+  }
+
+    private Vec3 get_spot_fluid_ref_3D(int which_one) {
+    return spot_fluid_pos_ref_3D.get(which_one);
+  }
 
 
   /**
@@ -1161,29 +1203,19 @@ public class Force_field implements Rope_Constants {
   }
 
 
-  private Vec2 pos_ref_2D;
-  private Vec3 pos_ref_3D;
 
-  private void pos_fluid_spot_ref(Vec pos_ref) {
-    if(pos_ref_2D == null) {
-      pos_ref_2D = Vec2(pos_ref);
-    } else {
-      pos_ref_2D.set(pos_ref);
-    }
-    if(pos_ref_3D == null) {
-      pos_ref_3D = Vec3(pos_ref);
-    } else {
-      pos_ref_3D.set(pos_ref);
-    }
-  }
+
+
   
   private void update_fluid_spot_2D(Navier_Stokes_2D ns, Vec2 target, Vec2 canvas, Vec2 canvas_pos, int which_one) {
-    if(pos_ref_2D == null || reset_ref_spot_position_list.get(which_one)) {
-      pos_fluid_spot_ref(target);
-      reset_ref_spot_position_list.set(which_one,false);
+    Vec2 pos_ref_2D = Vec2();
+    if(spot_fluid_pos_ref_2D != null || reset_ref_spot_pos_list_is.get(which_one)) {
+      pos_ref_2D = get_spot_fluid_ref_2D(which_one).copy();
+      reset_ref_spot_pos_list_is.set(which_one,false);
     } 
     
     Vec2 vel = sub(target, pos_ref_2D);
+
     Vec2 cell = canvas.div(ns.get_NX(),ns.get_NY());
     iVec2 target_cell = floor(div(target,cell));
 
@@ -1194,15 +1226,16 @@ public class Force_field implements Rope_Constants {
     Math.signum(vel.y) *limit_vel : 
     vel.y;
     ns.apply_force(target_cell.x, target_cell.y, vel.x, vel.y);
-
-    pos_fluid_spot_ref(target);
   }
   
   private void update_fluid_spot_3D(Navier_Stokes_3D ns, Vec3 target, Vec3 canvas, Vec3 canvas_pos, int which_one) {
-    if(pos_ref_3D == null || reset_ref_spot_position_list.get(which_one)) {
+    Vec3 pos_ref_3D = Vec3();
+    /*
+    if(pos_ref_3D == null || reset_ref_spot_pos_list_is.get(which_one)) {
       pos_fluid_spot_ref(target);
-      reset_ref_spot_position_list.set(which_one,false);
+      reset_ref_spot_pos_list_is.set(which_one,false);
     } 
+    */
 
     Vec3 cell = canvas.div(ns.get_N());
     Vec3 vel = sub(target, pos_ref_3D);
@@ -1222,6 +1255,9 @@ public class Force_field implements Rope_Constants {
 
     pos_ref_3D.set(target);
   }
+
+
+
   /**
   end Navier-stokes method
   */
