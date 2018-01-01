@@ -8,11 +8,12 @@ Constructor
 --
 Force_field(int resolution, iVec2 canvas_pos, iVec2 canvas, int type);
 
-Force_field(int resolution, iVec2 canvas_pos, PImage img, int component_sorting);
+Force_field(int resolution, iVec2 canvas_pos, PImage img, int component_sorting_color_velocity);
+component_sorting_color_velocity can be RED, GREEN, BLUE, HUE, SATURATION, BRIGHTNESS or ALPHA
 
 constructor arguments
 --
-to define the type of force field, you must use constants : FLUID, CHAOS, PERLIN, HOLE, MAGNETIC
+to define the type of force field, you must use constants : FLUID, CHAOS, PERLIN, GRAVITY, MAGNETIC
 
 
 
@@ -145,8 +146,9 @@ void reset();
 void refresh();
 >rebuild the vector field, not available for the Force field of type FLUID, HOLE and IMAGE
 
-void refresh(PImage img, int component_sorting);
+void refresh(PImage img, int component_sorting_color_direction, int component_sorting_color_velocity);
 >rebuild the vector field of type IMAGE
+component_sorting_color_velocity can be RED, GREEN, BLUE, HUE, SATURATION, BRIGHTNESS or ALPHA
 
 
 

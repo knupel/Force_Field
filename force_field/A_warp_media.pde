@@ -134,7 +134,7 @@ Movie get_movie_warp(int target) {
 
 
 
-/*
+/**
 we don't use 0 to the first element of the array because this one is use for G / surface
 see void warp_init(int type_field, int size_cell) 
 */

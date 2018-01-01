@@ -15,24 +15,31 @@ int which_ff = 0 ;
 void change_type_ff() {
 
   which_ff += 1 ;
-  if(which_ff > 4) which_ff = 0 ;
+  if(which_ff > 5) which_ff = 0 ;
 
   if(which_ff == 0 ) {
-    type_field = r.PERLIN ;
+    type_field = IMAGE ;
   } else if(which_ff == 1) {
-    type_field = r.CHAOS;
+    type_field = r.PERLIN;
   } else if(which_ff == 2) {
-    type_field = r.FLUID;
+    type_field = r.CHAOS;
   } else if(which_ff == 3) {
     type_field = r.MAGNETIC;
   } else if(which_ff == 4) {
     type_field = r.GRAVITY;
+  } else if(which_ff == 5) {
+    type_field = r.FLUID;
   }
 
   // if(get_type_ff() == r.MAGNETIC) type_field = r.FLUID ; else type_field = r.MAGNETIC;
   force_field_init_is = false ;
-  build_ff(type_field, get_resultion_ff());
-  num_spot_ff(get_spot_num_ff());
+  if(type_field != IMAGE) {
+    build_ff(type_field, get_resultion_ff());
+    num_spot_ff(get_spot_num_ff());
+  } else {
+    build_ff(type_field, get_resultion_ff(), warp.get_image());
+  }
+  
 }
 
 /**
@@ -85,7 +92,7 @@ int get_size_cell_ff() {
 
 /**
 BUILD
-v 0.0.5
+v 0.1.0
 */
 /** 
 add spot
@@ -93,29 +100,28 @@ add spot
 */
 int num_spot_ff_ref ;
 void num_spot_ff(int num) {
-  if(num != num_spot_ff_ref) {
-    force_field.clear_spot();
-  }
-  num_spot_ff_ref = num ;
-  if(force_field != null && num > force_field.get_spot_num()) {
-    println("add", num, "spot to force field");
-    force_field.add_spot(num);
-
-  } else if(force_field == null) {
-    if(frameCount < 3) { 
-      printErr("num_spot_force_field() must be place after method build_force_field()");
-    } else {
-      printErrTempo(180, "num_spot_force_field() must be place after method build_force_field()");
+  if(force_field.get_type() == r.FLUID || force_field.get_type() == r.MAGNETIC || force_field.get_type() == r.GRAVITY) {
+    if(num != num_spot_ff_ref) {
+      force_field.clear_spot();
     }
-  }
+    num_spot_ff_ref = num ;
+    if(force_field != null && num > force_field.get_spot_num()) {
+      println("add", num, "spot to force field");
+      force_field.add_spot(num);
+
+    } else if(force_field == null) {
+      if(frameCount < 3) { 
+        printErr("num_spot_force_field() must be place after method build_force_field()");
+      } else {
+        printErrTempo(180, "num_spot_force_field() must be place after method build_force_field()");
+      }
+    }
+  }  
 }
 
 
 /**
 type_force_field CHAOS, PERLIN or FLUID
-*/
-/**
-* classic build
 */
 void build_ff(int type_force_field, int resolution) {
   build_ff(type_force_field, resolution, null);
@@ -137,22 +143,38 @@ void build_ff(int type_force_field, int resolution, PImage src) {
 
   if(type_force_field == r.GRAVITY) {
     build_ff_gravity(resolution, canvas_pos, canvas);
-    if(force_field.get_spot_num() < 1) printErr("void build_force_field() There is no spot added for your force Field, this force field need one to work") ;  
+    check_for_available_spot();
   } else if (type_force_field == r.MAGNETIC) {
     build_ff_magnetic(resolution, canvas_pos, canvas);
-    if(force_field.get_spot_num() < 1) printErr("void build_force_field() There is no spot added for your force Field, this force field need one to work") ;
+    check_for_available_spot();
   } else if (type_force_field == r.FLUID) {
     build_ff_fluid(resolution, canvas_pos, canvas);
     // default fluid value
     freq_ff = 2/frameRate;
     visc_ff = .001;;
-    diff_ff = 1.;
-    
-    if(force_field.get_spot_num() < 1) printErr("void build_force_field() There is no spot added for your force Field, this force field need one to work") ;
-  } else {
+    diff_ff = 1.;   
+    check_for_available_spot();
+  } else if(type_force_field == IMAGE) {
+    if(src != null) {
+      build_ff_img(resolution, canvas_pos, src, r.BLUE, r.BLUE);
+      // check_for_available_spot();
+    } else {
+      printErr("PImage src is null, Force field cannot be build");
+    }
+  } else  {
     build_ff_classic(type_force_field, resolution, canvas_pos, canvas);
+    // check_for_available_spot();
   }
   set_cell_grid_ff(resolution);
+}
+
+/*
+warning
+*/
+void check_for_available_spot() {
+  if(force_field.get_spot_num() < 1 ) {
+    printErr("void build_force_field() There is no spot added for your force Field, this force field need one to work") ;
+  }
 }
 /**
 Different mode to build force field
@@ -176,10 +198,8 @@ void build_ff_fluid(int resolution, iVec2 canvas_pos, iVec2 canvas) {
 /**
 * build force field image source to generate the vector field
 */
-void build_ff_img(PImage img) {
-  int resolution = 20 ;
-  iVec2 canvas_pos = iVec2() ;
-  force_field = new Force_field(resolution, canvas_pos, img, r.BLUE);
+void build_ff_img(int resolution, iVec2 canvas_pos, PImage img, int sort_direction, int sort_velocity) {
+  force_field = new Force_field(resolution, canvas_pos, img, sort_direction, sort_velocity);
   force_field_init_is = true ;
 }
 /**

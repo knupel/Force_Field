@@ -2,7 +2,7 @@
 Force Field
 refactoring by Stan le Punk
 http://stanlepunk.xyz/
-v 1.4.1
+v 1.5.0
 */
 /**
 Run on Processing 3.3.6
@@ -31,6 +31,7 @@ public class Force_field implements Rope_Constants {
 
   // private Vec2[][] field;
   private Vec4[][] field;
+  private PImage src;
   private PImage texture_velocity;
   private PImage texture_direction;
 
@@ -66,6 +67,8 @@ public class Force_field implements Rope_Constants {
   private boolean reverse_is;
 
   private float sum_activities;
+
+  private iVec2 sort;
 
   boolean is;
 
@@ -121,22 +124,22 @@ public class Force_field implements Rope_Constants {
   /**
   constructor PImage
   */
-  public Force_field(int resolution, iVec2 canvas_pos, PImage img, int component_sorting) {
+  public Force_field(int resolution, iVec2 canvas_pos, PImage src, int component_sorting_direction, int component_sorting_velocity) {
     this.resolution = resolution;
     this.type = IMAGE ;
     this.is = true ;
+    this.sort = iVec2(component_sorting_direction,component_sorting_velocity);
+    this.src = src.copy();
     // Determine the number of columns and rows based on sketch's width and height
-    set_canvas(iVec2(resolution/2 +canvas_pos.x, resolution/2 +canvas_pos.y), iVec2(img.width,img.height));
+    set_canvas(iVec2(resolution/2 +canvas_pos.x, resolution/2 +canvas_pos.y), iVec2(this.src.width,this.src.height));
     cols = canvas.x/resolution;
     rows = canvas.y/resolution;
     field = new Vec4[cols][rows];
 
     init_texture(cols,rows);
 
-    println("CONSTRUCTOR textture_field",texture_velocity.width, texture_velocity.height);
-    println("CONSTRUCTOR textture_field",texture_direction.width, texture_direction.height);
     border_is = true ;
-    set_field(img, component_sorting);
+    set_field(this.src, this.sort.x, this.sort.y);
   }
 
   /**
@@ -166,12 +169,16 @@ public class Force_field implements Rope_Constants {
   }
 
   public void add_spot(int num) {
-    for(int i = 0 ; i < num ; i++) {
-      Spot spot = new Spot() ;
-      spot_list.add(spot);
-      boolean bool = false ;
-      reset_ref_spot_pos_list_is.add(bool);
-    }
+    if(spot_list != null) {
+      for(int i = 0 ; i < num ; i++) {
+        Spot spot = new Spot() ;
+        spot_list.add(spot);
+        boolean bool = false ;
+        reset_ref_spot_pos_list_is.add(bool);
+      }
+    } else {
+      printErr("ArrayList spot_list is null");
+    }  
   }
 
   public void add_spot() {
@@ -405,7 +412,7 @@ public class Force_field implements Rope_Constants {
   v 0.1.0
   */
   // set field
-  private void set_field(PImage img, int component_sorting) {
+  private void set_field(PImage img, int sorting_dir, int sorting_vel) {
     img.loadPixels();
     sum_activities = 0;
     for(int x = 0 ; x < cols ; x++) {
@@ -414,21 +421,40 @@ public class Force_field implements Rope_Constants {
         int new_y = y *resolution;
         int pix = img.get(new_x, new_y);
 
-        float sort = 0;
-        
-        if(component_sorting == RED) sort = red(pix);
-        else if(component_sorting == GREEN) sort = green(pix);
-        else if(component_sorting == BLUE) sort = blue(pix);
-        else if(component_sorting == HUE) sort = hue(pix);
-        else if(component_sorting == SATURATION) sort = saturation(pix);
-        else if(component_sorting == BRIGHTNESS) sort = brightness(pix);
-        else if(component_sorting == ALPHA) sort = alpha(pix) ;
+        float theta = map_pix(sorting_dir,pix,0,TAU);
+        float vel = map_pix(sorting_vel,pix,0,1);
 
-        float theta = map(sort, 0, g.colorModeZ, 0, TAU);
         // Polar to cartesian coordinate
-        field[x][y] = Vec4(cos(theta),sin(theta),0,0);  
+        field[x][y] = Vec4(cos(theta),sin(theta),0,vel);  
         sum_activities += field[x][y].sum() ;
       }
+    }
+  }
+
+
+  private float map_pix(int component_color, int pix, float min, float max) {
+    float f = 0;
+    if(component_color == RED) {
+      f = red(pix);
+      return map(f,0, g.colorModeX,min,max);
+    } else if(component_color == GREEN) {
+      f = green(pix);
+      return map(f,0, g.colorModeY,min,max);
+    } else if(component_color == BLUE) {
+      f = blue(pix);
+      return map(f,0, g.colorModeZ,min,max);
+    } else if(component_color == HUE) {
+      f = hue(pix);
+      return map(f,0, g.colorModeX,min,max);
+    } else if(component_color == SATURATION) {
+      f = saturation(pix);
+      return map(f,0, g.colorModeY,min,max);
+    } else if(component_color == BRIGHTNESS) {
+      f = brightness(pix);
+      return map(f,0, g.colorModeZ,min,max);
+    } else {
+      f = alpha(pix);
+      return map(f,0, g.colorModeA,min,max);
     }
   }
 
@@ -524,13 +550,15 @@ public class Force_field implements Rope_Constants {
     } else if(type == GRAVITY) {
       System.err.println("void refresh() is not available with Force field GRAVITY");
     } else if(type == IMAGE) {
-      System.err.println("void refresh() is not available with Force field IMAGE, use refresh method void refresh(PImage img, int type_sort)");
+      set_field(this.src, this.sort.x, this.sort.y);
+    } else {
+      set_field(this.type);
     }
-    set_field(this.type);
+   
   }
 
-  public void refresh(PImage img, int component_sorting) {
-    set_field(img, component_sorting);
+  public void refresh(int component_sorting_direction, int component_sorting_velocity) {
+    set_field(this.src, component_sorting_direction, component_sorting_velocity);
   }
   
 

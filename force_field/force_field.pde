@@ -18,7 +18,7 @@ Stable fluids from Jos Stam's work on the Navier-Stokes equation
 boolean pause_is ;
 boolean use_leapmotion = false;
 
-boolean fullScreen_is = true;
+boolean fullScreen_is = false;
 boolean change_size_window_is = false;
 
 PGraphics pg ;
@@ -162,10 +162,29 @@ void draw() {
   interface_update();
   interface_value();
   interface_display(use_leapmotion, force_field);
+
   if(!ff_is()) {
     println("new force field grid, with cell size:", get_size_cell_ff());
     init_ff(get_type_ff(),get_size_cell_ff(),g);
   }
+  /*
+  if(!ff_is()) {
+    if(get_type_ff() == IMAGE) println("type IMAGE");
+    println(frameCount);
+    println("new force field grid, with cell size:", get_size_cell_ff());
+    if(get_type_ff() == IMAGE) {
+      if(warp.get_image() != null) {
+        println(warp.get_name());
+        init_ff(get_type_ff(),get_size_cell_ff(),warp.get_image());
+      } else {
+        printErr("warp.get_image() return null, instead g surface is used");
+        init_ff(get_type_ff(),get_size_cell_ff(),g);
+      }
+    } else {
+      init_ff(get_type_ff(),get_size_cell_ff(),g);
+    }
+  }
+  */
 
   cursor_manager(interface_is());
 
@@ -407,9 +426,14 @@ void keyPressed() {
 
   if(key == 'r') {
     reset_vehicle();
-    warp.reset(); 
-    force_field.refresh();  
+    warp.reset();  
+    if(force_field.get_type() == IMAGE) {
+      force_field_init_is = false ;
+      build_ff(force_field.get_type(), get_resultion_ff(), warp.get_image());
+    }
+    force_field.refresh();
   }
+  
 
   if(key == 'v') play_video_switch();
 
