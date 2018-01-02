@@ -1,6 +1,13 @@
+/**
+Interface force field 
+2017-2018
+http://stanlepunk.xyz/
+v 0.2.1
+*/
 import controlP5.*;
 ControlP5 cp_main, cp_fluid, cp_mouse, cp_movie;
-
+ControlP5 cp_img_2D,cp_img_3D;
+RadioButton radio_button_cycling ;
 
 // global slider
 float red_channel;
@@ -42,119 +49,152 @@ float speed_movie;
 
 int space_interface ;
 
-
-
 PFont font_gui ;
 
+float vel_sort = 6.;
+float x_sort = 1.;
+float y_sort = 1.;
+float z_sort = 1.;
+
+
+/**
+setup
+*/
 void interface_setup(Vec2 pos, Vec2 size) {
 	int size_font = 10 ;
 	font_gui = createFont("Lucida",size_font,false); // use true/false for smooth/no-smooth
 	// font_gui = createFont("ArialNarrow",size_font,false); // use true/false for smooth/no-smooth
 	// PFont pfont = createFont("DIN-Light",8,false); // use true/false for smooth/no-smooth
-  //ControlFont font = new ControlFont(font_gui,size_font);
 
 	pos_gui = pos.copy();
 	size_gui = size.copy();
-	int sw = 100 ;
+	int slider_width = 100 ;
 	space_interface = ceil(font_gui.getSize() *1.5) ;
 	int max = 1;
 
-  slider_main(space_interface, max, sw, 1, TOP, font_gui);
-  slider_fluid(space_interface, max, sw, 19, TOP, font_gui);
+  cp_main(space_interface, max, slider_width, 1, TOP, font_gui);
+  cp_fluid(space_interface, max, slider_width, 19, TOP, font_gui);
 
-  slider_mouse(space_interface, max, sw, 24, TOP, font_gui);
+  cp_mouse(space_interface, max, slider_width, 24, TOP, font_gui);
 
-  slider_movie(space_interface, max, sw, 2, BOTTOM, font_gui);
+  cp_image(space_interface, max, slider_width, 28, TOP, font_gui);
+
+  cp_movie(space_interface, max, slider_width, 2, BOTTOM, font_gui);
+
 }
+
+
+
 
 /*
 * main
 */
-void slider_main(int space, int max, int sw, int start_pos, int from, PFont font) {
+void cp_main(int space, int max, int w, int start_pos, int from, PFont font) {
 	cp_main = new ControlP5(this);
 
 	rgba_channel = Vec4(1);
 	red_channel = .9;
 	green_channel = .9;
 	blue_channel = .9;
-	power_channel = .3;
+	power_channel = .37;
 
 	red_cycling = 0;
 	green_cycling = 0;
 	blue_cycling = 0;
 
-	warp_power = .9;
+	warp_power = .35;
 
   tempo_refresh = 1.;
 	cell_force_field = 25.;
 	spot_force_field = 5.;
 
-	cp_main.addSlider("red_channel").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(sw).setRange(0,max).setFont(font);
-	cp_main.addSlider("green_channel").setPosition(10,pos_slider_y(space, start_pos +1, from)).setWidth(sw).setRange(0,max).setFont(font);
-	cp_main.addSlider("blue_channel").setPosition(10,pos_slider_y(space, start_pos +2, from)).setWidth(sw).setRange(0,max).setFont(font);
+	cp_main.addSlider("red_channel").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(w).setRange(0,max).setFont(font);
+	cp_main.addSlider("green_channel").setPosition(10,pos_slider_y(space, start_pos +1, from)).setWidth(w).setRange(0,max).setFont(font);
+	cp_main.addSlider("blue_channel").setPosition(10,pos_slider_y(space, start_pos +2, from)).setWidth(w).setRange(0,max).setFont(font);
 
-	cp_main.addSlider("power_channel").setPosition(10,pos_slider_y(space, start_pos +4, from)).setWidth(sw).setRange(0,max).setFont(font);
+	cp_main.addSlider("power_channel").setPosition(10,pos_slider_y(space, start_pos +4, from)).setWidth(w).setRange(0,max).setFont(font);
 
-	cp_main.addSlider("red_cycling").setPosition(10,pos_slider_y(space, start_pos +6, from)).setWidth(sw).setRange(0,max).setFont(font);
-	cp_main.addSlider("green_cycling").setPosition(10,pos_slider_y(space, start_pos +7, from)).setWidth(sw).setRange(0,max).setFont(font);
-	cp_main.addSlider("blue_cycling").setPosition(10,pos_slider_y(space, start_pos +8, from)).setWidth(sw).setRange(0,max).setFont(font);
+	cp_main.addSlider("red_cycling").setPosition(10,pos_slider_y(space, start_pos +6, from)).setWidth(w).setRange(0,max).setFont(font);
+	cp_main.addSlider("green_cycling").setPosition(10,pos_slider_y(space, start_pos +7, from)).setWidth(w).setRange(0,max).setFont(font);
+	cp_main.addSlider("blue_cycling").setPosition(10,pos_slider_y(space, start_pos +8, from)).setWidth(w).setRange(0,max).setFont(font);
 
-	cp_main.addSlider("warp_power").setPosition(10,pos_slider_y(space, start_pos +9, from)).setWidth(sw).setRange(0,max).setFont(font);
+	cp_main.addSlider("warp_power").setPosition(10,pos_slider_y(space, start_pos +9, from)).setWidth(w).setRange(0,max).setFont(font);
 
-	cp_main.addButton("absolute_cycling").setValue(0).setPosition(10,pos_slider_y(space, start_pos +10, from)).setSize(sw,10).setFont(font);
+	radio_button_cycling = cp_main.addRadioButton("abs_cycling").setValue(0).setPosition(10,pos_slider_y(space, start_pos +10, from)).setSize(w,10).addItem("absolute_cycling",1).setFont(font);
   
   int max_tempo = 10 ;
-	cp_main.addSlider("tempo_refresh").setPosition(10,pos_slider_y(space, start_pos +12, from)).setWidth(sw).setRange(1,max_tempo).setNumberOfTickMarks(max_tempo).setFont(font);
+	cp_main.addSlider("tempo_refresh").setPosition(10,pos_slider_y(space, start_pos +12, from)).setWidth(w).setRange(1,max_tempo).setNumberOfTickMarks(max_tempo).setFont(font);
   
   int max_cell = 50;
-	cp_main.addSlider("cell_force_field").setPosition(10,pos_slider_y(space, start_pos +14, from)).setWidth(sw).setRange(1,max_cell).setNumberOfTickMarks(max_cell).setFont(font);
+	cp_main.addSlider("cell_force_field").setPosition(10,pos_slider_y(space, start_pos +14, from)).setWidth(w).setRange(1,max_cell).setNumberOfTickMarks(max_cell).setFont(font);
   
   int max_spot = 10 ;
-	cp_main.addSlider("spot_force_field").setPosition(10,pos_slider_y(space, start_pos +16, from)).setWidth(sw).setRange(1,max_spot).setNumberOfTickMarks(max_spot).setFont(font);
+	cp_main.addSlider("spot_force_field").setPosition(10,pos_slider_y(space, start_pos +16, from)).setWidth(w).setRange(1,max_spot).setNumberOfTickMarks(max_spot).setFont(font);
 }
 
 /*
 * movie
 */
-void slider_movie(int space, int max, int sw, int start_pos, int from, PFont font) {
+void cp_movie(int space, int max, int w, int start_pos, int from, PFont font) {
 	cp_movie = new ControlP5(this);
 	header_movie = 0 ;
 	speed_movie = 1;
 	int max_speed = 6 ;
 
-	cp_movie.addSlider("header_movie").setPosition(10,pos_slider_y(space, start_pos, from)).setWidth(sw).setRange(0,max).setFont(font);
+	cp_movie.addSlider("header_movie").setPosition(10,pos_slider_y(space, start_pos, from)).setWidth(w).setRange(0,max).setFont(font);
 
-	cp_movie.addSlider("speed_movie").setPosition(10,pos_slider_y(space, start_pos +2, from)).setWidth(sw).setRange(-max_speed,max_speed).setNumberOfTickMarks((max_speed *8) +1).setFont(font);
+	cp_movie.addSlider("speed_movie").setPosition(10,pos_slider_y(space, start_pos +2, from)).setWidth(w).setRange(-max_speed,max_speed).setNumberOfTickMarks((max_speed *8) +1).setFont(font);
 }
 
 
 /*
 * fluid
 */
-void slider_fluid(int space, int max, int sw, int start_pos, int from, PFont font) {
+void cp_fluid(int space, int max, int w, int start_pos, int from, PFont font) {
 	cp_fluid = new ControlP5(this);
 	frequence = .3;
 	viscosity = .3;
 	diffusion = .3;
 
-	cp_fluid.addSlider("frequence").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(sw).setRange(0,max).setFont(font);
-  cp_fluid.addSlider("viscosity").setPosition(10,pos_slider_y(space, start_pos +1, from)).setWidth(sw).setRange(0,max).setFont(font);
-  cp_fluid.addSlider("diffusion").setPosition(10,pos_slider_y(space, start_pos +2, from)).setWidth(sw).setRange(0,max).setFont(font);
+	cp_fluid.addSlider("frequence").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(w).setRange(0,max).setFont(font);
+  cp_fluid.addSlider("viscosity").setPosition(10,pos_slider_y(space, start_pos +1, from)).setWidth(w).setRange(0,max).setFont(font);
+  cp_fluid.addSlider("diffusion").setPosition(10,pos_slider_y(space, start_pos +2, from)).setWidth(w).setRange(0,max).setFont(font);
+}
+
+/*
+* image sorting channel
+*/
+void cp_image(int space, int max, int w, int start_pos, int from, PFont font) {
+	cp_img_2D = new ControlP5(this);
+	cp_img_3D = new ControlP5(this);
+
+	vel_sort = 6.;
+	x_sort = 1.;
+	y_sort = 1.;
+	z_sort = 1.;
+  
+  int min_mark = 0;
+	int max_mark = 6;
+	int mark = 7;
+	cp_img_2D.addSlider("vel_sort").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(w).setRange(min_mark,max_mark).setNumberOfTickMarks(mark).setFont(font);
+	cp_img_2D.addSlider("x_sort").setPosition(10,pos_slider_y(space, start_pos +1.5, from)).setWidth(w).setRange(min_mark,max_mark).setNumberOfTickMarks(mark).setFont(font);
+	cp_img_2D.addSlider("y_sort").setPosition(10,pos_slider_y(space, start_pos +3, from)).setWidth(w).setRange(min_mark,max_mark).setNumberOfTickMarks(mark).setFont(font);
+	cp_img_3D.addSlider("z_sort").setPosition(10,pos_slider_y(space, start_pos +4.5, from)).setWidth(w).setRange(min_mark,max_mark).setNumberOfTickMarks(mark).setFont(font);
 }
 
 /*
 * mouse device
 */
-void slider_mouse(int space, int max, int sw, int start_pos, int from, PFont font){
+void cp_mouse(int space, int max, int w, int start_pos, int from, PFont font){
 	cp_mouse = new ControlP5(this);
 
 	radius_mouse = .3;
 	speed_mouse = 0.;
 	angle_mouse = 0.;
 
-	cp_mouse.addSlider("radius_mouse").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(sw).setRange(0,max).setFont(font);
-  cp_mouse.addSlider("speed_mouse").setPosition(10,pos_slider_y(space, start_pos +1, from)).setWidth(sw).setRange(0,max).setFont(font);
-  cp_mouse.addSlider("angle_mouse").setPosition(10,pos_slider_y(space, start_pos +2, from)).setWidth(sw).setRange(0,TAU).setFont(font);
+	cp_mouse.addSlider("radius_mouse").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(w).setRange(0,max).setFont(font);
+  cp_mouse.addSlider("speed_mouse").setPosition(10,pos_slider_y(space, start_pos +1, from)).setWidth(w).setRange(0,max).setFont(font);
+  cp_mouse.addSlider("angle_mouse").setPosition(10,pos_slider_y(space, start_pos +2, from)).setWidth(w).setRange(0,TAU).setFont(font);
 }
 
 
@@ -176,7 +216,7 @@ void slider_mouse(int space, int max, int sw, int start_pos, int from, PFont fon
 
 
 /**
-update
+draw update
 */
 Vec4 rgba_channel ;
 
@@ -205,7 +245,6 @@ void interface_value() {
   Vec4 sin_val = Vec4(1);
   sin_val.set(cr,cg,cb,1);
 
-
 	rgba_channel.set(red_channel,green_channel,blue_channel,1);
 	power_channel_max = (power_channel *power_channel)  *10f;
   
@@ -215,26 +254,29 @@ void interface_value() {
 	float max_src = 1 ;
 	float min_dst = .01 ;
 	rgba_channel.set(sin_val.map_vec(Vec4(min_src), Vec4(max_src), Vec4(min_dst), rgba_channel));
-
   
   int size = ceil(cell_force_field) +2;
   set_cell_grid_ff(size);
+
+  set_sorting_channel_ff_2D(floor(x_sort), floor(y_sort), floor(vel_sort));
 }
 
 
 
 
-void interface_update() {
-	get_controller_main();
+
+
+/**
+get controller
+*/
+void get_controller_gui() {
+	// get_controller_main();
 	get_controller_movie();
-	get_controller_fluid();
-	get_controller_mouse();
+	// get_controller_fluid();
+	// get_controller_mouse();
+	// get_controller_image();
 	
 }
-
-
-float movie_pos_normal ;
-
 
 void get_controller_main() {
 	cp_main.getController("red_channel");
@@ -258,6 +300,7 @@ void get_controller_main() {
 	cp_main.getController("spot_force_field");
 }
 
+float movie_pos_normal ;
 void get_controller_movie() {
 	cp_movie.getController("header_movie").setValue(movie_pos_normal);
 	cp_movie.getController("speed_movie");
@@ -289,7 +332,7 @@ void get_controller_mouse() {
 /*
 local method
 */
-float pos_slider_y(int space, int start_pos, int from) {
+float pos_slider_y(int space, float start_pos, int from) {
 	float pos_y = 0 ;
 	if(from == BOTTOM || from == DOWN) {
 		pos_y = height -(space *start_pos);
@@ -373,7 +416,7 @@ void interface_display(boolean mouse_is, Force_field ff) {
 		hide_all_gui();
 	} else {
 		background_interface();
-		show_gui(mouse_is);
+		show_gui(mouse_is, ff);
 		show_info(ff);
 	}
 }
@@ -405,12 +448,38 @@ void show_info(Force_field ff) {
   info_line("media" + " " +warp.get_name(), space_interface, 4, TOP);
   // diaporama
 	info_line("Diaporama" + " " +diaporama_state, space_interface, 5, TOP);
+	// sorting channel
+	if(ff.get_type() == IMAGE) {
+		String [] sort = sorting_channel_toString(get_sorting_channel_ff_2D());
+		info_line("velocity sort:" + sort[2], space_interface, 6, TOP);
+		info_line("x coord sort:" + sort[0], space_interface, 7, TOP);
+		info_line("y coord sort:" + sort[1], space_interface, 8, TOP);
+	}
+
+	
+
+
+
 	// frame rate
-	info_line("Frame rate" + " " +(int)frameRate, space_interface, 6, TOP);
-	// devise
+	info_line("Frame rate" + " " +(int)frameRate, space_interface, 10, TOP);
+	// device
 	String device_cursor = "mouse";
 	if(use_leapmotion)  device_cursor = "leapmotion";
-	info_line("Device cursor: "+device_cursor, space_interface, 7, TOP);
+	info_line("Device cursor: "+device_cursor, space_interface, 11, TOP);
+}
+
+String [] sorting_channel_toString(int [] a) {
+	String [] data  = new String[a.length];
+	for(int i = 0 ; i < a.length ; i++) {
+		if(a[i] == r.RED) data[i] = "Red";
+		else if(a[i] == r.GREEN) data[i] = "Green";
+		else if(a[i] == r.BLUE) data[i] = "Blue";
+		else if(a[i] == r.HUE) data[i] = "Hue";
+		else if(a[i] == r.SATURATION) data[i] = "Saturation";
+		else if(a[i] == r.BRIGHTNESS) data[i] = "Brightness";
+		else data[i] = "Alpha";
+	}
+	return data;
 }
 
 void info_line(String s, int space, int rank, int from) {
@@ -425,13 +494,19 @@ void hide_all_gui() {
 	cp_main.hide();
 	cp_fluid.hide();
 	cp_mouse.hide();
+	cp_img_2D.hide();
+	cp_img_3D.hide();
 	cp_movie.hide();
 }
 
-void show_gui(boolean mouse_is) {
+void show_gui(boolean mouse_is, Force_field ff) {
 	cp_main.show();
+	if(ff.get_type() == IMAGE) {
+		cp_img_2D.show();
+		// cp_image_3D.show();
+	}
 	if(movie_warp_is()) cp_movie.show(); else cp_movie.hide();
-	if(get_type_ff() == r.FLUID) cp_fluid.show(); else cp_fluid.hide();
+	if(ff.get_type() == r.FLUID) cp_fluid.show(); else cp_fluid.hide();
 	if(!mouse_is) cp_mouse.show(); else cp_mouse.hide();
 }
 
@@ -458,18 +533,22 @@ Vec2 get_size_interface() {
 	return size_gui;
 }
 
-/*
-event
+/**
+control event
+v 0.0.2
 */
 public void controlEvent(ControlEvent theEvent) {
-  if(theEvent.getController().getName().equals("absolute_cycling")){
-  	if(abs_cycling) {
-  		abs_cycling = false ; 
-  	} else {
-  		abs_cycling = true ;
+	if(theEvent.isFrom(radio_button_cycling)) {
+  	for(int i = 0 ; i < theEvent.getGroup().getArrayValue().length ; i++) {
+  		abs_cycling = radio_button_cycling.getState(i) ;
   	}
-  }
+  } 
 }
+
+
+
+
+
 
 void hide_interface() {
 	if(interface_is) interface_is = false ; else interface_is = true;

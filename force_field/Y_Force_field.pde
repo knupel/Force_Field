@@ -1,6 +1,6 @@
    /**
 Force Field
-refactoring by Stan le Punk
+2017-2018
 http://stanlepunk.xyz/
 v 1.5.0
 */
@@ -68,7 +68,7 @@ public class Force_field implements Rope_Constants {
 
   private float sum_activities;
 
-  private iVec2 sort;
+  private iVec4 sort;
 
   boolean is;
 
@@ -124,11 +124,11 @@ public class Force_field implements Rope_Constants {
   /**
   constructor PImage
   */
-  public Force_field(int resolution, iVec2 canvas_pos, PImage src, int component_sorting_direction, int component_sorting_velocity) {
+  public Force_field(int resolution, iVec2 canvas_pos, PImage src, int... component_sorting) {
     this.resolution = resolution;
     this.type = IMAGE ;
     this.is = true ;
-    this.sort = iVec2(component_sorting_direction,component_sorting_velocity);
+    sorting_channel(component_sorting);
     this.src = src.copy();
     // Determine the number of columns and rows based on sketch's width and height
     set_canvas(iVec2(resolution/2 +canvas_pos.x, resolution/2 +canvas_pos.y), iVec2(this.src.width,this.src.height));
@@ -139,7 +139,26 @@ public class Force_field implements Rope_Constants {
     init_texture(cols,rows);
 
     border_is = true ;
-    set_field(this.src, this.sort.x, this.sort.y);
+    set_field_img_2D(this.src);
+  }
+
+  private void sorting_channel(int... sorting) {
+    println("channel:",sorting.length);
+    if(sorting.length == 1) {
+      this.sort = iVec4(sorting[0],sorting[0],sorting[0],sorting[0]);
+    } else if(sorting.length == 2) {
+      this.sort = iVec4(sorting[0],sorting[0],sorting[0],sorting[1]);
+    } else if(sorting.length == 3) {
+      this.sort = iVec4(sorting[0],sorting[1],-1,sorting[2]);
+    } else if(sorting.length == 4){
+      this.sort = iVec4(sorting[0],sorting[1],sorting[2],sorting[3]);
+    } else if(sorting.length > 4){
+      this.sort = iVec4(sorting[0],sorting[1],sorting[2],sorting[3]);
+      printErr("void sorting_channel(): Too much channel to sort, the first 4 is used");
+    } else {
+      this.sort = iVec4(1) ;
+      printErr("void sorting_channel(): No channel available to sort, the value 1 is used for all component");
+    }
   }
 
   /**
@@ -187,6 +206,115 @@ public class Force_field implements Rope_Constants {
     boolean bool = false ;
     reset_ref_spot_pos_list_is.add(bool);
   }
+
+
+
+
+
+    /**
+  set field
+  v 0.1.0
+  */
+    // set field classic
+  private void set_field(int type) {
+    // Reseed noise so we get a new flow field every time
+    if(type == PERLIN) {
+      noiseSeed((int)random(10000));
+    }
+
+    float xoff = 0;
+    // float step = TWO_PI / (cols *rows);
+    // float theta_sum = 0;
+    sum_activities = 0 ;
+    for (int x = 0 ; x < cols ; x++) {
+      float yoff = 0;
+      float woff = 0;
+      for (int y = 0 ; y < rows ; y++) {
+        float theta = 0;
+        float dist = 0 ;
+        if(type == PERLIN) {
+          theta = map(noise(xoff,yoff),0,1,0,TWO_PI);
+          dist = noise(woff);
+        } if(type == CHAOS) {
+          theta = random(TAU);
+          dist = random(1);
+        } if(type == GRAVITY) {
+          for(Spot s : spot_list) {
+            theta = theta_2D(Vec2(x,y),Vec2(s.get_pos()));
+          }          
+        }
+        // Polar to cartesian coordinate
+        field[x][y] = Vec4(cos(theta),sin(theta),0,dist); 
+        sum_activities += field[x][y].sum() ;     
+        yoff += .1;
+        woff += .1;
+      }
+      xoff += .1;
+    }
+  }
+
+
+
+  // set field image
+  /*
+  set field for image in 2D
+  */
+  private void set_field_img_2D(PImage img) {
+    img.loadPixels();
+    sum_activities = 0;
+    for(int x = 0 ; x < cols ; x++) {
+      for(int y = 0 ; y < rows ; y++) {
+        int new_x = x *resolution;
+        int new_y = y *resolution;
+        int pix = img.get(new_x, new_y);
+
+        float theta_x = map_pix(sort.x,pix,0,TAU);
+        float theta_y = map_pix(sort.y,pix,0,TAU);
+        float vel = map_pix(sort.w,pix,0,1);
+
+        // Polar to cartesian coordinate
+        field[x][y] = Vec4(cos(theta_x),sin(theta_y),0,vel);  
+        sum_activities += field[x][y].sum() ;
+      }
+    }
+  }
+
+
+  private float map_pix(int component_color, int pix, float min, float max) {
+    float f = 0;
+    if(component_color == RED) {
+      f = red(pix);
+      return map(f,0, g.colorModeX,min,max);
+    } else if(component_color == GREEN) {
+      f = green(pix);
+      return map(f,0, g.colorModeY,min,max);
+    } else if(component_color == BLUE) {
+      f = blue(pix);
+      return map(f,0, g.colorModeZ,min,max);
+    } else if(component_color == HUE) {
+      f = hue(pix);
+      return map(f,0, g.colorModeX,min,max);
+    } else if(component_color == SATURATION) {
+      f = saturation(pix);
+      return map(f,0, g.colorModeY,min,max);
+    } else if(component_color == BRIGHTNESS) {
+      f = brightness(pix);
+      return map(f,0, g.colorModeZ,min,max);
+    } else {
+      f = alpha(pix);
+      return map(f,0, g.colorModeA,min,max);
+    }
+  }
+
+
+
+
+
+
+
+
+
+
 
 
   /**
@@ -407,96 +535,11 @@ public class Force_field implements Rope_Constants {
   }
 
 
-  /**
-  set field
-  v 0.1.0
-  */
-  // set field
-  private void set_field(PImage img, int sorting_dir, int sorting_vel) {
-    img.loadPixels();
-    sum_activities = 0;
-    for(int x = 0 ; x < cols ; x++) {
-      for(int y = 0 ; y < rows ; y++) {
-        int new_x = x *resolution;
-        int new_y = y *resolution;
-        int pix = img.get(new_x, new_y);
-
-        float theta = map_pix(sorting_dir,pix,0,TAU);
-        float vel = map_pix(sorting_vel,pix,0,1);
-
-        // Polar to cartesian coordinate
-        field[x][y] = Vec4(cos(theta),sin(theta),0,vel);  
-        sum_activities += field[x][y].sum() ;
-      }
-    }
-  }
-
-
-  private float map_pix(int component_color, int pix, float min, float max) {
-    float f = 0;
-    if(component_color == RED) {
-      f = red(pix);
-      return map(f,0, g.colorModeX,min,max);
-    } else if(component_color == GREEN) {
-      f = green(pix);
-      return map(f,0, g.colorModeY,min,max);
-    } else if(component_color == BLUE) {
-      f = blue(pix);
-      return map(f,0, g.colorModeZ,min,max);
-    } else if(component_color == HUE) {
-      f = hue(pix);
-      return map(f,0, g.colorModeX,min,max);
-    } else if(component_color == SATURATION) {
-      f = saturation(pix);
-      return map(f,0, g.colorModeY,min,max);
-    } else if(component_color == BRIGHTNESS) {
-      f = brightness(pix);
-      return map(f,0, g.colorModeZ,min,max);
-    } else {
-      f = alpha(pix);
-      return map(f,0, g.colorModeA,min,max);
-    }
-  }
 
 
 
-  // set field
-  private void set_field(int type) {
-    // Reseed noise so we get a new flow field every time
-    if(type == PERLIN) {
-      noiseSeed((int)random(10000));
-    }
 
-    float xoff = 0;
-    // float step = TWO_PI / (cols *rows);
-    // float theta_sum = 0;
-    sum_activities = 0 ;
-    for (int x = 0 ; x < cols ; x++) {
-      float yoff = 0;
-      float woff = 0;
-      for (int y = 0 ; y < rows ; y++) {
-        float theta = 0;
-        float dist = 0 ;
-        if(type == PERLIN) {
-          theta = map(noise(xoff,yoff),0,1,0,TWO_PI);
-          dist = noise(woff);
-        } if(type == CHAOS) {
-          theta = random(TAU);
-          dist = random(1);
-        } if(type == GRAVITY) {
-          for(Spot s : spot_list) {
-            theta = theta_2D(Vec2(x,y),Vec2(s.get_pos()));
-          }          
-        }
-        // Polar to cartesian coordinate
-        field[x][y] = Vec4(cos(theta),sin(theta),0,dist); 
-        sum_activities += field[x][y].sum() ;     
-        yoff += .1;
-        woff += .1;
-      }
-      xoff += .1;
-    }
-  }
+
 
   /**
   reset
@@ -550,15 +593,16 @@ public class Force_field implements Rope_Constants {
     } else if(type == GRAVITY) {
       System.err.println("void refresh() is not available with Force field GRAVITY");
     } else if(type == IMAGE) {
-      set_field(this.src, this.sort.x, this.sort.y);
+      set_field_img_2D(this.src);
     } else {
       set_field(this.type);
     }
    
   }
 
-  public void refresh(int component_sorting_direction, int component_sorting_velocity) {
-    set_field(this.src, component_sorting_direction, component_sorting_velocity);
+  public void refresh_sorting_channel(int... sorting_channel) {
+    sorting_channel(sorting_channel);
+    set_field_img_2D(this.src);
   }
   
 

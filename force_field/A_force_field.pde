@@ -10,7 +10,42 @@ float freq_ff;
 float visc_ff;
 float diff_ff;
 
+int [] sorting_img_ff_2D = new int[3] ;
 
+
+
+
+/**
+init
+*/
+void init_ff(int type, int resolution, PImage src) {
+  if(!force_field_init_is) {
+    build_ff(type, resolution, src);
+    force_field_init_is = true ;
+  }
+}
+
+boolean build_ff_is() {
+  if(force_field != null) {
+    return force_field.is() ;
+  } else return false;
+}
+
+boolean ff_is() {
+  return force_field_init_is ;
+}
+
+
+
+
+
+
+
+
+
+/**
+change type
+*/
 int which_ff = 0 ;
 void change_type_ff() {
 
@@ -37,33 +72,57 @@ void change_type_ff() {
     build_ff(type_field, get_resultion_ff());
     num_spot_ff(get_spot_num_ff());
   } else {
-    build_ff(type_field, get_resultion_ff(), warp.get_image());
-  }
-  
+    build_ff(type_field, get_resultion_ff(), warp.get_image(), sorting_img_ff_2D);
+  }  
 }
+
+
+
+
+
+
+
+
+
 
 /**
-init
+channel sorting for image
 */
+void set_sorting_channel_ff_2D(int dx_sort_channel, int dy_sort_channel, int vel_sort_channel) {
+  sorting_img_ff_2D[0] = get_channel_component(dx_sort_channel) ;
+  sorting_img_ff_2D[1] = get_channel_component(dy_sort_channel) ;
+  sorting_img_ff_2D[2] = get_channel_component(vel_sort_channel) ;
+}
 
-void init_ff(int type, int resolution, PImage src) {
-  if(!force_field_init_is) {
-    build_ff(type, resolution, src);
-    force_field_init_is = true ;
+int ref_sorting_channel_ff = 0 ;
+boolean sort_channel_is() {
+  boolean result = true;
+  int sum=0 ;
+  for(int i: get_sorting_channel_ff_2D()) sum+=i;
+  if(ref_sorting_channel_ff != sum) result = false ; else result = true; 
+  ref_sorting_channel_ff = sum;
+  return result ;
+}
+
+int [] get_sorting_channel_ff_2D() {
+  return sorting_img_ff_2D ;
+}
+
+int get_channel_component(int value) {
+  int i = r.RED ;
+  switch(value) {
+    case 0: i = r.RED; break;
+    case 1: i = r.GREEN; break;
+    case 2: i = r.BLUE; break;
+    case 3: i = r.HUE; break;
+    case 4: i = r.SATURATION; break;
+    case 5: i = r.BRIGHTNESS; break;
+    case 6: i = r.ALPHA; break;
+    default : i = r.RED ;
   }
+  return i ;
 }
 
-
-boolean build_ff_is() {
-  if(force_field != null) {
-    return force_field.is() ;
-  } else return false;
-}
-
-
-boolean ff_is() {
-  return force_field_init_is ;
-}
 
 
 
@@ -127,7 +186,7 @@ void build_ff(int type_force_field, int resolution) {
   build_ff(type_force_field, resolution, null);
 }
 
-void build_ff(int type_force_field, int resolution, PImage src) {
+void build_ff(int type_force_field, int resolution, PImage src, int... sorting_channel) {
   iVec2 canvas = iVec2();
   iVec2 canvas_pos = iVec2();
   if(src != null) {
@@ -156,7 +215,9 @@ void build_ff(int type_force_field, int resolution, PImage src) {
     check_for_available_spot();
   } else if(type_force_field == IMAGE) {
     if(src != null) {
-      build_ff_img(resolution, canvas_pos, src, r.BLUE, r.BLUE);
+      println("je passe par là");
+      //printArray(sorting_channel);
+      build_ff_img(resolution, canvas_pos, src, sorting_channel);
       // check_for_available_spot();
     } else {
       printErr("PImage src is null, Force field cannot be build");
@@ -198,8 +259,8 @@ void build_ff_fluid(int resolution, iVec2 canvas_pos, iVec2 canvas) {
 /**
 * build force field image source to generate the vector field
 */
-void build_ff_img(int resolution, iVec2 canvas_pos, PImage img, int sort_direction, int sort_velocity) {
-  force_field = new Force_field(resolution, canvas_pos, img, sort_direction, sort_velocity);
+void build_ff_img(int resolution, iVec2 canvas_pos, PImage img, int... sorting_channel) {
+  force_field = new Force_field(resolution, canvas_pos, img, sorting_channel);
   force_field_init_is = true ;
 }
 /**

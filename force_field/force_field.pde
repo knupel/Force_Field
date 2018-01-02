@@ -1,6 +1,7 @@
 
 /**
 FORCE FIELD
+2017-2018
 by Stan le Punk
 http://stanlepunk.xyz/
 v 0.0.4
@@ -91,7 +92,7 @@ void setup() {
   build_vehicle(num_vehicle);
   */
   set_info(false);
-  interface_setup(Vec2(0), Vec2(220,height));
+  interface_setup(Vec2(0), Vec2(250,height));
   warp_instruction(); 
 }
 
@@ -138,9 +139,12 @@ void draw() {
     } else if(get_type_ff() == r.GRAVITY) {
       force_field_spot_diam();
       force_field_spot_mass();
-    }   
+    } 
     update_ff(); 
   }
+
+
+
 
   /*
   warp
@@ -159,7 +163,7 @@ void draw() {
  
   if(force_field != null) force_field.reverse_is(false);
   // reset_force_field();
-  interface_update();
+  get_controller_gui();
   interface_value();
   interface_display(use_leapmotion, force_field);
 
@@ -167,24 +171,14 @@ void draw() {
     println("new force field grid, with cell size:", get_size_cell_ff());
     init_ff(get_type_ff(),get_size_cell_ff(),g);
   }
-  /*
-  if(!ff_is()) {
-    if(get_type_ff() == IMAGE) println("type IMAGE");
-    println(frameCount);
-    println("new force field grid, with cell size:", get_size_cell_ff());
-    if(get_type_ff() == IMAGE) {
-      if(warp.get_image() != null) {
-        println(warp.get_name());
-        init_ff(get_type_ff(),get_size_cell_ff(),warp.get_image());
-      } else {
-        printErr("warp.get_image() return null, instead g surface is used");
-        init_ff(get_type_ff(),get_size_cell_ff(),g);
-      }
-    } else {
-      init_ff(get_type_ff(),get_size_cell_ff(),g);
+  
+  if(get_type_ff() == IMAGE) {
+    if(!sort_channel_is()) {
+      force_field_init_is = false ;
+      build_ff(force_field.get_type(), get_resultion_ff(), warp.get_image(), get_sorting_channel_ff_2D());
+      update_ff();
     }
   }
-  */
 
   cursor_manager(interface_is());
 
@@ -193,6 +187,8 @@ void draw() {
 /**
 END DRAW
 */
+
+
 
 
 
@@ -429,11 +425,11 @@ void keyPressed() {
     warp.reset();  
     if(force_field.get_type() == IMAGE) {
       force_field_init_is = false ;
-      build_ff(force_field.get_type(), get_resultion_ff(), warp.get_image());
+      build_ff(force_field.get_type(), get_resultion_ff(), warp.get_image(), get_sorting_channel_ff_2D());
     }
     force_field.refresh();
   }
-  
+
 
   if(key == 'v') play_video_switch();
 
