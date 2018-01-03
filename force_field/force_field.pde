@@ -160,11 +160,12 @@ void draw() {
    */
   info(display_field, display_grid, display_pole);
 
- 
-  if(force_field != null) force_field.reverse_is(false);
-  // reset_force_field();
+  if(force_field != null) force_field.reverse_flow(false);
+  /**
+  interface gui
+  */
   get_controller_gui();
-  interface_value();
+  update_gui_value();
   interface_display(use_leapmotion, force_field);
 
   if(!ff_is()) {

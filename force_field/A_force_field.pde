@@ -215,16 +215,12 @@ void build_ff(int type_force_field, int resolution, PImage src, int... sorting_c
     check_for_available_spot();
   } else if(type_force_field == IMAGE) {
     if(src != null) {
-      println("je passe par là");
-      //printArray(sorting_channel);
       build_ff_img(resolution, canvas_pos, src, sorting_channel);
-      // check_for_available_spot();
     } else {
       printErr("PImage src is null, Force field cannot be build");
     }
   } else  {
     build_ff_classic(type_force_field, resolution, canvas_pos, canvas);
-    // check_for_available_spot();
   }
   set_cell_grid_ff(resolution);
 }

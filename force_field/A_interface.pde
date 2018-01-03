@@ -220,7 +220,7 @@ draw update
 */
 Vec4 rgba_channel ;
 
-void interface_value() {
+void update_gui_value() {
 	update_value_ff_fluid(frequence, viscosity, diffusion);
   
   float cr = 1.;
@@ -262,7 +262,17 @@ void interface_value() {
 }
 
 
-
+/**
+control event
+v 0.0.2
+*/
+public void controlEvent(ControlEvent theEvent) {
+	if(theEvent.isFrom(radio_button_cycling)) {
+  	for(int i = 0 ; i < theEvent.getGroup().getArrayValue().length ; i++) {
+  		abs_cycling = radio_button_cycling.getState(i) ;
+  	}
+  } 
+}
 
 
 
@@ -324,23 +334,6 @@ void get_controller_mouse() {
 
 
 
-
-
-
-
-
-/*
-local method
-*/
-float pos_slider_y(int space, float start_pos, int from) {
-	float pos_y = 0 ;
-	if(from == BOTTOM || from == DOWN) {
-		pos_y = height -(space *start_pos);
-	} else {
-		pos_y = space *start_pos;
-	}
-	return pos_y ;
-}
 
 /**
 set GUI 
@@ -423,9 +416,11 @@ void interface_display(boolean mouse_is, Force_field ff) {
 
 
 
-
+/**
+info on the right place
+*/
 void show_info(Force_field ff) {
-	fill(255,0,0);
+	fill(255);
 	String type_ff = "no froce field apply" ;
 	if(ff.get_type() == r.FLUID) type_ff = "fluid" ;
 	else if(ff.get_type() == r.MAGNETIC) type_ff = "magnetic" ;
@@ -455,11 +450,6 @@ void show_info(Force_field ff) {
 		info_line("x coord sort:" + sort[0], space_interface, 7, TOP);
 		info_line("y coord sort:" + sort[1], space_interface, 8, TOP);
 	}
-
-	
-
-
-
 	// frame rate
 	info_line("Frame rate" + " " +(int)frameRate, space_interface, 10, TOP);
 	// device
@@ -467,6 +457,15 @@ void show_info(Force_field ff) {
 	if(use_leapmotion)  device_cursor = "leapmotion";
 	info_line("Device cursor: "+device_cursor, space_interface, 11, TOP);
 }
+
+
+
+
+
+
+
+
+
 
 String [] sorting_channel_toString(int [] a) {
 	String [] data  = new String[a.length];
@@ -510,6 +509,28 @@ void show_gui(boolean mouse_is, Force_field ff) {
 	if(!mouse_is) cp_mouse.show(); else cp_mouse.hide();
 }
 
+
+
+
+
+
+
+
+
+/**
+util method
+*/
+float pos_slider_y(int space, float start_pos, int from) {
+	float pos_y = 0 ;
+	if(from == BOTTOM || from == DOWN) {
+		pos_y = height -(space *start_pos);
+	} else {
+		pos_y = space *start_pos;
+	}
+	return pos_y ;
+}
+
+
 void background_interface() {
 	fill(0,125);
 	noStroke();
@@ -520,9 +541,17 @@ void background_interface() {
 }
 
 
+void hide_interface() {
+	if(interface_is) interface_is = false ; else interface_is = true;
+}
+
+boolean interface_is = false;
+boolean interface_is() {
+	return interface_is ;
+}
 
 
-/*
+/**
 get
 */
 Vec2 get_pos_interface() {
@@ -533,28 +562,13 @@ Vec2 get_size_interface() {
 	return size_gui;
 }
 
-/**
-control event
-v 0.0.2
-*/
-public void controlEvent(ControlEvent theEvent) {
-	if(theEvent.isFrom(radio_button_cycling)) {
-  	for(int i = 0 ; i < theEvent.getGroup().getArrayValue().length ; i++) {
-  		abs_cycling = radio_button_cycling.getState(i) ;
-  	}
-  } 
-}
 
 
 
 
 
 
-void hide_interface() {
-	if(interface_is) interface_is = false ; else interface_is = true;
-}
 
-boolean interface_is = false;
-boolean interface_is() {
-	return interface_is ;
-}
+
+
+

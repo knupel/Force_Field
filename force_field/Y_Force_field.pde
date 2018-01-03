@@ -2,7 +2,7 @@
 Force Field
 2017-2018
 http://stanlepunk.xyz/
-v 1.5.0
+v 1.5.1
 */
 /**
 Run on Processing 3.3.6
@@ -29,7 +29,6 @@ At this moment the force field is available only in 2D mode
 
 public class Force_field implements Rope_Constants {
 
-  // private Vec2[][] field;
   private Vec4[][] field;
   private PImage src;
   private PImage texture_velocity;
@@ -143,7 +142,6 @@ public class Force_field implements Rope_Constants {
   }
 
   private void sorting_channel(int... sorting) {
-    println("channel:",sorting.length);
     if(sorting.length == 1) {
       this.sort = iVec4(sorting[0],sorting[0],sorting[0],sorting[0]);
     } else if(sorting.length == 2) {
@@ -213,7 +211,7 @@ public class Force_field implements Rope_Constants {
 
     /**
   set field
-  v 0.1.0
+  v 0.1.1
   */
     // set field classic
   private void set_field(int type) {
@@ -222,9 +220,7 @@ public class Force_field implements Rope_Constants {
       noiseSeed((int)random(10000));
     }
 
-    float xoff = 0;
-    // float step = TWO_PI / (cols *rows);
-    // float theta_sum = 0;
+    float xoff = 0 ;
     sum_activities = 0 ;
     for (int x = 0 ; x < cols ; x++) {
       float yoff = 0;
@@ -264,9 +260,7 @@ public class Force_field implements Rope_Constants {
     sum_activities = 0;
     for(int x = 0 ; x < cols ; x++) {
       for(int y = 0 ; y < rows ; y++) {
-        int new_x = x *resolution;
-        int new_y = y *resolution;
-        int pix = img.get(new_x, new_y);
+        int pix = img.get(x *resolution, y *resolution);
 
         float theta_x = map_pix(sort.x,pix,0,TAU);
         float theta_y = map_pix(sort.y,pix,0,TAU);
@@ -475,7 +469,7 @@ public class Force_field implements Rope_Constants {
 
   /**
   set canvas
-  v 0.0.1
+  v 0.0.2
   */
   public void set_canvas(iVec2 pos, iVec2 size) {
     set_canvas_pos(pos);
@@ -508,7 +502,7 @@ public class Force_field implements Rope_Constants {
     this.diffusion = diffusion ;
   }
 
-  public void reverse_is(boolean reverse_is) {
+  public void reverse_flow(boolean reverse_is) {
     this.reverse_is = reverse_is ;
   }
 

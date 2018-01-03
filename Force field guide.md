@@ -66,8 +66,8 @@ PImage get_tex_direction();
 
 Set
 --
-void reverse_is(boolean state) ;
-multiply the direction vector by `-1` the resulte is the direction is opposite, this method must change the method reset() at the end of the draw()
+void reverse_flow(boolean state) ;
+multiply the direction vector by `-1` the result : direction is opposite, this method must change the method reset() at the end of the draw() ?????
 
 
 set mass field
