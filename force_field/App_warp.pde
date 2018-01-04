@@ -56,9 +56,9 @@ void warp_change_media_folder() {
 /**
  init for media or camera
  */
-void warp_init(int type_field, int size_cell, int which_cam, boolean change_size_is) {
+void warp_init(int type_field, int size_cell, int which_cam, boolean change_canvas_is, boolean fullfit) {
   if((folder_selected_is() || !init_warp_is) && !video_warp_is() ) {
-    warp_init_media(type_field, size_cell, change_size_is);
+    warp_init_media(type_field, size_cell, change_canvas_is, fullfit);
   } else if(video_warp_is()) {
     warp_init_video(type_field, size_cell, which_cam);
   } else if(!warp_media_is()){
@@ -81,13 +81,13 @@ void warp_init_video(int type_field, int size_cell, int which_cam) {
 }
 
 
-void warp_init_media(int type_field, int size_cell, boolean change_size_is) {
+void warp_init_media(int type_field, int size_cell, boolean change_canvas_is, boolean fullfit) {
   if(folder_selected_is()) {
     movie_warp_is(false);
     add_g_surface();
     load_medias(true, "jpg", "JPG", "mp4", "avi", "mov");   
-    if(!change_size_is) {
-      warp.image_library_fit(g);
+    if(!change_canvas_is) {
+      warp.image_library_fit(g, fullfit);
       warp.image_library_crop(g);
     }
   }
@@ -103,18 +103,18 @@ void warp_init_media(int type_field, int size_cell, boolean change_size_is) {
     ref_warp_w = warp.get_width();
     ref_warp_h = warp.get_height(); 
   }
-  if(movie_warp_is() && !change_size_is) {
+  if(movie_warp_is() && !change_canvas_is) {
     warp_video_window(g);
   }   
 
-  if(change_size_is && (width != ref_warp_w || height != ref_warp_h)) {
+  if(change_canvas_is && (width != ref_warp_w || height != ref_warp_h)) {
     println("warp init media");
     init_warp_is = true ;
     set_size(ref_warp_w,ref_warp_h);
     warp.reset(); 
     build_ff(type_field,size_cell, warp.get_image());
 
-  } else if(!change_size_is && !build_ff_is()) {
+  } else if(!change_canvas_is && !build_ff_is()) {
     println("warp init classic");
     build_ff(type_field,size_cell, warp.get_image());
   }

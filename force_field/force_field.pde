@@ -21,6 +21,7 @@ boolean use_leapmotion = false;
 
 boolean fullScreen_is = false;
 boolean change_size_window_is = false;
+boolean fullfit_image_is = true;
 
 PGraphics pg ;
 
@@ -149,7 +150,7 @@ void draw() {
   /*
   warp
   */
-  warp_init(type_field, get_size_cell_ff(), which_cam, change_size_window_is);
+  warp_init(type_field, get_size_cell_ff(), which_cam, change_size_window_is, fullfit_image_is);
 
 
   num_spot_ff(get_num_spot_gui()); 

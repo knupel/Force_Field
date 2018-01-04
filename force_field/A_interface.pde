@@ -6,8 +6,9 @@ v 0.2.1
 */
 import controlP5.*;
 ControlP5 cp_main, cp_fluid, cp_mouse, cp_movie;
+CheckBox check_main ;
 ControlP5 cp_img_2D,cp_img_3D;
-RadioButton radio_button_cycling ;
+
 
 // global slider
 float red_channel;
@@ -24,6 +25,7 @@ float green_cycling;
 float blue_cycling;
 
 boolean abs_cycling = true;
+boolean gui_resize_window = false ;
 
 float tempo_refresh;
 
@@ -120,16 +122,17 @@ void cp_main(int space, int max, int w, int start_pos, int from, PFont font) {
 
 	cp_main.addSlider("warp_power").setPosition(10,pos_slider_y(space, start_pos +9, from)).setWidth(w).setRange(0,max).setFont(font);
 
-	radio_button_cycling = cp_main.addRadioButton("abs_cycling").setValue(0).setPosition(10,pos_slider_y(space, start_pos +10, from)).setSize(w,10).addItem("absolute_cycling",1).setFont(font);
+	// radio_button_cycling = cp_main.addRadioButton("abs_cycling").setValue(0).setPosition(10,pos_slider_y(space, start_pos +10, from)).setSize(w,10).addItem("absolute_cycling",1).setFont(font);
+	check_main = cp_main.addCheckBox("main_setting").setPosition(10,pos_slider_y(space, start_pos +10, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2).addItem("absolute_cycling",1).addItem("resize_window",1);
   
   int max_tempo = 10 ;
-	cp_main.addSlider("tempo_refresh").setPosition(10,pos_slider_y(space, start_pos +12, from)).setWidth(w).setRange(1,max_tempo).setNumberOfTickMarks(max_tempo).setFont(font);
+	cp_main.addSlider("tempo_refresh").setPosition(10,pos_slider_y(space, start_pos +13, from)).setWidth(w).setRange(1,max_tempo).setNumberOfTickMarks(max_tempo).setFont(font);
   
   int max_cell = 50;
-	cp_main.addSlider("cell_force_field").setPosition(10,pos_slider_y(space, start_pos +14, from)).setWidth(w).setRange(1,max_cell).setNumberOfTickMarks(max_cell).setFont(font);
+	cp_main.addSlider("cell_force_field").setPosition(10,pos_slider_y(space, start_pos +15, from)).setWidth(w).setRange(1,max_cell).setNumberOfTickMarks(max_cell).setFont(font);
   
   int max_spot = 10 ;
-	cp_main.addSlider("spot_force_field").setPosition(10,pos_slider_y(space, start_pos +16, from)).setWidth(w).setRange(1,max_spot).setNumberOfTickMarks(max_spot).setFont(font);
+	cp_main.addSlider("spot_force_field").setPosition(10,pos_slider_y(space, start_pos +17, from)).setWidth(w).setRange(1,max_spot).setNumberOfTickMarks(max_spot).setFont(font);
 }
 
 /*
@@ -181,6 +184,11 @@ void cp_image(int space, int max, int w, int start_pos, int from, PFont font) {
 	cp_img_2D.addSlider("y_sort").setPosition(10,pos_slider_y(space, start_pos +3, from)).setWidth(w).setRange(min_mark,max_mark).setNumberOfTickMarks(mark).setFont(font);
 	cp_img_3D.addSlider("z_sort").setPosition(10,pos_slider_y(space, start_pos +4.5, from)).setWidth(w).setRange(min_mark,max_mark).setNumberOfTickMarks(mark).setFont(font);
 }
+
+
+/*
+change_size_window_is, fullfit_image_is
+*/
 
 /*
 * mouse device
@@ -259,6 +267,8 @@ void update_gui_value() {
   set_cell_grid_ff(size);
 
   set_sorting_channel_ff_2D(floor(x_sort), floor(y_sort), floor(vel_sort));
+
+  set_resize_window(gui_resize_window);
 }
 
 
@@ -267,10 +277,9 @@ control event
 v 0.0.2
 */
 public void controlEvent(ControlEvent theEvent) {
-	if(theEvent.isFrom(radio_button_cycling)) {
-  	for(int i = 0 ; i < theEvent.getGroup().getArrayValue().length ; i++) {
-  		abs_cycling = radio_button_cycling.getState(i) ;
-  	}
+	if(theEvent.isFrom(check_main)) {
+		if(check_main.getArrayValue(0) == 1) abs_cycling = true ; else abs_cycling = false ;
+		if(check_main.getArrayValue(1) == 1) gui_resize_window = true ; else gui_resize_window = false ;
   } 
 }
 

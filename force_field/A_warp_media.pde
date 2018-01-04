@@ -143,9 +143,6 @@ int which_movie = 0 ;
 /**
 image
 */
-
-
-
 void load_medias(boolean sub_folder, String... type) {
   String path = selected_path_folder();
   explore_folder(path, sub_folder, type);
@@ -231,8 +228,6 @@ void classic_video() {
 }
 
 void mirror_video(int cellSize) {
-
-  
   /*
   if(video_size.x != width && video_size.y != height) {
     video_size.set(width,height);

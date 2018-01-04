@@ -1,6 +1,6 @@
 /**
 Warp Image
-v 0.3.0
+v 0.4.0
 */
 
 class Warp {
@@ -150,14 +150,15 @@ class Warp {
 
   /**
   misc
+  v 0.0.2
   */
   public void reset() {
     reset_img = true ;
   }
 
-  public void image_library_fit(PGraphics pg) {
+  public void image_library_fit(PGraphics pg, boolean full_fit) {
     for(int i = 0 ; i < img_manager.size() ;i++) {
-      image_resize(img_manager.get(i),pg);
+      image_resize(img_manager.get(i),pg, full_fit);
     }
   }
 

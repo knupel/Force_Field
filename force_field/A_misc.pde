@@ -61,6 +61,11 @@ void set_size(int w, int h) {
 }
 
 
+void set_resize_window(boolean state) {
+  change_size_window_is = state;
+}
+
+
 
 
 

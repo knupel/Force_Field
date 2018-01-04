@@ -3,7 +3,7 @@ ROPE - Romanesco processing environment –
 * Copyleft (c) 2014-2017 
 * Stan le Punk > http://stanlepunk.xyz/
 Rope UTILS  2015 – 2017
-v 1.37.1
+v 1.37.2
 Rope – Romanesco Processing Environment – 
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Rope
@@ -671,23 +671,34 @@ class ROPImage_Manager {
 
 /**
 resize image
-v 0.0.1
+v 0.0.2
 */
 /**
 * resize your picture proportionaly to the window sketch of the a specificic PGraphics
 */
 void image_resize(PImage src) {
-  image_resize(src,g);
+  image_resize(src,g, true);
 }
 
+void image_resize(PImage src, boolean fullfit) {
+  image_resize(src,g,fullfit);
+}
 
-void image_resize(PImage src, PGraphics pg) {
+void image_resize(PImage src, PGraphics pg, boolean fullfit) {
   float ratio_w = pg.width / (float)src.width;
   float ratio_h = pg.height / (float)src.height;
-  if(ratio_w > ratio_h) {
-    src.resize(ceil(src.width *ratio_w), ceil(src.height *ratio_w));
+  if(!fullfit) {
+    if(ratio_w > ratio_h) {
+      src.resize(ceil(src.width *ratio_w), ceil(src.height *ratio_w));
+    } else {
+      src.resize(ceil(src.width *ratio_h), ceil(src.height *ratio_h));  
+    }
   } else {
-    src.resize(ceil(src.width *ratio_h), ceil(src.height *ratio_h));  
+    if(ratio_w > ratio_h) {
+      src.resize(ceil(src.width *ratio_h), ceil(src.height *ratio_h));
+    } else {
+      src.resize(ceil(src.width *ratio_w), ceil(src.height *ratio_w));  
+    }
   }
 }
 
