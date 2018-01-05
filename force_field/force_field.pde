@@ -452,7 +452,22 @@ void keyPressed() {
 
   // navigation in the media movie or picture
   if(keyCode == UP) { 
-    which_img++;
+    which_img--;
+    /*
+    we don't use 0 to the first element of the array because this one is use for G / surface
+    see void warp_init(int type_field, int size_cell) 
+    */
+    if(which_img < 1) which_img = warp.library_size() -1 ;
+    if(movie_warp_list != null) {
+      which_movie--;
+      if(which_movie < 0) which_movie = movie_warp_list.size() -1 ;
+    }
+    
+    println("UP",which_img);   
+  }
+
+  if(keyCode == DOWN) { 
+    which_img++; 
     /*
     we don't use 0 to the first element of the array because this one is use for G / surface
     see void warp_init(int type_field, int size_cell) 
@@ -462,19 +477,6 @@ void keyPressed() {
       which_movie++;
       if(which_movie >= movie_warp_list.size()) which_movie = 0 ;
     }
-    
-  }
-
-  if(keyCode == DOWN) { 
-    which_img--; 
-    /*
-    we don't use 0 to the first element of the array because this one is use for G / surface
-    see void warp_init(int type_field, int size_cell) 
-    */
-    if(which_img < 1) which_img = warp.library_size() -1 ;
-    if(movie_warp_list != null) {
-      which_movie--;
-      if(which_movie < 0) which_movie = movie_warp_list.size() -1 ;
-    }       
+    println("DOWN",which_img);      
   }
 }

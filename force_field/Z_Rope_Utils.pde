@@ -589,9 +589,9 @@ class ROPImage_Manager {
 
   public String get_name(int target) {
     if(library != null && library.size() > 0) {
-      if(target < library.size()) {
+      if(target < library.size() && target >= 0) {
         return library.get(target).get_name() ;
-      } else return null ;
+      } else return library.get(0).get_name();
     } else return null ;
   }
 
@@ -614,8 +614,9 @@ class ROPImage_Manager {
 
   public PImage get() {
     if(library != null && library.size() > 0 ) {
-      if(which_img < library.size()) return library.get(which_img).img; 
-      else return library.get(0).img; 
+      if(which_img < library.size() && which_img >= 0) {
+        return library.get(which_img).img; 
+      } else return library.get(0).img; 
     } else return null ;
   }
 
