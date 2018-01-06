@@ -21,7 +21,9 @@ boolean use_leapmotion = false;
 
 boolean fullScreen_is = false;
 boolean change_size_window_is = false;
-boolean fullfit_image_is = true;
+boolean fullfit_image_is = false;
+
+boolean display_result = true;
 
 PGraphics pg ;
 
@@ -148,13 +150,18 @@ void draw() {
 
 
   /*
-  warp
+  warp management
   */
   warp_init(type_field, get_size_cell_ff(), which_cam, change_size_window_is, fullfit_image_is);
-
-
   num_spot_ff(get_num_spot_gui()); 
-  warp_draw(get_tempo_refresh_gui(), get_rgba_channel_gui(), get_warp_power_gui());
+  /*
+  warp result
+  */
+  if(display_result) {
+    warp_draw(get_tempo_refresh_gui(), get_rgba_channel_gui(), get_warp_power_gui());
+  } else {
+    background(0);
+  }
    
    /**
    INFO
@@ -408,6 +415,8 @@ void keyPressed() {
   if(key == 'h') display_pole();
 
   if(key == 'i') display_info();
+
+  if(key == 'k') display_result();
 
   if(key == 'l') change_cursor_controller();
 

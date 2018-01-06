@@ -1,3 +1,22 @@
+
+
+void display_result(boolean state) {
+  display_result = state;
+}
+
+boolean get_display_is() {
+  return display_result ;
+}
+
+void display_result() {
+  // if(display_result) display_result = false ; else display_result = true ;
+  // display_result = (display_result == false) ? true : false;
+  display_result = !!((display_result == false));
+  get_check_main_display();
+}
+/**
+image thread
+*/
 void diaporama(int tempo_diaporama) {
   diaporama(Integer.MAX_VALUE, tempo_diaporama);
 }
@@ -26,6 +45,11 @@ void diaporama(int type, int tempo_diaporama) {
 boolean diaporama_is ;
 void diaporama_is() {
   diaporama_is = (true)? !diaporama_is : diaporama_is ;
+}
+
+
+void set_fit_image(boolean state) {
+  fullfit_image_is = state;
 }
 
 
