@@ -1,5 +1,15 @@
+float alpha_bg ;
+void set_alpha_background(float norm_f){
+  alpha_bg = map(norm_f,0,1,0.,g.colorModeA);
+}
 
+float get_alpha_bg() {
+  return alpha_bg;
+}
 
+/**
+display
+*/
 void display_result(boolean state) {
   display_result = state;
 }
@@ -9,7 +19,7 @@ boolean get_display_is() {
 }
 
 void display_result() {
-  // if(display_result) display_result = false ; else display_result = true ;
+  // if(display_result) display_result = false ; else display_result = true;
   // display_result = (display_result == false) ? true : false;
   display_result = !!((display_result == false));
   get_check_main_display();
@@ -83,7 +93,6 @@ void set_size(int w, int h) {
     surface.setSize(w,h);
   }
 }
-
 
 void set_resize_window(boolean state) {
   change_size_window_is = state;

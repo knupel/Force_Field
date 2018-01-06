@@ -160,7 +160,7 @@ void draw() {
   if(display_result) {
     warp_draw(get_tempo_refresh_gui(), get_rgba_channel_gui(), get_warp_power_gui());
   } else {
-    background(0);
+    if(get_alpha_bg() > 0 ) background_rope(0,get_alpha_bg());
   }
    
    /**
