@@ -1,9 +1,9 @@
 /**
 ROPE - Romanesco processing environment – 
-* Copyleft (c) 2014-2017 
+* Copyleft (c) 2014-2018 
 * Stan le Punk > http://stanlepunk.xyz/
 ROPE vector
-v 2.6.5.0
+v 2.6.6
 Rope – Romanesco Processing Environment: 2015–2017
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Rope
@@ -327,8 +327,8 @@ class bVec6 extends bVec {
 
 /**
 iVec class
-v 0.8.0
-2017-2017
+v 0.9
+2017-2018
 vector with int precision
 */
 abstract class iVec implements Rope_Constants {
@@ -527,10 +527,40 @@ class iVec2 extends iVec {
     } else return null;
   }
 
+
+  /**
+  Equals
+  */
+  boolean equals(iVec2 target) {
+    if(target != null ) {
+      if((x == target.x) && (y == target.y)) {
+        return true; 
+      } else return false;
+    } else return false;
+  }
+
+  boolean equals(int target) {
+    if((x == target) && (y == target)) 
+    return true; 
+    else return false;
+  }
+  
+  boolean equals(int tx, int ty) {
+    if((x == tx) && (y == ty)) 
+    return true; 
+    else return false;
+  }
+
+
+
   @Override String toString() {
     return "[ " + x + ", " + y + " ]" ;
   }
 }
+
+
+
+
 
 /**
 iVec3
@@ -690,10 +720,40 @@ class iVec3 extends iVec {
     } else return null;
   }
 
+  /**
+  Equals
+  */
+  boolean equals(iVec3 target) {
+    if(target != null ) {
+      if((x == target.x) && (y == target.y) && (z == target.z)) {
+        return true; 
+      } else return false;
+    } else return false;
+  }
+
+  boolean equals(int target) {
+    if((x == target) && (y == target) && (z == target)) 
+    return true; 
+    else return false;
+  }
+  
+  boolean equals(int tx, int ty, int tz) {
+    if((x == tx) && (y == ty) && (z == tz)) 
+    return true; 
+    else return false;
+  }
+
+
+
+
+
   @Override String toString() {
     return "[ " + x + ", " + y + ", " + z + " ]" ;
   }
 }
+
+
+  
 
 /**
 iVec4
@@ -849,6 +909,31 @@ class iVec4 extends iVec {
       return sub(v.x,v.y,v.z,v.w);
     } else return null;
   }
+
+  /**
+  Equals
+  */
+  boolean equals(iVec4 target) {
+    if(target != null ) {
+      if((x == target.x) && (y == target.y) && (z == target.z) && (w == target.w)) {
+        return true; 
+      } else return false;
+    } else return false;
+  }
+
+  boolean equals(int target) {
+    if((x == target) && (y == target) && (z == target) && (w == target)) 
+    return true; 
+    else return false;
+  }
+  
+  boolean equals(int tx, int ty, int tz, int tw) {
+    if((x == tx) && (y == ty) && (z == tz) && (w == tw)) 
+    return true; 
+    else return false;
+  }
+
+
 
   @Override String toString() {
     return "[ " + x + ", " + y + ", " + z + ", " + w + " ]" ;

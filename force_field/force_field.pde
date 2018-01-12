@@ -20,10 +20,13 @@ boolean pause_is ;
 boolean use_leapmotion = false;
 
 boolean fullScreen_is = false;
-boolean change_size_window_is = false;
+boolean change_size_window_is = true;
 boolean fullfit_image_is = false;
 
 boolean display_result = true;
+
+boolean hide_menu_bar = true ;
+
 
 PGraphics pg ;
 
@@ -47,6 +50,8 @@ void settings() {
   // type_field = r.MAGNETIC;
   type_field = r.PERLIN;
   // type_field = r.CHAOS;
+
+  if(hide_menu_bar) PApplet.hideMenuBar();
 }
 
 
@@ -105,6 +110,7 @@ DRAW
 
 */
 void draw() {
+  if(hide_menu_bar) PApplet.hideMenuBar();
   // cursor(CROSS);
   if(use_leapmotion) leap_update();
 
@@ -158,6 +164,7 @@ void draw() {
   warp result
   */
   if(display_result) {
+    tint(g.colorModeX,g.colorModeY,g.colorModeZ,get_alpha_bg());
     warp_draw(get_tempo_refresh_gui(), get_rgba_channel_gui(), get_warp_power_gui());
   } else {
     if(get_alpha_bg() > 0 ) background_rope(0,get_alpha_bg());

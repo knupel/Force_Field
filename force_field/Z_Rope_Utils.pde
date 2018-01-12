@@ -2,8 +2,8 @@
 ROPE - Romanesco processing environment – 
 * Copyleft (c) 2014-2017 
 * Stan le Punk > http://stanlepunk.xyz/
-Rope UTILS  2015 – 2017
-v 1.37.2
+Rope UTILS  2015 – 2018
+v 1.37.4
 Rope – Romanesco Processing Environment – 
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Rope
@@ -589,9 +589,9 @@ class ROPImage_Manager {
 
   public String get_name(int target) {
     if(library != null && library.size() > 0) {
-      if(target < library.size() && target >= 0) {
+      if(target < library.size()) {
         return library.get(target).get_name() ;
-      } else return library.get(0).get_name();
+      } else return null ;
     } else return null ;
   }
 
@@ -614,9 +614,8 @@ class ROPImage_Manager {
 
   public PImage get() {
     if(library != null && library.size() > 0 ) {
-      if(which_img < library.size() && which_img >= 0) {
-        return library.get(which_img).img; 
-      } else return library.get(0).img; 
+      if(which_img < library.size()) return library.get(which_img).img; 
+      else return library.get(0).img; 
     } else return null ;
   }
 
@@ -4265,8 +4264,27 @@ int [][] loadPixels_array_2D() {
 
 /**
 CHECK
-
+v 0.2.0
 */
+
+
+/**
+check display
+*/
+iVec2 display_size(int which_display) {
+  GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+  GraphicsDevice[] awtDevices = environment.getScreenDevices();
+  int target = 0 ;
+  if(which_display < awtDevices.length) {
+    target = which_display ; 
+  } else {
+    printErr("No display match with your request, instead we use the main display");
+    target = 0 ;
+  }
+  GraphicsDevice awtDisplayDevice = awtDevices[target];
+  Rectangle display = awtDisplayDevice.getDefaultConfiguration().getBounds();
+  return iVec2((int)display.getWidth(), (int)display.getHeight());
+}
 
 
 /**

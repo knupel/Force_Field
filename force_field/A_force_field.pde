@@ -159,23 +159,25 @@ add spot
 */
 int num_spot_ff_ref ;
 void num_spot_ff(int num) {
-  if(force_field.get_type() == r.FLUID || force_field.get_type() == r.MAGNETIC || force_field.get_type() == r.GRAVITY) {
-    if(num != num_spot_ff_ref) {
-      force_field.clear_spot();
-    }
-    num_spot_ff_ref = num ;
-    if(force_field != null && num > force_field.get_spot_num()) {
-      println("add", num, "spot to force field");
-      force_field.add_spot(num);
-
-    } else if(force_field == null) {
-      if(frameCount < 3) { 
-        printErr("num_spot_force_field() must be place after method build_force_field()");
-      } else {
-        printErrTempo(180, "num_spot_force_field() must be place after method build_force_field()");
+  if(force_field != null) {
+    if(force_field.get_type() == r.FLUID || force_field.get_type() == r.MAGNETIC || force_field.get_type() == r.GRAVITY) {
+      if(num != num_spot_ff_ref) {
+        force_field.clear_spot();
       }
-    }
-  }  
+      num_spot_ff_ref = num ;
+      if(force_field != null && num > force_field.get_spot_num()) {
+        println("add", num, "spot to force field");
+        force_field.add_spot(num);
+
+      } else if(force_field == null) {
+        if(frameCount < 3) { 
+          printErr("num_spot_force_field() must be place after method build_force_field()");
+        } else {
+          printErrTempo(180, "num_spot_force_field() must be place after method build_force_field()");
+        }
+      }
+    } 
+  }   
 }
 
 

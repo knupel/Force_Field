@@ -3,8 +3,8 @@ ROPE - Romanesco processing environment –
 * Copyleft (c) 2014-2017 
 * Stan le Punk > http://stanlepunk.xyz/
 ROPE core
-v 0.0.3.3
-2017-2017
+v 0.0.4
+2017-2018
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Rope
 */
@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 import java.awt.image.BufferedImage;
-import java.awt.Graphics;
+
 import java.awt.Color;
 import java.awt.Font; 
 import java.awt.image.BufferedImage ;
@@ -29,6 +29,11 @@ import javax.imageio.ImageWriteParam;
 import javax.imageio.metadata.IIOMetadata;
 
 import java.lang.reflect.Field;
+
+import java.awt.Graphics;
+import java.awt.GraphicsEnvironment;
+import java.awt.GraphicsDevice;
+import java.awt.Rectangle;
 
 
 

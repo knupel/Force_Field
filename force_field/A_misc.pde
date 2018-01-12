@@ -1,6 +1,7 @@
 float alpha_bg ;
 void set_alpha_background(float norm_f){
-  alpha_bg = map(norm_f,0,1,0.,g.colorModeA);
+  float mult_f = norm_f *norm_f ;
+  alpha_bg = map(mult_f,0,1,0.,g.colorModeA);
 }
 
 float get_alpha_bg() {
@@ -19,8 +20,6 @@ boolean get_display_is() {
 }
 
 void display_result() {
-  // if(display_result) display_result = false ; else display_result = true;
-  // display_result = (display_result == false) ? true : false;
   display_result = !!((display_result == false));
   get_check_main_display();
 }
@@ -89,14 +88,73 @@ void cursor_manager(boolean display) {
 change size window
 */
 void set_size(int w, int h) {
-  if(change_size_window_is && (width != w || height != h)) {
-    surface.setSize(w,h);
+  iVec2 s = def_window_size(w,h);
+  set_size_ref(s.x,s.y);
+  if(s.x != width || s.y != height) {
+    surface.setSize(s.x,s.y);   
+    iVec2 display = display_size(sketchDisplay() -1);
+    int pos_window_x = (display.x - width)/2;
+    int pos_window_y = (display.y - height)/2 -pos_y_window_alway_on_top();
+
+    println("pos y", pos_window_y);
+    surface.setLocation(pos_window_x,pos_window_y);
+    /*
+    int [] location = {pos_window_x,pos_window_y} ;
+    int [] editorLocation = {0,0};
+    surface.placeWindow(location, editorLocation);
+    */
   }
+}
+
+void set_size_ref(int w, int h) {
+  ref_warp_w = w; 
+  ref_warp_h = h;
+}
+
+iVec2 get_size_ref() {
+  return iVec2(ref_warp_w,ref_warp_h);
 }
 
 void set_resize_window(boolean state) {
   change_size_window_is = state;
 }
+
+void check_current_img_size_against_display() {
+  iVec2 display = display_size(sketchDisplay() -1);
+  if(warp.get_image().width > display.x || warp.get_image().height > display.y) {
+    iVec2 new_size_img = def_window_size(warp.get_image().width, warp.get_image().height);
+    warp.get_image().resize(new_size_img.x,new_size_img.y);
+  }
+}
+
+iVec2 def_window_size(int w, int h) {
+  iVec2 ds = display_size(sketchDisplay() -1);
+  ds.y -= pos_y_window_alway_on_top();
+
+  if(w > ds.x || h > ds.y) {
+    float ratio_x = (float)w / (float)ds.x ;
+    float ratio_y = (float)h / (float)ds.y ;
+    if(ratio_x > ratio_y) {
+      w /= ratio_x ;
+      h /= ratio_x ;
+    } else {
+      w /= ratio_y ;
+      h /= ratio_y ;
+    }
+  }
+  return iVec2(w,h);
+}
+
+int pos_y_window_alway_on_top() {
+  int size_height_bar = 22;
+  if(!hide_menu_bar) size_height_bar += 22;
+  return size_height_bar;
+}
+
+
+
+
+
 
 
 

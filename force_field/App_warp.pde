@@ -8,11 +8,12 @@ int ref_warp_w, ref_warp_h ;
 
 
 void warp_setup() {
-  ref_warp_w = width; 
-  ref_warp_h = height;
+  set_size_ref(width, height);
   surface_g = "surface g";
   warp.load_shader();
 }
+
+
 
 /**
  add or changer folder or file
@@ -91,17 +92,15 @@ void warp_init_media(int type_field, int size_cell, boolean change_canvas_is, bo
       warp.image_library_crop(g);
     }
   }
-  
-  // pg = createGraphics(width,height,P2D);
-  // warp.add_image(pg, "truc");
- // warp.select_image("alien");
+
 
   if(movie_warp_is() && get_movie_warp(which_movie) != null && get_movie_warp(which_movie).width != 0 && get_movie_warp(which_movie).height != 0) {
     ref_warp_w = get_movie_warp(which_movie).width;
     ref_warp_h = get_movie_warp(which_movie).height;
   } else if(warp.get_width() > 0 && warp.get_height() > 0) {
-    ref_warp_w = warp.get_width();
-    ref_warp_h = warp.get_height(); 
+    if(!def_window_size(warp.get_width(), warp.get_height()).equals(get_size_ref())) {
+      set_size_ref(warp.get_width(), warp.get_height());
+    }
   }
   if(movie_warp_is() && !change_canvas_is) {
     warp_video_window(g);
@@ -149,8 +148,12 @@ main method
 */
 void warp_draw(int tempo, Vec4 rgba, float intensity) {
   if(warp_media_is()) {
+    //background_rope(0, alpha);
     if(frameCount%tempo == 0 ) warp_media_display();
-    if(warp.library_size() > 0 && force_field != null) warp_show(rgba, intensity);
+    if(warp.library_size() > 0 && force_field != null) {
+      warp_show(rgba, intensity);
+      check_current_img_size_against_display();
+    }
 
     /**
     animation
@@ -187,9 +190,9 @@ void warp_media_display() {
     play_video(false);
     display_movie(g);
   } else {
+    warp.select_image(which_img);
     play_video(false);
     movie_warp_is(false);
-    warp.select_image(which_img);
   }
 }
 

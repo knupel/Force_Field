@@ -83,7 +83,7 @@ void display_movie(PGraphics pg) {
       int w = ceil(get_movie_warp(which_movie).width *ratio_display_video);
       int h = ceil(get_movie_warp(which_movie).height *ratio_display_video);
       float y = (pg.height /2 )- (h/2);
-      background(0);
+      //background_rope(255,0,0, alpha);
       image(get_movie_warp(which_movie),0,y,w,h);
     } else {
       image(get_movie_warp(which_movie),0,0);

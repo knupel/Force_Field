@@ -83,11 +83,12 @@ void interface_setup(Vec2 pos, Vec2 size) {
 	int max = 1;
 
   cp_main(space_interface, max, slider_width, 1, TOP, font_gui);
-  cp_fluid(space_interface, max, slider_width, 19, TOP, font_gui);
 
-  cp_mouse(space_interface, max, slider_width, 24, TOP, font_gui);
+  cp_fluid(space_interface, max, slider_width, 24, TOP, font_gui);
 
-  cp_image(space_interface, max, slider_width, 28, TOP, font_gui);
+  cp_mouse(space_interface, max, slider_width, 27, TOP, font_gui);
+
+  cp_image(space_interface, max, slider_width, 32, TOP, font_gui);
 
   cp_movie(space_interface, max, slider_width, 2, BOTTOM, font_gui);
 
@@ -121,8 +122,11 @@ void cp_main(int space, int max, int w, int start_pos, int from, PFont font) {
 	spot_force_field = 5.;
 
 	check_main = cp_main.addCheckBox("main_setting").setPosition(10,pos_slider_y(space, start_pos +0, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2).addItem("resize_window",1).addItem("fit_image",1).addItem("display_result",1);
-  check_main.activate(1);
+  if(change_size_window_is) check_main.activate(0);
+  if(fullfit_image_is) check_main.activate(1);
   check_main.activate(2);
+
+
 
   cp_main.addSlider("alpha_background").setPosition(10,pos_slider_y(space, start_pos +3.25, from)).setWidth(w).setRange(0,max).setFont(font);
 
