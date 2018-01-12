@@ -1,6 +1,6 @@
 /**
-Rope Costume  2016-2017
-v 1.0.0.1
+Rope Costume  2016-2018
+v 1.0.1
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Costume_rope
 */
@@ -22,8 +22,9 @@ final int DODECAGON_ROPE = 22 ;
 
 final int TEXT_ROPE = 26 ;
 
-final int CROSS_2_ROPE = 52 ;
-final int CROSS_3_ROPE = 53 ;
+final int CROSS_RECT_ROPE = 52;
+final int CROSS_BOX_2_ROPE = 53;
+final int CROSS_BOX_3_ROPE = 54;
 
 final int SPHERE_LOW_ROPE = 100 ;
 final int SPHERE_MEDIUM_ROPE = 101 ;
@@ -127,9 +128,10 @@ void costume_list() {
 		costume_dict.add("DODECAGON_ROPE", DODECAGON_ROPE, 2, 0) ;
 
 		costume_dict.add("TEXT_ROPE", TEXT_ROPE, 2, 4) ;
-
-		costume_dict.add("CROSS_2_ROPE", CROSS_2_ROPE, 3, 0) ;
-		costume_dict.add("CROSS_3_ROPE", CROSS_3_ROPE, 3, 0) ;
+    
+    costume_dict.add("CROSS_RECT_ROPE", CROSS_RECT_ROPE, 2, 0) ;
+		costume_dict.add("CROSS_BOX_2_ROPE", CROSS_BOX_2_ROPE, 3, 0) ;
+		costume_dict.add("CROSS_BOX_3_ROPE", CROSS_BOX_3_ROPE, 3, 0) ;
 
 		costume_dict.add("SPHERE_LOW_ROPE", SPHERE_LOW_ROPE, 3, 0) ;
 		costume_dict.add("SPHERE_MEDIUM_ROPE", SPHERE_MEDIUM_ROPE, 3, 0) ;
@@ -828,19 +830,23 @@ void costume_rope(Vec3 pos, Vec3 size, float angle, Vec dir, int which_costume) 
 		stop_matrix() ;
 	}
 
-
-
-		else if (which_costume == CROSS_2_ROPE) {
+	else if (which_costume == CROSS_RECT_ROPE) {
 		start_matrix() ;
 		translate(pos) ;
 		rotate_behavior(Vec3(angle)) ;
-		cross_2(size) ;
+		cross_rect(iVec2(0), (int)size.y, (int)size.x) ;
 		stop_matrix() ;
-	} else if (which_costume == CROSS_3_ROPE) {
+	} else if (which_costume == CROSS_BOX_2_ROPE) {
 		start_matrix() ;
 		translate(pos) ;
 		rotate_behavior(Vec3(angle)) ;
-		cross_3(size) ;
+		cross_box_2(Vec2(size.x, size.y)) ;
+		stop_matrix() ;
+	} else if (which_costume == CROSS_BOX_3_ROPE) {
+		start_matrix() ;
+		translate(pos) ;
+		rotate_behavior(Vec3(angle)) ;
+		cross_box_3(size) ;
 		stop_matrix() ;
 	}
 
@@ -1441,9 +1447,27 @@ void star(Vec position, Vec size_raw, int summits, float angle, float[] ratio) {
 /**
 CROSS
 */
-void cross_2(Vec3 size) {
+
+void cross_rect(iVec2 pos, int thickness, int radius) {
+  // verticale one
+	Vec2 size = Vec2(thickness, radius *2);
+	Vec2 pos_temp = Vec2(pos.x, pos.y -(size.y/2) +((float)thickness /2));
+	pos_temp.sub(thickness/2);
+	rect(pos_temp, size);
+	  // horizontal one
+	size.set(radius *2, thickness);
+	pos_temp.set(pos.x -(size.x/2) +((float)thickness /2),pos.y);
+	pos_temp.sub(thickness/2);
+	rect(pos_temp, size);
+
+
+	//rect(pos, size);
+	//rect(small_part, size.y, small_part);
+}
+
+void cross_box_2(Vec2 size) {
 	float ratio_cross = .3 ;
-	float scale_cross = (size.x + size.y + size.z) *.3 ;
+	float scale_cross = size.sum() *.5;
 	float small_part = scale_cross *ratio_cross ;
 
 	box(size.x, small_part, small_part) ;
@@ -1451,9 +1475,9 @@ void cross_2(Vec3 size) {
 }
 
 
-void cross_3(Vec3 size) {
+void cross_box_3(Vec3 size) {
 	float ratio_cross = .3 ;
-	float scale_cross = (size.x + size.y + size.z) *.3 ;
+	float scale_cross = size.sum() *.3 ;
 	float small_part = scale_cross *ratio_cross ;
    
 	box(size.x, small_part, small_part) ;

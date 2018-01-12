@@ -70,13 +70,12 @@ cursor manager
 */
 void cursor_manager(boolean display) {
   if(display) {
-    Vec2 pos = Vec2(mouseX,mouseY);
-    Vec2 size = Vec2(7);
-    int summits = 5 ;
+    iVec2 pos = iVec2(mouseX,mouseY);
+
     fill(255);
     stroke(0);
-    strokeWeight(.5);
-    star(pos, size, summits) ;
+    strokeWeight(1);
+    cross_rect(pos, 3,7) ;
     // cursor(CROSS);
   } else {
     noCursor();
@@ -95,8 +94,6 @@ void set_size(int w, int h) {
     iVec2 display = display_size(sketchDisplay() -1);
     int pos_window_x = (display.x - width)/2;
     int pos_window_y = (display.y - height)/2 -pos_y_window_alway_on_top();
-
-    println("pos y", pos_window_y);
     surface.setLocation(pos_window_x,pos_window_y);
     /*
     int [] location = {pos_window_x,pos_window_y} ;
