@@ -25,7 +25,7 @@ boolean fullfit_image_is = false;
 
 boolean display_result = true;
 
-boolean hide_menu_bar = true ;
+boolean hide_menu_bar = false;
 
 
 PGraphics pg ;
@@ -48,8 +48,9 @@ void settings() {
   // type_field = r.FLUID;
   //  type_field = r.GRAVITY; /* you can also use HOLE constant */
   // type_field = r.MAGNETIC;
-  type_field = r.PERLIN;
+  //type_field = r.PERLIN;
   // type_field = r.CHAOS;
+ type_field = IMAGE;
 
   if(hide_menu_bar) PApplet.hideMenuBar();
 }
@@ -293,6 +294,7 @@ void force_field_spot_coord() {
     }
     // case 2
     if(get_spot_num_ff() == 2) {
+      pos[0] = Vec2(mouseX, mouseY);
       pos[1] = Vec2(width -mouseX, height -mouseY);
     }
     // case 3
@@ -477,9 +479,7 @@ void keyPressed() {
     if(movie_warp_list != null) {
       which_movie--;
       if(which_movie < 0) which_movie = movie_warp_list.size() -1 ;
-    }
-    
-    println("UP",which_img);   
+    }   
   }
 
   if(keyCode == DOWN) { 
@@ -492,7 +492,6 @@ void keyPressed() {
     if(movie_warp_list != null) {
       which_movie++;
       if(which_movie >= movie_warp_list.size()) which_movie = 0 ;
-    }
-    println("DOWN",which_img);      
+    }    
   }
 }

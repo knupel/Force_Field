@@ -1,9 +1,9 @@
 /**
 ROPE - Romanesco processing environment – 
-* Copyleft (c) 2014-2017 
+* Copyleft (c) 2014-2018 
 * Stan le Punk > http://stanlepunk.xyz/
 Rope UTILS  2015 – 2018
-v 1.37.4
+v 1.37.6
 Rope – Romanesco Processing Environment – 
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Rope
@@ -4264,22 +4264,27 @@ int [][] loadPixels_array_2D() {
 
 /**
 CHECK
-v 0.2.0
+v 0.2.2
 */
 
 
 /**
 check display
 */
-iVec2 display_size(int which_display) {
+iVec2 get_display_size() {
+  return get_display_size(sketchDisplay() -1);
+}
+
+
+iVec2 get_display_size(int which_display) {
   GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
   GraphicsDevice[] awtDevices = environment.getScreenDevices();
   int target = 0 ;
   if(which_display < awtDevices.length) {
     target = which_display ; 
   } else {
-    printErr("No display match with your request, instead we use the main display");
-    target = 0 ;
+    printErr("No display match with your request, instead we use the current display");
+    target = sketchDisplay() -1;
   }
   GraphicsDevice awtDisplayDevice = awtDevices[target];
   Rectangle display = awtDisplayDevice.getDefaultConfiguration().getBounds();
@@ -4294,6 +4299,10 @@ boolean renderer_P3D() {
   if(get_renderer_name(getGraphics()).equals("processing.opengl.PGraphics3D")) return true ; else return false ;
 }
 
+
+String get_renderer_name() {
+  return get_renderer_name(g);
+}
 
 String get_renderer_name(final PGraphics graph) {
   try {

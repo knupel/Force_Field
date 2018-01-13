@@ -91,7 +91,7 @@ void set_size(int w, int h) {
   set_size_ref(s.x,s.y);
   if(s.x != width || s.y != height) {
     surface.setSize(s.x,s.y);   
-    iVec2 display = display_size(sketchDisplay() -1);
+    iVec2 display = get_display_size();
     int pos_window_x = (display.x - width)/2;
     int pos_window_y = (display.y - height)/2 -pos_y_window_alway_on_top();
     surface.setLocation(pos_window_x,pos_window_y);
@@ -117,7 +117,7 @@ void set_resize_window(boolean state) {
 }
 
 void check_current_img_size_against_display() {
-  iVec2 display = display_size(sketchDisplay() -1);
+  iVec2 display = get_display_size();
   if(warp.get_image().width > display.x || warp.get_image().height > display.y) {
     iVec2 new_size_img = def_window_size(warp.get_image().width, warp.get_image().height);
     warp.get_image().resize(new_size_img.x,new_size_img.y);
@@ -125,7 +125,7 @@ void check_current_img_size_against_display() {
 }
 
 iVec2 def_window_size(int w, int h) {
-  iVec2 ds = display_size(sketchDisplay() -1);
+  iVec2 ds = get_display_size();
   ds.y -= pos_y_window_alway_on_top();
 
   if(w > ds.x || h > ds.y) {

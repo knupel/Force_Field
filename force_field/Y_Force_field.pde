@@ -128,7 +128,23 @@ public class Force_field implements Rope_Constants {
     this.type = IMAGE ;
     this.is = true ;
     sorting_channel(component_sorting);
-    this.src = src.copy();
+    // println(src.width,src.height, get_display_size());
+    
+    if(this.src == null ) {
+      this.src = createImage(src.width,src.height,ARGB);
+      src.loadPixels() ;
+      this.src.pixels = src.pixels ;
+      this.src.updatePixels(); 
+    } else {
+      this.src.resize(src.width,src.height);
+      src.loadPixels() ;
+      this.src.pixels = src.pixels ;
+      this.src.updatePixels(); 
+    }
+    // src.loadPixels();
+    println(this.src.width,this.src.height, src.width,src.height);
+    println(this.src.pixels.length, src.pixels.length);
+    // this.src = src.copy();
     // Determine the number of columns and rows based on sketch's width and height
     set_canvas(iVec2(resolution/2 +canvas_pos.x, resolution/2 +canvas_pos.y), iVec2(this.src.width,this.src.height));
     cols = canvas.x/resolution;
@@ -619,7 +635,6 @@ public class Force_field implements Rope_Constants {
       update_magnetic_field();
     } else {
       update_classic_field();
-
     }  
   }
   

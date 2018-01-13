@@ -199,7 +199,7 @@ void build_ff(int type_force_field, int resolution, PImage src, int... sorting_c
   } else {
     int offset = resolution;
     canvas = iVec2(width +offset, height +offset);
-    canvas_pos = iVec2(0 -offset/2) ;
+    canvas_pos = iVec2(0 -offset/2);
   }
 
   if(type_force_field == r.GRAVITY) {
@@ -216,8 +216,8 @@ void build_ff(int type_force_field, int resolution, PImage src, int... sorting_c
     diff_ff = 1.;   
     check_for_available_spot();
   } else if(type_force_field == IMAGE) {
-    if(src != null) {
-      build_ff_img(resolution, canvas_pos, src, sorting_channel);
+    if(src != null && src.pixels != null) {
+        build_ff_img(resolution, canvas_pos, src, sorting_channel);
     } else {
       printErr("PImage src is null, Force field cannot be build");
     }
