@@ -4,7 +4,7 @@ FORCE FIELD
 2017-2018
 by Stan le Punk
 http://stanlepunk.xyz/
-v 0.0.4
+v 0.1.0
 */
 /**
 Force Field is a refactoring Flow field from The Nature of Code by Daniel Shiffman

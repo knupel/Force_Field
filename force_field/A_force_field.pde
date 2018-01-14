@@ -66,7 +66,6 @@ void change_type_ff() {
     type_field = r.FLUID;
   }
 
-  // if(get_type_ff() == r.MAGNETIC) type_field = r.FLUID ; else type_field = r.MAGNETIC;
   force_field_init_is = false ;
   if(type_field != IMAGE) {
     build_ff(type_field, get_resultion_ff());

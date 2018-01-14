@@ -95,8 +95,13 @@ void warp_init_media(int type_field, int size_cell, boolean change_canvas_is, bo
 
 
   if(movie_warp_is() && get_movie_warp(which_movie) != null && get_movie_warp(which_movie).width != 0 && get_movie_warp(which_movie).height != 0) {
-    ref_warp_w = get_movie_warp(which_movie).width;
-    ref_warp_h = get_movie_warp(which_movie).height;
+    if(change_canvas_is) {
+      iVec2 temp_size_window = def_window_size(get_movie_warp(which_movie).width, get_movie_warp(which_movie).height);
+      set_size_ref(temp_size_window.x,temp_size_window.y);
+    } else {
+      set_size_ref(get_movie_warp(which_movie).width, get_movie_warp(which_movie).height);
+    }
+    
   } else if(warp.get_width() > 0 && warp.get_height() > 0) {
     if(!def_window_size(warp.get_width(), warp.get_height()).equals(get_size_ref())) {
       set_size_ref(warp.get_width(), warp.get_height());
