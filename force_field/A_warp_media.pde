@@ -46,6 +46,7 @@ void movie_library_clear() {
   if(movie_warp_list != null) {
     play_movie_warp_is(false);
     movie_warp_is(false);
+    new_movie_is = true ;
     if(get_movie_warp(which_movie) != null) get_movie_warp(which_movie).stop();
     movie_warp_list.clear();
   }
@@ -66,32 +67,31 @@ void load_movie(String movie_path) {
 }
 
 float ratio_display_video = 1. ;
-void warp_video_window(PGraphics pg) {
-  if(get_movie_warp(which_movie) != null) ratio_display_video = pg.width / (float)get_movie_warp(which_movie).width ;
+boolean new_movie_is = true ;
+void warp_video_window_ratio(PGraphics pg, int target) {
+  if(new_movie_is && get_movie_warp(target) != null && pg.width > 0 && get_movie_warp(target).width > 0) {
+    ratio_display_video = pg.width /(float)get_movie_warp(target).width ;
+    new_movie_is = false ;
+  }
 }
 
-int ref_movie ;
+int ref_movie = -1;
 void display_movie(PGraphics pg) {
   if(movie_warp_list != null && get_movie_warp(which_movie) != null) {
     if(ref_movie != which_movie) {
+      new_movie_is = true ;
       get_movie_warp(which_movie).stop();
     }
+    warp_video_window_ratio(pg, which_movie);
     ref_movie = which_movie ;
     get_movie_warp(which_movie).read();
     get_movie_warp(which_movie).loop();
+
     if(ratio_display_video != 1.) {
       int w = ceil(get_movie_warp(which_movie).width *ratio_display_video);
       int h = ceil(get_movie_warp(which_movie).height *ratio_display_video);
-      float y = (pg.height /2 )- (h/2);
-      /**
+      float y = (pg.height /2) -(h /2);
 
-
-      SOMETHING WRONG HERE WHEN THE VIDEO IS BIGGER DISPLAY
-
-
-
-      */
-      //background_rope(255,0,0, alpha);
       image(get_movie_warp(which_movie),0,y,w,h);
     } else {
       image(get_movie_warp(which_movie),0,0);

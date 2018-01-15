@@ -41,13 +41,14 @@ void warp_add_media_folder() {
   select_folder();
 }
 
-void warp_change_media_folder() {
+void warp_change_media_folder() { 
+  
   if(get_files() != null) {
     warp_media_loaded(false);
     get_files().clear();
     warp.image_library_clear();
     movie_library_clear();
-  }
+  } 
   select_folder();
 }
 
@@ -95,21 +96,18 @@ void warp_init_media(int type_field, int size_cell, boolean change_canvas_is, bo
 
 
   if(movie_warp_is() && get_movie_warp(which_movie) != null && get_movie_warp(which_movie).width != 0 && get_movie_warp(which_movie).height != 0) {
+    
     if(change_canvas_is) {
       iVec2 temp_size_window = def_window_size(get_movie_warp(which_movie).width, get_movie_warp(which_movie).height);
       set_size_ref(temp_size_window.x,temp_size_window.y);
     } else {
       set_size_ref(get_movie_warp(which_movie).width, get_movie_warp(which_movie).height);
     }
-    
   } else if(warp.get_width() > 0 && warp.get_height() > 0) {
     if(!def_window_size(warp.get_width(), warp.get_height()).equals(get_size_ref())) {
       set_size_ref(warp.get_width(), warp.get_height());
     }
-  }
-  if(movie_warp_is() && !change_canvas_is) {
-    warp_video_window(g);
-  }   
+  } 
 
   if(change_canvas_is && (width != ref_warp_w || height != ref_warp_h)) {
     println("warp init media");

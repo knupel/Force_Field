@@ -220,7 +220,7 @@ void cp_mouse(int space, int max, int w, int start_pos, int from, PFont font){
 	angle_mouse = 0.;
 
 	cp_mouse.addSlider("radius_mouse").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(w).setRange(0,max).setFont(font);
-  cp_mouse.addSlider("speed_mouse").setPosition(10,pos_slider_y(space, start_pos +1, from)).setWidth(w).setRange(0,max).setFont(font);
+  cp_mouse.addSlider("speed_mouse").setPosition(10,pos_slider_y(space, start_pos +1, from)).setWidth(w).setRange(-max,max).setFont(font);
   cp_mouse.addSlider("angle_mouse").setPosition(10,pos_slider_y(space, start_pos +2, from)).setWidth(w).setRange(0,TAU).setFont(font);
 }
 

@@ -138,7 +138,7 @@ void draw() {
       force_field_spot_coord_leapmotion();
     } else {
       force_field_spot_condition(true);
-      force_field_spot_coord();
+      force_field_spot_coord(iVec2(mouseX,mouseY),mousePressed);
     }
 
     if(get_type_ff() == r.FLUID) {
@@ -250,7 +250,6 @@ void force_field_spot_coord_leapmotion() {
         pos_finger[i].mult(width,height);
       } else {
         // pos_finger[i] = Vec2(-width,-height);
-        // println("finger",i,frameCount, pos_finger[i]);
       }
     }
     /*
@@ -285,17 +284,18 @@ void force_field_spot_condition_leapmotion() {
 }
 
 float distance ;
-void force_field_spot_coord() {
+iVec2 ref_pos ;
+void force_field_spot_coord(iVec2 ipos, boolean is) {
   if(get_spot_num_ff() > 0) {
     Vec2 [] pos = new Vec2[get_spot_num_ff()];
     // case 1
-    if(get_spot_num_ff() == 1) {
-      pos[0] = Vec2(mouseX, mouseY);
+    if(get_spot_num_ff() == 1 && is) {
+      pos[0] = Vec2(ipos.x, ipos.y);
     }
     // case 2
-    if(get_spot_num_ff() == 2) {
-      pos[0] = Vec2(mouseX, mouseY);
-      pos[1] = Vec2(width -mouseX, height -mouseY);
+    if(get_spot_num_ff() == 2 && is) {
+      pos[0] = Vec2(ipos.x, ipos.y);
+      pos[1] = Vec2(width -ipos.x, height -ipos.y);
     }
     // case 3
     if(get_spot_num_ff() > 2) {
@@ -318,7 +318,14 @@ void force_field_spot_coord() {
         Vec2 proj = projection(final_angle, get_radius_mouse());
        
         pos[i] = Vec2(proj);
-        pos[i].add(mouseX,mouseY);        
+        if(is) {
+          if(ref_pos == null) {
+            ref_pos = iVec2(mouseX,mouseY);
+          } else {
+            ref_pos.set(mouseX,mouseY);
+          }
+        }
+        pos[i].add(ref_pos);        
       }
     }
     update_spot_ff_coord(pos);
@@ -431,8 +438,8 @@ void keyPressed() {
 
   if(key == 'n') {
     // @see if(key == 'a')
-    warp_change_media_folder();
-    play_video(false);
+   warp_change_media_folder();
+   play_video(false);
   }
 
   if(key == 'p') {
