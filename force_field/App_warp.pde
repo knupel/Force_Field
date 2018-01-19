@@ -16,33 +16,47 @@ void warp_setup() {
 
 
 /**
- add or changer folder or file
+ add, change folder or file
 */
 /*
 file part
 */
-void warp_add_media_file() {
-  select_file();
+boolean media_added_is ;
+boolean media_add_is() {
+  return media_added_is ;
 }
 
-void warp_change_media_file() {
+void media_ready_to_add() {
+  media_added_is = false;
+}
+
+// file part
+void warp_add_media_input() {
+  select_input();
+  media_added_is = true;
+  println("nouveau fichier");
+}
+
+void warp_change_media_input() {
   if(get_files() != null) {
+    println("nouveau fichier");
     warp_media_loaded(false);
     get_files().clear();
     warp.image_library_clear();
     movie_library_clear();
   }
-  select_file();
+  select_input();
+  media_added_is = true ;
 }
-/*
-folder part
-*/
+
+
+// folder part
 void warp_add_media_folder() {
   select_folder();
+  media_added_is = true ;
 }
 
 void warp_change_media_folder() { 
-  
   if(get_files() != null) {
     warp_media_loaded(false);
     get_files().clear();
@@ -50,6 +64,7 @@ void warp_change_media_folder() {
     movie_library_clear();
   } 
   select_folder();
+  media_added_is = true ;
 }
 
 
@@ -87,11 +102,21 @@ void warp_init_media(int type_field, int size_cell, boolean change_canvas_is, bo
   if(folder_selected_is()) {
     movie_warp_is(false);
     add_g_surface();
-    load_medias(true, "jpg", "JPG", "mp4", "avi", "mov");   
+    boolean explore_sub_folder = true ;
+    load_media_folder(explore_sub_folder, "jpg", "JPG", "mp4", "avi", "mov");   
     if(!change_canvas_is) {
       warp.image_library_fit(g, fullfit);
       warp.image_library_crop(g);
     }
+  } else if(input_selected_is()) {
+    movie_warp_is(false);
+    add_g_surface();
+    load_media_input("jpg", "JPG", "mp4", "avi", "mov");  
+    if(!change_canvas_is) {
+      warp.image_library_fit(g, fullfit);
+      warp.image_library_crop(g);
+    }
+
   }
 
 

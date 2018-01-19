@@ -1,3 +1,201 @@
+/**
+info system
+*/
+String os_system ;
+void info_system() {
+  println("java Version Name:",javaVersionName);
+  os_system = System.getProperty("os.name");
+  println("os.name:",os_system);
+  println("os.version: ",System.getProperty("os.version"));
+}
+
+/**
+KEYPRESSED
+
+*/
+void keyPressed() {
+  keys[keyCode] = true;
+  
+  keypressed_add_media() ;
+
+  if(key == 'b') manage_border();
+
+  if(key == 'c') hide_interface();
+
+  if(key == 'd') diaporama_is();
+
+  if(key == 'f') display_field();
+
+  if(key == 'g') display_grid();
+
+  if(key == 'h') display_pole();
+
+  if(key == 'i') display_info();
+
+  if(key == 'k') display_result();
+
+  if(key == 'l') change_cursor_controller();
+
+  
+  if(key == 'p') {
+    println("export jpg");
+    saveFrame();   
+  }
+
+  if(key == 'r') {
+    reset_vehicle();
+    warp.reset();  
+    if(force_field.get_type() == IMAGE) {
+      force_field_init_is = false ;
+      build_ff(force_field.get_type(), get_resultion_ff(), warp.get_image(), get_sorting_channel_ff_2D());
+    }
+    force_field.refresh();
+  }
+
+
+  if(key == 'v') play_video_switch();
+
+  if(key == 'w') {
+    if(shader_filter_is) shader_filter_is = false ; else shader_filter_is = true ;
+  }
+
+  if(key == 'x') change_type_ff() ;
+
+  if(key == 'z') {
+    force_field.reset();
+  }
+
+  if(key == ' ') {
+    if(pause_is) pause_is = false ; else pause_is = true ;
+  }
+  
+  // navigation in the media movie or picture
+  if(keyCode == UP) { 
+    which_img--;
+    // we don't use 0 to the first element of the array because this one is use for G / surface
+    // see void warp_init(int type_field, int size_cell) 
+    if(which_img < 1) which_img = warp.library_size() -1 ;
+    if(movie_warp_list != null) {
+      which_movie--;
+      if(which_movie < 0) which_movie = movie_warp_list.size() -1 ;
+    }   
+  }
+
+  if(keyCode == DOWN) { 
+    which_img++; 
+    // we don't use 0 to the first element of the array because this one is use for G / surface
+    // see void warp_init(int type_field, int size_cell) 
+    if(which_img >= warp.library_size()) which_img = 1 ;
+    if(movie_warp_list != null) {
+      which_movie++;
+      if(which_movie >= movie_warp_list.size()) which_movie = 0 ;
+    }    
+  }
+}
+
+
+
+void keypressed_add_media() {
+  // add media folder
+  if(os_system.equals("Mac OS X")) {
+    // A use Q
+    // Q or q is for A because I don't find a solution to map AZERTY layout
+    if(checkKey(157) && checkKey(SHIFT) && checkKey(KeyEvent.VK_Q)) {
+      // @see if(key == 'o')
+      warp_add_media_folder();
+      play_video(false);
+    }
+  } else {
+    // Q or q is for A because I don't find a solution to map AZERTY layout
+    if(checkKey(CONTROL) && checkKey(SHIFT) && checkKey(KeyEvent.VK_Q)){
+      // @see if(key == 'o')
+      warp_add_media_folder();
+      play_video(false);
+    }
+  }
+  // add media file
+  if(os_system.equals("Mac OS X")) {
+    // A use Q
+    // Q or q is for A because I don't find a solution to map AZERTY layout
+    if(checkKey(157) && !checkKey(SHIFT) && checkKey(KeyEvent.VK_Q)) {
+      // @see if(key == 'o')
+      warp_add_media_input();
+      play_video(false);
+    }
+  } else {
+    // Q or q is for A because I don't find a solution to map AZERTY layout
+    if(checkKey(CONTROL) && !checkKey(SHIFT) && checkKey(KeyEvent.VK_Q)){
+      // @see if(key == 'o')
+      warp_add_media_input();
+      play_video(false);
+    }
+  }
+
+  // replace media folder
+  if(os_system.equals("Mac OS X")) {
+    if(checkKey(157) && checkKey(SHIFT) && checkKey(KeyEvent.VK_O)){
+      // @see if(key == 'a')
+      warp_change_media_folder();
+      play_video(false);
+    }
+  } else {
+    if(checkKey(CONTROL) && checkKey(SHIFT) && checkKey(KeyEvent.VK_O)){
+      // @see if(key == 'a')
+      warp_change_media_folder();
+      play_video(false);
+    }
+  }
+
+  // replace media file
+  if(os_system.equals("Mac OS X")) {
+    if(checkKey(157) && !checkKey(SHIFT) && checkKey(KeyEvent.VK_O)){
+      // @see if(key == 'a')
+      warp_change_media_input();
+      play_video(false);
+    }
+  } else {
+    if(checkKey(CONTROL) && !checkKey(SHIFT) && checkKey(KeyEvent.VK_O)){
+      // @see if(key == 'a')
+      warp_change_media_input();
+      play_video(false);
+    }
+  }
+}
+
+/*
+key event
+*/
+import java.awt.event.KeyEvent;
+boolean[] keys = new boolean[526];
+
+boolean checkKey(int k) {
+  if (keys.length >= k) return keys[k]; return false;
+}
+
+
+void reset_key() { 
+  for(int i = 0 ; i < keys.length ; i++) {
+    if(keys[i]) keys[i] = false ;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+alpha
+*/
 float alpha_bg ;
 void set_alpha_background(float norm_f){
   float mult_f = norm_f *norm_f ;
@@ -7,6 +205,15 @@ void set_alpha_background(float norm_f){
 float get_alpha_bg() {
   return alpha_bg;
 }
+
+
+
+
+
+
+
+
+
 
 /**
 display

@@ -1,6 +1,6 @@
 /**
 Rope Costume  2016-2018
-v 1.0.1
+v 1.0.2
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Costume_rope
 */
@@ -633,7 +633,7 @@ void costume_rope(Vec pos, Vec size, float angle, Vec dir, int which_costume, St
 			costume_rope(pos_final, size_final, angle, dir, sentence) ;
 		}
 	} else {
-		System.err.println("Vec pos or Vec size if not an instanceof Vec2 or Vec3, it's not possible to process costume_rope()") ;
+		printErrTempo(180,"Vec pos or Vec size if not an instanceof Vec2 or Vec3, it's not possible to process costume_rope()");
 	}
 }
 
@@ -667,7 +667,7 @@ void costume_rope(Vec3 pos, Vec3 size, float angle, Vec dir, String sentence) {
 	} else if (dir instanceof Vec3) {
     // direction cartesian
 	} else {
-    System.err.println("Vec dir if not an instanceof Vec2 or Vec3, it's not possible to process costume_rope()") ;
+    printErrTempo(180,"Vec dir if not an instanceof Vec2 or Vec3, it's not possible to process costume_rope()") ;
 	}
 
 	start_matrix() ;
@@ -742,7 +742,7 @@ void costume_rope(Vec3 pos, Vec3 size, float angle, Vec dir, int which_costume) 
 	} else if (dir instanceof Vec3) {
     // direction cartesian
 	} else {
-    System.err.println("Vec dir if not an instanceof Vec2 or Vec3, it's not possible to process costume_rope()") ;
+    printErrTempo(180,"Vec dir if not an instanceof Vec2 or Vec3, it's not possible to process costume_rope()") ;
 	}
 
 	if (which_costume == POINT_ROPE) {
@@ -1451,12 +1451,12 @@ CROSS
 void cross_rect(iVec2 pos, int thickness, int radius) {
   // verticale one
 	Vec2 size = Vec2(thickness, radius *2);
-	Vec2 pos_temp = Vec2(pos.x, pos.y -(size.y/2) +((float)thickness /2));
+	Vec2 pos_temp = Vec2(pos.x, pos.y -floor(size.y/2) +(thickness /2));
 	pos_temp.sub(thickness/2);
 	rect(pos_temp, size);
 	  // horizontal one
 	size.set(radius *2, thickness);
-	pos_temp.set(pos.x -(size.x/2) +((float)thickness /2),pos.y);
+	pos_temp.set(pos.x -floor(size.x/2) +(thickness /2),pos.y);
 	pos_temp.sub(thickness/2);
 	rect(pos_temp, size);
 

@@ -3,7 +3,7 @@ ROPE - Romanesco processing environment –
 * Copyleft (c) 2014-2018 
 * Stan le Punk > http://stanlepunk.xyz/
 Rope UTILS  2015 – 2018
-v 1.37.6
+v 1.37.7
 Rope – Romanesco Processing Environment – 
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Rope
@@ -118,19 +118,19 @@ class Constant_list {
 
 /**
 FOLDER & FILE MANAGER
-v 0.1.0
+v 0.2.0
 */
 /*
-FILE PART
+INOUT PART
 */
 String selected_path_input = null;
 boolean input_selected_is;
 
-void select_file() {
-  select_file("");
+void select_input() {
+  select_input("");
 }
 
-void select_file(String message) {
+void select_input(String message) {
   // folder_selected_is = true ;
   selectInput(message, "input_selected");
 }
@@ -145,6 +145,18 @@ void input_selected(File selection) {
   }
 }
 
+boolean input_selected_is() {
+  return input_selected_is;
+}
+
+void reset_input_selection() {
+  input_selected_is = false;
+}
+
+String selected_path_input() {
+  return selected_path_input;
+}
+
 
 /*
 FOLDER PART
@@ -157,7 +169,6 @@ void select_folder() {
 }
 
 void select_folder(String message) {
-  // folder_selected_is = true ;
   selectFolder(message, "folder_selected");
 }
 
@@ -203,12 +214,17 @@ ArrayList<File> get_files() {
   return files ;
 }
 
-void explore_folder(String path_folder, boolean check_sub_folder, String... extension) {
-  if(folder_selected_is && path_folder != ("")) {
+void explore_folder(String path_folder, String... extension) {
+  explore_folder(path_folder, false, extension);
+
+}
+
+void explore_folder(String path, boolean check_sub_folder, String... extension) {
+  if((folder_selected_is || input_selected_is) && path != ("")) {
     count_selection++ ;
     set_media_list();
  
-    ArrayList allFiles = list_files(path_folder, check_sub_folder);
+    ArrayList allFiles = list_files(path, check_sub_folder);
   
     String fileName = "";
     int count_pertinent_file = 0 ;
@@ -229,6 +245,7 @@ void explore_folder(String path_folder, boolean check_sub_folder, String... exte
     }
     // to don't loop with this void
     folder_selected_is = false ;
+    input_selected_is = false ;
   }
 }
 
@@ -241,14 +258,16 @@ ArrayList list_files(String dir, boolean check_sub_folder) {
   if(check_sub_folder) { 
     explore_directory(fileList, dir);
   } else {
-    File file = new File(dir);
-    File[] subfiles = file.listFiles();
-    // println(subfiles.length);
-    for(int i = 0 ; i < subfiles.length ; i++) {
-      // println(subfiles[i]);
-      fileList.add(subfiles[i]);
+    if(folder_selected_is) {
+      File file = new File(dir);
+      File[] subfiles = file.listFiles();
+      for(int i = 0 ; i < subfiles.length ; i++) {
+        fileList.add(subfiles[i]);
+      }
+    } else if(input_selected_is) {
+      File file = new File(dir);
+      fileList.add(file);
     }
-
   }
   return fileList;
 }

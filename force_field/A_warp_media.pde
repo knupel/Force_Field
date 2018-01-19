@@ -151,12 +151,42 @@ int which_movie = 0 ;
 /**
 image
 */
-void load_medias(boolean sub_folder, String... type) {
+void load_media_folder(boolean sub_folder, String... type) {
   String path = selected_path_folder();
   explore_folder(path, sub_folder, type);
   String [] ext_img = {"jpg", "JPG", "JPEG", "jpeg", "tif", "TIF", "tiff", "TIFF", "bmp", "BMP", "png", "PNG", "gif", "GIF"};
   String [] ext_movie = {"mov", "MOV", "avi", "AVI", "mp4", "MP4", "mkv", "MKV", "mpg", "MPG"};
 
+  if(get_files() != null && get_files().size() > 0) {
+    for(File f : get_files()) {
+      String ext = extension(f.getName());
+      // add image to library
+      for(String s : ext_img) {
+        if(ext.equals(s)) {
+          warp.load_image(f.getAbsolutePath());
+          warp_media_loaded(true);
+          break;
+        }
+      }
+      // add video to library
+      for(String s : ext_movie) {
+        if(ext.equals(s)) {
+          load_movie(f.getAbsolutePath());
+          warp_media_loaded(true);
+          break;
+        }
+      }    
+    }
+  }
+}
+
+
+void load_media_input(String... type) {
+  String path = selected_path_input();
+  println("chemin",path);
+  explore_folder(path, false, type);
+  String [] ext_img = {"jpg", "JPG", "JPEG", "jpeg", "tif", "TIF", "tiff", "TIFF", "bmp", "BMP", "png", "PNG", "gif", "GIF"};
+  String [] ext_movie = {"mov", "MOV", "avi", "AVI", "mp4", "MP4", "mkv", "MKV", "mpg", "MPG"};
   if(get_files() != null && get_files().size() > 0) {
     for(File f : get_files()) {
       String ext = extension(f.getName());

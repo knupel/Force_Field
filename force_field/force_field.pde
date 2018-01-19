@@ -7,7 +7,7 @@ http://stanlepunk.xyz/
 v 0.1.0
 */
 /**
-Force Field is a refactoring Flow field from The Nature of Code by Daniel Shiffman
+Force Field is a deep refactoring Flow field from The Nature of Code by Daniel Shiffman
 http://natureofcode.com
 
 Flow Field Following / Force Field / Vector field 
@@ -28,7 +28,7 @@ boolean display_result = true;
 boolean hide_menu_bar = false;
 
 
-PGraphics pg ;
+PGraphics pg;
 
 int type_field;
 
@@ -67,6 +67,7 @@ SETUP
 
 */
 void setup() {
+  info_system();
   background(0);
   // noCursor();
   // warp_instruction();
@@ -200,6 +201,11 @@ void draw() {
   cursor_manager(interface_is());
 
   diaporama(240);
+
+  if(media_add_is()) {
+    reset_key();
+    media_ready_to_add();
+  }
 }
 /**
 END DRAW
@@ -387,118 +393,3 @@ void force_field_spot_mass() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
-KEYPRESSED
-
-*/
-
-
-void keyPressed() {
-  println("keyPressed", frameCount);
-  if(key == 'a') {
-    // @see if(key == 'n')
-    warp_add_media_folder();
-    play_video(false);
-  }
-
-  if(key == 'b') manage_border();
-
-  if(key == 'c') hide_interface();
-
-  if(key == 'd') diaporama_is();
-
-  if(key == 'f') display_field();
-
-  if(key == 'g') display_grid();
-
-  if(key == 'h') display_pole();
-
-  if(key == 'i') display_info();
-
-  if(key == 'k') display_result();
-
-  if(key == 'l') change_cursor_controller();
-
-  if(key == 'n') {
-    // @see if(key == 'a')
-   warp_change_media_folder();
-   play_video(false);
-  }
-
-  if(key == 'p') {
-    println("export jpg");
-    saveFrame();   
-  }
-
-  if(key == 'r') {
-    reset_vehicle();
-    warp.reset();  
-    if(force_field.get_type() == IMAGE) {
-      force_field_init_is = false ;
-      build_ff(force_field.get_type(), get_resultion_ff(), warp.get_image(), get_sorting_channel_ff_2D());
-    }
-    force_field.refresh();
-  }
-
-
-  if(key == 'v') play_video_switch();
-
-  if(key == 'w') {
-    if(shader_filter_is) shader_filter_is = false ; else shader_filter_is = true ;
-  }
-
-  if(key == 'x') change_type_ff() ;
-
-  if(key == 'z') {
-    force_field.reset();
-  }
-
-  if(key == ' ') {
-    if(pause_is) pause_is = false ; else pause_is = true ;
-  }
-  
-
-  // navigation in the media movie or picture
-  if(keyCode == UP) { 
-    which_img--;
-    /*
-    we don't use 0 to the first element of the array because this one is use for G / surface
-    see void warp_init(int type_field, int size_cell) 
-    */
-    if(which_img < 1) which_img = warp.library_size() -1 ;
-    if(movie_warp_list != null) {
-      which_movie--;
-      if(which_movie < 0) which_movie = movie_warp_list.size() -1 ;
-    }   
-  }
-
-  if(keyCode == DOWN) { 
-    which_img++; 
-    /*
-    we don't use 0 to the first element of the array because this one is use for G / surface
-    see void warp_init(int type_field, int size_cell) 
-    */
-    if(which_img >= warp.library_size()) which_img = 1 ;
-    if(movie_warp_list != null) {
-      which_movie++;
-      if(which_movie >= movie_warp_list.size()) which_movie = 0 ;
-    }    
-  }
-}
