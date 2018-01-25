@@ -18,43 +18,67 @@ void force_field_spot_coord(iVec2 lead_pos, boolean is) {
     }
     // case 3
     if(get_spot_num_ff() > 2) {
-    	multi_ccord(pos,lead_pos,is);
+    	multi_coord(pos,lead_pos,is);
     }
     update_spot_ff_coord(pos);
   }
 }
 
-iVec2 ref_pos ;
-void multi_ccord(Vec2 [] pos, iVec2 lead_pos, boolean is) {
-	// int num_spot = num;
-  float range_angle = TAU - get_angle_mouse();
-  float step_angle = range_angle /pos.length;
 
-  distance += get_speed_mouse(); 
-  float final_angle = 0 ;
-  for(int i = 0 ; i < pos.length ; i++) {
-    /*
+Cloud_2D cloud_2D;
+Vec2 ref_pos ;
+boolean reset_cloud_coord = true;
+int num_multi_coord ;
+float angle_step_ref;
+void multi_coord(Vec2 [] pos, iVec2 lead_pos, boolean is) {
+	if(num_multi_coord != pos.length) {
+		num_multi_coord = pos.length;
+		reset_cloud_coord = true;
+	}
+	if(get_distribution_mouse() != angle_step_ref) {
+		angle_step_ref = get_distribution_mouse();
+		reset_cloud_coord = true;
+	}
+	if(cloud_2D == null || reset_cloud_coord) {
+		cloud_2D = new Cloud_2D(num_multi_coord,r.ORDER,angle_step_ref);
+		reset_cloud_coord = false;
+	}
+
+  
+
+	if(is) {
+    if(ref_pos == null) {
+      ref_pos = Vec2(lead_pos.x,lead_pos.y);
+    } else {
+      ref_pos.set(lead_pos.x,lead_pos.y);
+    }
+  }
+  float speed = get_speed_mouse();
+  cloud_2D.rotation(speed,false);
+  if(get_spiral_mouse()>0) cloud_2D.spiral(get_spiral_mouse());
+  cloud_2D.range(get_min_radius_mouse(), get_max_radius_mouse());
+
+  if(get_motion_mouse() > 0) cloud_2D.growth(get_motion_mouse());
+  
+  cloud_2D.beat(get_beat_mouse());
+  cloud_2D.behavior("SIN");
+  
+	cloud_2D.update(ref_pos,get_radius_mouse());
+
+	Vec3 [] temp = cloud_2D.list();
+	for(int i = 0 ; i <pos.length ; i++) {
+		pos[i] = Vec2(temp[i].x,temp[i].y);
+	}
+}
+
+
+
+/*
     growth system
     final_angle += step_angle ; 
     final_angle += distance;
     Vec2 proj = projection(final_angle, get_radius_mouse());
-    */
-    final_angle = step_angle *i ; 
-    final_angle += distance;
-    Vec2 proj = projection(final_angle, get_radius_mouse());
-   
-    pos[i] = Vec2(proj);
-    if(is) {
-      if(ref_pos == null) {
-        ref_pos = iVec2(lead_pos.x,lead_pos.y);
-      } else {
-        ref_pos.set(lead_pos.x,lead_pos.y);
-      }
-    }
-    pos[i].add(ref_pos);        
-  }
-}
-
+*/
 
 
 

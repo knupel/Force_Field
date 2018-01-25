@@ -47,10 +47,10 @@ void settings() {
   set_cell_grid_ff(10);
   // type_field = r.FLUID;
   //  type_field = r.GRAVITY; /* you can also use HOLE constant */
-  // type_field = r.MAGNETIC;
+  type_field = r.MAGNETIC;
   //type_field = r.PERLIN;
   // type_field = r.CHAOS;
- type_field = IMAGE;
+ // type_field = IMAGE;
 
   if(hide_menu_bar) PApplet.hideMenuBar();
 }

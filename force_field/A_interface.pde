@@ -15,57 +15,22 @@ ControlP5 cp_fluid, cp_mouse, cp_movie;
 
 
 // global slider
-float alpha_background ;
 
-float red_channel;
-float green_channel;
-float blue_channel;
-
-float power_channel;
-float power_channel_max;
-
-float warp_power;
-
-float red_cycling;
-float green_cycling;
-float blue_cycling;
 
 boolean abs_cycling = true;
 boolean gui_resize_window = false;
 boolean gui_fullfit_image = true;
 boolean gui_display_result = true;
 
-float tempo_refresh;
 
-float cell_force_field;
 
-float spot_force_field;
-
-// fluid slider
-float frequence;
-float viscosity;
-float diffusion;
 
 Vec2 pos_gui ;
 Vec2 size_gui ;
 
-float radius_mouse ;
-float speed_mouse;
-float angle_mouse;
-
-// movie control
-float header_movie;
-float speed_movie;
-
 int space_interface ;
 
 PFont font_gui ;
-
-float vel_sort = 6.;
-float x_sort = 1.;
-float y_sort = 1.;
-float z_sort = 1.;
-
 
 /**
 setup
@@ -100,6 +65,27 @@ void interface_setup(Vec2 pos, Vec2 size) {
 /*
 * main
 */
+float alpha_background ;
+
+float red_channel;
+float green_channel;
+float blue_channel;
+
+float power_channel;
+float power_channel_max;
+
+float warp_power;
+
+float red_cycling;
+float green_cycling;
+float blue_cycling;
+
+float tempo_refresh;
+
+float cell_force_field;
+
+float spot_force_field;
+
 void cp_main(int space, int max, int w, int start_pos, int from, PFont font) {
 	cp_main = new ControlP5(this);
 
@@ -152,13 +138,19 @@ void cp_main(int space, int max, int w, int start_pos, int from, PFont font) {
   int max_cell = 50;
 	cp_main.addSlider("cell_force_field").setPosition(10,pos_slider_y(space, start_pos +18, from)).setWidth(w).setRange(1,max_cell).setNumberOfTickMarks(max_cell).setFont(font);
   
-  int max_spot = 10 ;
+  int max_spot = 100 ;
 	cp_main.addSlider("spot_force_field").setPosition(10,pos_slider_y(space, start_pos +20, from)).setWidth(w).setRange(1,max_spot).setNumberOfTickMarks(max_spot).setFont(font);
+
+
 }
 
 /*
 * movie
 */
+
+float header_movie;
+float speed_movie;
+
 void cp_movie(int space, int max, int w, int start_pos, int from, PFont font) {
 	cp_movie = new ControlP5(this);
 	header_movie = 0 ;
@@ -174,6 +166,10 @@ void cp_movie(int space, int max, int w, int start_pos, int from, PFont font) {
 /*
 * fluid
 */
+float frequence;
+float viscosity;
+float diffusion;
+
 void cp_fluid(int space, int max, int w, int start_pos, int from, PFont font) {
 	cp_fluid = new ControlP5(this);
 	frequence = .3;
@@ -185,9 +181,18 @@ void cp_fluid(int space, int max, int w, int start_pos, int from, PFont font) {
   cp_fluid.addSlider("diffusion").setPosition(10,pos_slider_y(space, start_pos +2, from)).setWidth(w).setRange(0,max).setFont(font);
 }
 
+
+
+
+
 /*
 * image sorting channel
 */
+float vel_sort = 6.;
+float x_sort = 1.;
+float y_sort = 1.;
+float z_sort = 1.;
+
 void cp_image(int space, int max, int w, int start_pos, int from, PFont font) {
 	cp_img_2D = new ControlP5(this);
 	cp_img_3D = new ControlP5(this);
@@ -212,16 +217,46 @@ void cp_image(int space, int max, int w, int start_pos, int from, PFont font) {
 /*
 * mouse device
 */
+float radius_mouse ;
+float min_radius_mouse ;
+float max_radius_mouse ;
+float speed_mouse;
+float distribution_mouse;
+float spiral_mouse;
+float beat_mouse;
+float motion_mouse;
+
 void cp_mouse(int space, int max, int w, int start_pos, int from, PFont font){
 	cp_mouse = new ControlP5(this);
 
 	radius_mouse = .3;
+
+	min_radius_mouse = .0;
+	float max_min_radius = 1 ;
+
+	max_radius_mouse = 1.;
+	float max_max_radius = 7. ;
+
 	speed_mouse = 0.;
-	angle_mouse = 0.;
+	distribution_mouse = 0.;
+
+	int min_mark_spiral = 0;
+	int max_mark_spiral = 20;
+  int spiral_mark = 21;
+
+  int min_mark_beat = 1 ;
+  int max_mark_beat = 200;
 
 	cp_mouse.addSlider("radius_mouse").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(w).setRange(0,max).setFont(font);
-  cp_mouse.addSlider("speed_mouse").setPosition(10,pos_slider_y(space, start_pos +1, from)).setWidth(w).setRange(-max,max).setFont(font);
-  cp_mouse.addSlider("angle_mouse").setPosition(10,pos_slider_y(space, start_pos +2, from)).setWidth(w).setRange(0,TAU).setFont(font);
+	cp_mouse.addSlider("min_radius_mouse").setPosition(10,pos_slider_y(space, start_pos +1, from)).setWidth(w).setRange(0,max_min_radius).setFont(font);
+	cp_mouse.addSlider("max_radius_mouse").setPosition(10,pos_slider_y(space, start_pos +2, from)).setWidth(w).setRange(max_min_radius,max_max_radius).setFont(font);
+  
+  cp_mouse.addSlider("distribution_mouse").setPosition(10,pos_slider_y(space, start_pos +3, from)).setWidth(w).setRange(0,TAU).setFont(font);
+  cp_mouse.addSlider("spiral_mouse").setPosition(10,pos_slider_y(space, start_pos +4, from)).setWidth(w).setRange(min_mark_spiral,max_mark_spiral).setNumberOfTickMarks(spiral_mark).setFont(font);;
+  cp_mouse.addSlider("beat_mouse").setPosition(10,pos_slider_y(space, start_pos +5.5, from)).setWidth(w).setRange(min_mark_beat,max_mark_beat).setFont(font);
+
+  cp_mouse.addSlider("speed_mouse").setPosition(10,pos_slider_y(space, start_pos +6.5, from)).setWidth(w).setRange(-max,max).setFont(font);
+  cp_mouse.addSlider("motion_mouse").setPosition(10,pos_slider_y(space, start_pos +7.5, from)).setWidth(w).setRange(0,max).setFont(font);
 }
 
 
@@ -425,11 +460,34 @@ float get_speed_mouse() {
 }
 
 float get_radius_mouse() {
-	return radius_mouse *height;
+	if(width > height) {
+		return radius_mouse *height *.66;
+	} else return radius_mouse *width *.66;
 }
 
-float get_angle_mouse() {
-	return angle_mouse;
+
+float get_min_radius_mouse() {
+	return min_radius_mouse;
+}
+
+float get_max_radius_mouse() {
+	return max_radius_mouse;
+}
+
+float get_motion_mouse() {
+	return motion_mouse * motion_mouse * motion_mouse * motion_mouse *motion_mouse;
+}
+
+int get_beat_mouse() {
+	return (int)beat_mouse;
+}
+
+int get_spiral_mouse() {
+	return (int) spiral_mouse;
+}
+
+float get_distribution_mouse() {
+	return distribution_mouse;
 }
 
 
@@ -446,8 +504,9 @@ void warp_instruction() {
   background(255);
   fill(0) ;
   textFont(font_gui);
-  text("PRESS 'N' TO SELECT MEDIA FOLDER", width/2, height/2);
-  text("PRESS 'V' TO SELECT CAMERA", width/2, height/2 +(font_gui.getSize() *1.5));
+  text("PRESS 'CMD' + 'O' TO SELECT MEDIA FILE", width/2, height/2);
+  text("PRESS 'CMD' + 'SHIFT' + 'O' TO SELECT MEDIA FOLDER", width/2, height/2 +(font_gui.getSize() *1.5));
+  text("PRESS 'V' TO SELECT CAMERA", width/2, height/2 +(font_gui.getSize() *3));
 }
 
 
