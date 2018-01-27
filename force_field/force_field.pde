@@ -124,24 +124,31 @@ void draw() {
   */
   boolean run_is = true;
   boolean inside_gui = inside(get_pos_interface(), get_size_interface(), Vec2(mouseX,mouseY));
-
+  /*
   if(interface_is() && inside_gui) {
     run_is = false ;  
   } else if(!interface_is()) {
     run_is = true ;
   } 
+  */
 
   if(use_leapmotion) run_is = true ;
   if(pause_is) run_is = false ;
-  if(run_is) { 
-    if(use_leapmotion) {
-      force_field_spot_condition_leapmotion();
-      force_field_spot_coord_leapmotion();
-    } else {
-      force_field_spot_condition(true);
-      force_field_spot_coord(iVec2(mouseX,mouseY),mousePressed);
-    }
-
+  // update coord
+  if(run_is) {
+   // if(!inside_gui) {
+      if(use_leapmotion) {
+        force_field_spot_condition_leapmotion();
+        force_field_spot_coord_leapmotion();
+      } else {
+        force_field_spot_condition(true);
+        if(!inside_gui){
+          force_field_spot_coord(iVec2(mouseX,mouseY),mousePressed);
+        } else {
+          force_field_spot_coord(iVec2(mouseX,mouseY),false);
+        }
+      }
+  //  }
     if(get_type_ff() == r.FLUID) {
       //
     } else if(get_type_ff() == r.MAGNETIC) {
