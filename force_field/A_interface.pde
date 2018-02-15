@@ -9,9 +9,10 @@ ControlP5 cp_main;
 CheckBox check_channel, check_main ;
 
 ControlP5 cp_img_2D,cp_img_3D;
-// CheckBox check_img;
+ControlP5 cp_fluid ;
 
-ControlP5 cp_fluid, cp_mouse, cp_movie;
+
+ControlP5 cp_mouse, cp_movie;
 
 
 // global slider
@@ -48,12 +49,14 @@ void interface_setup(Vec2 pos, Vec2 size) {
 	int max = 1;
 
   cp_main(space_interface, max, slider_width, 1, TOP, font_gui);
+  
+  // menu for differente force field
+  cp_fluid(space_interface, max, slider_width, 23, TOP, font_gui);
+  cp_image(space_interface, max, slider_width, 23, TOP, font_gui);
 
-  cp_fluid(space_interface, max, slider_width, 24, TOP, font_gui);
+  cp_mouse(space_interface, max, slider_width, 28, TOP, font_gui);
 
-  cp_mouse(space_interface, max, slider_width, 27, TOP, font_gui);
 
-  cp_image(space_interface, max, slider_width, 32, TOP, font_gui);
 
   cp_movie(space_interface, max, slider_width, 2, BOTTOM, font_gui);
 
@@ -210,7 +213,6 @@ void cp_image(int space, int max, int w, int start_pos, int from, PFont font) {
 	cp_img_2D.addSlider("y_sort").setPosition(10,pos_slider_y(space, start_pos +3, from)).setWidth(w).setRange(min_mark,max_mark).setNumberOfTickMarks(mark).setFont(font);
 	cp_img_3D.addSlider("z_sort").setPosition(10,pos_slider_y(space, start_pos +4.5, from)).setWidth(w).setRange(min_mark,max_mark).setNumberOfTickMarks(mark).setFont(font);
 
-	
 }
 
 
@@ -612,6 +614,8 @@ void show_gui(boolean mouse_is, Force_field ff) {
 	if(ff.get_type() == IMAGE) {
 		cp_img_2D.show();
 		// cp_image_3D.show();
+	} else {
+		cp_img_2D.hide();
 	}
 	if(movie_warp_is()) cp_movie.show(); else cp_movie.hide();
 	if(ff.get_type() == r.FLUID) cp_fluid.show(); else cp_fluid.hide();
