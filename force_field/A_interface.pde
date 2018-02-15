@@ -619,7 +619,11 @@ void show_gui(boolean mouse_is, Force_field ff) {
 	}
 	if(movie_warp_is()) cp_movie.show(); else cp_movie.hide();
 	if(ff.get_type() == r.FLUID) cp_fluid.show(); else cp_fluid.hide();
-	if(!mouse_is) cp_mouse.show(); else cp_mouse.hide();
+	if(!mouse_is && get_spot_num_ff() > 2) {
+		cp_mouse.show(); 
+	} else {
+		cp_mouse.hide();
+	}
 }
 
 

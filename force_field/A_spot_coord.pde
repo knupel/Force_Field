@@ -3,18 +3,35 @@ spot coord
 v 0.2.0
 */
 float distance ;
+iVec2 ref_lead_pos ;
 
 void force_field_spot_coord(iVec2 lead_pos, boolean is) {
+  if(ref_lead_pos == null) {
+    ref_lead_pos = iVec2(width/2,height/2);
+  }
   if(get_spot_num_ff() > 0) {
     Vec2 [] pos = new Vec2[get_spot_num_ff()];
     // case 1
-    if(get_spot_num_ff() == 1 && is) {
-      pos[0] = Vec2(lead_pos.x, lead_pos.y);
+    if(get_spot_num_ff() == 1) {
+      if(is) {
+        // println("je suis actif", ref_lead_pos);
+        pos[0] = Vec2(lead_pos.x, lead_pos.y);
+        ref_lead_pos.set(lead_pos);
+      } else {
+        pos[0] = Vec2(ref_lead_pos);
+      }
     }
     // case 2
-    if(get_spot_num_ff() == 2 && is) {
-      pos[0] = Vec2(lead_pos.x, lead_pos.y);
-      pos[1] = Vec2(width -lead_pos.x, height -lead_pos.y);
+    if(get_spot_num_ff() == 2) {
+      if(is) {
+        pos[0] = Vec2(lead_pos.x, lead_pos.y);
+        pos[1] = Vec2(width -lead_pos.x, height -lead_pos.y);
+        ref_lead_pos.set(lead_pos);
+      } else {
+        pos[0] = Vec2(ref_lead_pos.x, ref_lead_pos.y);
+        pos[1] = Vec2(width -ref_lead_pos.x, height -ref_lead_pos.y);
+      }
+      
     }
     // case 3
     if(get_spot_num_ff() > 2) {

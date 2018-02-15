@@ -414,16 +414,17 @@ void update_ff_gravity() {
   force_field.set_calm(.5);
 
   for(int i = 0 ; i < force_field.spot_list.size() && i < spot_list_coord.size() ; i++) {
-    force_field.set_spot_mass(spot_list_mass.get(i),i);
-    force_field.set_spot_diam(spot_list_diam.get(i),i);
-
-    if(i < spot_list_is.size()) {
-      if(spot_list_is.get(i)) {
+    if(i < spot_list_mass.size()) {
+      force_field.set_spot_mass(spot_list_mass.get(i),i);
+      force_field.set_spot_diam(spot_list_diam.get(i),i);
+      if(i < spot_list_is.size()) {
+        if(spot_list_is.get(i)) {
+          force_field.set_spot_pos(spot_list_coord.get(i),i);
+        } 
+      } else {
         force_field.set_spot_pos(spot_list_coord.get(i),i);
-      } 
-    } else {
-      force_field.set_spot_pos(spot_list_coord.get(i),i);
-    }
+      }
+    }   
   }
   force_field.update();
 }
