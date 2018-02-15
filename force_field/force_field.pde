@@ -33,6 +33,7 @@ PGraphics pg;
 int type_field;
 
 int which_cam = 0 ; // 0 is the camera fullsize / max frameRate by default if there is camera plug is the external cam is catch
+boolean inside_gui;
 
 // Using this variable to decide whether to draw all the stuff
 void settings() {
@@ -123,7 +124,12 @@ void draw() {
   condition to update force field
   */
   boolean run_is = true;
-  boolean inside_gui = inside(get_pos_interface(), get_size_interface(), Vec2(mouseX,mouseY));
+ // boolean inside_gui = inside(get_pos_interface(), get_size_interface(), Vec2(mouseX,mouseY));
+  if(interface_is()) {
+    inside_gui = inside(get_pos_interface(), get_size_interface(), Vec2(mouseX,mouseY));
+  } else {
+    inside_gui = false;
+  }
   /*
   if(interface_is() && inside_gui) {
     run_is = false ;  

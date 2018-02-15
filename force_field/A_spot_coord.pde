@@ -14,7 +14,6 @@ void force_field_spot_coord(iVec2 lead_pos, boolean is) {
     // case 1
     if(get_spot_num_ff() == 1) {
       if(is) {
-        // println("je suis actif", ref_lead_pos);
         pos[0] = Vec2(lead_pos.x, lead_pos.y);
         ref_lead_pos.set(lead_pos);
       } else {
