@@ -117,19 +117,13 @@ void draw() {
   // cursor(CROSS);
   if(use_leapmotion) leap_update();
 
-  /*
-  update force field
-  */
-  /* 
-  condition to update force field
-  */
-  boolean run_is = true;
- // boolean inside_gui = inside(get_pos_interface(), get_size_interface(), Vec2(mouseX,mouseY));
   if(interface_is()) {
     inside_gui = inside(get_pos_interface(), get_size_interface(), Vec2(mouseX,mouseY));
   } else {
     inside_gui = false;
   }
+
+  boolean run_is = true;
   /*
   if(interface_is() && inside_gui) {
     run_is = false ;  
@@ -137,9 +131,10 @@ void draw() {
     run_is = true ;
   } 
   */
-
-  if(use_leapmotion) run_is = true ;
+  // if(use_leapmotion) run_is = true ;
   if(pause_is) run_is = false ;
+
+
   // update coord
   if(run_is) {
    // if(!inside_gui) {

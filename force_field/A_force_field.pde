@@ -591,6 +591,14 @@ void update_spot_ff_mass(int... mass) {
 get
 */
 
+PImage get_img_velocity_ff() {
+  return force_field.get_tex_velocity();
+}
+
+PImage get_img_direction_ff() {
+  return force_field.get_tex_direction();
+}
+
 int get_type_ff() {
   if(force_field != null ) {
     return force_field.get_type();

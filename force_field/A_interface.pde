@@ -532,6 +532,8 @@ info on the right place
 */
 void show_info(Force_field ff) {
 	fill(255);
+	int pos_x = ceil(width-size_gui.x +10) ;
+
 	String type_ff = "no froce field apply" ;
 	if(ff.get_type() == r.FLUID) type_ff = "fluid" ;
 	else if(ff.get_type() == r.MAGNETIC) type_ff = "magnetic" ;
@@ -539,34 +541,41 @@ void show_info(Force_field ff) {
 	else if(ff.get_type() == r.CHAOS) type_ff = "chaos" ;
 	else if(ff.get_type() == r.PERLIN) type_ff = "perlin" ;
 	else if(ff.get_type() == IMAGE) type_ff = "image" ;
-	info_line("Force field" + " " + type_ff, space_interface, 2, TOP);
+
+	info_line("Force field" + " " + type_ff, pos_x, space_interface, 1, TOP);
+  
+  
+
+	image(get_img_velocity_ff(),pos_x, 2 *10) ;
+	image(get_img_direction_ff(),pos_x, (2 *10) +get_img_velocity_ff().height +2);
+	int step_y = get_img_velocity_ff().height / 7 ;
 
 	// library
 	int items = warp.library_size() ;
 	if(items < 0) items = 0 ;
-	info_line("Media library" + " " +items + " items", space_interface, 3, TOP);
+	info_line("Media library" + " " +items + " items", pos_x, space_interface, 3 +step_y, TOP);
   
   String diaporama_state = "not available";
   if(warp.library_size() > 0) {
   	if(diaporama_is) diaporama_state = "play" ; else diaporama_state = "stop" ;
   } 
   // image display
-  info_line("media" + " " +warp.get_name(), space_interface, 4, TOP);
+  info_line("media" + " " +warp.get_name(), pos_x, space_interface, 4 +step_y, TOP);
   // diaporama
-	info_line("Diaporama" + " " +diaporama_state, space_interface, 5, TOP);
+	info_line("Diaporama" + " " +diaporama_state, pos_x, space_interface, 5 +step_y, TOP);
 	// sorting channel
 	if(ff.get_type() == IMAGE) {
 		String [] sort = sorting_channel_toString(get_sorting_channel_ff_2D());
-		info_line("velocity sort:" + sort[2], space_interface, 6, TOP);
-		info_line("x coord sort:" + sort[0], space_interface, 7, TOP);
-		info_line("y coord sort:" + sort[1], space_interface, 8, TOP);
+		info_line("velocity sort:" + sort[2], pos_x, space_interface, 6 +step_y, TOP);
+		info_line("x coord sort:" + sort[0], pos_x, space_interface, 7 +step_y, TOP);
+		info_line("y coord sort:" + sort[1], pos_x, space_interface, 8 +step_y, TOP);
 	}
 	// frame rate
-	info_line("Frame rate" + " " +(int)frameRate, space_interface, 10, TOP);
+	info_line("Frame rate" + " " +(int)frameRate, pos_x, space_interface, 10 +step_y, TOP);
 	// device
 	String device_cursor = "mouse";
 	if(use_leapmotion)  device_cursor = "leapmotion";
-	info_line("Device cursor: "+device_cursor, space_interface, 11, TOP);
+	info_line("Device cursor: "+device_cursor, pos_x, space_interface, 11 +step_y, TOP);
 }
 
 
@@ -592,12 +601,11 @@ String [] sorting_channel_toString(int [] a) {
 	return data;
 }
 
-void info_line(String s, int space, int rank, int from) {
+void info_line(String s, int pos_x, int space, int rank, int from) {
 	float pos_y = pos_slider_y(space, rank, from);
-	int pos_x = ceil(width-size_gui.x +10) ;
+	// int pos_x = ceil(width-size_gui.x +10) ;
 	textAlign(LEFT);
 	text(s,pos_x,pos_y);
-
 }
 
 void hide_all_gui() {
