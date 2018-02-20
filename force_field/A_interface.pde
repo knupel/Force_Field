@@ -9,7 +9,8 @@ ControlP5 cp_main;
 CheckBox check_channel, check_main ;
 
 ControlP5 cp_img_2D,cp_img_3D;
-ControlP5 cp_fluid ;
+ControlP5 cp_fluid;
+ControlP5 cp_generative;
 
 
 ControlP5 cp_mouse, cp_movie;
@@ -53,6 +54,7 @@ void interface_setup(Vec2 pos, Vec2 size) {
   // menu for differente force field
   cp_fluid(space_interface, max, slider_width, 23, TOP, font_gui);
   cp_image(space_interface, max, slider_width, 23, TOP, font_gui);
+  cp_generative(space_interface, max, slider_width, 23, TOP, font_gui);
 
   cp_mouse(space_interface, max, slider_width, 28, TOP, font_gui);
 
@@ -185,9 +187,6 @@ void cp_fluid(int space, int max, int w, int start_pos, int from, PFont font) {
 }
 
 
-
-
-
 /*
 * image sorting channel
 */
@@ -212,6 +211,26 @@ void cp_image(int space, int max, int w, int start_pos, int from, PFont font) {
 	cp_img_2D.addSlider("x_sort").setPosition(10,pos_slider_y(space, start_pos +1.5, from)).setWidth(w).setRange(min_mark,max_mark).setNumberOfTickMarks(mark).setFont(font);
 	cp_img_2D.addSlider("y_sort").setPosition(10,pos_slider_y(space, start_pos +3, from)).setWidth(w).setRange(min_mark,max_mark).setNumberOfTickMarks(mark).setFont(font);
 	cp_img_3D.addSlider("z_sort").setPosition(10,pos_slider_y(space, start_pos +4.5, from)).setWidth(w).setRange(min_mark,max_mark).setNumberOfTickMarks(mark).setFont(font);
+
+}
+
+/*
+* generative seting for CHAOS and PERLIN field
+*/
+float range_min_gen;
+float range_max_gen;
+float power_gen;
+
+void cp_generative(int space, int max, int w, int start_pos, int from, PFont font) {
+	cp_generative = new ControlP5(this);
+
+	range_min_gen = 0.;
+	range_max_gen = 1.;
+	power_gen = .5;
+  
+	cp_generative.addSlider("range_min_gen").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(w).setRange(0,max).setFont(font);
+	cp_generative.addSlider("range_max_gen").setPosition(10,pos_slider_y(space, start_pos +1, from)).setWidth(w).setRange(0,max).setFont(font);
+	cp_generative.addSlider("power_gen").setPosition(10,pos_slider_y(space, start_pos +2, from)).setWidth(w).setRange(0,max).setFont(font);
 
 }
 
@@ -285,7 +304,8 @@ draw update
 Vec4 rgba_channel ;
 
 void update_gui_value() {
-	update_value_ff_fluid(frequence, viscosity, diffusion);
+	update_value_ff_fluid(frequence,viscosity,diffusion);
+	update_value_ff_generative(range_min_gen,range_max_gen,power_gen);
   
   float cr = 1.;
   float cg = 1.;
@@ -503,8 +523,8 @@ instruction
 */
 void warp_instruction() {
   textAlign(CENTER);
-  background(255);
-  fill(0) ;
+  //background(255);
+  fill(255) ;
   textFont(font_gui);
   text("PRESS 'CMD' + 'O' TO SELECT MEDIA FILE", width/2, height/2);
   text("PRESS 'CMD' + 'SHIFT' + 'O' TO SELECT MEDIA FOLDER", width/2, height/2 +(font_gui.getSize() *1.5));
@@ -610,23 +630,32 @@ void info_line(String s, int pos_x, int space, int rank, int from) {
 
 void hide_all_gui() {
 	cp_main.hide();
+
 	cp_fluid.hide();
-	cp_mouse.hide();
 	cp_img_2D.hide();
 	cp_img_3D.hide();
+	cp_generative.hide();
+
+	cp_mouse.hide();
 	cp_movie.hide();
 }
 
 void show_gui(boolean mouse_is, Force_field ff) {
 	cp_main.show();
+
+	// show menu depend of force field type
 	if(ff.get_type() == IMAGE) {
 		cp_img_2D.show();
 		// cp_image_3D.show();
 	} else {
 		cp_img_2D.hide();
 	}
-	if(movie_warp_is()) cp_movie.show(); else cp_movie.hide();
 	if(ff.get_type() == r.FLUID) cp_fluid.show(); else cp_fluid.hide();
+	if(ff.get_type() == r.CHAOS || ff.get_type() == r.PERLIN) cp_generative.show(); else cp_generative.hide();
+
+
+	if(movie_warp_is()) cp_movie.show(); else cp_movie.hide();	
+
 	if(!mouse_is && get_spot_num_ff() > 2) {
 		cp_mouse.show(); 
 	} else {

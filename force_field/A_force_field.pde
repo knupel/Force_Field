@@ -15,6 +15,9 @@ int [] sorting_img_ff_2D = new int[3] ;
 
 
 
+
+
+
 /**
 init
 */
@@ -440,6 +443,19 @@ void update_value_ff_fluid(float freq_norm, float visc_norm, float diff_norm) {
   freq_ff = freq_norm *.05 ;
   visc_ff = visc_norm *visc_norm *visc_norm *visc_norm;
   diff_ff = diff_norm;
+}
+
+
+float ref_range_min, ref_range_max ;
+void update_value_ff_generative(float range_min, float range_max, float power) {
+  if(ref_range_min != range_min || ref_range_max != range_max) {
+    force_field.map_velocity(0.3,0.6,range_min, range_max);
+    ref_range_min = range_min;
+    ref_range_max = range_max;
+
+  }
+  
+  force_field.mult_velocity(power);
 }
 
 

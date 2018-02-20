@@ -30,6 +30,8 @@ At this moment the force field is available only in 2D mode
 public class Force_field implements Rope_Constants {
 
   private Vec4[][] field;
+  private Vec4[][] field_original;
+
   private PImage src;
   private PImage texture_velocity;
   private PImage texture_direction;
@@ -144,7 +146,8 @@ public class Force_field implements Rope_Constants {
     set_canvas(iVec2(resolution/2 +canvas_pos.x, resolution/2 +canvas_pos.y), iVec2(this.src.width,this.src.height));
     cols = canvas.x/resolution;
     rows = canvas.y/resolution;
-    field = new Vec4[cols][rows];
+    init_field();
+    // field = new Vec4[cols][rows];
 
     init_texture(cols,rows);
 
@@ -182,6 +185,7 @@ public class Force_field implements Rope_Constants {
 
   private void init_field() {
     field = new Vec4[cols][rows];
+    field_original = new Vec4[cols][rows];
     set_field(CHAOS);
   }
 
@@ -235,13 +239,12 @@ public class Force_field implements Rope_Constants {
     sum_activities = 0 ;
     for (int x = 0 ; x < cols ; x++) {
       float yoff = 0;
-      float woff = 0;
       for (int y = 0 ; y < rows ; y++) {
         float theta = 0;
         float dist = 0 ;
         if(type == PERLIN) {
           theta = map(noise(xoff,yoff),0,1,0,TWO_PI);
-          dist = noise(woff);
+          dist = noise(xoff,yoff);
         } if(type == CHAOS) {
           theta = random(TAU);
           dist = random(1);
@@ -252,9 +255,10 @@ public class Force_field implements Rope_Constants {
         }
         // Polar to cartesian coordinate
         field[x][y] = Vec4(cos(theta),sin(theta),0,dist); 
+        field_original[x][y] = Vec4(cos(theta),sin(theta),0,dist); 
+
         sum_activities += field[x][y].sum() ;     
         yoff += .1;
-        woff += .1;
       }
       xoff += .1;
     }
@@ -278,7 +282,9 @@ public class Force_field implements Rope_Constants {
         float vel = map_pix(sort.w,pix,0,1);
 
         // Polar to cartesian coordinate
-        field[x][y] = Vec4(cos(theta_x),sin(theta_y),0,vel);  
+        field[x][y] = Vec4(cos(theta_x),sin(theta_y),0,vel);
+        field_original[x][y] = Vec4(cos(theta_x),sin(theta_y),0,vel);    
+
         sum_activities += field[x][y].sum() ;
       }
     }
@@ -316,14 +322,38 @@ public class Force_field implements Rope_Constants {
 
 
 
+  /**
+  public set field > velocity
+  */
+  public void map_velocity(float start1, float stop1, float start2, float stop2) {
+    if(field != null && field_original != null)
+    if(type == PERLIN || type == CHAOS) {
+      for (int x = 0 ; x < cols ; x++) {
+        for (int y = 0 ; y < rows ; y++) {
+          field[x][y].set(field_original[x][y]);
+          field[x][y].w = map(field[x][y].w,start1, stop1, start2, stop2);
+        }
+      }
+    }
+  }
+  /**
+  PROCHAIN TRAVAIL ICI
 
+
+
+
+  */
+  public void mult_velocity(float mult) {
+    if(field_original == null) field_original = field ;
+    // map_velocity ;
+  }
 
 
 
 
 
   /**
-  public set
+  public set border
   v 0.0.6
   */
   public void set_border_is(boolean state) {
@@ -1036,6 +1066,7 @@ public class Force_field implements Rope_Constants {
   /**
   * add a global direction to the force field
   */
+  /*
   Vec2 wind ;
   public void wind(float theta, float force) {
     if(wind == null) {
@@ -1043,6 +1074,7 @@ public class Force_field implements Rope_Constants {
     }
     wind = projection(theta,force);
   }
+  */
 
   /**
   dir_in_grid
@@ -1114,7 +1146,6 @@ public class Force_field implements Rope_Constants {
     if(reverse_is && type != MAGNETIC && dir != null) {
       dir.mult(-1);
     }
-    if(wind != null) dir.add(wind) ;
     return dir ;
   }
 
