@@ -2,7 +2,7 @@
 Force Field
 2017-2018
 http://stanlepunk.xyz/
-v 1.5.1
+v 1.6.0
 */
 /**
 Run on Processing 3.3.6
@@ -109,7 +109,7 @@ public class Force_field implements Rope_Constants {
     // Determine the number of columns and rows based on sketch's width and height
     if(type == FLUID) {
       // FLUID
-      System.err.print("FLUID have square or cube canvas, the HEIGHT be used for the canvas side");
+      printErr("FLUID have square or cube canvas, the HEIGHT be used for the canvas side");
       int iteration = 20 ;
       ns_2D = new Navier_Stokes_2D(iVec2(NX,NY), iteration);
     } else if(type == MAGNETIC) {
@@ -325,27 +325,94 @@ public class Force_field implements Rope_Constants {
   /**
   public set field > velocity
   */
-  public void map_velocity(float start1, float stop1, float start2, float stop2) {
-    if(field != null && field_original != null)
-    if(type == PERLIN || type == CHAOS) {
+  /**
+
+  ET NE PAS OUBLIER D4ACTUALISER LE GUIDE
+
+
+
+
+
+  */
+  public void preserve_field() {
+    if(field != null && field_original != null) {
       for (int x = 0 ; x < cols ; x++) {
         for (int y = 0 ; y < rows ; y++) {
           field[x][y].set(field_original[x][y]);
-          field[x][y].w = map(field[x][y].w,start1, stop1, start2, stop2);
         }
+      }
+    }
+  }
+
+ /** 
+ map velocity
+ */
+  public void map_velocity(float start1, float stop1, float start2, float stop2) {
+    if(field != null && field_original != null) {
+      for (int x = 0 ; x < cols ; x++) {
+        for (int y = 0 ; y < rows ; y++) {
+          map_velocity(x,y,start1,stop1,start2,stop2);
+        }
+      }
+    }
+  }
+
+  public void map_velocity(int x, int y, float start1, float stop1, float start2, float stop2) {
+    map_velocity(iVec2(x,y), start1, stop1, start2, stop2);
+  }
+  public void map_velocity(int x, int y, int z, float start1, float stop1, float start2, float stop2) {
+    map_velocity(iVec3(x,y,z), start1, stop1, start2, stop2);
+  }
+
+  public void map_velocity(iVec coord, float start1, float stop1, float start2, float stop2) {
+    if(field != null && field_original != null && coord.x < cols && coord.y < rows) {
+      // field[coord.x][coord.y].set(field_original[coord.x][coord.y]);
+      field[coord.x][coord.y].w = map(field[coord.x][coord.y].w,start1,stop1,start2,stop2);
+    } else {
+      if(coord.x >= cols || coord.y >= rows || coord.x < 0 || coord.y < 0) {
+        printErr("method map_velocity() in class Force_field is not possible because your target x or y is not in field dimension");
+      } else {
+        printErr("method map_velocity() in class Force_field is not possible the field is null");
       }
     }
   }
   /**
   PROCHAIN TRAVAIL ICI
 
+  ET NE PAS OUBLIER D'ACTUALISER LE GUIDE
+
 
 
 
   */
   public void mult_velocity(float mult) {
-    if(field_original == null) field_original = field ;
-    // map_velocity ;
+    if(field != null && field_original != null) {
+      for (int x = 0 ; x < cols ; x++) {
+        for (int y = 0 ; y < rows ; y++) {
+          mult_velocity(x,y,mult);
+        }
+      }
+    }
+  }
+
+  public void mult_velocity(int x, int y, float mult) {
+    mult_velocity(iVec2(x,y), mult);
+  }
+  public void mult_velocity(int x, int y, int z, float mult) {
+    mult_velocity(iVec3(x,y,z), mult);
+  }
+
+  public void mult_velocity(iVec coord, float mult) {
+    if(field != null && field_original != null && coord.x < cols && coord.y < rows) {
+      // field[coord.x][coord.y].set(field_original[coord.x][coord.y]);
+      field[coord.x][coord.y].w *= mult;
+    } else {
+      if(coord.x >= cols || coord.y >= rows || coord.x < 0 || coord.y < 0) {
+        printErr("method mult_velocity() in class Force_field is not possible because your target x or y is not in field dimension");
+      } else {
+        printErr("method mult_velocity() in class Force_field is not possible the field is null");
+      }
+    }
   }
 
 

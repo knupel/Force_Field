@@ -44,12 +44,13 @@ void keyPressed() {
 
   if(key == 'r') {
     reset_vehicle();
-    warp.reset();  
+    warp.reset();
     if(force_field.get_type() == IMAGE) {
       force_field_init_is = false ;
       build_ff(force_field.get_type(), get_resultion_ff(), warp.get_image(), get_sorting_channel_ff_2D());
     }
     force_field.refresh();
+    update_gui_value(true);
   }
 
 
@@ -228,7 +229,7 @@ boolean get_display_is() {
 
 void display_result() {
   display_result = !!((display_result == false));
-  get_check_main_display();
+  get_check_gui_main_display();
 }
 /**
 image thread

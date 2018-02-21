@@ -2,18 +2,18 @@
 Interface force field 
 2017-2018
 http://stanlepunk.xyz/
-v 0.2.1
+v 0.3.0
 */
 import controlP5.*;
-ControlP5 cp_main; 
-CheckBox check_channel, check_main ;
+ControlP5 gui_main; 
+CheckBox check_gui_main_channel, check_gui_main ;
 
-ControlP5 cp_img_2D,cp_img_3D;
-ControlP5 cp_fluid;
-ControlP5 cp_generative;
+ControlP5 gui_static_img_2D,gui_static_img_3D;
 
+ControlP5 gui_static_generative;
 
-ControlP5 cp_mouse, cp_movie;
+ControlP5 gui_dynamic_fluid;
+ControlP5 gui_dynamic_mouse, gui_main_movie;
 
 
 // global slider
@@ -49,18 +49,20 @@ void interface_setup(Vec2 pos, Vec2 size) {
 	space_interface = ceil(font_gui.getSize() *1.5) ;
 	int max = 1;
 
-  cp_main(space_interface, max, slider_width, 1, TOP, font_gui);
+  // main
+  gui_main(space_interface, max, slider_width, 1, TOP, font_gui);
+  gui_main_movie(space_interface, max, slider_width, 2, BOTTOM, font_gui);
   
-  // menu for differente force field
-  cp_fluid(space_interface, max, slider_width, 23, TOP, font_gui);
-  cp_image(space_interface, max, slider_width, 23, TOP, font_gui);
-  cp_generative(space_interface, max, slider_width, 23, TOP, font_gui);
+  // menu static field
+  gui_static_generative(space_interface, max, slider_width, 23, TOP, font_gui);
+  gui_static_image(space_interface, max, slider_width, 28, TOP, font_gui);
 
-  cp_mouse(space_interface, max, slider_width, 28, TOP, font_gui);
+  // menu dynamic field
+  gui_dynamic_fluid(space_interface, max, slider_width, 23, TOP, font_gui);
+  gui_dynamic_mouse(space_interface, max, slider_width, 28, TOP, font_gui);
 
 
-
-  cp_movie(space_interface, max, slider_width, 2, BOTTOM, font_gui);
+  
 
 }
 
@@ -91,8 +93,8 @@ float cell_force_field;
 
 float spot_force_field;
 
-void cp_main(int space, int max, int w, int start_pos, int from, PFont font) {
-	cp_main = new ControlP5(this);
+void gui_main(int space, int max, int w, int start_pos, int from, PFont font) {
+	gui_main = new ControlP5(this);
 
 	alpha_background = 1.;
 
@@ -112,39 +114,39 @@ void cp_main(int space, int max, int w, int start_pos, int from, PFont font) {
 	cell_force_field = 25.;
 	spot_force_field = 5.;
 
-	check_main = cp_main.addCheckBox("main_setting").setPosition(10,pos_slider_y(space, start_pos +0, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2).addItem("resize_window",1).addItem("fit_image",1).addItem("display_result",1);
-  if(change_size_window_is) check_main.activate(0);
-  if(fullfit_image_is) check_main.activate(1);
-  check_main.activate(2);
+	check_gui_main = gui_main.addCheckBox("main_setting").setPosition(10,pos_slider_y(space, start_pos +0, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2).addItem("resize_window",1).addItem("fit_image",1).addItem("display_result",1);
+  if(change_size_window_is) check_gui_main.activate(0);
+  if(fullfit_image_is) check_gui_main.activate(1);
+  check_gui_main.activate(2);
 
 
 
-  cp_main.addSlider("alpha_background").setPosition(10,pos_slider_y(space, start_pos +3.25, from)).setWidth(w).setRange(0,max).setFont(font);
+  gui_main.addSlider("alpha_background").setPosition(10,pos_slider_y(space, start_pos +3.25, from)).setWidth(w).setRange(0,max).setFont(font);
 
-	cp_main.addSlider("red_channel").setPosition(10,pos_slider_y(space, start_pos +5, from)).setWidth(w).setRange(0,max).setFont(font);
-	cp_main.addSlider("green_channel").setPosition(10,pos_slider_y(space, start_pos +6, from)).setWidth(w).setRange(0,max).setFont(font);
-	cp_main.addSlider("blue_channel").setPosition(10,pos_slider_y(space, start_pos +7, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("red_channel").setPosition(10,pos_slider_y(space, start_pos +5, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("green_channel").setPosition(10,pos_slider_y(space, start_pos +6, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("blue_channel").setPosition(10,pos_slider_y(space, start_pos +7, from)).setWidth(w).setRange(0,max).setFont(font);
 
-	cp_main.addSlider("power_channel").setPosition(10,pos_slider_y(space, start_pos +9, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("power_channel").setPosition(10,pos_slider_y(space, start_pos +9, from)).setWidth(w).setRange(0,max).setFont(font);
 
-	cp_main.addSlider("red_cycling").setPosition(10,pos_slider_y(space, start_pos +11, from)).setWidth(w).setRange(0,max).setFont(font);
-	cp_main.addSlider("green_cycling").setPosition(10,pos_slider_y(space, start_pos +12, from)).setWidth(w).setRange(0,max).setFont(font);
-	cp_main.addSlider("blue_cycling").setPosition(10,pos_slider_y(space, start_pos +13, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("red_cycling").setPosition(10,pos_slider_y(space, start_pos +11, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("green_cycling").setPosition(10,pos_slider_y(space, start_pos +12, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("blue_cycling").setPosition(10,pos_slider_y(space, start_pos +13, from)).setWidth(w).setRange(0,max).setFont(font);
 
-	cp_main.addSlider("warp_power").setPosition(10,pos_slider_y(space, start_pos +14, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("warp_power").setPosition(10,pos_slider_y(space, start_pos +14, from)).setWidth(w).setRange(0,max).setFont(font);
 
-	// radio_button_cycling = cp_main.addRadioButton("abs_cycling").setValue(0).setPosition(10,pos_slider_y(space, start_pos +10, from)).setSize(w,10).addItem("absolute_cycling",1).setFont(font);
-	check_channel = cp_main.addCheckBox("channel_setting").setPosition(10,pos_slider_y(space, start_pos +15, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2).addItem("absolute_cycling",1);
-	//check_img = cp_img_2D.addCheckBox("img_setting").setPosition(10,pos_slider_y(space, start_pos +6, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2).addItem("fit_image",1);
+	// radio_button_cycling = gui_main.addRadioButton("abs_cycling").setValue(0).setPosition(10,pos_slider_y(space, start_pos +10, from)).setSize(w,10).addItem("absolute_cycling",1).setFont(font);
+	check_gui_main_channel = gui_main.addCheckBox("channel_setting").setPosition(10,pos_slider_y(space, start_pos +15, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2).addItem("absolute_cycling",1);
+	//check_img = gui_static_img_2D.addCheckBox("img_setting").setPosition(10,pos_slider_y(space, start_pos +6, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2).addItem("fit_image",1);
   
   int max_tempo = 10 ;
-	cp_main.addSlider("tempo_refresh").setPosition(10,pos_slider_y(space, start_pos +16, from)).setWidth(w).setRange(1,max_tempo).setNumberOfTickMarks(max_tempo).setFont(font);
+	gui_main.addSlider("tempo_refresh").setPosition(10,pos_slider_y(space, start_pos +16, from)).setWidth(w).setRange(1,max_tempo).setNumberOfTickMarks(max_tempo).setFont(font);
   
   int max_cell = 50;
-	cp_main.addSlider("cell_force_field").setPosition(10,pos_slider_y(space, start_pos +18, from)).setWidth(w).setRange(1,max_cell).setNumberOfTickMarks(max_cell).setFont(font);
+	gui_main.addSlider("cell_force_field").setPosition(10,pos_slider_y(space, start_pos +18, from)).setWidth(w).setRange(1,max_cell).setNumberOfTickMarks(max_cell).setFont(font);
   
   int max_spot = 100 ;
-	cp_main.addSlider("spot_force_field").setPosition(10,pos_slider_y(space, start_pos +20, from)).setWidth(w).setRange(1,max_spot).setNumberOfTickMarks(max_spot).setFont(font);
+	gui_main.addSlider("spot_force_field").setPosition(10,pos_slider_y(space, start_pos +20, from)).setWidth(w).setRange(1,max_spot).setNumberOfTickMarks(max_spot).setFont(font);
 
 
 }
@@ -156,15 +158,15 @@ void cp_main(int space, int max, int w, int start_pos, int from, PFont font) {
 float header_movie;
 float speed_movie;
 
-void cp_movie(int space, int max, int w, int start_pos, int from, PFont font) {
-	cp_movie = new ControlP5(this);
+void gui_main_movie(int space, int max, int w, int start_pos, int from, PFont font) {
+	gui_main_movie = new ControlP5(this);
 	header_movie = 0 ;
 	speed_movie = 1;
 	int max_speed = 6 ;
 
-	cp_movie.addSlider("header_movie").setPosition(10,pos_slider_y(space, start_pos, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main_movie.addSlider("header_movie").setPosition(10,pos_slider_y(space, start_pos, from)).setWidth(w).setRange(0,max).setFont(font);
 
-	cp_movie.addSlider("speed_movie").setPosition(10,pos_slider_y(space, start_pos +2, from)).setWidth(w).setRange(-max_speed,max_speed).setNumberOfTickMarks((max_speed *8) +1).setFont(font);
+	gui_main_movie.addSlider("speed_movie").setPosition(10,pos_slider_y(space, start_pos +2, from)).setWidth(w).setRange(-max_speed,max_speed).setNumberOfTickMarks((max_speed *8) +1).setFont(font);
 }
 
 
@@ -175,16 +177,42 @@ float frequence;
 float viscosity;
 float diffusion;
 
-void cp_fluid(int space, int max, int w, int start_pos, int from, PFont font) {
-	cp_fluid = new ControlP5(this);
+void gui_dynamic_fluid(int space, int max, int w, int start_pos, int from, PFont font) {
+	gui_dynamic_fluid = new ControlP5(this);
 	frequence = .3;
 	viscosity = .3;
 	diffusion = .3;
 
-	cp_fluid.addSlider("frequence").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(w).setRange(0,max).setFont(font);
-  cp_fluid.addSlider("viscosity").setPosition(10,pos_slider_y(space, start_pos +1, from)).setWidth(w).setRange(0,max).setFont(font);
-  cp_fluid.addSlider("diffusion").setPosition(10,pos_slider_y(space, start_pos +2, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_dynamic_fluid.addSlider("frequence").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(w).setRange(0,max).setFont(font);
+  gui_dynamic_fluid.addSlider("viscosity").setPosition(10,pos_slider_y(space, start_pos +1, from)).setWidth(w).setRange(0,max).setFont(font);
+  gui_dynamic_fluid.addSlider("diffusion").setPosition(10,pos_slider_y(space, start_pos +2, from)).setWidth(w).setRange(0,max).setFont(font);
 }
+
+
+
+/*
+* generative seting for CHAOS and PERLIN field
+*/
+float range_min_gen;
+float range_max_gen;
+float power_gen;
+
+void gui_static_generative(int space, int max, int w, int start_pos, int from, PFont font) {
+	gui_static_generative = new ControlP5(this);
+
+	range_min_gen = 0.;
+	range_max_gen = 1.;
+	power_gen = 1. ;
+	
+  
+	gui_static_generative.addSlider("range_min_gen").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_static_generative.addSlider("range_max_gen").setPosition(10,pos_slider_y(space, start_pos +1, from)).setWidth(w).setRange(0,max).setFont(font);
+	float power_max = 3 ;
+	gui_static_generative.addSlider("power_gen").setPosition(10,pos_slider_y(space, start_pos +2, from)).setWidth(w).setRange(-power_max,power_max).setFont(font);
+
+}
+
+
 
 
 /*
@@ -195,9 +223,9 @@ float x_sort = 1.;
 float y_sort = 1.;
 float z_sort = 1.;
 
-void cp_image(int space, int max, int w, int start_pos, int from, PFont font) {
-	cp_img_2D = new ControlP5(this);
-	cp_img_3D = new ControlP5(this);
+void gui_static_image(int space, int max, int w, int start_pos, int from, PFont font) {
+	gui_static_img_2D = new ControlP5(this);
+	gui_static_img_3D = new ControlP5(this);
 
 	vel_sort = 1.;
 	x_sort = 1.;
@@ -207,32 +235,14 @@ void cp_image(int space, int max, int w, int start_pos, int from, PFont font) {
   int min_mark = 0;
 	int max_mark = 6;
 	int mark = 7;
-	cp_img_2D.addSlider("vel_sort").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(w).setRange(min_mark,max_mark).setNumberOfTickMarks(mark).setFont(font);
-	cp_img_2D.addSlider("x_sort").setPosition(10,pos_slider_y(space, start_pos +1.5, from)).setWidth(w).setRange(min_mark,max_mark).setNumberOfTickMarks(mark).setFont(font);
-	cp_img_2D.addSlider("y_sort").setPosition(10,pos_slider_y(space, start_pos +3, from)).setWidth(w).setRange(min_mark,max_mark).setNumberOfTickMarks(mark).setFont(font);
-	cp_img_3D.addSlider("z_sort").setPosition(10,pos_slider_y(space, start_pos +4.5, from)).setWidth(w).setRange(min_mark,max_mark).setNumberOfTickMarks(mark).setFont(font);
+	gui_static_img_2D.addSlider("vel_sort").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(w).setRange(min_mark,max_mark).setNumberOfTickMarks(mark).setFont(font);
+	gui_static_img_2D.addSlider("x_sort").setPosition(10,pos_slider_y(space, start_pos +1.5, from)).setWidth(w).setRange(min_mark,max_mark).setNumberOfTickMarks(mark).setFont(font);
+	gui_static_img_2D.addSlider("y_sort").setPosition(10,pos_slider_y(space, start_pos +3, from)).setWidth(w).setRange(min_mark,max_mark).setNumberOfTickMarks(mark).setFont(font);
+	gui_static_img_3D.addSlider("z_sort").setPosition(10,pos_slider_y(space, start_pos +4.5, from)).setWidth(w).setRange(min_mark,max_mark).setNumberOfTickMarks(mark).setFont(font);
 
 }
 
-/*
-* generative seting for CHAOS and PERLIN field
-*/
-float range_min_gen;
-float range_max_gen;
-float power_gen;
 
-void cp_generative(int space, int max, int w, int start_pos, int from, PFont font) {
-	cp_generative = new ControlP5(this);
-
-	range_min_gen = 0.;
-	range_max_gen = 1.;
-	power_gen = .5;
-  
-	cp_generative.addSlider("range_min_gen").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(w).setRange(0,max).setFont(font);
-	cp_generative.addSlider("range_max_gen").setPosition(10,pos_slider_y(space, start_pos +1, from)).setWidth(w).setRange(0,max).setFont(font);
-	cp_generative.addSlider("power_gen").setPosition(10,pos_slider_y(space, start_pos +2, from)).setWidth(w).setRange(0,max).setFont(font);
-
-}
 
 
 /*
@@ -247,8 +257,8 @@ float spiral_mouse;
 float beat_mouse;
 float motion_mouse;
 
-void cp_mouse(int space, int max, int w, int start_pos, int from, PFont font){
-	cp_mouse = new ControlP5(this);
+void gui_dynamic_mouse(int space, int max, int w, int start_pos, int from, PFont font){
+	gui_dynamic_mouse = new ControlP5(this);
 
 	radius_mouse = .3;
 
@@ -268,16 +278,16 @@ void cp_mouse(int space, int max, int w, int start_pos, int from, PFont font){
   int min_mark_beat = 1 ;
   int max_mark_beat = 200;
 
-	cp_mouse.addSlider("radius_mouse").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(w).setRange(0,max).setFont(font);
-	cp_mouse.addSlider("min_radius_mouse").setPosition(10,pos_slider_y(space, start_pos +1, from)).setWidth(w).setRange(0,max_min_radius).setFont(font);
-	cp_mouse.addSlider("max_radius_mouse").setPosition(10,pos_slider_y(space, start_pos +2, from)).setWidth(w).setRange(max_min_radius,max_max_radius).setFont(font);
+	gui_dynamic_mouse.addSlider("radius_mouse").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_dynamic_mouse.addSlider("min_radius_mouse").setPosition(10,pos_slider_y(space, start_pos +1, from)).setWidth(w).setRange(0,max_min_radius).setFont(font);
+	gui_dynamic_mouse.addSlider("max_radius_mouse").setPosition(10,pos_slider_y(space, start_pos +2, from)).setWidth(w).setRange(max_min_radius,max_max_radius).setFont(font);
   
-  cp_mouse.addSlider("distribution_mouse").setPosition(10,pos_slider_y(space, start_pos +3, from)).setWidth(w).setRange(0,TAU).setFont(font);
-  cp_mouse.addSlider("spiral_mouse").setPosition(10,pos_slider_y(space, start_pos +4, from)).setWidth(w).setRange(min_mark_spiral,max_mark_spiral).setNumberOfTickMarks(spiral_mark).setFont(font);;
-  cp_mouse.addSlider("beat_mouse").setPosition(10,pos_slider_y(space, start_pos +5.5, from)).setWidth(w).setRange(min_mark_beat,max_mark_beat).setFont(font);
+  gui_dynamic_mouse.addSlider("distribution_mouse").setPosition(10,pos_slider_y(space, start_pos +3, from)).setWidth(w).setRange(0,TAU).setFont(font);
+  gui_dynamic_mouse.addSlider("spiral_mouse").setPosition(10,pos_slider_y(space, start_pos +4, from)).setWidth(w).setRange(min_mark_spiral,max_mark_spiral).setNumberOfTickMarks(spiral_mark).setFont(font);;
+  gui_dynamic_mouse.addSlider("beat_mouse").setPosition(10,pos_slider_y(space, start_pos +5.5, from)).setWidth(w).setRange(min_mark_beat,max_mark_beat).setFont(font);
 
-  cp_mouse.addSlider("speed_mouse").setPosition(10,pos_slider_y(space, start_pos +6.5, from)).setWidth(w).setRange(-max,max).setFont(font);
-  cp_mouse.addSlider("motion_mouse").setPosition(10,pos_slider_y(space, start_pos +7.5, from)).setWidth(w).setRange(0,max).setFont(font);
+  gui_dynamic_mouse.addSlider("speed_mouse").setPosition(10,pos_slider_y(space, start_pos +6.5, from)).setWidth(w).setRange(-max,max).setFont(font);
+  gui_dynamic_mouse.addSlider("motion_mouse").setPosition(10,pos_slider_y(space, start_pos +7.5, from)).setWidth(w).setRange(0,max).setFont(font);
 }
 
 
@@ -303,11 +313,27 @@ draw update
 */
 Vec4 rgba_channel ;
 
-void update_gui_value() {
-	update_value_ff_fluid(frequence,viscosity,diffusion);
-	update_value_ff_generative(range_min_gen,range_max_gen,power_gen);
+void update_gui_value(boolean update_is) {
+	int size = ceil(cell_force_field) +2;
+  set_cell_grid_ff(size);
+
+	update_value_ff_fluid(frequence,viscosity,diffusion,update_is);
+	update_value_ff_generative(range_min_gen,range_max_gen,power_gen,update_is);
+
+	update_rgba_channel();
   
-  float cr = 1.;
+  set_sorting_channel_ff_2D(floor(x_sort), floor(y_sort), floor(vel_sort));
+
+  set_resize_window(gui_resize_window);
+  set_fit_image(gui_fullfit_image);
+  set_alpha_background(alpha_background);
+
+  display_result(gui_display_result);
+}
+
+
+void update_rgba_channel() {
+	float cr = 1.;
   float cg = 1.;
   float cb = 1.;
   if(red_cycling != 0) {
@@ -338,16 +364,7 @@ void update_gui_value() {
 	float max_src = 1 ;
 	float min_dst = .01 ;
 	rgba_channel.set(sin_val.map_vec(Vec4(min_src), Vec4(max_src), Vec4(min_dst), rgba_channel));
-  
-  int size = ceil(cell_force_field) +2;
-  set_cell_grid_ff(size);
 
-  set_sorting_channel_ff_2D(floor(x_sort), floor(y_sort), floor(vel_sort));
-  set_resize_window(gui_resize_window);
-  set_fit_image(gui_fullfit_image);
-  set_alpha_background(alpha_background);
-
-  display_result(gui_display_result);
 }
 
 
@@ -356,14 +373,14 @@ control event
 v 0.0.2
 */
 public void controlEvent(ControlEvent theEvent) {
-	if(theEvent.isFrom(check_main)) {
-		if(check_main.getArrayValue(0) == 1) gui_resize_window = true ; else gui_resize_window = false ;
-		if(check_main.getArrayValue(1) == 1) gui_fullfit_image = true ; else gui_fullfit_image = false ;
-		if(check_main.getArrayValue(2) == 1) gui_display_result = true ; else gui_display_result = false;
+	if(theEvent.isFrom(check_gui_main)) {
+		if(check_gui_main.getArrayValue(0) == 1) gui_resize_window = true ; else gui_resize_window = false ;
+		if(check_gui_main.getArrayValue(1) == 1) gui_fullfit_image = true ; else gui_fullfit_image = false ;
+		if(check_gui_main.getArrayValue(2) == 1) gui_display_result = true ; else gui_display_result = false;
   }
 
-  if(theEvent.isFrom(check_channel)) {
-		if(check_channel.getArrayValue(0) == 1) abs_cycling = true ; else abs_cycling = false ;
+  if(theEvent.isFrom(check_gui_main_channel)) {
+		if(check_gui_main_channel.getArrayValue(0) == 1) abs_cycling = true ; else abs_cycling = false ;
   } 
 }
 
@@ -381,12 +398,12 @@ void get_controller_gui() {
 	
 }
 
-void get_check_main_display() {
+void get_check_gui_main_display() {
 	if(display_result) {
-		check_main.activate(2);
+		check_gui_main.activate(2);
 	} else {
-		println("desactivate");
-		check_main.deactivate(2);
+		println("disable");
+		check_gui_main.deactivate(2);
 	}
 }
 
@@ -395,47 +412,47 @@ void get_check_main_display() {
 void get_controller_main() {
 	
 	/*
-	cp_main.getController("red_channel");
-	cp_main.getController("green_channel");
-	cp_main.getController("blue_channel");
+	gui_main.getController("red_channel");
+	gui_main.getController("green_channel");
+	gui_main.getController("blue_channel");
 
-	cp_main.getController("power_channel");
+	gui_main.getController("power_channel");
 
-	cp_main.getController("red_cycling");
-	cp_main.getController("green_cycling");
-	cp_main.getController("blue_cycling");
+	gui_main.getController("red_cycling");
+	gui_main.getController("green_cycling");
+	gui_main.getController("blue_cycling");
 
-	cp_main.getController("warp_power");
+	gui_main.getController("warp_power");
 
-	cp_main.getController("absolute_cycling");
+	gui_main.getController("absolute_cycling");
   
-	cp_main.getController("tempo_refresh");
+	gui_main.getController("tempo_refresh");
   
-	cp_main.getController("cell_force_field");
+	gui_main.getController("cell_force_field");
   
-	cp_main.getController("spot_force_field");
+	gui_main.getController("spot_force_field");
 	*/
 }
 
 float movie_pos_normal ;
 void get_controller_movie() {
-	cp_movie.getController("header_movie").setValue(movie_pos_normal);
-	cp_movie.getController("speed_movie");
+	gui_main_movie.getController("header_movie").setValue(movie_pos_normal);
+	gui_main_movie.getController("speed_movie");
 }
 
 void get_controller_fluid() {
-	cp_fluid.getController("frequence");
-  cp_fluid.getController("viscosity");
-  cp_fluid.getController("diffusion");
+	gui_dynamic_fluid.getController("frequence");
+  gui_dynamic_fluid.getController("viscosity");
+  gui_dynamic_fluid.getController("diffusion");
 }
 
 /*
 * mouse device
 */
 void get_controller_mouse() {
-	cp_mouse.getController("radius_mouse");
-  cp_mouse.getController("speed_mouse");
-  cp_mouse.getController("angle_mouse");
+	gui_dynamic_mouse.getController("radius_mouse");
+  gui_dynamic_mouse.getController("speed_mouse");
+  gui_dynamic_mouse.getController("angle_mouse");
 }
 
 
@@ -629,37 +646,33 @@ void info_line(String s, int pos_x, int space, int rank, int from) {
 }
 
 void hide_all_gui() {
-	cp_main.hide();
+	gui_main.hide();
 
-	cp_fluid.hide();
-	cp_img_2D.hide();
-	cp_img_3D.hide();
-	cp_generative.hide();
+	gui_dynamic_fluid.hide();
+	gui_static_img_2D.hide();
+	gui_static_img_3D.hide();
+	gui_static_generative.hide();
 
-	cp_mouse.hide();
-	cp_movie.hide();
+	gui_dynamic_mouse.hide();
+	gui_main_movie.hide();
 }
 
 void show_gui(boolean mouse_is, Force_field ff) {
-	cp_main.show();
+	gui_main.show();
 
 	// show menu depend of force field type
-	if(ff.get_type() == IMAGE) {
-		cp_img_2D.show();
-		// cp_image_3D.show();
-	} else {
-		cp_img_2D.hide();
-	}
-	if(ff.get_type() == r.FLUID) cp_fluid.show(); else cp_fluid.hide();
-	if(ff.get_type() == r.CHAOS || ff.get_type() == r.PERLIN) cp_generative.show(); else cp_generative.hide();
+	if(ff.get_type() == IMAGE) gui_static_img_2D.show(); else gui_static_img_2D.hide();
+
+	if(ff.get_type() == r.FLUID) gui_dynamic_fluid.show(); else gui_dynamic_fluid.hide();
+	if(ff.get_type() == r.CHAOS || ff.get_type() == r.PERLIN || ff.get_type() == IMAGE) gui_static_generative.show(); else gui_static_generative.hide();
 
 
-	if(movie_warp_is()) cp_movie.show(); else cp_movie.hide();	
+	if(movie_warp_is()) gui_main_movie.show(); else gui_main_movie.hide();	
 
 	if(!mouse_is && get_spot_num_ff() > 2) {
-		cp_mouse.show(); 
+		gui_dynamic_mouse.show(); 
 	} else {
-		cp_mouse.hide();
+		gui_dynamic_mouse.hide();
 	}
 }
 

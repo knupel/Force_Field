@@ -439,23 +439,30 @@ void update_ff_gravity() {
 /**
 update value
 */
-void update_value_ff_fluid(float freq_norm, float visc_norm, float diff_norm) {
-  freq_ff = freq_norm *.05 ;
-  visc_ff = visc_norm *visc_norm *visc_norm *visc_norm;
-  diff_ff = diff_norm;
+float ref_freq_norm, ref_visc_norm, ref_diff_norm ;
+void update_value_ff_fluid(float freq_norm, float visc_norm, float diff_norm, boolean update_is) {
+  if(ref_freq_norm != freq_norm || ref_visc_norm != visc_norm || ref_diff_norm != diff_norm || update_is) {
+    freq_ff = freq_norm *.05 ;
+    visc_ff = visc_norm *visc_norm *visc_norm *visc_norm;
+    diff_ff = diff_norm;
+
+    ref_freq_norm = freq_norm;
+    ref_visc_norm = visc_norm;
+    ref_diff_norm = diff_norm;
+  }
 }
 
 
-float ref_range_min, ref_range_max ;
-void update_value_ff_generative(float range_min, float range_max, float power) {
-  if(ref_range_min != range_min || ref_range_max != range_max) {
-    force_field.map_velocity(0.3,0.6,range_min, range_max);
+float ref_range_min, ref_range_max, ref_power ;
+void update_value_ff_generative(float range_min, float range_max, float power, boolean update_is) {
+  if(ref_range_min != range_min || ref_range_max != range_max || ref_power != power || update_is) {
+    force_field.preserve_field();
+    force_field.map_velocity(0.3,0.6,range_min,range_max);
     ref_range_min = range_min;
     ref_range_max = range_max;
-
-  }
-  
-  force_field.mult_velocity(power);
+    force_field.mult_velocity(power);
+    ref_power = power;
+  } 
 }
 
 

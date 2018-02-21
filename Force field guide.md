@@ -1,5 +1,5 @@
 Force field guide
-v 0.0.3
+v 0.2.0
 --
 
 FORCE FIELD class
@@ -123,11 +123,49 @@ void set_calm(float calm);
 >use this method to calm down the force field when this one is under the influence of any spots. the value has to be between 0 and 1 
 
 
-Change direction
---
-void wind(float angle, float force);
->you can add a global 'wind' to your field, the argument angle is in radian
 
+WORK AROUND THE FIELD
+--
+Preserve
+--
+void preserve_field()
+>use this method to save you data field at specific moment, useful when method to change field like add, mult, map method is used.
+
+Change the field methods
+--
+map field
+--
+void map_velocity(float start1, float stop1, float start2, float stop2);
+>map all the field
+
+void map_velocity(int x, int y, float start1, float stop1, float start2, float stop2);
+>map target case in the field
+
+void map_velocity(int x, int y, int z, float start1, float stop1, float start2, float stop2);
+>map target case in the field, this method is not available
+
+void map_velocity(iVec coord, float start1, float stop1, float start2, float stop2);
+>map target case in the field
+
+mult field
+--
+void mult_velocity(float mult);
+>mult all the field
+
+void mult_velocity(int x, int y, float mult);
+>mult target case in the field,
+
+void mult_velocity(int x, int y, int z, float mult);
+>mult target case in the field, this method is not available
+
+void mult_velocity(iVec coord, float mult);
+>mult target case in the field
+
+
+
+
+MISC
+--
 
 Clear
 --
@@ -141,8 +179,8 @@ void reset();
 >reset the force field
 
 
-
-
+Refresh
+--
 void refresh();
 >rebuild the vector field, not available for the Force field of type FLUID, HOLE and IMAGE
 

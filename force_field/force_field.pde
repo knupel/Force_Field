@@ -190,7 +190,7 @@ void draw() {
   interface gui
   */
   get_controller_gui();
-  update_gui_value();
+  update_gui_value(false);
   interface_display(use_leapmotion, force_field);
 
   if(!ff_is()) {
