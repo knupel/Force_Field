@@ -1,6 +1,6 @@
 /**
 Warp Image
-v 0.4.0
+v 0.4.1
 */
 
 class Warp {
@@ -133,7 +133,7 @@ class Warp {
       Vec4 r = (Vec4) ratio ;
       refresh_image(r.x,r.y,r.z,r.w);
     } else {
-      printErr("ratio is not an instance of Vec2, Vec3 or Vec4, instead the value max '.5' is used");
+      printErr("method refresh() from class Warp : ratio is not an instance of Vec2, Vec3 or Vec4, instead the value max '.5' is used");
       refresh_image(.5,.5,.5,.5);
     } 
   }
@@ -185,17 +185,16 @@ class Warp {
   /*
   Main and Public method to show result
   */
-  public void show(Force_field ff, float intensity) {
+  public void show(float intensity) {
     if(reset_img) {
       draw(img_manager.get());
     }
-
     reset_img = false;
 
     if(pg == null && img_manager.get() != null) { 
       set(img_manager.get());
     } else if(img_manager.get() != null) {   
-      update(img_manager.get(), ff, intensity);
+      update(img_manager.get(), intensity);
     }
   }
 
@@ -212,24 +211,16 @@ class Warp {
       pg.endDraw();
     }
   }
-
-
-  private void update(PImage target, Force_field ff, float intensity) {
+  
+  private void update(PImage target, float intensity) {
     PImage inc = target.copy(); 
     rendering(pg, buffer_img, inc, force_field, intensity);   
 
     buffer_img.pixels = buffering(pg).pixels;
     buffer_img.updatePixels();
-   
-    // to show texture used to warp the image
-    boolean show_tex_is = false;
-    if(show_tex_is) {
-      int pos_x = ff.get_tex_direction().width;
-      image(ff.get_tex_velocity());
-      image(ff.get_tex_direction(),pos_x,0);
-      if(pass2 != null) image(pass2,pos_x*2,0);
-    } 
   }
+
+
 
   private PImage buffering(PImage target) {
     PImage temp = createImage(target.width,target.height, ARGB);
@@ -466,6 +457,14 @@ class Warp {
     rope_warp_shader.set("vel_texture",ff.get_tex_velocity());
     rope_warp_shader.set("dir_texture",pass2);
     rope_warp_shader.set("filter_is",shader_warp_filter); // need give the commande to reverse the y axis in the glsl frag
+
+    // use to map the direction on PI or TWO_PI, strangly is not a same result for static field creation
+    if(ff.get_type() == IMAGE || ff.get_type() == r.CHAOS || ff.get_type() == r.PERLIN) {
+      rope_warp_shader.set("static_field_is",true); 
+    } else {
+      rope_warp_shader.set("static_field_is",false); 
+    }
+    
 
     // rope_warp_shader.set("dir_texture",ff.direction_texture());
     

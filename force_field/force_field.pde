@@ -21,7 +21,7 @@ boolean use_leapmotion = false;
 
 boolean fullScreen_is = false;
 boolean change_size_window_is = false;
-boolean fullfit_image_is = false;
+boolean fullfit_image_is = true;
 
 boolean display_result = true;
 
@@ -41,7 +41,7 @@ void settings() {
     // fullScreen(P2D,1);
     fullScreen(P2D);      
   } else {
-    size(900,600,P2D);
+    size(1200,750,P2D);
     //size(1600,870,P2D); // 2eme écran macbook
     // size(1900,1200,P2D); // 2 recopie écran macbook
   }

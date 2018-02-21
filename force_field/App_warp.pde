@@ -243,7 +243,7 @@ void warp_show(Vec4 channel_warp_rgba, float intensity_warp) {
   //float intensity_warp = 0.9 ;
   if(!init_warp_is) {
     // here we need to have a full turn without display to charge pixel "g / surface 
-    warp.show(force_field, intensity_warp);
+    warp.show(intensity_warp);
   }
 }
 

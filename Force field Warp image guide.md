@@ -35,9 +35,8 @@ Warp method
 
 Show image
 --
-void show(Force_field ff, float intensity);
->'Force_field ff' compoenent will be used to warp texture
-float intensity is the strenght apply to warp from the Force Field
+void show(float intensity);
+>float intensity is the strenght apply to warp from the Force Field
 
 
 

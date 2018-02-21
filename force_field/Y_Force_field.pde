@@ -246,7 +246,7 @@ public class Force_field implements Rope_Constants {
           theta = map(noise(xoff,yoff),0,1,0,TWO_PI);
           dist = noise(xoff,yoff);
         } if(type == CHAOS) {
-          theta = random(TAU);
+          theta = random(TWO_PI);
           dist = random(1);
         } if(type == GRAVITY) {
           for(Spot s : spot_list) {
@@ -320,19 +320,8 @@ public class Force_field implements Rope_Constants {
 
 
 
-
-
   /**
-  public set field > velocity
-  */
-  /**
-
-  ET NE PAS OUBLIER D4ACTUALISER LE GUIDE
-
-
-
-
-
+  work directly on the field
   */
   public void preserve_field() {
     if(field != null && field_original != null) {
@@ -343,10 +332,12 @@ public class Force_field implements Rope_Constants {
       }
     }
   }
-
- /** 
- map velocity
- */
+  /**
+  velocity
+  */
+  /*
+  * map velocity
+  */
   public void map_velocity(float start1, float stop1, float start2, float stop2) {
     if(field != null && field_original != null) {
       for (int x = 0 ; x < cols ; x++) {
@@ -376,14 +367,8 @@ public class Force_field implements Rope_Constants {
       }
     }
   }
-  /**
-  PROCHAIN TRAVAIL ICI
-
-  ET NE PAS OUBLIER D'ACTUALISER LE GUIDE
-
-
-
-
+  /*
+  * mult velocity
   */
   public void mult_velocity(float mult) {
     if(field != null && field_original != null) {

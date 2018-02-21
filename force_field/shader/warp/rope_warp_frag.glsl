@@ -22,6 +22,7 @@ uniform sampler2D texture;
 
 uniform int mode;
 uniform bool filter_is;
+uniform bool static_field_is;
 
 uniform sampler2D vel_texture;
 uniform sampler2D dir_texture;
@@ -46,11 +47,14 @@ float map(float value,
   }
 
 
-vec2 translate(float fdir, float fvel) {
-  // float angle = map(fdir, 0, 1, -PI, PI);
-  float angle = mix(-PI, PI,fdir);
-
-  return cartesian_coord(angle) *fvel ;
+vec2 translate(float fdir, float fvel, bool static_is) {
+ if(static_is) {
+    float angle = mix(0, PI,fdir);
+    return cartesian_coord(angle) *fvel ;
+  } else {
+    float angle = mix(0, 2*PI,fdir);
+    return cartesian_coord(angle) *fvel ;
+  }
 }
 
 
@@ -75,7 +79,7 @@ void main() {
   float direction = texture2D(dir_texture, coord_transform).x;
   
 
-  vec2 translation = translate(direction,velocity);
+  vec2 translation = translate(direction,velocity,static_field_is);
   
   // mode 0 perfect
   // mode 1 interesting
