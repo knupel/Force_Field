@@ -23,9 +23,13 @@ boolean fullScreen_is = false;
 boolean change_size_window_is = false;
 boolean fullfit_image_is = true;
 
-boolean display_result = true;
+boolean display_bg = false;
+boolean display_result_warp = false;
+boolean display_result_vehicle = false;
 
 boolean hide_menu_bar = false;
+
+
 
 
 PGraphics pg;
@@ -71,7 +75,6 @@ void setup() {
   info_system();
   background(0);
   // noCursor();
-  // warp_instruction();
 
   if(use_leapmotion) leap_setup();
 
@@ -80,32 +83,25 @@ void setup() {
   Choice which vector you want use
   */
 
+  /**
+  vehicle
+  */
+  set_vehicle(1000);
+
 
 
   /**
   warp force field
   */
   warp_setup();
-
-  /**
-  classic build
-  */
-
-  // build_force_field(type_field,size_cell);
-  // num_spot_force_field(2); 
-
-  /**
-  vehicle example
-  */
   
-  /*
-  int num_vehicle = 1000;
-  build_vehicle(num_vehicle);
-  */
   set_info(false);
   interface_setup(Vec2(0), Vec2(250,height));
   warp_instruction(); 
 }
+
+
+
 
 
 /**
@@ -113,6 +109,13 @@ DRAW
 
 */
 void draw() {
+  println("vehicle",display_vehicle_is());
+  println("warp",display_warp_is());
+  println("background",display_bg_is());
+  println("alpha bg",get_alpha_bg());
+  println("alpha warp",get_alpha_warp());
+  println("alpha vehicle",get_alpha_vehicle());
+
   if(hide_menu_bar) PApplet.hideMenuBar();
   // cursor(CROSS);
   if(use_leapmotion) leap_update();
@@ -124,32 +127,25 @@ void draw() {
   }
 
   boolean run_is = true;
-  /*
-  if(interface_is() && inside_gui) {
-    run_is = false ;  
-  } else if(!interface_is()) {
-    run_is = true ;
-  } 
-  */
-  // if(use_leapmotion) run_is = true ;
   if(pause_is) run_is = false ;
 
 
-  // update coord
+  /**
+  SPOT
+  update spot coord
+  */
   if(run_is) {
-   // if(!inside_gui) {
-      if(use_leapmotion) {
-        force_field_spot_condition_leapmotion();
-        force_field_spot_coord_leapmotion();
+    if(use_leapmotion) {
+      force_field_spot_condition_leapmotion();
+      force_field_spot_coord_leapmotion();
+    } else {
+      force_field_spot_condition(true);
+      if(!inside_gui){
+        force_field_spot_coord(iVec2(mouseX,mouseY),mousePressed);
       } else {
-        force_field_spot_condition(true);
-        if(!inside_gui){
-          force_field_spot_coord(iVec2(mouseX,mouseY),mousePressed);
-        } else {
-          force_field_spot_coord(iVec2(mouseX,mouseY),false);
-        }
+        force_field_spot_coord(iVec2(mouseX,mouseY),false);
       }
-  //  }
+    }
     if(get_type_ff() == r.FLUID) {
       //
     } else if(get_type_ff() == r.MAGNETIC) {
@@ -165,7 +161,14 @@ void draw() {
 
 
 
-  /*
+
+
+
+
+
+
+  /**
+  WARP
   warp management
   */
   warp_init(type_field, get_size_cell_ff(), which_cam, change_size_window_is, fullfit_image_is);
@@ -173,20 +176,63 @@ void draw() {
   /*
   warp result
   */
-  if(display_result) {
-    tint(g.colorModeX,g.colorModeY,g.colorModeZ,get_alpha_bg());
-    warp_draw(get_tempo_refresh_gui(), get_rgba_channel_gui(), get_warp_power_gui());
-  } else {
+
+  /**
+  VEHICLE
+  */
+  init_vehicle(get_ff());
+  
+
+
+  /** 
+  DISPLAY RESULT
+  */
+
+  if(display_bg_is()) {
     if(get_alpha_bg() > 0 ) background_rope(0,get_alpha_bg());
   }
+  // if(display_is()) {
+    // tint(g.colorModeX,g.colorModeY,g.colorModeZ,get_alpha_bg());
+  if(display_warp_is()) {
+    // tint(g.colorModeX,g.colorModeY,g.colorModeZ,get_alpha_bg());
+    tint(g.colorModeX,g.colorModeY,g.colorModeZ,get_alpha_warp());
+    warp_draw(get_tempo_refresh_gui(), get_rgba_channel_mapped_gui(), get_warp_power_gui());
+  }
+  if(display_vehicle_is()) {
+    update_vehicle(get_ff());
+    show_vehicle();
+  } 
+/*
+  if(display_warp_is() || display_vehicle_is()) {
+    tint(g.colorModeX,g.colorModeY,g.colorModeZ,get_alpha_bg());
+  }
+  */
+//  } 
+
+
+  
+
    
-   /**
+  
+   
+  
+
+
+
+
+
+  /**
    INFO
    */
   info(display_field, display_grid, display_pole);
 
   if(force_field != null) force_field.reverse_flow(false);
+
+
+
+
   /**
+  GUI
   interface gui
   */
   get_controller_gui();
@@ -215,9 +261,7 @@ void draw() {
     media_ready_to_add();
   }
 }
-/**
-END DRAW
-*/
+
 
 
 

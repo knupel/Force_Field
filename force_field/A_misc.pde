@@ -32,7 +32,9 @@ void keyPressed() {
 
   if(key == 'i') display_info();
 
-  if(key == 'k') display_result();
+  if(key == 'a') display_vehicle();
+  if(key == 'z') display_warp();
+  if(key == 'e') display_bg();
 
   if(key == 'l') change_cursor_controller();
 
@@ -43,7 +45,7 @@ void keyPressed() {
   }
 
   if(key == 'r') {
-    reset_vehicle();
+    reset_vehicle(get_ff());
     warp.reset();
     if(force_field.get_type() == IMAGE) {
       force_field_init_is = false ;
@@ -62,9 +64,7 @@ void keyPressed() {
 
   if(key == 'x') change_type_ff() ;
 
-  if(key == 'z') {
-    force_field.reset();
-  }
+
 
   if(key == ' ') {
     if(pause_is) pause_is = false ; else pause_is = true ;
@@ -197,15 +197,44 @@ void reset_key() {
 /**
 alpha
 */
-float alpha_bg ;
+float a_bg;
+float a_warp;
+float a_vehicle;
+
 void set_alpha_background(float norm_f){
-  float mult_f = norm_f *norm_f ;
-  alpha_bg = map(mult_f,0,1,0.,g.colorModeA);
+  a_bg = set_alpha(norm_f);
+}
+
+void set_alpha_warp(float norm_f){
+  a_warp = set_alpha(norm_f);
+}
+
+void set_alpha_vehicle(float norm_f){
+  a_vehicle = set_alpha(norm_f);
+}
+
+
+float get_alpha_warp() {
+  return a_warp;
+}
+
+float get_alpha_vehicle() {
+  return a_vehicle;
 }
 
 float get_alpha_bg() {
-  return alpha_bg;
+  return a_bg;
 }
+
+/*
+* local method
+*/
+float set_alpha(float norm_f) {
+  float mult_f = norm_f *norm_f ;
+  return map(mult_f,0,1,0.,g.colorModeA);
+}
+
+
 
 
 
@@ -219,18 +248,81 @@ float get_alpha_bg() {
 /**
 display
 */
-void display_result(boolean state) {
-  display_result = state;
+/*
+* display vehilcle
+*/
+
+
+
+
+void display_vehicle() {
+  display_result_vehicle = !!((display_result_vehicle == false));
+  if(display_vehicle_is()) {
+    //display_result(true);
+    get_check_gui_main_display();
+  }
+
+  //
 }
 
-boolean get_display_is() {
-  return display_result ;
+boolean display_vehicle_is() {
+  return display_result_vehicle ;
 }
 
-void display_result() {
-  display_result = !!((display_result == false));
+void display_vehicle(boolean is) {
+  display_result_vehicle = is;
+}
+/*
+* display warp
+*/
+void display_warp() {
+  display_result_warp = !!((display_result_warp == false));
+  if(display_warp_is()) {
+    // display_bg(true);
+    get_check_gui_main_display();
+  }
+}
+
+boolean display_warp_is() {
+  return display_result_warp ;
+}
+
+void display_warp(boolean is) {
+  display_result_warp = is;
+}
+
+/*
+* display result
+*/
+void display_bg(boolean is) {
+  display_bg = is;
+  //get_check_gui_main_display();
+}
+
+boolean display_bg_is() {
+  return display_bg;
+}
+
+void display_bg() {
+  display_bg = !!((display_bg == false));
   get_check_gui_main_display();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
 image thread
 */

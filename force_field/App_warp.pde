@@ -174,12 +174,12 @@ warp draw
 /*
 main method
 */
-void warp_draw(int tempo, Vec4 rgba, float intensity) {
+void warp_draw(int tempo, Vec4 rgba_mapped, float intensity) {
   if(warp_media_is()) {
     //background_rope(0, alpha);
     if(frameCount%tempo == 0 ) warp_media_display();
     if(warp.library_size() > 0 && force_field != null) {
-      warp_show(rgba, intensity);
+      warp_show(rgba_mapped, intensity);
       check_current_img_size_against_display();
     }
 
@@ -225,11 +225,12 @@ void warp_media_display() {
 }
 
 
-void warp_show(Vec4 channel_warp_rgba, float intensity_warp) {
+void warp_show(Vec4 channel_warp_rgb_mapped, float intensity_warp) {
   /**
   SHOW IMAGE WARPED via FORCE FIELD
   */
-  warp.refresh(channel_warp_rgba);
+  //Vec4 c = Vec4(channel_warp_rgb_mapped,1);
+  warp.refresh(channel_warp_rgb_mapped);
   // refresh_warp(channel_rgba);
  // warp_post_effect_test();
  

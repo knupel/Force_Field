@@ -437,7 +437,7 @@ class Warp {
   /**
   WARP GPU
   Graphic Processor Unit version of fluid image / GLSL
-  v 0.0.2
+  v 0.0.3
   */
   // void warp_image_graphic_processor(PGraphics result, PImage tex, PImage inc, Vec4 ratio, Force_field ff, float intensity) {
   private void warp_image_graphic_processor(PGraphics result, PImage tex, Force_field ff, float intensity) {

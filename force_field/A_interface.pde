@@ -22,7 +22,7 @@ ControlP5 gui_dynamic_mouse, gui_main_movie;
 boolean abs_cycling = true;
 boolean gui_resize_window = false;
 boolean gui_fullfit_image = true;
-boolean gui_display_result = true;
+boolean gui_display_bg = true;
 
 
 
@@ -54,12 +54,12 @@ void interface_setup(Vec2 pos, Vec2 size) {
   gui_main_movie(space_interface, max, slider_width, 2, BOTTOM, font_gui);
   
   // menu static field
-  gui_static_generative(space_interface, max, slider_width, 23, TOP, font_gui);
-  gui_static_image(space_interface, max, slider_width, 28, TOP, font_gui);
+  gui_static_generative(space_interface, max, slider_width, 25, TOP, font_gui);
+  gui_static_image(space_interface, max, slider_width, 30, TOP, font_gui);
 
   // menu dynamic field
-  gui_dynamic_fluid(space_interface, max, slider_width, 23, TOP, font_gui);
-  gui_dynamic_mouse(space_interface, max, slider_width, 28, TOP, font_gui);
+  gui_dynamic_fluid(space_interface, max, slider_width, 25, TOP, font_gui);
+  gui_dynamic_mouse(space_interface, max, slider_width, 30, TOP, font_gui);
 
 
   
@@ -72,7 +72,11 @@ void interface_setup(Vec2 pos, Vec2 size) {
 /*
 * main
 */
-float alpha_background ;
+float alpha_bg;
+float alpha_vehicle;
+float alpha_warp;
+
+Vec4 rgba_channel ;
 
 float red_channel;
 float green_channel;
@@ -96,7 +100,9 @@ float spot_force_field;
 void gui_main(int space, int max, int w, int start_pos, int from, PFont font) {
 	gui_main = new ControlP5(this);
 
-	alpha_background = 1.;
+	alpha_bg = 1.;
+	alpha_vehicle = 1.;
+	alpha_warp = 1.;
 
 	rgba_channel = Vec4(1);
 	red_channel = .9;
@@ -114,39 +120,41 @@ void gui_main(int space, int max, int w, int start_pos, int from, PFont font) {
 	cell_force_field = 25.;
 	spot_force_field = 5.;
 
-	check_gui_main = gui_main.addCheckBox("main_setting").setPosition(10,pos_slider_y(space, start_pos +0, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2).addItem("resize_window",1).addItem("fit_image",1).addItem("display_result",1);
+	check_gui_main = gui_main.addCheckBox("main_setting").setPosition(10,pos_slider_y(space, start_pos +0, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2).addItem("resize_window",1).addItem("fit_image",1).addItem("background",1);
   if(change_size_window_is) check_gui_main.activate(0);
   if(fullfit_image_is) check_gui_main.activate(1);
-  check_gui_main.activate(2);
+  if(display_bg) check_gui_main.activate(2);
 
 
 
-  gui_main.addSlider("alpha_background").setPosition(10,pos_slider_y(space, start_pos +3.25, from)).setWidth(w).setRange(0,max).setFont(font);
+  gui_main.addSlider("alpha_bg").setPosition(10,pos_slider_y(space, start_pos +3.25, from)).setWidth(w).setRange(0,max).setFont(font);
+  gui_main.addSlider("alpha_vehicle").setPosition(10,pos_slider_y(space, start_pos +4.25, from)).setWidth(w).setRange(0,max).setFont(font);
+  gui_main.addSlider("alpha_warp").setPosition(10,pos_slider_y(space, start_pos +5.25, from)).setWidth(w).setRange(0,max).setFont(font);
 
-	gui_main.addSlider("red_channel").setPosition(10,pos_slider_y(space, start_pos +5, from)).setWidth(w).setRange(0,max).setFont(font);
-	gui_main.addSlider("green_channel").setPosition(10,pos_slider_y(space, start_pos +6, from)).setWidth(w).setRange(0,max).setFont(font);
-	gui_main.addSlider("blue_channel").setPosition(10,pos_slider_y(space, start_pos +7, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("red_channel").setPosition(10,pos_slider_y(space, start_pos +7, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("green_channel").setPosition(10,pos_slider_y(space, start_pos +8, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("blue_channel").setPosition(10,pos_slider_y(space, start_pos +9, from)).setWidth(w).setRange(0,max).setFont(font);
 
-	gui_main.addSlider("power_channel").setPosition(10,pos_slider_y(space, start_pos +9, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("power_channel").setPosition(10,pos_slider_y(space, start_pos +11, from)).setWidth(w).setRange(0,max).setFont(font);
 
-	gui_main.addSlider("red_cycling").setPosition(10,pos_slider_y(space, start_pos +11, from)).setWidth(w).setRange(0,max).setFont(font);
-	gui_main.addSlider("green_cycling").setPosition(10,pos_slider_y(space, start_pos +12, from)).setWidth(w).setRange(0,max).setFont(font);
-	gui_main.addSlider("blue_cycling").setPosition(10,pos_slider_y(space, start_pos +13, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("red_cycling").setPosition(10,pos_slider_y(space, start_pos +13, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("green_cycling").setPosition(10,pos_slider_y(space, start_pos +14, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("blue_cycling").setPosition(10,pos_slider_y(space, start_pos +15, from)).setWidth(w).setRange(0,max).setFont(font);
 
-	gui_main.addSlider("warp_power").setPosition(10,pos_slider_y(space, start_pos +14, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("warp_power").setPosition(10,pos_slider_y(space, start_pos +16, from)).setWidth(w).setRange(0,max).setFont(font);
 
 	// radio_button_cycling = gui_main.addRadioButton("abs_cycling").setValue(0).setPosition(10,pos_slider_y(space, start_pos +10, from)).setSize(w,10).addItem("absolute_cycling",1).setFont(font);
-	check_gui_main_channel = gui_main.addCheckBox("channel_setting").setPosition(10,pos_slider_y(space, start_pos +15, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2).addItem("absolute_cycling",1);
+	check_gui_main_channel = gui_main.addCheckBox("channel_setting").setPosition(10,pos_slider_y(space, start_pos +17, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2).addItem("absolute_cycling",1);
 	//check_img = gui_static_img_2D.addCheckBox("img_setting").setPosition(10,pos_slider_y(space, start_pos +6, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2).addItem("fit_image",1);
   
   int max_tempo = 10 ;
-	gui_main.addSlider("tempo_refresh").setPosition(10,pos_slider_y(space, start_pos +16, from)).setWidth(w).setRange(1,max_tempo).setNumberOfTickMarks(max_tempo).setFont(font);
+	gui_main.addSlider("tempo_refresh").setPosition(10,pos_slider_y(space, start_pos +18, from)).setWidth(w).setRange(1,max_tempo).setNumberOfTickMarks(max_tempo).setFont(font);
   
   int max_cell = 50;
-	gui_main.addSlider("cell_force_field").setPosition(10,pos_slider_y(space, start_pos +18, from)).setWidth(w).setRange(1,max_cell).setNumberOfTickMarks(max_cell).setFont(font);
+	gui_main.addSlider("cell_force_field").setPosition(10,pos_slider_y(space, start_pos +20, from)).setWidth(w).setRange(1,max_cell).setNumberOfTickMarks(max_cell).setFont(font);
   
   int max_spot = 100 ;
-	gui_main.addSlider("spot_force_field").setPosition(10,pos_slider_y(space, start_pos +20, from)).setWidth(w).setRange(1,max_spot).setNumberOfTickMarks(max_spot).setFont(font);
+	gui_main.addSlider("spot_force_field").setPosition(10,pos_slider_y(space, start_pos +22, from)).setWidth(w).setRange(1,max_spot).setNumberOfTickMarks(max_spot).setFont(font);
 
 
 }
@@ -311,7 +319,7 @@ void gui_dynamic_mouse(int space, int max, int w, int start_pos, int from, PFont
 /**
 draw update
 */
-Vec4 rgba_channel ;
+
 
 void update_gui_value(boolean update_is) {
 	int size = ceil(cell_force_field) +2;
@@ -326,9 +334,11 @@ void update_gui_value(boolean update_is) {
 
   set_resize_window(gui_resize_window);
   set_fit_image(gui_fullfit_image);
-  set_alpha_background(alpha_background);
+  set_alpha_background(alpha_bg);
+  set_alpha_vehicle(alpha_vehicle);
+  set_alpha_warp(alpha_warp);
 
-  display_result(gui_display_result);
+  display_bg(gui_display_bg);
 }
 
 
@@ -376,7 +386,7 @@ public void controlEvent(ControlEvent theEvent) {
 	if(theEvent.isFrom(check_gui_main)) {
 		if(check_gui_main.getArrayValue(0) == 1) gui_resize_window = true ; else gui_resize_window = false ;
 		if(check_gui_main.getArrayValue(1) == 1) gui_fullfit_image = true ; else gui_fullfit_image = false ;
-		if(check_gui_main.getArrayValue(2) == 1) gui_display_result = true ; else gui_display_result = false;
+		if(check_gui_main.getArrayValue(2) == 1) gui_display_bg = true ; else gui_display_bg = false;
   }
 
   if(theEvent.isFrom(check_gui_main_channel)) {
@@ -399,7 +409,7 @@ void get_controller_gui() {
 }
 
 void get_check_gui_main_display() {
-	if(display_result) {
+	if(display_bg_is()) {
 		check_gui_main.activate(2);
 	} else {
 		println("disable");
@@ -474,9 +484,33 @@ get GUI
 int get_tempo_refresh_gui() {
 	return ceil(tempo_refresh);
 }
-Vec4 get_rgba_channel_gui() {
+
+float get_red_channel_gui() {
+	return red_channel;
+}
+float get_green_channel_gui() {
+	return green_channel;
+}
+float get_blue_channel_gui() {
+	return blue_channel;
+}
+
+Vec3 get_rgb_channel_norm_gui() {
+	return Vec3(red_channel,green_channel,blue_channel);
+
+}
+
+Vec4 get_rgba_channel_mapped_gui() {
 	return rgba_channel;
-} 
+}
+
+/*
+Vec3 get_rgb_channel_mapped_gui() {
+	return rgb_channel;
+}
+*/
+
+
 float get_warp_power_gui() {
 	return warp_power;
 }

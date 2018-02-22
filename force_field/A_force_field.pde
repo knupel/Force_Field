@@ -613,6 +613,9 @@ void update_spot_ff_mass(int... mass) {
 /**
 get
 */
+Force_field get_ff() {
+  return force_field ;
+}
 
 PImage get_img_velocity_ff() {
   return force_field.get_tex_velocity();
