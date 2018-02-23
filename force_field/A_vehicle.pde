@@ -1,18 +1,22 @@
 /**
 Vehicule example
-v 0.0.3.2
+v 0.1.0
 */
 ArrayList<Vehicle> vehicles;
-int num_vehicles = 1000 ;
-void set_vehicle(int num) {
-  num_vehicles = num;
+int n_ve ;
+float vel_ve ;
+float fo_ve ;
+void set_vehicle(int num, float velocity, float force) {
+  n_ve = num;
+  vel_ve = velocity;
+  fo_ve = force;
 }
 
 
 boolean vehicle_is = false ;
 void init_vehicle(Force_field ff) {
   if(ff != null && !vehicle_is) {
-    build_vehicle(num_vehicles,ff);
+    build_vehicle(n_ve,ff,vel_ve,fo_ve);
     vehicle_is = true ;
   } 
 }
@@ -20,18 +24,16 @@ void init_vehicle(Force_field ff) {
 
 
 
-void build_vehicle(int num, Force_field ff) {
+void build_vehicle(int num, Force_field ff, float velocity, float force) {
   if(vehicles == null) vehicles = new ArrayList<Vehicle>();
   int w = ff.get_canvas().x ;
   int h = ff.get_canvas().y ;
-  float max_speed = 1. ;
-  float max_force = 1. ;
+  float max_speed = velocity;
+  float max_force = force ;
   // Make a whole bunch of vehicles with random maxspeed and maxforce values
   for (int i = 0; i < num; i++) {
     // float max_speed = random(2, 10);
     // float max_force = random(0.1, 0.5);
-
-
     Vec2 pos = Vec2(r.RANDOM_ZERO, w, h);
     vehicles.add(new Vehicle(pos, max_speed, max_force));
   }
@@ -41,11 +43,10 @@ void build_vehicle(int num, Force_field ff) {
 
 
 
-void reset_vehicle(Force_field ff) {
+void reset_vehicle(int num, Force_field ff, float velocity, float force) {
   if(vehicles != null) {
-    int num = vehicles.size();
     vehicles.clear();
-    build_vehicle(num, ff);
+    build_vehicle(num, ff,velocity,force);
   }
 }
 
@@ -70,27 +71,34 @@ void update_vehicle(Force_field ff) {
   }
 }
 
-void show_vehicle() {
-  Vec3 temp = map_vec(get_rgb_channel_norm_gui(),0,1,0,g.colorModeX);
-  int c = color(temp.x,temp.y,temp.z,get_alpha_vehicle()) ;
+void show_vehicle(Vec3 colour_rgb, float alpha) {
+  Vec3 temp = map_vec(colour_rgb,0,1,0,g.colorModeX);
+  int c = color(temp.x,temp.y,temp.z,alpha) ;
   for (Vehicle v : vehicles) {
-    Vec2 temp_pos = v.get_position().copy();
-    set(temp_pos, c);
+    display_vehicle_pix(v, c);  
+    // display_vehicle_triangle(v, c,c,1) ;
   }
+}
+
+
+/*
+*local display method
+*/
+void display_vehicle_pix(Vehicle v, int c) {
+  set(v.get_position(), c);
 }
 
 
 
 
-
-void display_vehicle(Vehicle v) {
+void display_vehicle_triangle(Vehicle v, int fill, int stroke, float thickness) {
   // Draw a triangle rotated in the direction of velocity
   float theta = v.get_direction() + radians(90);
   v.set_radius(10.);
   float r = v.radius ;
-  fill(255,0,0);
-  strokeWeight(1);
-  stroke(255);
+  fill(fill);
+  strokeWeight(thickness);
+  stroke(stroke);
 
   pushMatrix();
   translate(v.get_position());

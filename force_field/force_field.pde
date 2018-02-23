@@ -86,7 +86,7 @@ void setup() {
   /**
   vehicle
   */
-  set_vehicle(1000);
+  set_vehicle(get_num_vehicle_gui(),get_velocity_vehicle_gui(),1);
 
 
 
@@ -109,12 +109,14 @@ DRAW
 
 */
 void draw() {
+  /*
   println("vehicle",display_vehicle_is());
   println("warp",display_warp_is());
   println("background",display_bg_is());
   println("alpha bg",get_alpha_bg());
   println("alpha warp",get_alpha_warp());
   println("alpha vehicle",get_alpha_vehicle());
+  */
 
   if(hide_menu_bar) PApplet.hideMenuBar();
   // cursor(CROSS);
@@ -196,11 +198,11 @@ void draw() {
   if(display_warp_is()) {
     // tint(g.colorModeX,g.colorModeY,g.colorModeZ,get_alpha_bg());
     tint(g.colorModeX,g.colorModeY,g.colorModeZ,get_alpha_warp());
-    warp_draw(get_tempo_refresh_gui(), get_rgba_channel_mapped_gui(), get_warp_power_gui());
+    warp_draw(get_tempo_refresh_gui(), get_rgba_warp_mapped_gui(), get_power_cycling_gui());
   }
   if(display_vehicle_is()) {
     update_vehicle(get_ff());
-    show_vehicle();
+    show_vehicle(get_rgb_vehicle_gui(), get_alpha_vehicle());
   } 
 /*
   if(display_warp_is() || display_vehicle_is()) {
@@ -259,6 +261,11 @@ void draw() {
   if(media_add_is()) {
     reset_key();
     media_ready_to_add();
+  }
+
+  if(reset_authorization_from_gui) {
+    global_reset();
+    reset_authorization_from_gui = false ;
   }
 }
 

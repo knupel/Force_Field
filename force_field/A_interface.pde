@@ -15,6 +15,8 @@ ControlP5 gui_static_generative;
 ControlP5 gui_dynamic_fluid;
 ControlP5 gui_dynamic_mouse, gui_main_movie;
 
+ControlP5 gui_vehicle;
+
 
 // global slider
 
@@ -54,15 +56,15 @@ void interface_setup(Vec2 pos, Vec2 size) {
   gui_main_movie(space_interface, max, slider_width, 2, BOTTOM, font_gui);
   
   // menu static field
-  gui_static_generative(space_interface, max, slider_width, 25, TOP, font_gui);
+  gui_static_generative(space_interface, max, slider_width, 26.5, TOP, font_gui);
   gui_static_image(space_interface, max, slider_width, 30, TOP, font_gui);
 
   // menu dynamic field
-  gui_dynamic_fluid(space_interface, max, slider_width, 25, TOP, font_gui);
+  gui_dynamic_fluid(space_interface, max, slider_width, 26.5, TOP, font_gui);
   gui_dynamic_mouse(space_interface, max, slider_width, 30, TOP, font_gui);
 
-
-  
+  // vehicle
+  gui_vehicle(space_interface, max, slider_width, 39, TOP, font_gui);
 
 }
 
@@ -76,20 +78,22 @@ float alpha_bg;
 float alpha_vehicle;
 float alpha_warp;
 
-Vec4 rgba_channel ;
+float red_vehicle;
+float green_vehicle;
+float blue_vehicle;
 
-float red_channel;
-float green_channel;
-float blue_channel;
 
-float power_channel;
-float power_channel_max;
-
-float warp_power;
+Vec4 rgba_warp ;
+float red_warp;
+float green_warp;
+float blue_warp;
+float power_warp;
+float power_warp_max;
 
 float red_cycling;
 float green_cycling;
 float blue_cycling;
+float power_cycling;
 
 float tempo_refresh;
 
@@ -102,19 +106,21 @@ void gui_main(int space, int max, int w, int start_pos, int from, PFont font) {
 
 	alpha_bg = 1.;
 	alpha_vehicle = 1.;
-	alpha_warp = 1.;
+	red_vehicle = .9;
+	green_vehicle = 0;
+	blue_vehicle = 0;
 
-	rgba_channel = Vec4(1);
-	red_channel = .9;
-	green_channel = .9;
-	blue_channel = .9;
-	power_channel = .37;
+	alpha_warp = 1.;
+	rgba_warp = Vec4(1);
+	red_warp = .9;
+	green_warp = .9;
+	blue_warp = .9;
+	power_warp = .37;
 
 	red_cycling = 0;
 	green_cycling = 0;
 	blue_cycling = 0;
-
-	warp_power = .35;
+	power_cycling = .35;
 
   tempo_refresh = 1.;
 	cell_force_field = 25.;
@@ -125,37 +131,52 @@ void gui_main(int space, int max, int w, int start_pos, int from, PFont font) {
   if(fullfit_image_is) check_gui_main.activate(1);
   if(display_bg) check_gui_main.activate(2);
 
+  gui_main.addSlider("alpha_bg").setPosition(10,pos_slider_y(space, start_pos +3.5, from)).setWidth(w).setRange(0,max).setFont(font);
+  gui_main.addSlider("alpha_vehicle").setPosition(10,pos_slider_y(space, start_pos +4.5, from)).setWidth(w).setRange(0,max).setFont(font);
+  gui_main.addSlider("alpha_warp").setPosition(10,pos_slider_y(space, start_pos +5.5, from)).setWidth(w).setRange(0,max).setFont(font);
 
+  gui_main.addSlider("red_vehicle").setPosition(10,pos_slider_y(space, start_pos +6.75, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("green_vehicle").setPosition(10,pos_slider_y(space, start_pos +7.75, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("blue_vehicle").setPosition(10,pos_slider_y(space, start_pos +8.75, from)).setWidth(w).setRange(0,max).setFont(font);
 
-  gui_main.addSlider("alpha_bg").setPosition(10,pos_slider_y(space, start_pos +3.25, from)).setWidth(w).setRange(0,max).setFont(font);
-  gui_main.addSlider("alpha_vehicle").setPosition(10,pos_slider_y(space, start_pos +4.25, from)).setWidth(w).setRange(0,max).setFont(font);
-  gui_main.addSlider("alpha_warp").setPosition(10,pos_slider_y(space, start_pos +5.25, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("red_warp").setPosition(10,pos_slider_y(space, start_pos +10.0, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("green_warp").setPosition(10,pos_slider_y(space, start_pos +11.0, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("blue_warp").setPosition(10,pos_slider_y(space, start_pos +12.0, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("power_warp").setPosition(10,pos_slider_y(space, start_pos +13.0, from)).setWidth(w).setRange(0,max).setFont(font);
 
-	gui_main.addSlider("red_channel").setPosition(10,pos_slider_y(space, start_pos +7, from)).setWidth(w).setRange(0,max).setFont(font);
-	gui_main.addSlider("green_channel").setPosition(10,pos_slider_y(space, start_pos +8, from)).setWidth(w).setRange(0,max).setFont(font);
-	gui_main.addSlider("blue_channel").setPosition(10,pos_slider_y(space, start_pos +9, from)).setWidth(w).setRange(0,max).setFont(font);
-
-	gui_main.addSlider("power_channel").setPosition(10,pos_slider_y(space, start_pos +11, from)).setWidth(w).setRange(0,max).setFont(font);
-
-	gui_main.addSlider("red_cycling").setPosition(10,pos_slider_y(space, start_pos +13, from)).setWidth(w).setRange(0,max).setFont(font);
-	gui_main.addSlider("green_cycling").setPosition(10,pos_slider_y(space, start_pos +14, from)).setWidth(w).setRange(0,max).setFont(font);
-	gui_main.addSlider("blue_cycling").setPosition(10,pos_slider_y(space, start_pos +15, from)).setWidth(w).setRange(0,max).setFont(font);
-
-	gui_main.addSlider("warp_power").setPosition(10,pos_slider_y(space, start_pos +16, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("red_cycling").setPosition(10,pos_slider_y(space, start_pos +14.25, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("green_cycling").setPosition(10,pos_slider_y(space, start_pos +15.25, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("blue_cycling").setPosition(10,pos_slider_y(space, start_pos +16.25, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("power_cycling").setPosition(10,pos_slider_y(space, start_pos +17.25, from)).setWidth(w).setRange(0,max).setFont(font);
 
 	// radio_button_cycling = gui_main.addRadioButton("abs_cycling").setValue(0).setPosition(10,pos_slider_y(space, start_pos +10, from)).setSize(w,10).addItem("absolute_cycling",1).setFont(font);
-	check_gui_main_channel = gui_main.addCheckBox("channel_setting").setPosition(10,pos_slider_y(space, start_pos +17, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2).addItem("absolute_cycling",1);
+	check_gui_main_channel = gui_main.addCheckBox("channel_setting").setPosition(10,pos_slider_y(space, start_pos +18.75, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2).addItem("absolute_cycling",1);
 	//check_img = gui_static_img_2D.addCheckBox("img_setting").setPosition(10,pos_slider_y(space, start_pos +6, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2).addItem("fit_image",1);
   
   int max_tempo = 10 ;
-	gui_main.addSlider("tempo_refresh").setPosition(10,pos_slider_y(space, start_pos +18, from)).setWidth(w).setRange(1,max_tempo).setNumberOfTickMarks(max_tempo).setFont(font);
+	gui_main.addSlider("tempo_refresh").setPosition(10,pos_slider_y(space, start_pos +19.75, from)).setWidth(w).setRange(1,max_tempo).setNumberOfTickMarks(max_tempo).setFont(font);
   
   int max_cell = 50;
-	gui_main.addSlider("cell_force_field").setPosition(10,pos_slider_y(space, start_pos +20, from)).setWidth(w).setRange(1,max_cell).setNumberOfTickMarks(max_cell).setFont(font);
+	gui_main.addSlider("cell_force_field").setPosition(10,pos_slider_y(space, start_pos +21.75, from)).setWidth(w).setRange(1,max_cell).setNumberOfTickMarks(max_cell).setFont(font);
   
   int max_spot = 100 ;
-	gui_main.addSlider("spot_force_field").setPosition(10,pos_slider_y(space, start_pos +22, from)).setWidth(w).setRange(1,max_spot).setNumberOfTickMarks(max_spot).setFont(font);
+	gui_main.addSlider("spot_force_field").setPosition(10,pos_slider_y(space, start_pos +23.75, from)).setWidth(w).setRange(1,max_spot).setNumberOfTickMarks(max_spot).setFont(font);
+}
 
+
+
+float num_vehicle;
+float velocity_vehicle;
+void gui_vehicle(int space, int max, int w, int start_pos, int from, PFont font) {
+	gui_vehicle = new ControlP5(this);
+	num_vehicle = 1000;
+  velocity_vehicle = 1;
+  int min_num_vehicle = 100 ;
+  int max_num_vehicle = 20_000 ;
+  int min_velocity_vehicle = -7 ;
+  int max_velocity_vehicle = 7 ;
+	gui_main.addSlider("num_vehicle").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(w).setRange(min_num_vehicle,max_num_vehicle).setFont(font);
+  gui_main.addSlider("velocity_vehicle").setPosition(10,pos_slider_y(space, start_pos +1, from)).setWidth(w).setRange(min_velocity_vehicle,max_velocity_vehicle).setFont(font);
 
 }
 
@@ -166,7 +187,7 @@ void gui_main(int space, int max, int w, int start_pos, int from, PFont font) {
 float header_movie;
 float speed_movie;
 
-void gui_main_movie(int space, int max, int w, int start_pos, int from, PFont font) {
+void gui_main_movie(int space, int max, int w, float start_pos, int from, PFont font) {
 	gui_main_movie = new ControlP5(this);
 	header_movie = 0 ;
 	speed_movie = 1;
@@ -185,7 +206,7 @@ float frequence;
 float viscosity;
 float diffusion;
 
-void gui_dynamic_fluid(int space, int max, int w, int start_pos, int from, PFont font) {
+void gui_dynamic_fluid(int space, int max, int w, float start_pos, int from, PFont font) {
 	gui_dynamic_fluid = new ControlP5(this);
 	frequence = .3;
 	viscosity = .3;
@@ -205,7 +226,7 @@ float range_min_gen;
 float range_max_gen;
 float power_gen;
 
-void gui_static_generative(int space, int max, int w, int start_pos, int from, PFont font) {
+void gui_static_generative(int space, int max, int w, float start_pos, int from, PFont font) {
 	gui_static_generative = new ControlP5(this);
 
 	range_min_gen = 0.;
@@ -231,7 +252,7 @@ float x_sort = 1.;
 float y_sort = 1.;
 float z_sort = 1.;
 
-void gui_static_image(int space, int max, int w, int start_pos, int from, PFont font) {
+void gui_static_image(int space, int max, int w, float start_pos, int from, PFont font) {
 	gui_static_img_2D = new ControlP5(this);
 	gui_static_img_3D = new ControlP5(this);
 
@@ -265,7 +286,7 @@ float spiral_mouse;
 float beat_mouse;
 float motion_mouse;
 
-void gui_dynamic_mouse(int space, int max, int w, int start_pos, int from, PFont font){
+void gui_dynamic_mouse(int space, int max, int w, float start_pos, int from, PFont font){
 	gui_dynamic_mouse = new ControlP5(this);
 
 	radius_mouse = .3;
@@ -320,29 +341,46 @@ void gui_dynamic_mouse(int space, int max, int w, int start_pos, int from, PFont
 draw update
 */
 
-
+boolean reset_authorization_from_gui ;
+int cell_size_ref ;
+int num_vehicle_ref;
+float vel_vehicle_ref;
 void update_gui_value(boolean update_is) {
 	int size = ceil(cell_force_field) +2;
-  set_cell_grid_ff(size);
+	if(cell_size_ref != size || num_vehicle_ref != get_num_vehicle_gui() || vel_vehicle_ref != get_velocity_vehicle_gui()) {
+		set_cell_grid_ff(size);
+		cell_size_ref = size ;
+		num_vehicle_ref = get_num_vehicle_gui();
+		vel_vehicle_ref = get_velocity_vehicle_gui();
+    reset_authorization_from_gui = true ;
+	}
 
 	update_value_ff_fluid(frequence,viscosity,diffusion,update_is);
 	update_value_ff_generative(range_min_gen,range_max_gen,power_gen,update_is);
 
-	update_rgba_channel();
+  set_alpha_background(alpha_bg);
+
+  set_alpha_vehicle(alpha_vehicle);
+  // nothing special at this time
+  update_rgb_vehicle();
+
+  set_alpha_warp(alpha_warp);
+	update_rgba_warp();
   
   set_sorting_channel_ff_2D(floor(x_sort), floor(y_sort), floor(vel_sort));
 
   set_resize_window(gui_resize_window);
   set_fit_image(gui_fullfit_image);
-  set_alpha_background(alpha_bg);
-  set_alpha_vehicle(alpha_vehicle);
-  set_alpha_warp(alpha_warp);
+
 
   display_bg(gui_display_bg);
 }
 
+void update_rgb_vehicle() {
+	// nothing special at this time
+}
 
-void update_rgba_channel() {
+void update_rgba_warp() {
 	float cr = 1.;
   float cg = 1.;
   float cb = 1.;
@@ -365,16 +403,15 @@ void update_rgba_channel() {
   Vec4 sin_val = Vec4(1);
   sin_val.set(cr,cg,cb,1);
 
-	rgba_channel.set(red_channel,green_channel,blue_channel,1);
-	power_channel_max = (power_channel *power_channel)  *10f;
+	rgba_warp.set(red_warp,green_warp,blue_warp,1);
+	power_warp_max = (power_warp *power_warp)  *10f;
   
-	rgba_channel.mult(power_channel_max);
+	rgba_warp.mult(power_warp_max);
 	
 	float min_src = 0 ;
 	float max_src = 1 ;
 	float min_dst = .01 ;
-	rgba_channel.set(sin_val.map_vec(Vec4(min_src), Vec4(max_src), Vec4(min_dst), rgba_channel));
-
+	rgba_warp.set(sin_val.map_vec(Vec4(min_src), Vec4(max_src), Vec4(min_dst), rgba_warp));
 }
 
 
@@ -481,27 +518,34 @@ void set_pos_movie_norm_gui(float f) {
 get GUI
 */
 
+int get_num_vehicle_gui() {
+	return (int)num_vehicle;
+}
+
+float get_velocity_vehicle_gui() {
+	return velocity_vehicle;
+}
+
 int get_tempo_refresh_gui() {
 	return ceil(tempo_refresh);
 }
 
-float get_red_channel_gui() {
-	return red_channel;
+float get_red_vehicle_gui() {
+	return red_vehicle;
 }
-float get_green_channel_gui() {
-	return green_channel;
+float get_green_vehicle_gui() {
+	return green_vehicle;
 }
-float get_blue_channel_gui() {
-	return blue_channel;
-}
-
-Vec3 get_rgb_channel_norm_gui() {
-	return Vec3(red_channel,green_channel,blue_channel);
-
+float get_blue_vehicle_gui() {
+	return blue_vehicle;
 }
 
-Vec4 get_rgba_channel_mapped_gui() {
-	return rgba_channel;
+Vec3 get_rgb_vehicle_gui() {
+	return Vec3(red_vehicle,green_vehicle,blue_vehicle);
+}
+
+Vec4 get_rgba_warp_mapped_gui() {
+	return rgba_warp;
 }
 
 /*
@@ -511,9 +555,10 @@ Vec3 get_rgb_channel_mapped_gui() {
 */
 
 
-float get_warp_power_gui() {
-	return warp_power;
+float get_power_cycling_gui() {
+	return power_cycling;
 }
+
 
 
 float get_pos_movie_norm_gui() {
@@ -616,10 +661,27 @@ void show_info(Force_field ff) {
 	info_line("Force field" + " " + type_ff, pos_x, space_interface, 1, TOP);
   
   
-
-	image(get_img_velocity_ff(),pos_x, 2 *10) ;
-	image(get_img_direction_ff(),pos_x, (2 *10) +get_img_velocity_ff().height +2);
-	int step_y = get_img_velocity_ff().height / 7 ;
+  
+  int h = get_img_velocity_ff().height ;
+  int w = get_img_velocity_ff().width ;
+  if(w > (size_gui.x -20) || h > (size_gui.x /2)) {
+  	if(w > (size_gui.x -20)) {
+  		w = (int)size_gui.x -20 ;
+  		h = int(get_img_velocity_ff().height  *(w / (float)get_img_velocity_ff().width));
+  	} else if(h > (size_gui.x /2)) {
+  		h = (int)size_gui.x /2 ;
+  		w = int(get_img_velocity_ff().width  *(h / (float)get_img_velocity_ff().height));
+  	} else {
+  		w = (int)size_gui.x -20 ;
+  		h = int(get_img_velocity_ff().height  *(w / (float)get_img_velocity_ff().width));
+  	}
+  	image(get_img_velocity_ff(),pos_x, 2 *10, w, h) ;
+  	image(get_img_direction_ff(),pos_x, (2 *10) +h +2, w, h);
+  } else {
+  	image(get_img_velocity_ff(),pos_x, 2 *10) ;
+  	image(get_img_direction_ff(),pos_x, (2 *10) +h +2);
+  }
+	int step_y = h / 7 ;
 
 	// library
 	int items = warp.library_size() ;

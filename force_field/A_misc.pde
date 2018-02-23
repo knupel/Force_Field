@@ -9,6 +9,22 @@ void info_system() {
   println("os.version: ",System.getProperty("os.version"));
 }
 
+
+
+void global_reset() {
+  reset_vehicle(get_num_vehicle_gui(),get_ff(),get_velocity_vehicle_gui(),1.);
+  warp.reset();
+  if(force_field.get_type() == IMAGE) {
+    force_field_init_is = false ;
+    build_ff(force_field.get_type(), get_resultion_ff(), warp.get_image(), get_sorting_channel_ff_2D());
+  }
+  force_field.refresh();
+  update_gui_value(true);
+}
+
+
+
+
 /**
 KEYPRESSED
 
@@ -45,14 +61,7 @@ void keyPressed() {
   }
 
   if(key == 'r') {
-    reset_vehicle(get_ff());
-    warp.reset();
-    if(force_field.get_type() == IMAGE) {
-      force_field_init_is = false ;
-      build_ff(force_field.get_type(), get_resultion_ff(), warp.get_image(), get_sorting_channel_ff_2D());
-    }
-    force_field.refresh();
-    update_gui_value(true);
+    global_reset();
   }
 
 
@@ -96,7 +105,10 @@ void keyPressed() {
 
 
 
+
+
 void keypressed_add_media() {
+  display_warp(true);
   // add media folder
   if(os_system.equals("Mac OS X")) {
     // A use Q
