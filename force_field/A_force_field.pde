@@ -74,7 +74,8 @@ void change_type_ff() {
     build_ff(type_field, get_resultion_ff());
     num_spot_ff(get_spot_num_ff());
   } else {
-    build_ff(type_field, get_resultion_ff(), warp.get_image(), sorting_img_ff_2D);
+    // build_ff(type_field, get_resultion_ff(), warp.get_image(), sorting_img_ff_2D);
+    build_ff(type_field, get_resultion_ff(), warp.get_image(), get_sorting_channel_ff_2D());
   }  
 }
 
@@ -95,16 +96,17 @@ void set_sorting_channel_ff_2D(int dx_sort_channel, int dy_sort_channel, int vel
   sorting_img_ff_2D[1] = get_channel_component(dy_sort_channel) ;
   sorting_img_ff_2D[2] = get_channel_component(vel_sort_channel) ;
 }
-
+/*
 int ref_sorting_channel_ff = 0 ;
 boolean sort_channel_is() {
   boolean result = true;
-  int sum=0 ;
+  int sum = 0 ;
   for(int i: get_sorting_channel_ff_2D()) sum+=i;
   if(ref_sorting_channel_ff != sum) result = false ; else result = true; 
   ref_sorting_channel_ff = sum;
   return result ;
 }
+*/
 
 int [] get_sorting_channel_ff_2D() {
   return sorting_img_ff_2D ;

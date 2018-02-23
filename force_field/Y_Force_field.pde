@@ -2,7 +2,7 @@
 Force Field
 2017-2018
 http://stanlepunk.xyz/
-v 1.6.0
+v 1.7.0
 */
 /**
 Run on Processing 3.3.6
@@ -706,10 +706,12 @@ public class Force_field implements Rope_Constants {
       ns_2D.update(frequence, viscosity, diffusion) ;
       update_fluid_field(ns_2D);
     } else if(type == GRAVITY) {
-      update_gravity_field();
+      update_grav_mag_field();
+      // update_gravity_field();
     } else if(type == MAGNETIC) {
       manage_spot_mag();
-      update_magnetic_field();
+      update_grav_mag_field();
+      // update_magnetic_field();
     } else {
       update_classic_field();
     }  
@@ -749,10 +751,10 @@ public class Force_field implements Rope_Constants {
     }
   }
 
-  /**
-  * gravity
-  */
-  private void update_gravity_field() {
+
+
+
+  private void update_grav_mag_field() {
     // by default we create a gravity field for external bodies who have for mass '1'
     sum_activities = 0 ;
     for (int x = 0; x < cols ; x++) {
@@ -764,20 +766,7 @@ public class Force_field implements Rope_Constants {
       }
     }
   }
-  /**
-  * magnetic
-  */
-  private void update_magnetic_field() {
-    sum_activities = 0 ;
-    for (int x = 0; x < cols ; x++) {
-      for (int y = 0; y < rows ; y++) {
-        Vec2 flow = flow(Vec2(x,y), Vec2(field[x][y].x,field[x][y].y), spot_list);
-        field[x][y] = Vec4(flow.x,flow.y,0,0);
-        convert_force_field_to_texture(x,y,field[x][y].x,field[x][y].y);
-        sum_activities += field[x][y].sum();        
-      }
-    }
-  }
+
 
   /**
   * local method to convert vector to texture
@@ -1149,12 +1138,9 @@ public class Force_field implements Rope_Constants {
   Vec2 dir_check_rank(int x, int y,Vec2 pos_v) {
     Vec2 dir = Vec2() ;
     if((type == MAGNETIC || type == GRAVITY)) {
-      int which_spot = match_spot(pos_v);
-      // println("which_spot",which_spot);
-      if(which_spot != -1) {
-        println("which_spot",which_spot, frameCount);
-        // Spot s = get_spot(vehicle_pos);
-        Spot s = spot_list.get(which_spot);
+      int rank = match_spot(pos_v);
+      if(rank != -1) {
+        Spot s = spot_list.get(rank);
         if(s.emitter_is()) {
           dir = null ;
         } else {

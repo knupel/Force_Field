@@ -6,12 +6,13 @@ void info_system() {
   println("java Version Name:",javaVersionName);
   os_system = System.getProperty("os.name");
   println("os.name:",os_system);
-  println("os.version: ",System.getProperty("os.version"));
+  println("os.version:",System.getProperty("os.version"));
 }
 
 
 
 void global_reset() {
+  println("global reset");
   reset_vehicle(get_num_vehicle_gui(),get_ff());
   warp.reset();
   if(force_field.get_type() == IMAGE) {
@@ -108,19 +109,20 @@ void keyPressed() {
 
 
 void keypressed_add_media() {
-  display_warp(true);
   // add media folder
   if(os_system.equals("Mac OS X")) {
     // A use Q
     // Q or q is for A because I don't find a solution to map AZERTY layout
     if(checkKey(157) && checkKey(SHIFT) && checkKey(KeyEvent.VK_Q)) {
+      display_warp(true);
       // @see if(key == 'o')
       warp_add_media_folder();
       play_video(false);
     }
   } else {
     // Q or q is for A because I don't find a solution to map AZERTY layout
-    if(checkKey(CONTROL) && checkKey(SHIFT) && checkKey(KeyEvent.VK_Q)){
+    if(checkKey(CONTROL) && checkKey(SHIFT) && checkKey(KeyEvent.VK_Q)) {
+      display_warp(true);
       // @see if(key == 'o')
       warp_add_media_folder();
       play_video(false);
@@ -131,13 +133,15 @@ void keypressed_add_media() {
     // A use Q
     // Q or q is for A because I don't find a solution to map AZERTY layout
     if(checkKey(157) && !checkKey(SHIFT) && checkKey(KeyEvent.VK_Q)) {
+      display_warp(true);
       // @see if(key == 'o')
       warp_add_media_input();
       play_video(false);
     }
   } else {
     // Q or q is for A because I don't find a solution to map AZERTY layout
-    if(checkKey(CONTROL) && !checkKey(SHIFT) && checkKey(KeyEvent.VK_Q)){
+    if(checkKey(CONTROL) && !checkKey(SHIFT) && checkKey(KeyEvent.VK_Q)) {
+      display_warp(true);
       // @see if(key == 'o')
       warp_add_media_input();
       play_video(false);
@@ -146,13 +150,15 @@ void keypressed_add_media() {
 
   // replace media folder
   if(os_system.equals("Mac OS X")) {
-    if(checkKey(157) && checkKey(SHIFT) && checkKey(KeyEvent.VK_O)){
+    if(checkKey(157) && checkKey(SHIFT) && checkKey(KeyEvent.VK_O)) {
+      display_warp(true);
       // @see if(key == 'a')
       warp_change_media_folder();
       play_video(false);
     }
   } else {
-    if(checkKey(CONTROL) && checkKey(SHIFT) && checkKey(KeyEvent.VK_O)){
+    if(checkKey(CONTROL) && checkKey(SHIFT) && checkKey(KeyEvent.VK_O)) {
+      display_warp(true);
       // @see if(key == 'a')
       warp_change_media_folder();
       play_video(false);
@@ -161,13 +167,15 @@ void keypressed_add_media() {
 
   // replace media file
   if(os_system.equals("Mac OS X")) {
-    if(checkKey(157) && !checkKey(SHIFT) && checkKey(KeyEvent.VK_O)){
+    if(checkKey(157) && !checkKey(SHIFT) && checkKey(KeyEvent.VK_O)) {
+      display_warp(true);
       // @see if(key == 'a')
       warp_change_media_input();
       play_video(false);
     }
   } else {
-    if(checkKey(CONTROL) && !checkKey(SHIFT) && checkKey(KeyEvent.VK_O)){
+    if(checkKey(CONTROL) && !checkKey(SHIFT) && checkKey(KeyEvent.VK_O)) {
+      display_warp(true);
       // @see if(key == 'a')
       warp_change_media_input();
       play_video(false);
@@ -263,18 +271,11 @@ display
 /*
 * display vehilcle
 */
-
-
-
-
 void display_vehicle() {
   display_result_vehicle = !!((display_result_vehicle == false));
   if(display_vehicle_is()) {
-    //display_result(true);
     get_check_gui_main_display();
   }
-
-  //
 }
 
 boolean display_vehicle_is() {
@@ -284,13 +285,13 @@ boolean display_vehicle_is() {
 void display_vehicle(boolean is) {
   display_result_vehicle = is;
 }
+
 /*
 * display warp
 */
 void display_warp() {
   display_result_warp = !!((display_result_warp == false));
   if(display_warp_is()) {
-    // display_bg(true);
     get_check_gui_main_display();
   }
 }
@@ -308,7 +309,6 @@ void display_warp(boolean is) {
 */
 void display_bg(boolean is) {
   display_bg = is;
-  //get_check_gui_main_display();
 }
 
 boolean display_bg_is() {

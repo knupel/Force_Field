@@ -45,7 +45,8 @@ void settings() {
     // fullScreen(P2D,1);
     fullScreen(P2D);      
   } else {
-    size(1200,750,P2D);
+    // size(1200,750,P2D);
+    size(800,800,P2D);
     //size(1600,870,P2D); // 2eme écran macbook
     // size(1900,1200,P2D); // 2 recopie écran macbook
   }
@@ -245,7 +246,7 @@ void draw() {
     println("new force field grid, with cell size:", get_size_cell_ff());
     init_ff(get_type_ff(),get_size_cell_ff(),g);
   }
-  
+  /*
   if(get_type_ff() == IMAGE) {
     if(!sort_channel_is()) {
       force_field_init_is = false ;
@@ -253,6 +254,7 @@ void draw() {
       update_ff();
     }
   }
+  */
 
   cursor_manager(interface_is());
 

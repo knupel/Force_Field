@@ -343,15 +343,18 @@ draw update
 */
 
 boolean reset_authorization_from_gui ;
-int cell_size_ref ;
-int num_vehicle_ref;
+int ref_cell_size;
+int ref_num_vehicle;
+int ref_sort_channel;
 void update_gui_value(boolean update_is) {
 	int size = ceil(cell_force_field) +2;
-	if(cell_size_ref != size || num_vehicle_ref != get_num_vehicle_gui()) {
+	int sort_channel_sum = int(x_sort + y_sort +vel_sort);
+	if(ref_cell_size != size || ref_num_vehicle != get_num_vehicle_gui() || sort_channel_sum != ref_sort_channel) {
 		set_cell_grid_ff(size);
-		cell_size_ref = size ;
-		num_vehicle_ref = get_num_vehicle_gui();
-    reset_authorization_from_gui = true ;
+		ref_cell_size = size;
+		ref_num_vehicle = get_num_vehicle_gui();
+		ref_sort_channel = sort_channel_sum;
+    reset_authorization_from_gui = true;
 	}
 
 	update_value_ff_fluid(frequence,viscosity,diffusion,update_is);
@@ -707,6 +710,11 @@ void show_info(Force_field ff) {
 	String device_cursor = "mouse";
 	if(use_leapmotion)  device_cursor = "leapmotion";
 	info_line("Device cursor: "+device_cursor, pos_x, space_interface, 11 +step_y, TOP);
+
+  info_line("DISPLAY", pos_x, space_interface, 13 +step_y, TOP);
+	info_line("vehicles: "+ display_vehicle_is(), pos_x, space_interface, 14 +step_y, TOP);
+	info_line("warp: "+ display_warp_is(), pos_x, space_interface, 15 +step_y, TOP);
+	info_line("background: "+ display_bg_is(), pos_x, space_interface, 16 +step_y, TOP);
 }
 
 
