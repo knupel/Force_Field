@@ -86,7 +86,7 @@ void setup() {
   /**
   vehicle
   */
-  set_vehicle(get_num_vehicle_gui(),get_velocity_vehicle_gui(),1);
+  set_vehicle(get_num_vehicle_gui());
 
 
 
@@ -201,7 +201,7 @@ void draw() {
     warp_draw(get_tempo_refresh_gui(), get_rgba_warp_mapped_gui(), get_power_cycling_gui());
   }
   if(display_vehicle_is()) {
-    update_vehicle(get_ff());
+    update_vehicle(get_ff(),get_velocity_vehicle_gui());
     show_vehicle(get_rgb_vehicle_gui(), get_alpha_vehicle());
   } 
 /*

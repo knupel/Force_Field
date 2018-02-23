@@ -4,19 +4,15 @@ v 0.1.0
 */
 ArrayList<Vehicle> vehicles;
 int n_ve ;
-float vel_ve ;
-float fo_ve ;
-void set_vehicle(int num, float velocity, float force) {
+void set_vehicle(int num) {
   n_ve = num;
-  vel_ve = velocity;
-  fo_ve = force;
 }
 
 
 boolean vehicle_is = false ;
 void init_vehicle(Force_field ff) {
   if(ff != null && !vehicle_is) {
-    build_vehicle(n_ve,ff,vel_ve,fo_ve);
+    build_vehicle(n_ve,ff);
     vehicle_is = true ;
   } 
 }
@@ -24,16 +20,16 @@ void init_vehicle(Force_field ff) {
 
 
 
-void build_vehicle(int num, Force_field ff, float velocity, float force) {
+void build_vehicle(int num, Force_field ff) {
   if(vehicles == null) vehicles = new ArrayList<Vehicle>();
   int w = ff.get_canvas().x ;
   int h = ff.get_canvas().y ;
-  float max_speed = velocity;
-  float max_force = force ;
-  // Make a whole bunch of vehicles with random maxspeed and maxforce values
+      Vec2 range_speed = Vec2(1., 2.);
+    Vec2 range_force = Vec2(.2, 1.);
+
   for (int i = 0; i < num; i++) {
-    // float max_speed = random(2, 10);
-    // float max_force = random(0.1, 0.5);
+    float max_speed = +range_speed.x + random_next_gaussian(range_speed.y, 3) ;
+    float max_force = +range_force.x + random_next_gaussian(range_force.y, 3) ;
     Vec2 pos = Vec2(r.RANDOM_ZERO, w, h);
     vehicles.add(new Vehicle(pos, max_speed, max_force));
   }
@@ -43,10 +39,10 @@ void build_vehicle(int num, Force_field ff, float velocity, float force) {
 
 
 
-void reset_vehicle(int num, Force_field ff, float velocity, float force) {
+void reset_vehicle(int num, Force_field ff) {
   if(vehicles != null) {
     vehicles.clear();
-    build_vehicle(num, ff,velocity,force);
+    build_vehicle(num, ff);
   }
 }
 
@@ -60,9 +56,10 @@ void manage_border() {
 
 }
 
-void update_vehicle(Force_field ff) {
+void update_vehicle(Force_field ff, float speed) {
   if(ff != null) {
     for (Vehicle v : vehicles) {
+      v.mult_speed(speed);
       v.update(ff);
       v.follow();   
       v.swap();

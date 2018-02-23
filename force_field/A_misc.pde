@@ -12,7 +12,7 @@ void info_system() {
 
 
 void global_reset() {
-  reset_vehicle(get_num_vehicle_gui(),get_ff(),get_velocity_vehicle_gui(),1.);
+  reset_vehicle(get_num_vehicle_gui(),get_ff());
   warp.reset();
   if(force_field.get_type() == IMAGE) {
     force_field_init_is = false ;

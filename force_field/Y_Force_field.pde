@@ -799,9 +799,6 @@ public class Force_field implements Rope_Constants {
   flow
   v 0.0.4
   */
-  /**
-  * flow 
-  */
   private Vec2 flow(Vec2 coord, Vec2 field_dir, ArrayList<Spot> list) {
     if(type == GRAVITY) return gravity(coord, field_dir, list);
     else if(type == MAGNETIC) return magnetism(coord, field_dir, list);
@@ -812,7 +809,6 @@ public class Force_field implements Rope_Constants {
   v 0.0.3
   */
   /**
-  * gravity
   * @return Vec2
   */
   private Vec2 gravity(Vec2 coord, Vec2 field_dir, ArrayList<Spot> list) {
@@ -833,7 +829,6 @@ public class Force_field implements Rope_Constants {
   v 0.1.2
   */
   /**
-  * magnetism
   * @return Vec2
   * That work like a monopol, so it's very very far os the real world !
   */
@@ -1113,24 +1108,12 @@ public class Force_field implements Rope_Constants {
 
   /**
   direction from grid
-  v 0.0.5
-  */
-  /**
-  * add a global direction to the force field
-  */
-  /*
-  Vec2 wind ;
-  public void wind(float theta, float force) {
-    if(wind == null) {
-      wind = Vec2() ;
-    }
-    wind = projection(theta,force);
-  }
+  v 0.1.0
   */
 
   /**
   dir_in_grid
-  v 0.1.1
+  v 0.2.0
   */
   /**
   * it's most important method, this one give the direction of the vehicle in according force field.
@@ -1149,57 +1132,89 @@ public class Force_field implements Rope_Constants {
       if(Double.isNaN(field[x][y].x) || Double.isNaN(field[x][y].y)) {
         dir = Vec2(1).copy() ;
       } else {
-        /*
-        * Need to check the position vehicle, in the case this one is in the last cell, where the spot is. 
-        * If the the spot and the vehicle are in the same cell, it's necessary to return a direction very focus on spot.
-        */
-        /**
-        this part must be improve, there is a check in list, and after there is catching pos in the list too
-        may be there is solution to don't check in the list to increase the algo speed
-        */
-        if(check_spot(vehicle_pos)) {
-          // find the good spot
-          Spot s = get_spot(vehicle_pos);
-          if(s.emitter_is()) {
-            dir = null ;
-          } else {
-            Vec2 pos_cell = mult(Vec2(x,y),resolution);
-            float theta = 0;
-            // theta = theta(pos_cell,Vec2(s.get_pos()));
-            vehicle_pos.sub(resolution *.5);
-            theta = theta_2D(vehicle_pos,Vec2(s.get_pos()));
-
-            Vec2 temp_field = Vec2(cos(theta),sin(theta));
-            float force = 1 ;
-            if(type == MAGNETIC) {
-              force = spot_magnetic_force(s,pos_cell);
-            } 
-
-            if(type == GRAVITY) {
-              force = spot_gravity_force(s,pos_cell);
-            }
-
-            temp_field.mult(force);
-            dir.set(0);
-            dir.add(temp_field);
-          }        
-        } else {
-          // In most part of the cases
-          // dir = field[x][y].copy();
-          dir = Vec2(field[x][y].x,field[x][y].y);
-        } 
+        // Need to check the position vehicle, in the case this one is in the last cell, where the spot is. 
+        // If the the spot and the vehicle are in the same cell, it's necessary to return a direction very focus on spot.
+        dir = dir_check_rank(x,y,vehicle_pos); 
       }
     }
-
     // reverse 
-    /* 
-    *the type MAGNETIC is not include because the way depend of the tesla
-    */ 
-    if(reverse_is && type != MAGNETIC && dir != null) {
+    // the type MAGNETIC is not include because the way depend of the tesla
+    if(type != MAGNETIC && dir != null && reverse_is) {
       dir.mult(-1);
     }
     return dir ;
   }
+
+
+  Vec2 dir_check_rank(int x, int y,Vec2 pos_v) {
+    Vec2 dir = Vec2() ;
+    if((type == MAGNETIC || type == GRAVITY)) {
+      int which_spot = match_spot(pos_v);
+      // println("which_spot",which_spot);
+      if(which_spot != -1) {
+        println("which_spot",which_spot, frameCount);
+        // Spot s = get_spot(vehicle_pos);
+        Spot s = spot_list.get(which_spot);
+        if(s.emitter_is()) {
+          dir = null ;
+        } else {
+          Vec2 pos_cell = mult(Vec2(x,y),resolution);
+          float theta = 0;
+          pos_v.sub(resolution *.5);
+          theta = theta_2D(pos_v,Vec2(s.get_pos()));
+
+          float force = 1 ;
+          if(type == MAGNETIC) { 
+            force = spot_magnetic_force(s,pos_cell); 
+          }
+          if(type == GRAVITY) { 
+            force = spot_gravity_force(s,pos_cell); 
+          }
+
+          Vec2 temp_field = Vec2(cos(theta),sin(theta));
+          temp_field.mult(force);
+          dir.set(0);
+          dir.add(temp_field);
+        } 
+      } else {
+        dir = Vec2(field[x][y].x,field[x][y].y);
+      }     
+    } else {
+      dir = Vec2(field[x][y].x,field[x][y].y);
+    }
+    return dir;
+  }
+
+  private int match_spot(Vec2 vehicle_pos) {
+    int spot_match = -1;
+    if(spot_list != null) {
+      for(int i = 0 ; i < spot_list.size() ; i++) {
+        // check if the vehicle is in the range of the spot
+        Spot s = spot_list.get(i);
+        if(s.get_pos() != null && s.get_size() != null) {
+          if(compare(vehicle_pos, (Vec2)s.get_pos(), Vec2(s.get_size().x, s.get_size().y).mult(2) ) ) {
+            spot_match = i ;
+            break;
+          } 
+        }
+      }
+    }
+    return spot_match ;
+  }
+
+
+
+ 
+
+  
+
+
+
+
+
+
+
+
 
 
 
@@ -1480,36 +1495,6 @@ public class Force_field implements Rope_Constants {
     return -1 *dir.angle();
   }
 
-
-  /*
-  used to know if the vehicle is the area of any spot
-  */
-  private boolean check_spot(Vec2 vehicle_pos) {
-    Boolean in_area_spot = false ;
-    if(spot_list != null) {
-      for(Spot s : spot_list) {
-        // check if the vehicle is in the range of the spot
-        if(s.get_pos() != null && s.get_size() != null) {
-          if(compare(vehicle_pos, (Vec2)s.get_pos(), Vec2(s.get_size().x, s.get_size().y).mult(2) ) ) {
-            in_area_spot = true ;
-            break;
-          } 
-        }
-      }
-    }
-    return in_area_spot ;
-  }
-  
-  /*
-  * calm down
-  * not used
-  */
-  /*
-  private Vec2 calm_down(Vec2 state_vector) {
-    state_vector.mult(calm);
-    return state_vector;
-  }
-  */
   
 
 /**

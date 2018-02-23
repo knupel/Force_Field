@@ -200,12 +200,32 @@ VEHICLE class
 
 Constructor
 --
-Vehicle(Vec2 position, float max_speed, float max_force);
+Vehicle(Vec2 position, float speed, float force);
+>parameter 
+>Vec position: define the starting position of vehicle
+>float speed define the velocity maximum of your agent
+>float force ???
 
 method
 --
+void set_radius(float radius);
+
+void set_position(Vec2 position);
+
+void set_speed(float speed);
+>set the original speed
+
+void mult_speed(float mult);
+>multiply origial speed
+
+void add_speed(float add);
+>add speed to original speed
+
+
 void update(Force_field ff);
 >update the vehicle
+>parameteres 
+>Force_field ff update the the cell of the force field
 
 
 void follow();

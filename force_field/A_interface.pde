@@ -124,7 +124,7 @@ void gui_main(int space, int max, int w, int start_pos, int from, PFont font) {
 
   tempo_refresh = 1.;
 	cell_force_field = 25.;
-	spot_force_field = 5.;
+	spot_force_field = 2.;
 
 	check_gui_main = gui_main.addCheckBox("main_setting").setPosition(10,pos_slider_y(space, start_pos +0, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2).addItem("resize_window",1).addItem("fit_image",1).addItem("background",1);
   if(change_size_window_is) check_gui_main.activate(0);
@@ -170,13 +170,14 @@ float velocity_vehicle;
 void gui_vehicle(int space, int max, int w, int start_pos, int from, PFont font) {
 	gui_vehicle = new ControlP5(this);
 	num_vehicle = 1000;
-  velocity_vehicle = 1;
-  int min_num_vehicle = 100 ;
-  int max_num_vehicle = 20_000 ;
-  int min_velocity_vehicle = -7 ;
-  int max_velocity_vehicle = 7 ;
+  velocity_vehicle = 5;
+  int min_num_vehicle = 500 ;
+  int max_num_vehicle = 30_000 ;
+  int max_speed = 25 ;
+  //int min_velocity_vehicle = -max_speed ;
+  int max_velocity_vehicle = max_speed ;
 	gui_main.addSlider("num_vehicle").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(w).setRange(min_num_vehicle,max_num_vehicle).setFont(font);
-  gui_main.addSlider("velocity_vehicle").setPosition(10,pos_slider_y(space, start_pos +1, from)).setWidth(w).setRange(min_velocity_vehicle,max_velocity_vehicle).setFont(font);
+  gui_main.addSlider("velocity_vehicle").setPosition(10,pos_slider_y(space, start_pos +1, from)).setWidth(w).setRange(0,max_velocity_vehicle).setFont(font);
 
 }
 
@@ -344,14 +345,12 @@ draw update
 boolean reset_authorization_from_gui ;
 int cell_size_ref ;
 int num_vehicle_ref;
-float vel_vehicle_ref;
 void update_gui_value(boolean update_is) {
 	int size = ceil(cell_force_field) +2;
-	if(cell_size_ref != size || num_vehicle_ref != get_num_vehicle_gui() || vel_vehicle_ref != get_velocity_vehicle_gui()) {
+	if(cell_size_ref != size || num_vehicle_ref != get_num_vehicle_gui()) {
 		set_cell_grid_ff(size);
 		cell_size_ref = size ;
 		num_vehicle_ref = get_num_vehicle_gui();
-		vel_vehicle_ref = get_velocity_vehicle_gui();
     reset_authorization_from_gui = true ;
 	}
 
@@ -371,7 +370,6 @@ void update_gui_value(boolean update_is) {
 
   set_resize_window(gui_resize_window);
   set_fit_image(gui_fullfit_image);
-
 
   display_bg(gui_display_bg);
 }
@@ -404,7 +402,7 @@ void update_rgba_warp() {
   sin_val.set(cr,cg,cb,1);
 
 	rgba_warp.set(red_warp,green_warp,blue_warp,1);
-	power_warp_max = (power_warp *power_warp)  *10f;
+	power_warp_max = (power_warp *power_warp) *10f;
   
 	rgba_warp.mult(power_warp_max);
 	

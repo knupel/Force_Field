@@ -2,7 +2,7 @@
 Vehicle
 refactoring by Stan le Punk
 http://stanlepunk.xyz/
-v 1.2.1
+v 1.3.0
 */
 /**
 Run on Processing 3.3.6
@@ -25,7 +25,10 @@ public class Vehicle implements Rope_Constants {
   private Vec2 acceleration;
   private float radius = 1.;
   private float max_force;    // Maximum steering force
+  private float ref_max_force;    // Maximum steering force
+
   private float max_speed;    // Maximum speed
+  private float ref_max_speed;  // Maximum speed
 
   private boolean manage_border_is = false;
 
@@ -33,8 +36,8 @@ public class Vehicle implements Rope_Constants {
 
   public Vehicle(Vec2 position, float max_speed, float max_force) {
     this.position = position.copy();
-    this.max_speed = max_speed;
-    this.max_force = max_force;
+    this.ref_max_speed = this.max_speed = max_speed;
+    this.ref_max_force = this.max_force = max_force;
     acceleration = Vec2();
     velocity = Vec2();
   }
@@ -52,6 +55,18 @@ public class Vehicle implements Rope_Constants {
       this.position.set(position);
     }
   }
+
+  public void set_speed(float speed) {
+    this.ref_max_speed = this.max_speed = speed;
+  }
+
+  public void mult_speed(float mult) {
+    this.max_speed *=mult;
+  }
+
+  public void add_speed(float add) {
+    this.max_speed +=add;
+  }
   
   /**
   get
@@ -61,12 +76,10 @@ public class Vehicle implements Rope_Constants {
     return temp_pos.add(Vec2(ff.canvas_pos));
   }
 
-
   public Vec2 get_absolute_position() {
     return position ;
   }
   
-
   public float get_direction() {
     return velocity.angle() ;
   }
@@ -246,15 +259,14 @@ public class Vehicle implements Rope_Constants {
   public void follow() {
     Vec2 temp_pos = get_absolute_position().copy();
     Vec2 desired  = ff.dir_in_grid(temp_pos);
+    Vec2 steer = Vec2();
+    Vec2 velocity_total = velocity.copy();
 
     if(desired != null) {
-      starting_direction = null ;
+      starting_direction = null;
       desired.mult(max_speed);
       // Steering is desired minus velocity
-      Vec2 velocity_total = velocity.copy() ;
-      Vec2 steer = sub(desired, velocity_total);
-      steer.limit(max_force);  // Limit to maximum steering force
-      apply_force(steer);
+      steer = sub(desired, velocity_total);
     // case where the direction returned is null for the emitter spot case  
     } else {
       if(starting_direction == null) {
@@ -262,12 +274,21 @@ public class Vehicle implements Rope_Constants {
         Vec2 new_dir = Vec2(cos(theta),sin(theta));
         starting_direction = new_dir.copy() ;
       }
-      Vec2 velocity_total = velocity.copy() ;
-      Vec2 steer = sub(starting_direction, velocity_total);
-      steer.limit(max_force);  // Limit to maximum steering force     
-      apply_force(steer);
-    }  
+      steer = sub(starting_direction, velocity_total);
+    }
+
+    steer.limit(max_force);  // Limit to maximum steering force
+    apply_force(steer);
+    reset_param();
   }
+
+
+  private void reset_param() {
+    this.max_speed = this.ref_max_speed;
+    this.max_force = this.ref_max_force;
+  }
+
+
   
   /**
   apply force
