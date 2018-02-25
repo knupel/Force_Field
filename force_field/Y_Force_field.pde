@@ -786,12 +786,30 @@ public class Force_field implements Rope_Constants {
   
   /**
   flow
-  v 0.0.4
+  v 0.0.5
   */
   private Vec2 flow(Vec2 coord, Vec2 field_dir, ArrayList<Spot> list) {
+    Vec2 pos_cell = mult(coord, resolution);
+    field_dir.set(0) ;
+    for(Spot s : list) {
+      s.reverse_emitter(reverse_is);
+      float theta = theta_2D(pos_cell,Vec2(s.get_pos()));
+      Vec2 temp_field = Vec2(cos(theta),sin(theta));
+      float force = 0;
+      if(type == GRAVITY) {
+        force = spot_gravity_force(s,pos_cell);
+      } else if(type == MAGNETIC) {
+        force = spot_magnetic_force(s,pos_cell);
+      }
+      temp_field.mult(force);
+      field_dir.add(temp_field);
+    }
+    return field_dir ;
+    /*
     if(type == GRAVITY) return gravity(coord, field_dir, list);
     else if(type == MAGNETIC) return magnetism(coord, field_dir, list);
-    else return null ;
+    */
+    // else return null ;
   }
   /**
   gravity 
@@ -800,6 +818,7 @@ public class Force_field implements Rope_Constants {
   /**
   * @return Vec2
   */
+  /*
   private Vec2 gravity(Vec2 coord, Vec2 field_dir, ArrayList<Spot> list) {
     Vec2 pos_cell = mult(coord, resolution);
     field_dir.set(0) ;
@@ -813,6 +832,7 @@ public class Force_field implements Rope_Constants {
     }
     return field_dir ;
   }
+  */
   /**
   magnetism 
   v 0.1.2
@@ -821,6 +841,7 @@ public class Force_field implements Rope_Constants {
   * @return Vec2
   * That work like a monopol, so it's very very far os the real world !
   */
+  /*
   private Vec2 magnetism(Vec2 coord, Vec2 field_dir, ArrayList<Spot> list) {
     Vec2 pos_cell = mult(coord, resolution);
     field_dir.set(0) ;
@@ -834,6 +855,7 @@ public class Force_field implements Rope_Constants {
     }
     return field_dir ;
   }
+  */
 
 
 
