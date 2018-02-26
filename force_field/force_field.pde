@@ -175,7 +175,8 @@ void draw() {
   warp management
   */
   warp_init(type_field, get_size_cell_ff(), which_cam, change_size_window_is, fullfit_image_is);
-  num_spot_ff(get_num_spot_gui()); 
+  int level_area_spot = 1 ;
+  num_spot_ff(get_num_spot_gui(),level_area_spot); 
   /*
   warp result
   */

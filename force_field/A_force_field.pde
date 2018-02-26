@@ -72,7 +72,7 @@ void change_type_ff() {
   force_field_init_is = false ;
   if(type_field != IMAGE) {
     build_ff(type_field, get_resultion_ff());
-    num_spot_ff(get_spot_num_ff());
+    num_spot_ff(get_spot_num_ff(), get_spot_area_level());
   } else {
     // build_ff(type_field, get_resultion_ff(), warp.get_image(), sorting_img_ff_2D);
     build_ff(type_field, get_resultion_ff(), warp.get_image(), get_sorting_channel_ff_2D());
@@ -162,16 +162,19 @@ add spot
 * it's use for force field GRAVITY, MAGNETIC and FLUID
 */
 int num_spot_ff_ref ;
-void num_spot_ff(int num) {
+int area_level_spot_ff_ref ;
+void num_spot_ff(int num, int level) {
   if(force_field != null) {
     if(force_field.get_type() == r.FLUID || force_field.get_type() == r.MAGNETIC || force_field.get_type() == r.GRAVITY) {
-      if(num != num_spot_ff_ref) {
+      if(num != num_spot_ff_ref || area_level_spot_ff_ref != level) {
         force_field.clear_spot();
       }
       num_spot_ff_ref = num ;
+      area_level_spot_ff_ref = level;
       if(force_field != null && num > force_field.get_spot_num()) {
         println("add", num, "spot to force field");
         force_field.add_spot(num);
+        force_field.set_spot_area_level(level);
 
       } else if(force_field == null) {
         if(frameCount < 3) { 
@@ -229,6 +232,7 @@ void build_ff(int type_force_field, int resolution, PImage src, int... sorting_c
     build_ff_classic(type_force_field, resolution, canvas_pos, canvas);
   }
   set_cell_grid_ff(resolution);
+  // force_field.set_spot_area(1);
 }
 
 /*
@@ -642,5 +646,13 @@ int get_resultion_ff() {
 int get_spot_num_ff() {
   if(force_field != null) {
     return force_field.get_spot_num();
+  } else return -1;
+}
+
+
+
+int get_spot_area_level() {
+  if(force_field != null) {
+    return force_field.get_spot_area_level();
   } else return -1;
 }

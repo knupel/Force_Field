@@ -38,6 +38,8 @@ public class Force_field implements Rope_Constants {
 
   private float mass_field = 1.;
 
+  private int spot_area_level = 1 ;
+
   private ArrayList<Vec> spot_fluid_pos_ref;
   private ArrayList<Boolean> reset_ref_spot_pos_list_is;
   private ArrayList<Spot> spot_list;
@@ -147,7 +149,6 @@ public class Force_field implements Rope_Constants {
     cols = canvas.x/resolution;
     rows = canvas.y/resolution;
     init_field();
-    // field = new Vec4[cols][rows];
 
     init_texture(cols,rows);
 
@@ -209,7 +210,7 @@ public class Force_field implements Rope_Constants {
         reset_ref_spot_pos_list_is.add(bool);
       }
     } else {
-      printErr("ArrayList spot_list is null");
+      printErr("method add_spot() class Force_field: ArrayList<> spot_list is null");
     }  
   }
 
@@ -418,6 +419,8 @@ public class Force_field implements Rope_Constants {
   v 0.1.0
   */
 
+
+  
   public void set_spot(float pos_x, float pos_y, float size_x, float size_y) {
     for(int i = 0 ; i < spot_list.size() ; i++) {
       set_spot(pos_x,pos_y,size_x,size_y,i);
@@ -439,8 +442,26 @@ public class Force_field implements Rope_Constants {
     set_spot_diam(size.x,size.y,which_one);
   }
 
-  /*
-  * spot position
+    /**
+  spot detection
+  */
+  public void set_spot_area_level(int spot_area_level) {
+    if(spot_area_level <= 0) {
+      this.spot_area_level = 1 ;
+      printErr("method set_spot_area() class Force_field param level =" + spot_area_level + " level must be upper, instead the value 1 is used");
+    }
+    int radius_spot_detection = ceil(sqrt(cols*rows) / abs(this.spot_area_level))+1;
+    for(Spot s : spot_list) {
+      s.area(radius_spot_detection);
+    }
+  }
+
+  public int get_spot_area_level() {
+    return spot_area_level ;
+  }
+
+  /**
+  spot position
   */
   public void set_spot_pos(float x, float y) {
     for(int i = 0 ; i < spot_list.size() ; i++) {
@@ -756,7 +777,14 @@ public class Force_field implements Rope_Constants {
 
   private void update_grav_mag_field() {
     // by default we create a gravity field for external bodies who have for mass '1'
+
     sum_activities = 0 ;
+    /**
+    it's here where we must target the point must be target to growth the speed
+    */
+    for(Spot s : spot_list) {
+      // println("mass",s.get_mass(),"tesla", s.get_tesla(), "size", s.get_size()) ;
+    }
     for (int x = 0; x < cols ; x++) {
       for (int y = 0; y < rows ; y++) {
         Vec2 flow = flow(Vec2(x,y), Vec2(field[x][y].x,field[x][y].y), spot_list);
@@ -767,34 +795,14 @@ public class Force_field implements Rope_Constants {
     }
   }
 
-
   /**
-  * local method to convert vector to texture
-  */
-  void convert_force_field_to_texture (int x, int y, float vx, float vy) {
-    // velocity
-    float velocity = (float)Math.sqrt(vx*vx + vy*vy);
-    velocity = map(velocity, 0, 1, 0,g.colorModeX);
-    int colour_vel = color(velocity);
-    texture_velocity.set(x,y,colour_vel);
-    // direction
-    float dir_rad = atan2(vx,vy) ;
-    float direction = map(dir_rad, -PI, PI, 0, g.colorModeX);
-    int colour_dir = color(direction);
-    texture_direction.set(x,y,colour_dir);
-  }
-  
-  /**
-  flow
-  v 0.0.5
+  * flow
   */
   private Vec2 flow(Vec2 coord, Vec2 field_dir, ArrayList<Spot> list) {
     Vec2 pos_cell = mult(coord, resolution);
     field_dir.set(0) ;
     float force = 0;
-    /** 
-    each case of field, must now the spot influencer to get it the data force
-    */
+    // each case of field, must now the spot influencer to get it the data force
     for(Spot s : list) {
       s.reverse_emitter(reverse_is);
       float theta = theta_2D(pos_cell,Vec2(s.get_pos()));
@@ -809,6 +817,33 @@ public class Force_field implements Rope_Constants {
     }
     return field_dir ;
   }
+
+
+
+
+
+
+
+
+
+  /**
+  CONVERT TO TEX VELOCITY & TEXTURE
+  local method to convert vector to texture
+  */
+  void convert_force_field_to_texture (int x, int y, float vx, float vy) {
+    // velocity
+    float velocity = (float)Math.sqrt(vx*vx + vy*vy);
+    velocity = map(velocity, 0, 1, 0,g.colorModeX);
+    int colour_vel = color(velocity);
+    texture_velocity.set(x,y,colour_vel);
+    // direction
+    float dir_rad = atan2(vx,vy) ;
+    float direction = map(dir_rad, -PI, PI, 0, g.colorModeX);
+    int colour_dir = color(direction);
+    texture_direction.set(x,y,colour_dir);
+  }
+  
+
 
 
 
@@ -874,16 +909,7 @@ public class Force_field implements Rope_Constants {
     return rows ;
   }
 
-  /**
-  get border
-  */
-  /**
-  * return true if the border is active, false if it's not
-  * @return boolean
-  */
-  public boolean border_is() {
-    return border_is ;
-  }
+
   /**
   get spot
   v 0.1.0
@@ -1060,6 +1086,17 @@ public class Force_field implements Rope_Constants {
   */
   public boolean is() {
     return is;
+  }
+
+    /**
+  get border
+  */
+  /**
+  * return true if the border is active, false if it's not
+  * @return boolean
+  */
+  public boolean border_is() {
+    return border_is ;
   }
 
 
@@ -1328,11 +1365,6 @@ public class Force_field implements Rope_Constants {
       update_fluid_spot_3D(ns, target, c, c_pos, which_one);     
     }
   }
-
-
-
-
-
   
   private void update_fluid_spot_2D(Navier_Stokes_2D ns, Vec2 target, Vec2 canvas, Vec2 canvas_pos, int which_one) {
     Vec2 pos_ref_2D = Vec2();
@@ -1411,7 +1443,8 @@ public class Force_field implements Rope_Constants {
     int tesla_charge = s.get_tesla();
     return intensity(dist, tesla_charge);
   }
-    /*
+  
+  /*
   * intensity
   * very simple formula, not real one :(
   */
@@ -1456,8 +1489,6 @@ public class Force_field implements Rope_Constants {
     return -1 *dir.angle();
   }
 
-  
-
 /**
 end
 */
@@ -1486,6 +1517,8 @@ end
     private boolean reverse_charge_is;
     private boolean emitter_is;
 
+    ArrayList<iVec2> area;
+
     private int tesla = 0;
     private int mass = 0;
     
@@ -1503,15 +1536,6 @@ end
       }
     }
 
-
-    public boolean emitter_is() {
-      if(get_tesla() < 0 || emitter_is) return true ; else return false;
-    }
-
-    public void reverse_emitter(boolean state) {
-      this.emitter_is = state ;
-    }
-    
     public void set_raw_pos(Vec raw_pos) {
       if(raw_pos instanceof Vec2) {
         this.raw_pos = Vec2((Vec2)raw_pos);
@@ -1560,6 +1584,38 @@ end
 
     public Vec get_size() {
       return size;
+    }
+
+    // misc
+    public boolean emitter_is() {
+      if(get_tesla() < 0 || emitter_is) return true ; else return false;
+    }
+
+    public void reverse_emitter(boolean state) {
+      this.emitter_is = state ;
+    }
+    
+
+    // area
+    private void area(int radius) {
+      if(area == null) {
+        area = new ArrayList<iVec2>(); 
+        add(radius);
+      } else {
+        area.clear();
+        add(radius);
+      }   
+    }
+
+    private void add(int radius) {
+      for(int x = -radius ; x <= radius ; x++) {
+        for(int y = -radius ; y <= radius ; y++) {
+          if(inside(Vec2(0), Vec2(radius), Vec2(x,y), ELLIPSE)) {
+            iVec2 in = iVec2(x,y);
+            area.add(in);
+          }  
+        }
+      }
     }
 
   }
