@@ -436,12 +436,7 @@ public void controlEvent(ControlEvent theEvent) {
 get controller
 */
 void get_controller_gui() {
-	// get_controller_main();
 	get_controller_movie();
-	// get_controller_fluid();
-	// get_controller_mouse();
-	// get_controller_image();
-	
 }
 
 void get_check_gui_main_display() {
@@ -456,28 +451,7 @@ void get_check_gui_main_display() {
 
 
 void get_controller_main() {
-	
-	/*
-	gui_main.getController("red_channel");
-	gui_main.getController("green_channel");
-	gui_main.getController("blue_channel");
-
-	gui_main.getController("power_channel");
-
-	gui_main.getController("red_cycling");
-	gui_main.getController("green_cycling");
-	gui_main.getController("blue_cycling");
-
-	gui_main.getController("warp_power");
-
-	gui_main.getController("absolute_cycling");
-  
-	gui_main.getController("tempo_refresh");
-  
-	gui_main.getController("cell_force_field");
-  
-	gui_main.getController("spot_force_field");
-	*/
+	//
 }
 
 float movie_pos_normal ;

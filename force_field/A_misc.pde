@@ -17,9 +17,13 @@ void global_reset() {
   if(force_field.get_type() == IMAGE) {
     force_field_init_is = false ;
     build_ff(force_field.get_type(), get_resultion_ff(), warp.get_image(), get_sorting_channel_ff_2D());
+  } else {
+    build_ff(force_field.get_type(), get_resultion_ff());
   }
   update_gui_value(true);
-  force_field.reset();
+  if(force_field.get_type() == r.MAGNETIC || force_field.get_type() == r.GRAVITY || force_field.get_type() == r.FLUID) {
+    force_field.reset();
+  }
 }
 
 
@@ -687,12 +691,13 @@ void pattern_force_field(Vec2 dir, Vec2 pos, float scale, boolean show_intensity
   rotate(dir.angle());
   // Calculate length of vector & scale it to be dir_vector or smaller if dir_vector
   float mag = (float)Math.sqrt(dir.x*dir.x + dir.y*dir.y + dir.z*dir.z);
+
   float len = dir.mag() *scale;
   float blue = .7 ;
   float red = 0 ;
   float hue = map(abs(len), 0, scale,blue,red);
-  stroke(hue, 1,1,1);
-  // Draw three lines to make an arrow (draw pointing up since we've rotate to the proper direction)
+  stroke(hue,1,1,1);
+  if(len > scale) len = scale ;
   line(0,0,len,0);
 
   popMatrix();

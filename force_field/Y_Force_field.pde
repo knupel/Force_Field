@@ -789,6 +789,7 @@ public class Force_field implements Rope_Constants {
     sum_activities = 0 ;
     for (int x = 0; x < cols ; x++) {
       for (int y = 0; y < rows ; y++) {
+        // here we convert the vector field Vec4 to Vec2 to have a real vector
         Vec2 flow = Vec2(field[x][y].x,field[x][y].y).mult(field[x][y].w);
         convert_force_field_to_texture(x,y,flow.x,flow.y);
         sum_activities += field[x][y].sum() ;
@@ -834,18 +835,25 @@ public class Force_field implements Rope_Constants {
           pos_cell.add(s.get_pos());
           float theta = theta_2D(pos_cell,Vec2(s.get_pos().x,s.get_pos().y));
           Vec2 vector = Vec2(cos(theta),sin(theta));  
-
           
           float force = 0;
+          /**
+          not sure the secuty max_force work, there is a problem
+          with the center of spot [0][0] the force is to hight so when the vector is add, it's very too much :(
+          and a big red line is create in MAGNETIC type
+          */
+          float max_force = .999;
           if(type == GRAVITY) {
             force = spot_gravity_force(s,pos_cell);
           } else if(type == MAGNETIC) {
             force = spot_magnetic_force(s,pos_cell);
           }
-          vector.mult(force);
-          Vec2 final_vector = Vec2();
-          final_vector.add(vector);
 
+          if(force >= max_force) {
+            force = max_force ;
+          }
+          vector.mult(force);
+          
           Vec2 d = Vec2(s.get_pos().x,s.get_pos().y);
           d.div(resolution);
 
@@ -853,7 +861,8 @@ public class Force_field implements Rope_Constants {
           int y = coord.y +(int)d.y;
     
           if(x >= 0 && y >= 0 && x < field.length && y < field[0].length) {
-            field[x][y].add(final_vector);
+            if(force >= max_force) field[x][y].set(vector);
+            else field[x][y].add(vector);
           }        
         }       
       }

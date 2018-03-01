@@ -76,7 +76,12 @@ void change_type_ff() {
   } else {
     // build_ff(type_field, get_resultion_ff(), warp.get_image(), sorting_img_ff_2D);
     build_ff(type_field, get_resultion_ff(), warp.get_image(), get_sorting_channel_ff_2D());
-  }  
+  }
+
+  if(type_field == r.MAGNETIC || type_field == r.GRAVITY) {
+    global_reset(); 
+  }
+
 }
 
 

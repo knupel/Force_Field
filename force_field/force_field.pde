@@ -247,25 +247,8 @@ void draw() {
 
     reset_authorization_from_gui = false ;
   }
-/*
-  if(force_field != null) {
-    if(test_reset) println("après le reset");
-    for(int x = 0 ; x < force_field.get_field().length ; x++) {
-      for(int y = 0 ; y < force_field.get_field()[0].length ; y++) {
-        if(test_reset) {
-          println(x,y,force_field.get_field()[x][y],frameCount);   
-        } else {
-          printTempo(60,x,y,force_field.get_field()[x][y],frameCount);
-        }
-      }
-    }
-    
-    test_reset = false ;
-  }
-  */
 }
 
-// boolean test_reset ;
 
 
 
