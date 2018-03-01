@@ -717,21 +717,23 @@ public class Force_field implements Rope_Constants {
   
   private void reset_force_field_spot_area() {
     // reset part where the spot area is active
-    for(Spot s : spot_list) {
-      if(s.get_pos() != null && s.get_area() != null && s.get_area().size() > 0) {
-        for(iVec2 coord : s.get_area()) {
-          Vec2 pos_cell = mult(coord, resolution);
-          pos_cell.add(s.get_pos());
-          Vec2 d = Vec2(s.get_pos().x,s.get_pos().y);
-          d.div(resolution);
-          int x = coord.x +(int)d.x;
-          int y = coord.y +(int)d.y;
-          if(x >= 0 && y >= 0 && x < field.length && y < field[0].length) {
-            field[x][y].set(0);
-          }  
+    if(spot_list != null && spot_list.size() > 0) {
+      for(Spot s : spot_list) {
+        if(s.get_pos() != null && s.get_area() != null && s.get_area().size() > 0) {
+          for(iVec2 coord : s.get_area()) {
+            Vec2 pos_cell = mult(coord, resolution);
+            pos_cell.add(s.get_pos());
+            Vec2 d = Vec2(s.get_pos().x,s.get_pos().y);
+            d.div(resolution);
+            int x = coord.x +(int)d.x;
+            int y = coord.y +(int)d.y;
+            if(x >= 0 && y >= 0 && x < field.length && y < field[0].length) {
+              field[x][y].set(0);
+            }  
+          }
         }
       }
-    }
+    } 
   }
 
   /**

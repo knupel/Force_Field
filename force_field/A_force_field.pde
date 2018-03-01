@@ -51,7 +51,6 @@ change type
 */
 int which_ff = 0 ;
 void change_type_ff() {
-
   which_ff += 1 ;
   if(which_ff > 5) which_ff = 0 ;
 
@@ -81,7 +80,6 @@ void change_type_ff() {
   if(type_field == r.MAGNETIC || type_field == r.GRAVITY) {
     global_reset(); 
   }
-
 }
 
 
@@ -326,8 +324,10 @@ void update_ff() {
     } else if(force_field.get_type() == r.MAGNETIC) {
       update_ff_magnetic();
     } else {
-      update_ff_classic();
+      // update_ff_classic();
     }
+    force_field.reset_spot_area() ;
+    force_field.update();
   } else {
     printErrTempo(240, "the force field is not init, maybe the media is not loaded ?");
   }
@@ -337,9 +337,11 @@ void update_ff() {
 /**
 CLASSIC FIELD, like CHAOS, PERLIN
 */
+/*
 void update_ff_classic() {
-  force_field.update();
+  //force_field.update();
 }
+*/
 
 
 
@@ -367,7 +369,7 @@ void update_ff_fluid() {
       force_field.set_spot_pos(spot_list_coord.get(i),i);
     }
   }
-  force_field.update();
+  // force_field.update();
 }
 
 
@@ -391,8 +393,8 @@ void update_ff_magnetic() {
       force_field.set_spot_pos(spot_list_coord.get(i),i);
     }
   }
-  force_field.reset_spot_area() ;
-  force_field.update();
+  // force_field.reset_spot_area() ;
+  //force_field.update();
 }
 
 
@@ -425,8 +427,8 @@ void update_ff_gravity() {
       }
     }   
   }
-  force_field.reset_spot_area() ;
-  force_field.update();
+  // force_field.reset_spot_area() ;
+  //force_field.update();
 }
 
 
