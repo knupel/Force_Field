@@ -12,15 +12,14 @@ void info_system() {
 
 
 void global_reset() {
-  println("global reset");
   reset_vehicle(get_num_vehicle_gui(),get_ff());
   warp.reset();
   if(force_field.get_type() == IMAGE) {
     force_field_init_is = false ;
     build_ff(force_field.get_type(), get_resultion_ff(), warp.get_image(), get_sorting_channel_ff_2D());
   }
-  force_field.refresh();
   update_gui_value(true);
+  force_field.reset();
 }
 
 

@@ -110,6 +110,7 @@ DRAW
 
 */
 void draw() {
+
   /*
   println("vehicle",display_vehicle_is());
   println("warp",display_warp_is());
@@ -135,6 +136,7 @@ void draw() {
 
   // spot
   num_spot_ff(get_num_spot_gui(),get_range_spot_gui()); 
+  
   if(run_is) {
     if(use_leapmotion) {
       force_field_spot_condition_leapmotion();
@@ -160,6 +162,7 @@ void draw() {
   }
 
 
+
   // warp
   warp_init(type_field, get_size_cell_ff(), which_cam, change_size_window_is, fullfit_image_is);
   
@@ -175,10 +178,8 @@ void draw() {
   if(display_bg_is()) {
     if(get_alpha_bg() > 0 ) background_rope(0,get_alpha_bg());
   }
-  // if(display_is()) {
-    // tint(g.colorModeX,g.colorModeY,g.colorModeZ,get_alpha_bg());
+
   if(display_warp_is()) {
-    // tint(g.colorModeX,g.colorModeY,g.colorModeZ,get_alpha_bg());
     tint(g.colorModeX,g.colorModeY,g.colorModeZ,get_alpha_warp());
     warp_draw(get_tempo_refresh_gui(), get_rgba_warp_mapped_gui(), get_power_cycling_gui());
   }
@@ -186,12 +187,7 @@ void draw() {
     update_vehicle(get_ff(),get_velocity_vehicle_gui());
     show_vehicle(get_rgb_vehicle_gui(), get_alpha_vehicle());
   } 
-/*
-  if(display_warp_is() || display_vehicle_is()) {
-    tint(g.colorModeX,g.colorModeY,g.colorModeZ,get_alpha_bg());
-  }
-  */
-//  } 
+
 
 
   
@@ -248,9 +244,28 @@ void draw() {
 
   if(reset_authorization_from_gui) {
     global_reset();
+
     reset_authorization_from_gui = false ;
   }
+/*
+  if(force_field != null) {
+    if(test_reset) println("après le reset");
+    for(int x = 0 ; x < force_field.get_field().length ; x++) {
+      for(int y = 0 ; y < force_field.get_field()[0].length ; y++) {
+        if(test_reset) {
+          println(x,y,force_field.get_field()[x][y],frameCount);   
+        } else {
+          printTempo(60,x,y,force_field.get_field()[x][y],frameCount);
+        }
+      }
+    }
+    
+    test_reset = false ;
+  }
+  */
 }
+
+// boolean test_reset ;
 
 
 

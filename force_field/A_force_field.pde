@@ -302,17 +302,6 @@ UPDATE
 v 0.1.0
 */
 void update_ff() {
-  /**
-  WHAT IS IT force_field.reverse_is(true) ??????
-
-  */
-  /*
-  if(keyPressed) {
-    if(key == ' ') force_field.reverse_is(true);
-  }
-  */
-  
-
   // update spot if there is no coord in the list
   if(spot_list_coord == null) {
     update_spot_ff_coord(Vec2(width/2,height/2));
@@ -332,7 +321,7 @@ void update_ff() {
     } else if(force_field.get_type() == r.MAGNETIC) {
       update_ff_magnetic();
     } else {
-      update_ff_classic() ;
+      update_ff_classic();
     }
   } else {
     printErrTempo(240, "the force field is not init, maybe the media is not loaded ?");
@@ -345,11 +334,6 @@ CLASSIC FIELD, like CHAOS, PERLIN
 */
 void update_ff_classic() {
   force_field.update();
-/*
-  float angle = map(mouseY, 0,height, -PI, PI) ;
-  float force = map(mouseX, 0,width, 0, 4) ;
-  force_field.wind(angle,force);
-  */
 }
 
 
@@ -402,6 +386,7 @@ void update_ff_magnetic() {
       force_field.set_spot_pos(spot_list_coord.get(i),i);
     }
   }
+  force_field.reset_spot_area() ;
   force_field.update();
 }
 
@@ -420,7 +405,7 @@ void update_ff_magnetic() {
 GRAVITY CASE
 */
 void update_ff_gravity() {
-  force_field.set_calm(.5);
+  // force_field.set_calm(.5);
 
   for(int i = 0 ; i < force_field.spot_list.size() && i < spot_list_coord.size() ; i++) {
     if(i < spot_list_mass.size()) {
@@ -435,6 +420,7 @@ void update_ff_gravity() {
       }
     }   
   }
+  force_field.reset_spot_area() ;
   force_field.update();
 }
 

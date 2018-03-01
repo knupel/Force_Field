@@ -25,8 +25,11 @@ void add_spot(int num);
 void add_spot();
 
 
-Get
+GET
 --
+Vec4 [][] get_field()
+>return force_field
+
 boolean border_is();
 
 int get_spot_num();
@@ -64,7 +67,7 @@ PImage get_tex_direction();
 
 
 
-Set
+SET
 --
 void reverse_flow(boolean state) ;
 multiply the direction vector by `-1` the result : direction is opposite, this method must change the method reset() at the end of the draw() ?????
@@ -117,10 +120,21 @@ void set_spot_diam(int x, int y);
 void set_spot_diam(nt x, int y, int which_one);
 
 
-set calm down
+
+RESET
 --
-void set_calm(float calm);
->use this method to calm down the force field when this one is under the influence of any spots. the value has to be between 0 and 1 
+void reset();
+>reset the force field
+
+void reset_spot_area()();
+>reset the force field where spots is active
+
+
+
+
+
+
+
 
 
 
@@ -167,23 +181,14 @@ void mult_velocity(iVec coord, float mult);
 MISC
 --
 
-Clear
+clear
 --
 clear_spot()
 > clear all the spot list
 
 
-Reset
+refresh
 --
-void reset();
->reset the force field
-
-
-Refresh
---
-void refresh();
->rebuild the vector field, not available for the Force field of type FLUID, HOLE and IMAGE
-
 void refresh(PImage img, int component_sorting_color_direction, int component_sorting_color_velocity);
 >rebuild the vector field of type IMAGE
 component_sorting_color_velocity can be RED, GREEN, BLUE, HUE, SATURATION, BRIGHTNESS or ALPHA
