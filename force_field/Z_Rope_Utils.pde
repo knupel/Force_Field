@@ -3,7 +3,7 @@ ROPE - Romanesco processing environment –
 * Copyleft (c) 2014-2018 
 * Stan le Punk > http://stanlepunk.xyz/
 Rope UTILS  2015 – 2018
-v 1.37.7
+v 1.38.1
 Rope – Romanesco Processing Environment – 
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Rope
@@ -2808,37 +2808,57 @@ void write_row(TableRow row, String col_name, Object o) {
 
 /**
 print
-v 0.0.7
+v 0.1.1
 */
 // util variable
 
-// print 
-void printErr(Object... obj_list) {
+// print Err
+void printErr(Object... obj) {
   String message= ("");
-  for(int i = 0 ; i < obj_list.length ; i++) {
-    String data = obj_list[i].toString();
-    message += data + " " ;
+  for(int i = 0 ; i < obj.length ; i++) {
+    message = write_print_message(message, obj[i], obj.length, i);
   }
-  System.err.println(message+System.getProperty("line.separator"));
+  System.err.println(message);
 }
-
 
 // print tempo
-void printErrTempo(int tempo, Object var) {
+void printErrTempo(int tempo, Object... obj) {
   if(frameCount%tempo == 0 || frameCount <= 1) {
-    System.err.println(var+System.getProperty("line.separator"));
+    String message= ("");
+    for(int i = 0 ; i < obj.length ; i++) {
+      message = write_print_message(message, obj[i], obj.length, i);
+    }
+    System.err.println(message);
+    // System.err.println(message+"/n"); // don't work for unknow reason
+    // System.err.println(message+System.lineSeparator());
   }
 }
 
-void printTempo(int tempo, Object... var) {
+void printTempo(int tempo, Object... obj) {
   if(frameCount%tempo == 0 || frameCount <= 1) {
-    println(var+System.getProperty("line.separator"));
+    String message= ("");
+    for(int i = 0 ; i < obj.length ; i++) {
+      message = write_print_message(message, obj[i], obj.length, i);
+    }
+    println(message);
   }
 }
 
-void printArrayTempo(int tempo, Object[] var) {
+
+
+// local method
+String write_print_message(String message, Object obj, int length, int i) {
+  if(i == length -1) {
+    return message += obj.toString() ;
+  } else {
+    return message += obj.toString() + " ";
+  }
+}
+
+
+void printArrayTempo(int tempo, Object[] obj) {
   if(frameCount%tempo == 0 || frameCount <= 1) {
-    printArray(var);
+    printArray(obj);
   }
 }
 

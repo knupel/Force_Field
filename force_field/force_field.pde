@@ -133,10 +133,8 @@ void draw() {
   if(pause_is) run_is = false ;
 
 
-  /**
-  SPOT
-  update spot coord
-  */
+  // spot
+  num_spot_ff(get_num_spot_gui(),get_range_spot_gui()); 
   if(run_is) {
     if(use_leapmotion) {
       force_field_spot_condition_leapmotion();
@@ -162,28 +160,10 @@ void draw() {
   }
 
 
-
-
-
-
-
-
-
-
-  /**
-  WARP
-  warp management
-  */
+  // warp
   warp_init(type_field, get_size_cell_ff(), which_cam, change_size_window_is, fullfit_image_is);
-  int level_area_spot = 1 ;
-  num_spot_ff(get_num_spot_gui(),level_area_spot); 
-  /*
-  warp result
-  */
-
-  /**
-  VEHICLE
-  */
+  
+  // vehicle
   init_vehicle(get_ff());
   
 

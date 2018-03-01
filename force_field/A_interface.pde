@@ -56,15 +56,15 @@ void interface_setup(Vec2 pos, Vec2 size) {
   gui_main_movie(space_interface, max, slider_width, 2, BOTTOM, font_gui);
   
   // menu static field
-  gui_static_generative(space_interface, max, slider_width, 26.5, TOP, font_gui);
-  gui_static_image(space_interface, max, slider_width, 30, TOP, font_gui);
+  gui_static_generative(space_interface, max, slider_width, 28.5, TOP, font_gui);
+  gui_static_image(space_interface, max, slider_width, 32, TOP, font_gui);
 
   // menu dynamic field
-  gui_dynamic_fluid(space_interface, max, slider_width, 26.5, TOP, font_gui);
-  gui_dynamic_mouse(space_interface, max, slider_width, 30, TOP, font_gui);
+  gui_dynamic_fluid(space_interface, max, slider_width, 28.5, TOP, font_gui);
+  gui_dynamic_mouse(space_interface, max, slider_width, 32, TOP, font_gui);
 
   // vehicle
-  gui_vehicle(space_interface, max, slider_width, 39, TOP, font_gui);
+  gui_vehicle(space_interface, max, slider_width, 40.5, TOP, font_gui);
 
 }
 
@@ -82,7 +82,6 @@ float red_vehicle;
 float green_vehicle;
 float blue_vehicle;
 
-
 Vec4 rgba_warp ;
 float red_warp;
 float green_warp;
@@ -99,9 +98,10 @@ float tempo_refresh;
 
 float cell_force_field;
 
-float spot_force_field;
+float spot_num;
+float spot_range;
 
-void gui_main(int space, int max, int w, int start_pos, int from, PFont font) {
+void gui_main(int space, int max, int w, float start_pos, int from, PFont font) {
 	gui_main = new ControlP5(this);
 
 	alpha_bg = 1.;
@@ -124,7 +124,8 @@ void gui_main(int space, int max, int w, int start_pos, int from, PFont font) {
 
   tempo_refresh = 1.;
 	cell_force_field = 25.;
-	spot_force_field = 2.;
+	spot_num = 2.;
+	spot_range = 2.;
 
 	check_gui_main = gui_main.addCheckBox("main_setting").setPosition(10,pos_slider_y(space, start_pos +0, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2).addItem("resize_window",1).addItem("fit_image",1).addItem("background",1);
   if(change_size_window_is) check_gui_main.activate(0);
@@ -160,14 +161,17 @@ void gui_main(int space, int max, int w, int start_pos, int from, PFont font) {
 	gui_main.addSlider("cell_force_field").setPosition(10,pos_slider_y(space, start_pos +21.75, from)).setWidth(w).setRange(1,max_cell).setNumberOfTickMarks(max_cell).setFont(font);
   
   int max_spot = 100 ;
-	gui_main.addSlider("spot_force_field").setPosition(10,pos_slider_y(space, start_pos +23.75, from)).setWidth(w).setRange(1,max_spot).setNumberOfTickMarks(max_spot).setFont(font);
+	gui_main.addSlider("spot_num").setPosition(10,pos_slider_y(space, start_pos +23.75, from)).setWidth(w).setRange(1,max_spot).setNumberOfTickMarks(max_spot).setFont(font);
+
+	int range_spot = 10;
+	gui_main.addSlider("spot_range").setPosition(10,pos_slider_y(space, start_pos +25.5, from)).setWidth(w).setRange(0,range_spot).setNumberOfTickMarks(range_spot +1).setFont(font);
 }
 
 
 
 float num_vehicle;
 float velocity_vehicle;
-void gui_vehicle(int space, int max, int w, int start_pos, int from, PFont font) {
+void gui_vehicle(int space, int max, int w, float start_pos, int from, PFont font) {
 	gui_vehicle = new ControlP5(this);
 	num_vehicle = 1000;
   velocity_vehicle = 5;
@@ -184,10 +188,8 @@ void gui_vehicle(int space, int max, int w, int start_pos, int from, PFont font)
 /*
 * movie
 */
-
 float header_movie;
 float speed_movie;
-
 void gui_main_movie(int space, int max, int w, float start_pos, int from, PFont font) {
 	gui_main_movie = new ControlP5(this);
 	header_movie = 0 ;
@@ -206,7 +208,6 @@ void gui_main_movie(int space, int max, int w, float start_pos, int from, PFont 
 float frequence;
 float viscosity;
 float diffusion;
-
 void gui_dynamic_fluid(int space, int max, int w, float start_pos, int from, PFont font) {
 	gui_dynamic_fluid = new ControlP5(this);
 	frequence = .3;
@@ -226,7 +227,6 @@ void gui_dynamic_fluid(int space, int max, int w, float start_pos, int from, PFo
 float range_min_gen;
 float range_max_gen;
 float power_gen;
-
 void gui_static_generative(int space, int max, int w, float start_pos, int from, PFont font) {
 	gui_static_generative = new ControlP5(this);
 
@@ -234,12 +234,10 @@ void gui_static_generative(int space, int max, int w, float start_pos, int from,
 	range_max_gen = 1.;
 	power_gen = 1. ;
 	
-  
 	gui_static_generative.addSlider("range_min_gen").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(w).setRange(0,max).setFont(font);
 	gui_static_generative.addSlider("range_max_gen").setPosition(10,pos_slider_y(space, start_pos +1, from)).setWidth(w).setRange(0,max).setFont(font);
 	float power_max = 3 ;
 	gui_static_generative.addSlider("power_gen").setPosition(10,pos_slider_y(space, start_pos +2, from)).setWidth(w).setRange(-power_max,power_max).setFont(font);
-
 }
 
 
@@ -305,7 +303,7 @@ void gui_dynamic_mouse(int space, int max, int w, float start_pos, int from, PFo
 	int max_mark_spiral = 20;
   int spiral_mark = 21;
 
-  int min_mark_beat = 1 ;
+  int min_mark_beat = 0 ;
   int max_mark_beat = 200;
 
 	gui_dynamic_mouse.addSlider("radius_mouse").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(w).setRange(0,max).setFont(font);
@@ -571,7 +569,11 @@ float get_speed_movie_gui() {
 }
 
 int get_num_spot_gui() {
-	return int(spot_force_field) ;
+	return int(spot_num) ;
+}
+
+int get_range_spot_gui() {
+	return int(spot_range) ;
 }
 
 float get_speed_mouse() {

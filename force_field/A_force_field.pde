@@ -72,7 +72,7 @@ void change_type_ff() {
   force_field_init_is = false ;
   if(type_field != IMAGE) {
     build_ff(type_field, get_resultion_ff());
-    num_spot_ff(get_spot_num_ff(), get_spot_area_level());
+    num_spot_ff(get_spot_num_ff(), get_spot_area_level_ff());
   } else {
     // build_ff(type_field, get_resultion_ff(), warp.get_image(), sorting_img_ff_2D);
     build_ff(type_field, get_resultion_ff(), warp.get_image(), get_sorting_channel_ff_2D());
@@ -651,7 +651,7 @@ int get_spot_num_ff() {
 
 
 
-int get_spot_area_level() {
+int get_spot_area_level_ff() {
   if(force_field != null) {
     return force_field.get_spot_area_level();
   } else return -1;

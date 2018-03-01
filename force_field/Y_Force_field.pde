@@ -1,12 +1,15 @@
-   /**
+
+/**
 Force Field
 2017-2018
 http://stanlepunk.xyz/
-v 1.8.0
+v 1.8.1
 */
+
 /**
 Run on Processing 3.3.6
 */
+
 /**
 Force Field
 work based on the code traduction of Daniel Shiffman from Reynolds Study algorithm
@@ -19,10 +22,12 @@ http://www.red3d.com/cwr/
 About Jos Stam work
 http://www.dgp.toronto.edu/people/stam/reality/Research/pdf/GDC03.pdf 
 */
+
 /**
 CONSTANT used by the class Force_field
 int FLUID, CHAOS, PERLIN, HOLE, MAGNETIC, IMAGE
 */
+
 /**
 At this moment the force field is available only in 2D mode
 */
@@ -416,7 +421,7 @@ public class Force_field implements Rope_Constants {
 
   /**
   public set spot
-  v 0.1.0
+  v 0.2.0
   */
 
 
@@ -449,8 +454,10 @@ public class Force_field implements Rope_Constants {
     if(spot_area_level <= 0) {
       this.spot_area_level = 1 ;
       printErr("method set_spot_area() class Force_field param level =" + spot_area_level + " level must be upper, instead the value 1 is used");
+    } else {
+      this.spot_area_level = spot_area_level ;
     }
-    int radius_spot_detection = ceil(sqrt(cols*rows) / abs(this.spot_area_level))+1;
+    int radius_spot_detection = ceil( sqrt(cols*rows) / abs(this.spot_area_level) ) +1;
     for(Spot s : spot_list) {
       s.area(radius_spot_detection);
     }
@@ -478,7 +485,8 @@ public class Force_field implements Rope_Constants {
   public void set_spot_pos(float x, float y, int which_one) {
     set_spot_pos(Vec2(x,y),which_one);  
   }
-// main method set pos
+
+  // main method set pos
   public void set_spot_pos(Vec2 pos, int which_one) {
     /**
     emergency fix, not enought but stop the bleeding
@@ -773,21 +781,63 @@ public class Force_field implements Rope_Constants {
   }
 
 
-
-
   private void update_grav_mag_field() {
-    // by default we create a gravity field for external bodies who have for mass '1'
-
     sum_activities = 0 ;
-    /**
-    it's here where we must target the point must be target to growth the speed
-    */
+    compute_with_area();
+    // old style, very slow
+    //compute_without_area()
+  }
+
+  private void compute_with_area() {
+    reset_force_field();
     for(Spot s : spot_list) {
-      // println("mass",s.get_mass(),"tesla", s.get_tesla(), "size", s.get_size()) ;
+      if(s.get_pos() != null && s.get_area() != null && s.get_area().size() > 0) {
+        s.reverse_emitter(reverse_is);
+        for(iVec2 coord : s.get_area()) {
+          Vec2 pos_cell = mult(coord, resolution);
+          pos_cell.add(s.get_pos());
+          float theta = theta_2D(pos_cell,Vec2(s.get_pos().x,s.get_pos().y));
+          Vec2 vector = Vec2(cos(theta),sin(theta));  
+
+          
+          float force = 0;
+          if(type == GRAVITY) {
+            force = spot_gravity_force(s,pos_cell);
+          } else if(type == MAGNETIC) {
+            force = spot_magnetic_force(s,pos_cell);
+          }
+          vector.mult(force);
+          Vec2 final_vector = Vec2();
+          final_vector.add(vector);
+
+          Vec2 d = Vec2(s.get_pos().x,s.get_pos().y);
+          d.div(resolution);
+
+          int x = coord.x +(int)d.x;
+          int y = coord.y +(int)d.y;
+    
+          if(x >= 0 && y >= 0 && x < field.length && y < field[0].length) {
+            field[x][y].add(final_vector);
+          }        
+        }       
+      }
     }
+    // update texture field
     for (int x = 0; x < cols ; x++) {
       for (int y = 0; y < rows ; y++) {
-        Vec2 flow = flow(Vec2(x,y), Vec2(field[x][y].x,field[x][y].y), spot_list);
+        convert_force_field_to_texture(x,y,field[x][y].x,field[x][y].y);
+        sum_activities += field[x][y].sum() ;
+      }
+    }
+  }
+
+  @Deprecated
+  private void compute_without_area() {
+    // very very slow, because there is 3 loop, two for coordonate and one for the spot list
+    // so when the spot list is big... the frameRate decrease fast
+    for (int x = 0; x < cols ; x++) {
+      for (int y = 0; y < rows ; y++) {
+        Vec2 flow = flow(Vec2(x,y), spot_list);
         field[x][y] = Vec4(flow.x,flow.y,0,0);
         convert_force_field_to_texture(x,y,field[x][y].x,field[x][y].y);
         sum_activities += field[x][y].sum() ;
@@ -795,12 +845,10 @@ public class Force_field implements Rope_Constants {
     }
   }
 
-  /**
-  * flow
-  */
-  private Vec2 flow(Vec2 coord, Vec2 field_dir, ArrayList<Spot> list) {
+  @Deprecated
+  private Vec2 flow(Vec2 coord, ArrayList<Spot> list) {
     Vec2 pos_cell = mult(coord, resolution);
-    field_dir.set(0) ;
+    Vec2 field_dir = Vec2();
     float force = 0;
     // each case of field, must now the spot influencer to get it the data force
     for(Spot s : list) {
@@ -817,14 +865,50 @@ public class Force_field implements Rope_Constants {
     }
     return field_dir ;
   }
+  
+  /**
+  magnetic force
+  v 0.0.2
+  */
+  /**
+  * spot_magnetic_force
+  * @return float magnetic force
+  */
+  private float spot_magnetic_force(Spot s, Vec2 pos_cell) {
+    Vec2 spot_pos = Vec2(s.get_pos());
+    float dist = dist(spot_pos, pos_cell);
+    int tesla_charge = s.get_tesla();
+    return intensity(dist, tesla_charge);
+  }
+  
+  /*
+  * intensity
+  * very simple formula, not real one :(
+  */
+  private float intensity(float dist, int tesla) {
+    float l = sqrt((get_canvas().x *get_canvas().x) + (get_canvas().y * get_canvas().y));
+    float d = constrain(dist, 1, 2 *l) ;
+    float speed = .05;
+    float distance = 1 /d *speed;
+    return distance *tesla *l *.02;
+  }
 
-
-
-
-
-
-
-
+  /**
+  gravity force
+  v 0.0.1
+  */
+  /** 
+  * spot_gravity_force
+  * @return float gravity force
+  */
+  private float spot_gravity_force(Spot s, Vec2 pos_cell) {
+    Vec2 spot_pos = Vec2(s.get_pos());
+    float m_2 = s.get_mass() ;
+    float m_1 = mass_field ;
+    float dist = dist(spot_pos, pos_cell);
+    double gravity = 1. / (g_force(dist, m_1, m_2) *1000000000L);
+    return (float)gravity;
+  }
 
   /**
   CONVERT TO TEX VELOCITY & TEXTURE
@@ -848,6 +932,26 @@ public class Force_field implements Rope_Constants {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   /**
   get velocity and direction texture
   get texture can be used externaly
@@ -859,6 +963,15 @@ public class Force_field implements Rope_Constants {
   public PImage get_tex_direction() {
     return texture_direction;
   }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -882,6 +995,19 @@ public class Force_field implements Rope_Constants {
   public float get_activity() {
     return sum_activities ;
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
   /**
   get grid
   v 0.1.0
@@ -1429,49 +1555,6 @@ public class Force_field implements Rope_Constants {
   util v 0.0.3.1
   library private methods
   */
-  /**
-  magnetic force
-  v 0.0.2
-  */
-  /**
-  * spot_magnetic_force
-  * @return float magnetic force
-  */
-  private float spot_magnetic_force(Spot s, Vec2 pos_cell) {
-    Vec2 spot_pos = Vec2(s.get_pos());
-    float dist = dist(spot_pos, pos_cell);
-    int tesla_charge = s.get_tesla();
-    return intensity(dist, tesla_charge);
-  }
-  
-  /*
-  * intensity
-  * very simple formula, not real one :(
-  */
-  private float intensity(float dist, int tesla) {
-    float l = sqrt((get_canvas().x *get_canvas().x) + (get_canvas().y * get_canvas().y));
-    float d = constrain(dist, 1, 2 *l) ;
-    float speed = .05;
-    float distance = 1 /d *speed;
-    return distance *tesla *l *.02;
-  }
-
-  /**
-  gravity force
-  v 0.0.1
-  */
-  /** 
-  * spot_gravity_force
-  * @return float gravity force
-  */
-  private float spot_gravity_force(Spot s, Vec2 pos_cell) {
-    Vec2 spot_pos = Vec2(s.get_pos());
-    float m_2 = s.get_mass() ;
-    float m_1 = mass_field ;
-    float dist = dist(spot_pos, pos_cell);
-    double gravity = 1. / (g_force(dist, m_1, m_2) *1000000000L);
-    return (float)gravity;
-  }
   
 
   /**
@@ -1488,12 +1571,12 @@ public class Force_field implements Rope_Constants {
     // why multiply by '-1' it's a mistery
     return -1 *dir.angle();
   }
-
-/**
-end
-*/
 }
 
+/**
+END class Force_field
+*/
+
 
 
 
@@ -1509,116 +1592,120 @@ end
 
 
 /**
-  SPOT private under-class
-  v 0.1.3
-  */
-  public class Spot {
-    private Vec pos, raw_pos, size;
-    private boolean reverse_charge_is;
-    private boolean emitter_is;
+SPOT
+v 0.2.0
+*/
+public class Spot {
+  private Vec pos, raw_pos, size;
+  private boolean reverse_charge_is;
+  private boolean emitter_is;
 
-    ArrayList<iVec2> area;
+  ArrayList<iVec2> area;
 
-    private int tesla = 0;
-    private int mass = 0;
-    
-    // constructor
-    public Spot() {}
-
-
-
-    // set
-    public void set_pos(Vec pos) {
-      if(pos instanceof Vec2) {
-        this.pos = Vec2((Vec2)pos);
-      } else if(pos instanceof Vec3) {
-        this.pos = Vec3((Vec3)pos);
-      }
-    }
-
-    public void set_raw_pos(Vec raw_pos) {
-      if(raw_pos instanceof Vec2) {
-        this.raw_pos = Vec2((Vec2)raw_pos);
-      } else if(pos instanceof Vec3) {
-        this.raw_pos = Vec3((Vec3)raw_pos);
-      }
-    }
-
-    public void set_size(Vec size) {
-      if(size instanceof Vec2) {
-        this.size = Vec2((Vec2)size);
-      } else if(size instanceof Vec3) {
-        this.size = Vec3((Vec3)size);
-      }
-    }
-
-    public void reverse_charge(boolean reverse_is) {
-      this.reverse_charge_is = reverse_is ;
-
-    }
-
-    public void set_tesla(int tesla) {
-      this.tesla = tesla ;
-    }
-
-    public void set_mass(int mass) {
-      this.mass = abs(mass) ;
-    } 
-
-    // get
-    public int get_mass() {
-      return mass;
-    }
-
-    public int get_tesla() {
-      if(!reverse_charge_is) return tesla; else return -tesla ;
-    }
-
-    public Vec get_pos() {
-      return pos;
-    }
-
-    public Vec get_raw_pos() {
-      return raw_pos;
-    }
-
-    public Vec get_size() {
-      return size;
-    }
-
-    // misc
-    public boolean emitter_is() {
-      if(get_tesla() < 0 || emitter_is) return true ; else return false;
-    }
-
-    public void reverse_emitter(boolean state) {
-      this.emitter_is = state ;
-    }
-    
-
-    // area
-    private void area(int radius) {
-      if(area == null) {
-        area = new ArrayList<iVec2>(); 
-        add(radius);
-      } else {
-        area.clear();
-        add(radius);
-      }   
-    }
-
-    private void add(int radius) {
-      for(int x = -radius ; x <= radius ; x++) {
-        for(int y = -radius ; y <= radius ; y++) {
-          if(inside(Vec2(0), Vec2(radius), Vec2(x,y), ELLIPSE)) {
-            iVec2 in = iVec2(x,y);
-            area.add(in);
-          }  
-        }
-      }
-    }
+  private int tesla = 0;
+  private int mass = 0;
+  
+  // constructor
+  public Spot() {
 
   }
+
+
+
+  // set
+  public void set_pos(Vec pos) {
+    if(pos instanceof Vec2) {
+      this.pos = Vec2((Vec2)pos);
+    } else if(pos instanceof Vec3) {
+      this.pos = Vec3((Vec3)pos);
+    }
+  }
+
+  public void set_raw_pos(Vec raw_pos) {
+    if(raw_pos instanceof Vec2) {
+      this.raw_pos = Vec2((Vec2)raw_pos);
+    } else if(pos instanceof Vec3) {
+      this.raw_pos = Vec3((Vec3)raw_pos);
+    }
+  }
+
+  public void set_size(Vec size) {
+    if(size instanceof Vec2) {
+      this.size = Vec2((Vec2)size);
+    } else if(size instanceof Vec3) {
+      this.size = Vec3((Vec3)size);
+    }
+  }
+
+  public void reverse_charge(boolean reverse_is) {
+    this.reverse_charge_is = reverse_is ;
+  }
+
+  public void set_tesla(int tesla) {
+    this.tesla = tesla ;
+  }
+
+  public void set_mass(int mass) {
+    this.mass = abs(mass) ;
+  } 
+
+  // get
+  public int get_mass() {
+    return mass;
+  }
+
+  public int get_tesla() {
+    if(!reverse_charge_is) return tesla; else return -tesla ;
+  }
+
+  public Vec get_pos() {
+    return pos;
+  }
+
+  public Vec get_raw_pos() {
+    return raw_pos;
+  }
+
+  public Vec get_size() {
+    return size;
+  }
+
+  // misc
+  public boolean emitter_is() {
+    if(get_tesla() < 0 || emitter_is) return true ; else return false;
+  }
+
+  public void reverse_emitter(boolean state) {
+    this.emitter_is = state ;
+  }
+  
+
+  // area
+  private void area(int radius) {
+    if(area == null) {
+      area = new ArrayList<iVec2>(); 
+      add(radius);
+    } else {
+      area.clear();
+      add(radius);
+    }   
+  }
+
+  private void add(int radius) {
+    for(int x = -radius ; x <= radius ; x++) {
+      for(int y = -radius ; y <= radius ; y++) {
+        if(inside(Vec2(0), Vec2(radius), Vec2(x,y), ELLIPSE)) {
+          iVec2 in = iVec2(x,y);
+          area.add(in);
+        }  
+      }
+    }
+  }
+
+  ArrayList<iVec2> get_area() {
+    return area;
+  }
+}
 
 
 
