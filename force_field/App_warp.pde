@@ -73,32 +73,32 @@ void warp_change_media_folder() {
 /**
  init for media or camera
  */
-void warp_init(int type_field, int size_cell, int which_cam, boolean change_canvas_is, boolean fullfit) {
+void warp_init(int type_f, int pattern_f, int size_cell, int which_cam, boolean change_canvas_is, boolean fullfit) {
   if((folder_selected_is() || !init_warp_is) && !video_warp_is() ) {
-    warp_init_media(type_field, size_cell, change_canvas_is, fullfit);
+    warp_init_media(type_f, pattern_f, size_cell, change_canvas_is, fullfit);
   } else if(video_warp_is()) {
-    warp_init_video(type_field, size_cell, which_cam);
+    warp_init_video(type_f, pattern_f, size_cell, which_cam);
   } else if(!warp_media_is()){
-    build_ff(type_field,size_cell);
+    build_ff(type_f, pattern_f, size_cell);
   }
 }
 
 
 
 boolean init_video_is = false ;
-void warp_init_video(int type_field, int size_cell, int which_cam) {
+void warp_init_video(int type_f, int pattern_f, int size_cell, int which_cam) {
   init_video(width,height, which_cam);
   add_g_surface();
   if(!init_video_is) {
     println("warp init video");
-    build_ff(type_field,size_cell, warp.get_image());
+    build_ff(type_f, pattern_f, size_cell, warp.get_image());
     init_video_is = true ;
     warp_media_loaded(true);
   } 
 }
 
 
-void warp_init_media(int type_field, int size_cell, boolean change_canvas_is, boolean fullfit) {
+void warp_init_media(int type_f, int pattern_f,  int size_cell, boolean change_canvas_is, boolean fullfit) {
   if(folder_selected_is()) {
     movie_warp_is(false);
     add_g_surface();
@@ -139,11 +139,11 @@ void warp_init_media(int type_field, int size_cell, boolean change_canvas_is, bo
     init_warp_is = true ;
     set_size(ref_warp_w,ref_warp_h);
     warp.reset(); 
-    build_ff(type_field,size_cell, warp.get_image());
+    build_ff(type_f, pattern_f, size_cell, warp.get_image());
 
   } else if(!change_canvas_is && !build_ff_is()) {
     println("warp init classic");
-    build_ff(type_field,size_cell, warp.get_image());
+    build_ff(type_f, pattern_f, size_cell, warp.get_image());
   }
 }
 

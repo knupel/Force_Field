@@ -675,17 +675,20 @@ void show_info(Force_field ff) {
 	fill(255);
 	int pos_x = ceil(width-size_gui.x +10) ;
 
-	String type_ff = "no froce field apply" ;
+	String type_ff = "no force field apply" ;
 	if(ff.get_type() == r.FLUID) type_ff = "fluid" ;
 	else if(ff.get_type() == r.MAGNETIC) type_ff = "magnetic" ;
 	else if(ff.get_type() == r.GRAVITY) type_ff = "gravity" ;
-	else if(ff.get_type() == r.CHAOS) type_ff = "chaos" ;
-	else if(ff.get_type() == r.PERLIN) type_ff = "perlin" ;
-	else if(ff.get_type() == IMAGE) type_ff = "image" ;
+	else type_ff = "static" ;
+  
+  String pattern_ff = "nothing" ;
+  if(ff.get_pattern() == r.CHAOS) pattern_ff = "chaos" ;
+	else if(ff.get_pattern() == r.PERLIN) pattern_ff = "perlin" ;
+	else if(ff.get_pattern() == IMAGE) pattern_ff = "image" ;
 
-	info_line("Force field" + " " + type_ff, pos_x, space_interface, 1, TOP);
-  
-  
+	info_line("Force field" + " " + type_ff + " mapped on " + pattern_ff, pos_x, space_interface, 1, TOP);
+
+ 
   
   int h = get_img_velocity_ff().height ;
   int w = get_img_velocity_ff().width ;
@@ -722,7 +725,7 @@ void show_info(Force_field ff) {
   // diaporama
 	info_line("Diaporama" + " " +diaporama_state, pos_x, space_interface, 5 +step_y, TOP);
 	// sorting channel
-	if(ff.get_type() == IMAGE) {
+	if(ff.get_pattern() == IMAGE) {
 		String [] sort = sorting_channel_toString(get_sorting_channel_ff_2D());
 		info_line("velocity sort:" + sort[2], pos_x, space_interface, 6 +step_y, TOP);
 		info_line("x coord sort:" + sort[0], pos_x, space_interface, 7 +step_y, TOP);
@@ -789,11 +792,25 @@ void show_gui(boolean mouse_is, Force_field ff) {
 	gui_main.show();
 
 	// show menu depend of force field type
-	if(ff.get_type() == IMAGE) gui_static_img_2D.show(); else gui_static_img_2D.hide();
+  if(ff.get_super_type() == r.DYNAMIC) {
+  	if(ff.get_type() == r.FLUID) {
+  		gui_dynamic_fluid.show(); 
+  	} else gui_dynamic_fluid.hide();
+  	if(ff.get_type() == r.GRAVITY || ff.get_type() == r.MAGNETIC) {
+  		gui_dynamic_mag_grav.show(); 
+  	} else gui_dynamic_mag_grav.hide();
+  } else {
+  	gui_dynamic_fluid.hide();
+  	gui_dynamic_mag_grav.hide();
+  }
+  
+  if(ff.get_pattern() == IMAGE) {
+  	gui_static_img_2D.show(); 
+  } else gui_static_img_2D.hide();
 
-	if(ff.get_type() == r.FLUID) gui_dynamic_fluid.show(); else gui_dynamic_fluid.hide();
-	if(ff.get_type() == r.GRAVITY || ff.get_type() == r.MAGNETIC) gui_dynamic_mag_grav.show(); else gui_dynamic_mag_grav.hide();
-	if(ff.get_type() == r.CHAOS || ff.get_type() == r.PERLIN || ff.get_type() == IMAGE) gui_static_generative.show(); else gui_static_generative.hide();
+	if(ff.get_pattern() == r.CHAOS || ff.get_pattern() == r.PERLIN || ff.get_pattern() == IMAGE) {
+		gui_static_generative.show(); 
+	} else gui_static_generative.hide();
 
 
 	if(movie_warp_is()) gui_main_movie.show(); else gui_main_movie.hide();	

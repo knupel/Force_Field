@@ -14,21 +14,21 @@ void info_system() {
 void global_reset() {
   reset_vehicle(get_num_vehicle_gui(),get_ff());
   warp.reset();
-  if(force_field.get_type() == IMAGE) {
+  if(force_field.get_pattern() == IMAGE) {
     force_field_init_is = false ;
-    build_ff(force_field.get_type(), get_resultion_ff(), warp.get_image(), get_sorting_channel_ff_2D());
+    build_ff(force_field.get_type(), force_field.get_pattern(), get_resultion_ff(), warp.get_image(), get_sorting_channel_ff_2D());
   } else {
-    build_ff(force_field.get_type(), get_resultion_ff());
+    build_ff(force_field.get_type(), force_field.get_pattern(), get_resultion_ff());
   }
 
   if(force_field.get_type() == r.FLUID) {
-    println("je passe par là");
     set_full_reset_field(false);
     set_check_gui_dynamic_mag_grav();
   }
 
   update_gui_value(true);
-  if(force_field.get_type() == r.MAGNETIC || force_field.get_type() == r.GRAVITY || force_field.get_type() == r.FLUID) {
+  // if(force_field.get_type() == r.MAGNETIC || force_field.get_type() == r.GRAVITY || force_field.get_type() == r.FLUID) {
+  if(force_field.get_super_type() == r.DYNAMIC) {
     force_field.reset();
   }
 }
@@ -65,7 +65,6 @@ void keyPressed() {
 
   if(key == 'l') change_cursor_controller();
 
-  
   if(key == 'p') {
     println("export jpg");
     saveFrame();   

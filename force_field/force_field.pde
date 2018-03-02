@@ -36,6 +36,7 @@ boolean hide_menu_bar = false;
 PGraphics pg;
 
 int type_field;
+int pattern_field;
 
 int which_cam = 0 ; // 0 is the camera fullsize / max frameRate by default if there is camera plug is the external cam is catch
 boolean inside_gui;
@@ -55,9 +56,11 @@ void settings() {
   // type_field = r.FLUID;
   //  type_field = r.GRAVITY; /* you can also use HOLE constant */
   type_field = r.MAGNETIC;
-  //type_field = r.PERLIN;
-  // type_field = r.CHAOS;
- // type_field = IMAGE;
+
+  pattern_field = r.BLANK;
+  //pattern_field = r.PERLIN;
+  // pattern_field = r.CHAOS;
+  // pattern_field = IMAGE;
 
   if(hide_menu_bar) PApplet.hideMenuBar();
 }
@@ -165,7 +168,7 @@ void draw() {
 
 
   // warp
-  warp_init(type_field, get_size_cell_ff(), which_cam, change_size_window_is, fullfit_image_is);
+  warp_init(get_type_ff(), get_pattern_ff(), get_size_cell_ff(), which_cam, change_size_window_is, fullfit_image_is);
   
   // vehicle
   init_vehicle(get_ff());
@@ -222,7 +225,7 @@ void draw() {
 
   if(!ff_is()) {
     println("new force field grid, with cell size:", get_size_cell_ff());
-    init_ff(get_type_ff(),get_size_cell_ff(),g);
+    init_ff(get_type_ff(),get_pattern_ff(),get_size_cell_ff(),g);
   }
   /*
   if(get_type_ff() == IMAGE) {

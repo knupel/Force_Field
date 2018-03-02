@@ -21,9 +21,9 @@ int [] sorting_img_ff_2D = new int[3] ;
 /**
 init
 */
-void init_ff(int type, int resolution, PImage src) {
+void init_ff(int type, int pattern, int resolution, PImage src) {
   if(!force_field_init_is) {
-    build_ff(type, resolution, src);
+    build_ff(type, pattern, resolution, src);
     force_field_init_is = true ;
   }
 }
@@ -50,31 +50,31 @@ boolean ff_is() {
 change type
 */
 int which_ff = 0 ;
+
 void change_type_ff() {
   which_ff += 1 ;
   if(which_ff > 5) which_ff = 0 ;
 
   if(which_ff == 0 ) {
-    type_field = IMAGE ;
+    type_field = r.STATIC; pattern_field = IMAGE ; 
   } else if(which_ff == 1) {
-    type_field = r.PERLIN;
+    type_field = r.STATIC; pattern_field = r.PERLIN; 
   } else if(which_ff == 2) {
-    type_field = r.CHAOS;
+    type_field = r.STATIC; pattern_field = r.CHAOS; 
   } else if(which_ff == 3) {
-    type_field = r.MAGNETIC;
+    type_field = r.MAGNETIC; pattern_field = r.BLANK; 
   } else if(which_ff == 4) {
-    type_field = r.GRAVITY;
+    type_field = r.GRAVITY; pattern_field = r.BLANK; 
   } else if(which_ff == 5) {
-    type_field = r.FLUID;
+    type_field = r.FLUID; pattern_field = r.BLANK; 
   }
 
   force_field_init_is = false ;
-  if(type_field != IMAGE) {
-    build_ff(type_field, get_resultion_ff());
+  if(pattern_field != IMAGE) {
+    build_ff(type_field, pattern_field, get_resultion_ff());
     num_spot_ff(get_spot_num_ff(), get_spot_area_level_ff());
   } else {
-    // build_ff(type_field, get_resultion_ff(), warp.get_image(), sorting_img_ff_2D);
-    build_ff(type_field, get_resultion_ff(), warp.get_image(), get_sorting_channel_ff_2D());
+    build_ff(type_field, pattern_field, get_resultion_ff(), warp.get_image(), get_sorting_channel_ff_2D());
   }
 
   if(type_field == r.MAGNETIC || type_field == r.GRAVITY || type_field == r.FLUID) {
@@ -168,7 +168,8 @@ int num_spot_ff_ref ;
 int area_level_spot_ff_ref ;
 void num_spot_ff(int num, int level) {
   if(force_field != null) {
-    if(force_field.get_type() == r.FLUID || force_field.get_type() == r.MAGNETIC || force_field.get_type() == r.GRAVITY) {
+   // if(force_field.get_type() == r.FLUID || force_field.get_type() == r.MAGNETIC || force_field.get_type() == r.GRAVITY) {
+    if(force_field.get_super_type() == r.DYNAMIC) {
       if(num != num_spot_ff_ref || area_level_spot_ff_ref != level) {
         force_field.clear_spot();
       }
@@ -194,11 +195,11 @@ void num_spot_ff(int num, int level) {
 /**
 type_force_field CHAOS, PERLIN or FLUID
 */
-void build_ff(int type_force_field, int resolution) {
-  build_ff(type_force_field, resolution, null);
+void build_ff(int type_ff, int pattern_ff, int resolution) {
+  build_ff(type_ff, pattern_ff, resolution, null);
 }
 
-void build_ff(int type_force_field, int resolution, PImage src, int... sorting_channel) {
+void build_ff(int type_ff, int pattern_ff, int resolution, PImage src, int... sorting_channel) {
   iVec2 canvas = iVec2();
   iVec2 canvas_pos = iVec2();
   if(src != null) {
@@ -212,27 +213,27 @@ void build_ff(int type_force_field, int resolution, PImage src, int... sorting_c
     canvas_pos = iVec2(0 -offset/2);
   }
 
-  if(type_force_field == r.GRAVITY) {
+  if(type_ff == r.GRAVITY) {
     build_ff_gravity(resolution, canvas_pos, canvas);
     check_for_available_spot();
-  } else if (type_force_field == r.MAGNETIC) {
+  } else if (type_ff == r.MAGNETIC) {
     build_ff_magnetic(resolution, canvas_pos, canvas);
     check_for_available_spot();
-  } else if (type_force_field == r.FLUID) {
+  } else if (type_ff == r.FLUID) {
     build_ff_fluid(resolution, canvas_pos, canvas);
     // default fluid value
     freq_ff = 2/frameRate;
     visc_ff = .001;;
     diff_ff = 1.;   
     check_for_available_spot();
-  } else if(type_force_field == IMAGE) {
+  } else if(pattern_ff == IMAGE) {
     if(src != null && src.pixels != null) {
         build_ff_img(resolution, canvas_pos, src, sorting_channel);
     } else {
       printErr("PImage src is null, Force field cannot be build");
     }
   } else  {
-    build_ff_classic(type_force_field, resolution, canvas_pos, canvas);
+    build_ff_classic(type_ff, pattern_ff, resolution, canvas_pos, canvas);
   }
   set_cell_grid_ff(resolution);
   // force_field.set_spot_area(1);
@@ -253,15 +254,15 @@ v 0.0.2
 /**
 * build classic
 */
-void build_ff_classic(int type_force_field, int resolution, iVec2 canvas_pos, iVec2 canvas) {
-  force_field = new Force_field(resolution, canvas_pos, canvas, type_force_field);
+void build_ff_classic(int type_force_field, int pattern_force_field, int resolution, iVec2 canvas_pos, iVec2 canvas) {
+  force_field = new Force_field(resolution, canvas_pos, canvas, type_force_field, pattern_force_field);
   force_field_init_is = true ;
 }
 /**
 * buid force field FLUID
 */
 void build_ff_fluid(int resolution, iVec2 canvas_pos, iVec2 canvas) {
-  force_field = new Force_field(resolution, canvas_pos, canvas, r.FLUID);
+  force_field = new Force_field(resolution, canvas_pos, canvas, r.FLUID, r.BLANK);
   force_field_init_is = true ;
   
 }
@@ -276,14 +277,15 @@ void build_ff_img(int resolution, iVec2 canvas_pos, PImage img, int... sorting_c
 * build force field gravity
 */
 void build_ff_gravity(int resolution, iVec2 canvas_pos, iVec2 canvas) {
-  force_field = new Force_field(resolution, canvas_pos, canvas, r.GRAVITY);
+  force_field = new Force_field(resolution, canvas_pos, canvas, r.GRAVITY, r.BLANK);
   force_field_init_is = true ;
 }
 /**
 * build force field magnetic
 */
 void build_ff_magnetic(int resolution, iVec2 canvas_pos, iVec2 canvas) {
-  force_field = new Force_field(resolution, canvas_pos, canvas, r.MAGNETIC);
+  force_field = new Force_field(resolution, canvas_pos, canvas, r.MAGNETIC, r.BLANK);
+  // Force_field(int resolution, iVec2 canvas_pos, iVec2 canvas, int type, int pattern)
   force_field_init_is = true ;
 }
 
@@ -615,6 +617,20 @@ int get_type_ff() {
     return force_field.get_type();
   } else return -1;
 }
+
+int get_super_type_ff() {
+  if(force_field != null ) {
+    return force_field.get_super_type();
+  } else return -1;
+}
+
+int get_pattern_ff() {
+  if(force_field != null ) {
+    return force_field.get_pattern();
+  } else return -1;
+}
+
+
 
 int get_resultion_ff() {
   if(force_field != null ) {

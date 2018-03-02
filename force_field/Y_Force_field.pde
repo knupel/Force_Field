@@ -3,7 +3,7 @@
 Force Field
 2017-2018
 http://stanlepunk.xyz/
-v 1.8.1
+v 1.9.0
 */
 
 /**
@@ -35,7 +35,7 @@ At this moment the force field is available only in 2D mode
 public class Force_field implements Rope_Constants {
 
   private Vec4[][] field;
-  private Vec4[][] field_original;
+  private Vec4[][] field_save;
 
   private PImage src;
   private PImage texture_velocity;
@@ -68,7 +68,11 @@ public class Force_field implements Rope_Constants {
   private float diffusion = .01;
   private float limit_vel = 100.;
 
-  private int type = PERLIN;
+  private int type = STATIC; // or FLUID, MAGNETIC, CHAOS
+  private int super_type = STATIC; // or DYNAMIC
+  private int pattern = PERLIN; // CHAOS, BLANK, IMAGE
+
+
   private boolean border_is = false;
 
 //  private float calm = 1;
@@ -95,7 +99,7 @@ public class Force_field implements Rope_Constants {
   /**
   constructor CLASSIC
   */
-  public Force_field(int resolution, iVec2 canvas_pos, iVec2 canvas, int type) {
+  public Force_field(int resolution, iVec2 canvas_pos, iVec2 canvas, int type, int pattern) {
     if(resolution == 0) {
       printErr("Contructor Force_field: resolution =", resolution, "instead the value 20 is used");
       this.resolution = 20 ;
@@ -104,7 +108,10 @@ public class Force_field implements Rope_Constants {
     }
     
     this.type = type ;
+    init_super_type(this.type);  
+    this.pattern = pattern;
     this.is = true ;
+
     set_canvas(iVec2(this.resolution/2 +canvas_pos.x, this.resolution/2 +canvas_pos.y), iVec2(canvas.x,canvas.y));
 
     cols = NX = canvas.x/this.resolution;
@@ -114,23 +121,16 @@ public class Force_field implements Rope_Constants {
     init_spot();
     init_texture(cols,rows);
 
-    // Determine the number of columns and rows based on sketch's width and height
     if(type == FLUID) {
-      // FLUID
       printErr("FLUID have square or cube canvas, the HEIGHT be used for the canvas side");
       int iteration = 20 ;
       ns_2D = new Navier_Stokes_2D(iVec2(NX,NY), iteration);
-    } 
-    /*else if(type == MAGNETIC) {
-      // this.calm = 0 ;
-    } 
-    */
-    else {
+      set_field();
+    } else {
       border_is = true ;
-      set_field(type);
+      set_field();
     }
   }
-  
 
   
   /**
@@ -138,7 +138,9 @@ public class Force_field implements Rope_Constants {
   */
   public Force_field(int resolution, iVec2 canvas_pos, PImage src, int... component_sorting) {
     this.resolution = resolution;
-    this.type = IMAGE ;
+    this.type = STATIC ;
+    init_super_type(this.type);
+    this.pattern = IMAGE ;
     this.is = true ;
     sorting_channel(component_sorting);
     
@@ -162,7 +164,8 @@ public class Force_field implements Rope_Constants {
     init_texture(cols,rows);
 
     border_is = true ;
-    set_field_img_2D(this.src);
+    set_field();
+    // set_field_img_2D();
   }
 
   private void sorting_channel(int... sorting) {
@@ -185,8 +188,15 @@ public class Force_field implements Rope_Constants {
 
   /**
   initialisation
-  v 0.0.2
+  v 0.1.0
   */
+  private void init_super_type(int type) {
+    if(type != STATIC) {
+      this.super_type = DYNAMIC;
+    } else {
+      this.super_type = STATIC;
+    }
+  }
 
   private void init_texture(int w, int h) {
     texture_velocity = createImage(w,h,RGB);
@@ -195,8 +205,8 @@ public class Force_field implements Rope_Constants {
 
   private void init_field() {
     field = new Vec4[cols][rows];
-    field_original = new Vec4[cols][rows];
-    set_field(CHAOS);
+    field_save = new Vec4[cols][rows];
+    // set_field(CHAOS);
   }
 
   private void init_spot() {
@@ -238,64 +248,78 @@ public class Force_field implements Rope_Constants {
   set field
   v 0.1.1
   */
-    // set field classic
-  private void set_field(int type) {
-    // Reseed noise so we get a new flow field every time
-    if(type == PERLIN) {
-      noiseSeed((int)random(10000));
-    }
-
-    float xoff = 0 ;
-    sum_activities = 0 ;
-    for (int x = 0 ; x < cols ; x++) {
-      float yoff = 0;
-      for (int y = 0 ; y < rows ; y++) {
-        float theta = 0;
-        float dist = 0 ;
-        if(type == PERLIN) {
-          theta = map(noise(xoff,yoff),0,1,0,TWO_PI);
-          dist = noise(xoff,yoff);
-        } if(type == CHAOS) {
-          theta = random(TWO_PI);
-          dist = random(1);
-        } if(type == GRAVITY) {
-          for(Spot s : spot_list) {
-            theta = theta_2D(Vec2(x,y),Vec2(s.get_pos()));
-          }          
-        }
-        // Polar to cartesian coordinate
-        field[x][y] = Vec4(cos(theta),sin(theta),0,dist); 
-        field_original[x][y] = Vec4(cos(theta),sin(theta),0,dist); 
-
-        sum_activities += field[x][y].sum() ;     
-        yoff += .1;
-      }
-      xoff += .1;
-    }
+  private void set_field() {
+    set_field(this.pattern) ;
   }
 
-  /*
-  set field for image in 2D
-  */
-  private void set_field_img_2D(PImage img) {
-    img.loadPixels();
-    sum_activities = 0;
+  private void set_field(int pattern) {
+    // Reseed noise so we get a new flow field every time
+    sum_activities = 0 ;
+
+    if(pattern == IMAGE && src != null) {
+      set_field_img_2D();
+    } else {
+      if(pattern == PERLIN) {
+        noiseSeed((int)random(10000));
+      }
+
+      float xoff = 0 ;
+      for (int x = 0 ; x < cols ; x++) {
+        float yoff = 0;
+        for (int y = 0 ; y < rows ; y++) {
+          float theta = 0;
+          float dist = 0 ;
+          if(pattern == PERLIN) {
+            theta = map(noise(xoff,yoff),0,1,0,TWO_PI);
+            dist = noise(xoff,yoff);
+          } if(pattern == CHAOS) {
+            theta = random(TWO_PI);
+            dist = random(1);
+          } 
+
+          // Polar to cartesian coordinate
+          float xx = cos(theta) ;
+          float yy = sin(theta) ;
+          float zz = 0 ;
+          float ww = dist ;
+          field[x][y] = Vec4(xx,yy,zz,ww); 
+          field_save[x][y] = Vec4(xx,yy,zz,ww);
+
+          sum_activities += field[x][y].sum() ;     
+          yoff += .1;
+        }
+        xoff += .1;
+      }
+    }    
+  }
+
+
+  private void set_field_img_2D() {
+    src.loadPixels();
     for(int x = 0 ; x < cols ; x++) {
       for(int y = 0 ; y < rows ; y++) {
-        int pix = img.get(x *resolution, y *resolution);
+        int pix = src.get(x *resolution, y *resolution);
 
         float theta_x = map_pix(sort.x,pix,0,TAU);
         float theta_y = map_pix(sort.y,pix,0,TAU);
         float vel = map_pix(sort.w,pix,0,1);
 
         // Polar to cartesian coordinate
-        field[x][y] = Vec4(cos(theta_x),sin(theta_y),0,vel);
-        field_original[x][y] = Vec4(cos(theta_x),sin(theta_y),0,vel);    
+        float xx = cos(theta_x) ;
+        float yy = sin(theta_y) ;
+        float zz = 0 ;
+        float ww = vel ;
+        field[x][y] = Vec4(xx,yy,zz,ww); 
+        field_save[x][y] = Vec4(xx,yy,zz,ww);     
 
         sum_activities += field[x][y].sum() ;
       }
     }
   }
+
+
+
+
 
 
   private float map_pix(int component_color, int pix, float min, float max) {
@@ -331,10 +355,10 @@ public class Force_field implements Rope_Constants {
   work directly on the field
   */
   public void preserve_field() {
-    if(field != null && field_original != null) {
+    if(field != null && field_save != null) {
       for (int x = 0 ; x < cols ; x++) {
         for (int y = 0 ; y < rows ; y++) {
-          field[x][y].set(field_original[x][y]);
+          field[x][y].set(field_save[x][y]);
         }
       }
     }
@@ -346,7 +370,7 @@ public class Force_field implements Rope_Constants {
   * map velocity
   */
   public void map_velocity(float start1, float stop1, float start2, float stop2) {
-    if(field != null && field_original != null) {
+    if(field != null && field_save != null) {
       for (int x = 0 ; x < cols ; x++) {
         for (int y = 0 ; y < rows ; y++) {
           map_velocity(x,y,start1,stop1,start2,stop2);
@@ -363,8 +387,7 @@ public class Force_field implements Rope_Constants {
   }
 
   public void map_velocity(iVec coord, float start1, float stop1, float start2, float stop2) {
-    if(field != null && field_original != null && coord.x < cols && coord.y < rows) {
-      // field[coord.x][coord.y].set(field_original[coord.x][coord.y]);
+    if(field != null && field_save != null && coord.x < cols && coord.y < rows) {
       field[coord.x][coord.y].w = map(field[coord.x][coord.y].w,start1,stop1,start2,stop2);
     } else {
       if(coord.x >= cols || coord.y >= rows || coord.x < 0 || coord.y < 0) {
@@ -378,7 +401,7 @@ public class Force_field implements Rope_Constants {
   * mult velocity
   */
   public void mult_velocity(float mult) {
-    if(field != null && field_original != null) {
+    if(field != null && field_save != null) {
       for (int x = 0 ; x < cols ; x++) {
         for (int y = 0 ; y < rows ; y++) {
           mult_velocity(x,y,mult);
@@ -395,7 +418,7 @@ public class Force_field implements Rope_Constants {
   }
 
   public void mult_velocity(iVec coord, float mult) {
-    if(field != null && field_original != null && coord.x < cols && coord.y < rows) {
+    if(field != null && field_save != null && coord.x < cols && coord.y < rows) {
       // field[coord.x][coord.y].set(field_original[coord.x][coord.y]);
       field[coord.x][coord.y].w *= mult;
     } else {
@@ -462,10 +485,6 @@ public class Force_field implements Rope_Constants {
     for(Spot s : spot_list) {
       s.area(radius_spot_detection);
     }
-  }
-
-  public int get_spot_area_level() {
-    return spot_area_level ;
   }
 
   /**
@@ -585,14 +604,170 @@ public class Force_field implements Rope_Constants {
       System.err.println("void set_spot_tesla(): No Spot match with your target, you must add new spot in the list before set it");
     }
   }
+
+
+  /*
+  * get
+  */
+  public int get_spot_area_level() {
+    return spot_area_level ;
+  }
+
+  public int get_spot_num() {
+    if(spot_list != null) return spot_list.size();
+    else return -1;
+  }
+
+  public int get_spot_south_num() {
+    if(spot_mag_south_list != null) return spot_mag_south_list.size();
+    else return -1;
+  }
+
+  public int get_spot_north_num() {
+    if(spot_mag_north_list != null) return spot_mag_north_list.size();
+    else return -1;
+  }
+
+  public Vec2 [] get_spot_pos() {
+    Vec2 [] pos = new Vec2[spot_list.size()] ;
+    for(int i = 0 ; i < spot_list.size() ; i++) {
+      Spot s = spot_list.get(i) ;
+      pos[i] = Vec2(s.get_pos()).copy();
+      pos[i].add(Vec2(canvas_pos));
+    }
+    return pos;  
+  }
+
+  public Vec2 get_spot_pos(int which_one) {
+    if(spot_list != null && spot_list.size() > which_one) {
+      Spot spot = spot_list.get(which_one);
+      return Vec2(spot.get_pos()).add(Vec2(canvas_pos));
+    } else return null ;
+  }
+
+  public Vec2 [] get_spot_raw_pos() {
+    Vec2 [] pos = new Vec2[spot_list.size()] ;
+    for(int i = 0 ; i < spot_list.size() ; i++) {
+      Spot s = spot_list.get(i) ;
+      pos[i] = Vec2(s.get_raw_pos()).copy();
+    }
+    return pos;  
+  }
+
+  public Vec2 get_spot_raw_pos(int which_one) {
+    if(spot_list != null && spot_list.size() > which_one) {
+      Spot spot = spot_list.get(which_one);
+      return Vec2(spot.get_raw_pos()).copy();
+    } else return null ;
+  }
+
+
+  /**
+  * get spot size
+  */
+  public Vec2 [] get_spot_size() {
+    Vec2 [] size = new Vec2[spot_list.size()] ;
+    for(int i = 0 ; i < spot_list.size() ; i++) {
+      Spot s = spot_list.get(i) ;
+      size[i] = Vec2(s.get_size()).copy() ;
+    }
+    return size;
+  }
+
+  public Vec2 get_spot_size(int which_one) {
+    if(spot_list != null && spot_list.size() > which_one) {
+      Spot spot = spot_list.get(which_one);
+      return Vec2(spot.get_size());
+    } else return null ;
+  }
+
+  public int [] get_spot_tesla() {
+    int [] tesla = new int[spot_list.size()] ;
+    for(int i = 0 ; i < spot_list.size() ; i++) {
+      Spot s = spot_list.get(i) ;
+      tesla[i] = s.get_tesla() ;
+    }
+    return tesla;
+  }
+
+  public int get_spot_tesla(int which_one) {
+    if(spot_list != null && spot_list.size() > which_one) {
+      Spot spot = spot_list.get(which_one);
+      return spot.get_tesla();
+    } else {
+      System.err.println("No Spot match with your target, try another one! charge '0' is used");
+      return 0 ;
+    }
+  }
+
+  public float [] get_spot_mass() {
+    float [] mass = new float[spot_list.size()] ;
+    for(int i = 0 ; i < spot_list.size() ; i++) {
+      Spot s = spot_list.get(i) ;
+      mass[i] = s.get_mass() ;
+    }
+    return mass;
+  }
+
+  public float get_spot_mass(int which_one) {
+    if(spot_list != null && spot_list.size() > which_one) {
+      Spot spot = spot_list.get(which_one);
+      return spot.get_mass();
+    } else {
+      System.err.println("No Spot match with your target, try another one! mass '1' is used");
+      return 1 ;
+    }
+  }
+  
+  /**
+  * return arraylist spot$
+  * @return ArrayList
+  */
+  public ArrayList<Spot> get_list() {
+    if(spot_list != null) return spot_list ; else return null;
+  }
+
+  public ArrayList<Spot> get_list_south() {
+    if(spot_mag_south_list != null) return spot_mag_south_list; else return null;
+  }
+
+  public ArrayList<Spot> get_list_north() {
+    if(spot_mag_north_list != null) return spot_mag_north_list; else return null;
+  }
+
+  public ArrayList<Spot> get_list_neutral() {
+     if(spot_mag_neutral_list != null) return spot_mag_neutral_list; else return null;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
 
 
 
-
   /**
-  set canvas
+  CANVAS
   v 0.0.2
+  */
+  /**
+  *set canvas
   */
   public void set_canvas(iVec2 pos, iVec2 size) {
     set_canvas_pos(pos);
@@ -629,6 +804,36 @@ public class Force_field implements Rope_Constants {
     this.reverse_is = reverse_is ;
   }
 
+  /*
+  * get canvas
+  */
+  public iVec2 get_canvas() {
+    return canvas;
+  }
+
+  public iVec2 get_canvas_pos() {
+    if(canvas_pos == null) return iVec2(); else return canvas_pos;
+  }
+
+  public int get_resolution() {
+    return resolution;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   /**
   set calm down
   v 0.0.1
@@ -646,22 +851,22 @@ public class Force_field implements Rope_Constants {
   }
   */
 
+
+
+
+
+
+
+
+
+
+
   /**
   set mass field
   */
   public void set_mass_field(float mass_field) {
     this.mass_field = mass_field ;
   }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -675,7 +880,6 @@ public class Force_field implements Rope_Constants {
     if(spot_mag_north_list != null) spot_mag_north_list.clear();
     if(spot_mag_south_list != null) spot_mag_south_list.clear();
     if(spot_mag_neutral_list != null) spot_mag_neutral_list.clear();
-
   }
 
   public void ref_spot(int which_one) {
@@ -685,12 +889,6 @@ public class Force_field implements Rope_Constants {
   public void ref_spot() {
     reset_ref_spot_pos_list_is.set(0,true);
   }
-
-
-
-
-
-
 
   /**
   * reset force field and the Navier_strokr stable fuild if this one is active
@@ -742,7 +940,7 @@ public class Force_field implements Rope_Constants {
   */
   public void refresh_sorting_channel(int... sorting_channel) {
     sorting_channel(sorting_channel);
-    set_field_img_2D(this.src);
+    set_field_img_2D();
   }
   
 
@@ -1075,7 +1273,6 @@ public class Force_field implements Rope_Constants {
     return NZ;
   }
 
-
   public int get_cols() {
     return cols;
   }
@@ -1084,172 +1281,36 @@ public class Force_field implements Rope_Constants {
   }
 
 
-  /**
-  get spot
-  v 0.1.0
-  */
-  public int get_spot_num() {
-    if(spot_list != null) return spot_list.size();
-    else return -1;
-  }
 
-  public int get_spot_south_num() {
-    if(spot_mag_south_list != null) return spot_mag_south_list.size();
-    else return -1;
-  }
 
-  public int get_spot_north_num() {
-    if(spot_mag_north_list != null) return spot_mag_north_list.size();
-    else return -1;
-  }
-  /**
-  * get spot position
-  */
-  public Vec2 [] get_spot_pos() {
-    Vec2 [] pos = new Vec2[spot_list.size()] ;
-    for(int i = 0 ; i < spot_list.size() ; i++) {
-      Spot s = spot_list.get(i) ;
-      pos[i] = Vec2(s.get_pos()).copy();
-      pos[i].add(Vec2(canvas_pos));
-    }
-    return pos;  
-  }
-
-  public Vec2 get_spot_pos(int which_one) {
-    if(spot_list != null && spot_list.size() > which_one) {
-      Spot spot = spot_list.get(which_one);
-      return Vec2(spot.get_pos()).add(Vec2(canvas_pos));
-    } else return null ;
-  }
-  /**
-  * get raw spot posotion
-  */
-  public Vec2 [] get_spot_raw_pos() {
-    Vec2 [] pos = new Vec2[spot_list.size()] ;
-    for(int i = 0 ; i < spot_list.size() ; i++) {
-      Spot s = spot_list.get(i) ;
-      pos[i] = Vec2(s.get_raw_pos()).copy();
-    }
-    return pos;  
-  }
-
-  public Vec2 get_spot_raw_pos(int which_one) {
-    if(spot_list != null && spot_list.size() > which_one) {
-      Spot spot = spot_list.get(which_one);
-      return Vec2(spot.get_raw_pos()).copy();
-    } else return null ;
-  }
 
 
   /**
-  * get spot size
-  */
-  public Vec2 [] get_spot_size() {
-    Vec2 [] size = new Vec2[spot_list.size()] ;
-    for(int i = 0 ; i < spot_list.size() ; i++) {
-      Spot s = spot_list.get(i) ;
-      size[i] = Vec2(s.get_size()).copy() ;
-    }
-    return size;
-  }
-
-  public Vec2 get_spot_size(int which_one) {
-    if(spot_list != null && spot_list.size() > which_one) {
-      Spot spot = spot_list.get(which_one);
-      return Vec2(spot.get_size());
-    } else return null ;
-  }
-
-  /**
-  * get spot tesla
-  */
-  public int [] get_spot_tesla() {
-    int [] tesla = new int[spot_list.size()] ;
-    for(int i = 0 ; i < spot_list.size() ; i++) {
-      Spot s = spot_list.get(i) ;
-      tesla[i] = s.get_tesla() ;
-    }
-    return tesla;
-  }
-
-  public int get_spot_tesla(int which_one) {
-    if(spot_list != null && spot_list.size() > which_one) {
-      Spot spot = spot_list.get(which_one);
-      return spot.get_tesla();
-    } else {
-      System.err.println("No Spot match with your target, try another one! charge '0' is used");
-      return 0 ;
-    }
-  }
-
-  /**
-  * get spot ion
-  */
-  public float [] get_spot_mass() {
-    float [] mass = new float[spot_list.size()] ;
-    for(int i = 0 ; i < spot_list.size() ; i++) {
-      Spot s = spot_list.get(i) ;
-      mass[i] = s.get_mass() ;
-    }
-    return mass;
-  }
-
-  public float get_spot_mass(int which_one) {
-    if(spot_list != null && spot_list.size() > which_one) {
-      Spot spot = spot_list.get(which_one);
-      return spot.get_mass();
-    } else {
-      System.err.println("No Spot match with your target, try another one! mass '1' is used");
-      return 1 ;
-    }
-  }
-  
-  /**
-  * return arraylist spot$
-  * @return ArrayList
-  */
-  public ArrayList<Spot> get_list() {
-    if(spot_list != null) return spot_list ; else return null;
-  }
-
-  public ArrayList<Spot> get_list_south() {
-    if(spot_mag_south_list != null) return spot_mag_south_list; else return null;
-  }
-
-  public ArrayList<Spot> get_list_north() {
-    if(spot_mag_north_list != null) return spot_mag_north_list; else return null;
-  }
-
-  public ArrayList<Spot> get_list_neutral() {
-     if(spot_mag_neutral_list != null) return spot_mag_neutral_list; else return null;
-  }
-
-
-  /**
-  get canvas
-  v 0.0.1
-  */
-  public iVec2 get_canvas() {
-    return canvas;
-  }
-
-  public iVec2 get_canvas_pos() {
-    if(canvas_pos == null) return iVec2(); else return canvas_pos;
-  }
-
-  public int get_resolution() {
-    return resolution;
-  }
-  /**
-  get type
+  get type and pattern 
   */
   /**
-  * return the type of force field is used
+  * return type force field is used
   * @return int
   */
   public int get_type() {
     return type;
   }
+
+  /**
+  * return patttern force field is used
+  * @return int
+  */
+  public int get_pattern() {
+    return pattern;
+  }
+  /**
+  * return super type force field is used
+  * @return int
+  */
+  public int get_super_type() {
+    return super_type;
+  }
+
 
   /**
   is 

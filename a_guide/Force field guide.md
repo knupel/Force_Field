@@ -6,7 +6,7 @@ FORCE FIELD class
 --
 Constructor
 --
-Force_field(int resolution, iVec2 canvas_pos, iVec2 canvas, int type);
+Force_field(int resolution, iVec2 canvas_pos, iVec2 canvas, int type, int pattern);
 
 Force_field(int resolution, iVec2 canvas_pos, PImage img, int component_sorting_color_velocity);
 component_sorting_color_velocity can be RED, GREEN, BLUE, HUE, SATURATION, BRIGHTNESS or ALPHA
@@ -58,6 +58,13 @@ iVec2 get_canvas_pos();
 int get_resolution();
 
 int get_type();
+>return the type of DYNAMIC of Force_field : MAGNETIC, FLUID, if it's not a DYNAMIC one type returned is STATIC like the the super_type
+
+int get_super_type();
+>return if the Force_field is from STATIC or DYNAMIC 
+
+int get_pattern();
+>return the pattern, like BLANK, PERLIN...
 
 PImage get_tex_velocity();
 >return black and white image of the velocity

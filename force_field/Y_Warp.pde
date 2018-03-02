@@ -437,7 +437,7 @@ class Warp {
   /**
   WARP GPU
   Graphic Processor Unit version of fluid image / GLSL
-  v 0.0.3
+  v 0.0.4
   */
   // void warp_image_graphic_processor(PGraphics result, PImage tex, PImage inc, Vec4 ratio, Force_field ff, float intensity) {
   private void warp_image_graphic_processor(PGraphics result, PImage tex, Force_field ff, float intensity) {
@@ -459,7 +459,11 @@ class Warp {
     rope_warp_shader.set("filter_is",shader_warp_filter); // need give the commande to reverse the y axis in the glsl frag
 
     // use to map the direction on PI or TWO_PI, strangly is not a same result for static field creation
-    if(ff.get_type() == IMAGE || ff.get_type() == r.CHAOS || ff.get_type() == r.PERLIN) {
+    /**
+    The problem can come when we use pattern not blank with a dynamic type of force field 
+    */
+    if(ff.get_super_type() == r.STATIC) {
+    // if(ff.get_type() == IMAGE || ff.get_type() == r.CHAOS || ff.get_type() == r.PERLIN) {
       rope_warp_shader.set("static_field_is",true); 
     } else {
       rope_warp_shader.set("static_field_is",false); 
