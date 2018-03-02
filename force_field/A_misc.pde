@@ -20,6 +20,13 @@ void global_reset() {
   } else {
     build_ff(force_field.get_type(), get_resultion_ff());
   }
+
+  if(force_field.get_type() == r.FLUID) {
+    println("je passe par là");
+    set_full_reset_field(false);
+    set_check_gui_dynamic_mag_grav();
+  }
+
   update_gui_value(true);
   if(force_field.get_type() == r.MAGNETIC || force_field.get_type() == r.GRAVITY || force_field.get_type() == r.FLUID) {
     force_field.reset();
@@ -277,7 +284,7 @@ display
 void display_vehicle() {
   display_result_vehicle = !!((display_result_vehicle == false));
   if(display_vehicle_is()) {
-    get_check_gui_main_display();
+    set_check_gui_main_display();
   }
 }
 
@@ -295,7 +302,7 @@ void display_vehicle(boolean is) {
 void display_warp() {
   display_result_warp = !!((display_result_warp == false));
   if(display_warp_is()) {
-    get_check_gui_main_display();
+    set_check_gui_main_display();
   }
 }
 
@@ -320,7 +327,7 @@ boolean display_bg_is() {
 
 void display_bg() {
   display_bg = !!((display_bg == false));
-  get_check_gui_main_display();
+  set_check_gui_main_display();
 }
 
 
@@ -374,6 +381,11 @@ void diaporama_is() {
 
 void set_fit_image(boolean state) {
   fullfit_image_is = state;
+}
+
+
+void set_full_reset_field(boolean state) {
+  full_reset_field_is = state;
 }
 
 

@@ -20,6 +20,7 @@ boolean pause_is ;
 boolean use_leapmotion = false;
 
 boolean fullScreen_is = false;
+boolean full_reset_field_is = false;
 boolean change_size_window_is = false;
 boolean fullfit_image_is = true;
 

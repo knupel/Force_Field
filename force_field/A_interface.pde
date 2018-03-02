@@ -12,6 +12,10 @@ ControlP5 gui_static_img_2D,gui_static_img_3D;
 
 ControlP5 gui_static_generative;
 
+
+ControlP5 gui_dynamic_mag_grav;
+CheckBox check_gui_dynamic_mag_grav_reset ;
+
 ControlP5 gui_dynamic_fluid;
 ControlP5 gui_dynamic_mouse, gui_main_movie;
 
@@ -20,7 +24,7 @@ ControlP5 gui_vehicle;
 
 // global slider
 
-
+boolean gui_fullreset_field_is = false;
 boolean abs_cycling = true;
 boolean gui_resize_window = false;
 boolean gui_fullfit_image = true;
@@ -61,12 +65,16 @@ void interface_setup(Vec2 pos, Vec2 size) {
 
   // menu dynamic field
   gui_dynamic_fluid(space_interface, max, slider_width, 28.5, TOP, font_gui);
+  gui_dynamic_mag_grav(space_interface, max, slider_width, 28.5, TOP, font_gui);
+
   gui_dynamic_mouse(space_interface, max, slider_width, 32, TOP, font_gui);
 
   // vehicle
   gui_vehicle(space_interface, max, slider_width, 40.5, TOP, font_gui);
 
 }
+
+
 
 
 
@@ -220,6 +228,14 @@ void gui_dynamic_fluid(int space, int max, int w, float start_pos, int from, PFo
 }
 
 
+void gui_dynamic_mag_grav(int space, int max, int w, float start_pos, int from, PFont font) {
+	gui_dynamic_mag_grav = new ControlP5(this);
+
+	check_gui_dynamic_mag_grav_reset = gui_dynamic_mag_grav.addCheckBox("spot_setting").setPosition(10,pos_slider_y(space, start_pos +0, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2).addItem("full_reset_field",1);
+	if(full_reset_field_is) check_gui_dynamic_mag_grav_reset.activate(0);
+}
+
+
 
 /*
 * generative seting for CHAOS and PERLIN field
@@ -370,6 +386,7 @@ void update_gui_value(boolean update_is) {
   set_sorting_channel_ff_2D(floor(x_sort), floor(y_sort), floor(vel_sort));
 
   set_resize_window(gui_resize_window);
+  set_full_reset_field(gui_fullreset_field_is);
   set_fit_image(gui_fullfit_image);
 
   display_bg(gui_display_bg);
@@ -428,7 +445,44 @@ public void controlEvent(ControlEvent theEvent) {
   if(theEvent.isFrom(check_gui_main_channel)) {
 		if(check_gui_main_channel.getArrayValue(0) == 1) abs_cycling = true ; else abs_cycling = false ;
   } 
+
+  if(theEvent.isFrom(check_gui_dynamic_mag_grav_reset)) {
+		if(check_gui_dynamic_mag_grav_reset.getArrayValue(0) == 1) gui_fullreset_field_is = true ; else gui_fullreset_field_is = false ;
+  } 
 }
+
+
+
+/**
+set controller
+*/
+void set_check_gui_main_display() {
+	if(display_bg_is()) {
+		check_gui_main.activate(2);
+	} else {
+		println("disable display");
+		check_gui_main.deactivate(2);
+	}
+}
+
+void set_check_gui_dynamic_mag_grav() {
+	if(full_reset_field_is) {
+		check_gui_dynamic_mag_grav_reset.activate(0);
+	} else {		
+		check_gui_dynamic_mag_grav_reset.deactivate(0);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -439,14 +493,8 @@ void get_controller_gui() {
 	get_controller_movie();
 }
 
-void get_check_gui_main_display() {
-	if(display_bg_is()) {
-		check_gui_main.activate(2);
-	} else {
-		println("disable");
-		check_gui_main.deactivate(2);
-	}
-}
+
+
 
 
 
@@ -726,10 +774,12 @@ void info_line(String s, int pos_x, int space, int rank, int from) {
 void hide_all_gui() {
 	gui_main.hide();
 
-	gui_dynamic_fluid.hide();
 	gui_static_img_2D.hide();
 	gui_static_img_3D.hide();
 	gui_static_generative.hide();
+
+	gui_dynamic_fluid.hide();
+	gui_dynamic_mag_grav.hide();
 
 	gui_dynamic_mouse.hide();
 	gui_main_movie.hide();
@@ -742,6 +792,7 @@ void show_gui(boolean mouse_is, Force_field ff) {
 	if(ff.get_type() == IMAGE) gui_static_img_2D.show(); else gui_static_img_2D.hide();
 
 	if(ff.get_type() == r.FLUID) gui_dynamic_fluid.show(); else gui_dynamic_fluid.hide();
+	if(ff.get_type() == r.GRAVITY || ff.get_type() == r.MAGNETIC) gui_dynamic_mag_grav.show(); else gui_dynamic_mag_grav.hide();
 	if(ff.get_type() == r.CHAOS || ff.get_type() == r.PERLIN || ff.get_type() == IMAGE) gui_static_generative.show(); else gui_static_generative.hide();
 
 
