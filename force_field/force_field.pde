@@ -47,8 +47,8 @@ void settings() {
     // fullScreen(P2D,1);
     fullScreen(P2D);      
   } else {
-    // size(1200,750,P2D);
-    size(800,800,P2D);
+    size(1200,750,P2D);
+    // size(800,800,P2D);
     //size(1600,870,P2D); // 2eme écran macbook
     // size(1900,1200,P2D); // 2 recopie écran macbook
   }

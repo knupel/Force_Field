@@ -16,8 +16,8 @@ public interface Rope_Constants {
 	static final float EULER = 2.718281828459045235360287471352; // Euler number constant
 	static final double G    = 0.00000000006693; // last gravity constant
 
-	static final int HUE = 50 ;
-	static final int SATURATION = 51 ;
+	static final int HUE = 50;
+	static final int SATURATION = 51;
 	static final int BRIGHTNESS = 52;
 
 	static final int ALPHA = 100 ;

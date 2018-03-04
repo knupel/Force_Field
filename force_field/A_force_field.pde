@@ -50,7 +50,6 @@ boolean ff_is() {
 change type
 */
 int which_ff = 0 ;
-
 void change_type_ff() {
   which_ff += 1 ;
   if(which_ff > 5) which_ff = 0 ;
@@ -99,24 +98,13 @@ void set_sorting_channel_ff_2D(int dx_sort_channel, int dy_sort_channel, int vel
   sorting_img_ff_2D[1] = get_channel_component(dy_sort_channel) ;
   sorting_img_ff_2D[2] = get_channel_component(vel_sort_channel) ;
 }
-/*
-int ref_sorting_channel_ff = 0 ;
-boolean sort_channel_is() {
-  boolean result = true;
-  int sum = 0 ;
-  for(int i: get_sorting_channel_ff_2D()) sum+=i;
-  if(ref_sorting_channel_ff != sum) result = false ; else result = true; 
-  ref_sorting_channel_ff = sum;
-  return result ;
-}
-*/
 
 int [] get_sorting_channel_ff_2D() {
   return sorting_img_ff_2D ;
 }
 
 int get_channel_component(int value) {
-  int i = r.RED ;
+  int i = r.RED;
   switch(value) {
     case 0: i = r.RED; break;
     case 1: i = r.GREEN; break;
@@ -125,9 +113,9 @@ int get_channel_component(int value) {
     case 4: i = r.SATURATION; break;
     case 5: i = r.BRIGHTNESS; break;
     case 6: i = r.ALPHA; break;
-    default : i = r.RED ;
+    default : i = r.RED;
   }
-  return i ;
+  return i;
 }
 
 
@@ -168,7 +156,6 @@ int num_spot_ff_ref ;
 int area_level_spot_ff_ref ;
 void num_spot_ff(int num, int level) {
   if(force_field != null) {
-   // if(force_field.get_type() == r.FLUID || force_field.get_type() == r.MAGNETIC || force_field.get_type() == r.GRAVITY) {
     if(force_field.get_super_type() == r.DYNAMIC) {
       if(num != num_spot_ff_ref || area_level_spot_ff_ref != level) {
         force_field.clear_spot();
@@ -204,7 +191,6 @@ void build_ff(int type_ff, int pattern_ff, int resolution, PImage src, int... so
   iVec2 canvas_pos = iVec2();
   if(src != null) {
     int offset = resolution;
-    // int offset = 0;
     canvas = iVec2(src.width +offset, src.height +offset);
     canvas_pos = iVec2(0 -offset/2);
   } else {
@@ -314,7 +300,8 @@ void update_ff() {
   if(spot_list_is == null) { 
     update_spot_ff_is(true);
   }
-
+  
+  // update spot
   if(force_field != null) {
     if(force_field.get_type() == r.FLUID) {
       update_ff_fluid();
@@ -323,13 +310,18 @@ void update_ff() {
     } else if(force_field.get_type() == r.MAGNETIC) {
       update_ff_magnetic();
     } 
-    if(full_reset_field_is) {
-      force_field.reset() ;
-    } else {
-      force_field.reset_spot_area();
+    
+    // update field
+    if(force_field.activity_is()) {
+      if(full_reset_field_is) {
+        force_field.reset() ;
+      } else {
+        force_field.reset_spot_area();
+      }
+      force_field.update();
     }
 
-    force_field.update();
+
   } else {
     printErrTempo(240, "the force field is not init, maybe the media is not loaded ?");
   } 
@@ -364,11 +356,6 @@ void update_ff_fluid() {
   }
 }
 
-
-
-
-
-
 /**
 MAGNETIC CASE
 */
@@ -386,17 +373,6 @@ void update_ff_magnetic() {
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
 
 /**
 GRAVITY CASE

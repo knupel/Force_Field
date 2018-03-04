@@ -73,6 +73,17 @@ PImage get_tex_direction();
 >return black and white image of the direction
 
 
+boolean activity_is(float threshold) {
+>return true if the field has been changed
+>parameter: float Threshold is step where the activity is true
+
+boolean activity_is() {
+>return true if the field has been changed
+
+public float get_activity()
+>return the sum of vector field for each frame count
+
+
 
 SET
 --
