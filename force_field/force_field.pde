@@ -30,6 +30,8 @@ boolean display_result_vehicle = false;
 
 boolean hide_menu_bar = false;
 
+int time_count_gui;
+
 
 
 
@@ -114,6 +116,7 @@ DRAW
 
 */
 void draw() {
+
   if(hide_menu_bar) PApplet.hideMenuBar();
   // cursor(CROSS);
   if(use_leapmotion) leap_update();
@@ -125,9 +128,17 @@ void draw() {
   }
 
   boolean run_spot_is = true;
-  if(pause_is && !mousePressed) run_spot_is = false ;
-
-  // spot 
+  // if(pause_is) run_spot_is = false;
+  if(pause_is && !mousePressed) {
+    run_spot_is = false;  
+  } 
+    
+  if(pause_is) {
+    //
+  } else {
+    time_count_gui++;
+  }
+  // spot coord
   if(run_spot_is) {
     num_spot_ff(get_num_spot_gui(),get_range_spot_gui()); 
     if(use_leapmotion) {
@@ -136,13 +147,15 @@ void draw() {
     } else {
       force_field_spot_condition(true);
       if(!inside_gui){
-        force_field_spot_coord(iVec2(mouseX,mouseY),mousePressed);
+        force_field_spot_coord(iVec2(mouseX,mouseY),mousePressed,pause_is);
       } else {
-        force_field_spot_coord(iVec2(mouseX,mouseY),false);
+        force_field_spot_coord(iVec2(mouseX,mouseY),false,pause_is);
       }
     }
+  }
 
-
+  // spot param
+  if(run_spot_is) {
     if(get_type_ff() == r.FLUID) {
       //
     } else if(get_type_ff() == r.MAGNETIC) {
@@ -152,7 +165,7 @@ void draw() {
       force_field_spot_diam();
       force_field_spot_mass();
     } 
-    update_ff(); 
+    if(!inside_gui) update_ff(); 
   }
 
 
@@ -175,10 +188,12 @@ void draw() {
 
   if(display_warp_is()) {
     tint(g.colorModeX,g.colorModeY,g.colorModeZ,get_alpha_warp());
-    warp_draw(get_tempo_refresh_gui(), get_rgba_warp_mapped_gui(), get_power_cycling_gui());
+    warp_draw(get_tempo_refresh_gui(), get_rgba_warp_mapped_gui(), get_power_cycling_gui(), pause_is);
   }
   if(display_vehicle_is()) {
-    update_vehicle(get_ff(),get_velocity_vehicle_gui());
+    if(!pause_is) {
+      update_vehicle(get_ff(),get_velocity_vehicle_gui());
+    }
     show_vehicle(get_rgb_vehicle_gui(), get_alpha_vehicle());
   } 
 
@@ -210,7 +225,7 @@ void draw() {
   interface gui
   */
   get_controller_gui();
-  update_gui_value(false);
+  update_gui_value(false, time_count_gui);
   interface_display(use_leapmotion, force_field);
 
   if(!ff_is()) {

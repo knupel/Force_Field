@@ -174,34 +174,17 @@ warp draw
 /*
 main method
 */
-void warp_draw(int tempo, Vec4 rgba_mapped, float intensity) {
+
+void warp_draw(int tempo, Vec4 rgba_mapped, float intensity, boolean refresh) {
   if(warp_media_is()) {
     //background_rope(0, alpha);
     if(frameCount%tempo == 0 ) warp_media_display();
     if(warp.library_size() > 0 && force_field != null) {
-      warp_show(rgba_mapped, intensity);
+      warp_show(rgba_mapped, intensity, refresh);
       check_current_img_size_against_display();
     }
-
-    /**
-    animation
-    */
-    // set_size(myMovie.width, myMovie.height);
-    // animation_PGraphics(pg) ;
-    // animation() ;
-
-    // warp.set_image(pg, "truc"); 
-    /**
-    SHOW FORCE FIELD
-     */
-    /*
-    update_vehicle(force_field);
-    show_vehicle();
-    */    
-    // init_warp_is = false ;
   }
   init_warp_is = false ;
-  // end of security loaded media 
 }
 
 /*
@@ -224,22 +207,30 @@ void warp_media_display() {
   }
 }
 
-
-void warp_show(Vec4 channel_warp_rgb_mapped, float intensity_warp) {
+Vec4 ref_rgba_mapped ;
+void warp_show(Vec4 channel_warp_rgb_mapped, float intensity_warp, boolean keep) {
   /**
   SHOW IMAGE WARPED via FORCE FIELD
   */
-  //Vec4 c = Vec4(channel_warp_rgb_mapped,1);
-  warp.refresh(channel_warp_rgb_mapped);
+  boolean new_gui_value = false ;
+  if(ref_rgba_mapped == null || !ref_rgba_mapped.compare(channel_warp_rgb_mapped)) {
+    new_gui_value = true;
+    if(ref_rgba_mapped == null) ref_rgba_mapped = channel_warp_rgb_mapped.copy();
+    else ref_rgba_mapped.set(channel_warp_rgb_mapped);
+  }
+  if(!keep || new_gui_value) {
+    warp.refresh(channel_warp_rgb_mapped);
+    warp.shader_init();
+    warp.shader_filter(shader_filter_is);
+    warp.shader_mode(0);
+  }
   // refresh_warp(channel_rgba);
  // warp_post_effect_test();
  
   /**
   SHADER ENGINE
   */
-  warp.shader_init();
-  warp.shader_filter(shader_filter_is);
-  warp.shader_mode(0);
+
 
   //float intensity_warp = 0.9 ;
   if(!init_warp_is) {
@@ -282,7 +273,7 @@ void warp_post_effect_test() {
 
 void refresh_warp(Vec4 channel_rgba) {
   
-  Vec4 rgba = Vec4();
+  // Vec4 rgba = Vec4();
   /*
   float rgba_x = abs(sin(frameCount * .001));
   float rgba_y = abs(cos(frameCount * .002));

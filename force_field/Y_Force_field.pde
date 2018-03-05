@@ -3,7 +3,7 @@
 Force Field
 2017-2018
 http://stanlepunk.xyz/
-v 1.10.0
+v 1.10.1
 */
 
 /**
@@ -24,8 +24,8 @@ http://www.dgp.toronto.edu/people/stam/reality/Research/pdf/GDC03.pdf
 */
 
 /**
-CONSTANT used by the class Force_field
-int FLUID, CHAOS, PERLIN, HOLE, MAGNETIC, IMAGE
+CONSTANTE used by the class Force_field
+int FLUID, CHAOS, PERLIN, GRAVITY, MAGNETIC, IMAGE
 */
 
 /**
@@ -1013,7 +1013,7 @@ public class Force_field implements Rope_Constants {
     } else if(type == MAGNETIC) {
       count_spot_mag();
       update_grav_mag_field();
-    } else {
+    } else if(super_type == STATIC) {
       convert_field_to_texture();
     }
   }

@@ -26,8 +26,7 @@ void global_reset() {
     set_check_gui_dynamic_mag_grav();
   }
 
-  update_gui_value(true);
-  // if(force_field.get_type() == r.MAGNETIC || force_field.get_type() == r.GRAVITY || force_field.get_type() == r.FLUID) {
+  update_gui_value(true,time_count_gui);
   if(force_field.get_super_type() == r.DYNAMIC) {
     force_field.reset();
   }
@@ -678,7 +677,7 @@ void show_force_field(Force_field ff, float scale, boolean show_intensity_is) {
         Vec2 pos = Vec2(x *ff.get_resolution(), y *ff.get_resolution());
         // pos.add(offset);
         Vec2 dir = Vec2(ff.field[x][y].x,ff.field[x][y].y);
-        if(ff.type != r.MAGNETIC && ff.type != r.FLUID && ff.type != r.GRAVITY) {
+        if(ff.get_super_type() == r.STATIC) {
           dir.mult(ff.field[x][y].w);
           // pos.sub(offset);
         } else {

@@ -145,6 +145,20 @@ abstract class Pix implements Rope_Constants {
 
 
 
+  public void position(Vec pos) {
+    this.pos.set(pos);
+  }
+
+  public void position(int x, int y){
+    this.pos.set(x,y,0);
+  }
+  
+  public void position(int x, int y, int z){
+    this.pos.set(x,y,z);
+  }
+
+
+
 
 
 
@@ -367,7 +381,7 @@ abstract class Pix implements Rope_Constants {
 
 /**
 CLOUD
-v 0.2.0
+v 0.2.1
 */
 class Cloud extends Pix implements Rope_Constants {
   int num ;
@@ -524,6 +538,10 @@ class Cloud extends Pix implements Rope_Constants {
     }
   }
 
+  public void radius(float radius) {
+    this.radius = radius;
+  }
+
   public void beat(int n) {
     this.beat = beat_ref *n ;
   }
@@ -675,6 +693,7 @@ class Cloud extends Pix implements Rope_Constants {
 
 /**
 CLOUD 2D
+v 0.1.0
 */
 class Cloud_2D extends Cloud {
  
@@ -700,12 +719,17 @@ class Cloud_2D extends Cloud {
   }
 
 
-  public void update(Vec pos, float radius) {
-    this.pos.set(pos) ;
-    this.radius = radius ;
+  
+  public void update() {
     cartesian_pos_2D(dist);
-    distribution_surface_cartesian() ;
+    distribution_surface_cartesian();
   }
+
+  public void update(Vec pos) {
+    position(pos);
+    update();
+  }
+
 
   public void show() {
     give_points_to_costume_2D();
@@ -890,15 +914,18 @@ class Cloud_3D extends Cloud {
     this.polar_is = polar_is;
   }
 
-  public void update(Vec3 pos, float radius) {
-    this.pos.set(pos) ;
-    this.radius = radius ;
+  public void update() {
     if(polar_is) {
       distribution_surface_polar() ; 
     } else {
       cartesian_pos_3D();
       distribution_surface_cartesian() ;
     }
+  }
+
+  public void update(Vec3 pos) {
+    this.pos.set(pos);
+    update();
   }
 
 

@@ -53,7 +53,6 @@ boolean manage_border_is;
 
 void manage_border() {
   manage_border_is = (manage_border_is == true) ? false:true;
-
 }
 
 void update_vehicle(Force_field ff, float speed) {

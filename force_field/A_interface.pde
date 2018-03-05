@@ -360,7 +360,7 @@ boolean reset_authorization_from_gui ;
 int ref_cell_size;
 int ref_num_vehicle;
 int ref_sort_channel;
-void update_gui_value(boolean update_is) {
+void update_gui_value(boolean update_is, int t_count) {
 	int size = ceil(cell_force_field) +2;
 	int sort_channel_sum = int(x_sort + y_sort +vel_sort);
 	if(ref_cell_size != size || ref_num_vehicle != get_num_vehicle_gui() || sort_channel_sum != ref_sort_channel) {
@@ -381,7 +381,7 @@ void update_gui_value(boolean update_is) {
   update_rgb_vehicle();
 
   set_alpha_warp(alpha_warp);
-	update_rgba_warp();
+	update_rgba_warp(t_count);
   
   set_sorting_channel_ff_2D(floor(x_sort), floor(y_sort), floor(vel_sort));
 
@@ -396,18 +396,18 @@ void update_rgb_vehicle() {
 	// nothing special at this time
 }
 
-void update_rgba_warp() {
+void update_rgba_warp(int t_count) {
 	float cr = 1.;
   float cg = 1.;
   float cb = 1.;
   if(red_cycling != 0) {
-  	cr = sin(frameCount *(red_cycling *red_cycling *.1)); 
+  	cr = sin(t_count *(red_cycling *red_cycling *.1)); 
   }
   if(green_cycling != 0) {
-  	cg = sin(frameCount *(green_cycling *green_cycling *.1)); 
+  	cg = sin(t_count *(green_cycling *green_cycling *.1)); 
   }
   if(blue_cycling != 0) {
-  	cb = sin(frameCount *(blue_cycling *blue_cycling *.1)); 
+  	cb = sin(t_count *(blue_cycling *blue_cycling *.1)); 
   }
 
   if(abs_cycling) {

@@ -1,12 +1,7 @@
-peut-être supprimer
-public Vec2 get_position() {
-return position;
-}
-
-le problème doit être là, car la position anlysée n'est pas la position utilisée.
-public Vec2 get_position(Force_field ff) { Vec2 temp_pos = position.copy() ; return temp_pos.add(Vec2(ff.canvas_pos)); }
-
-et aussi
-Pouvoir activer,désactiver, bronxiser... certaines cases du champs vectoriel, héhéhé ça c'est la bonne idée, enfin on va voir.
-
-Et ne faire fonctionner vehicle qu'avec un object force_field
+What must be do hooohooooo
+--
+Add mess, wind by target field cell
+--
+Find what the problem with MAGNETIC and GRAVITY field when the class Vehicle is used we lost a lot of frameRate.
+I imagine first it's the loop when the Spot is checked to swap position, but unfortunatly not.
+The problem is from method follow(), but in this method there is nothing to see with MAGNETIC or GRAVITY ???

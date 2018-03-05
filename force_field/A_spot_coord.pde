@@ -5,10 +5,11 @@ v 0.2.0
 float distance ;
 iVec2 ref_lead_pos ;
 
-void force_field_spot_coord(iVec2 lead_pos, boolean is) {
+void force_field_spot_coord(iVec2 lead_pos, boolean is, boolean keep_structure) {
   if(ref_lead_pos == null) {
     ref_lead_pos = iVec2(width/2,height/2);
   }
+  // case 1 : one spot
   if(get_spot_num_ff() > 0) {
     Vec2 [] pos = new Vec2[get_spot_num_ff()];
     // case 1
@@ -20,7 +21,7 @@ void force_field_spot_coord(iVec2 lead_pos, boolean is) {
         pos[0] = Vec2(ref_lead_pos);
       }
     }
-    // case 2
+    // case 2 : Two spot
     if(get_spot_num_ff() == 2) {
       if(is) {
         pos[0] = Vec2(lead_pos.x, lead_pos.y);
@@ -32,12 +33,11 @@ void force_field_spot_coord(iVec2 lead_pos, boolean is) {
       }
       
     }
-    // case 3
+    // case 3: cloud spot
     if(get_spot_num_ff() > 2) {
-    	multi_coord(pos,lead_pos,is);
+    	multi_coord_cloud(pos,lead_pos,is,keep_structure);
     }
-
-    //
+    // finalize
     update_spot_ff_coord(pos);
   }
 }
@@ -49,7 +49,7 @@ boolean reset_cloud_coord = true;
 int num_multi_coord ;
 float angle_step_ref;
 int time_count_spot;
-void multi_coord(Vec2 [] pos, iVec2 lead_pos, boolean is) {
+void multi_coord_cloud(Vec2 [] pos, iVec2 lead_pos, boolean is, boolean keep_structure) {
 	if(num_multi_coord != pos.length) {
 		num_multi_coord = pos.length;
 		reset_cloud_coord = true;
@@ -63,8 +63,6 @@ void multi_coord(Vec2 [] pos, iVec2 lead_pos, boolean is) {
 		reset_cloud_coord = false;
 	}
 
-  
-
 	if(is) {
     if(ref_pos == null) {
       ref_pos = Vec2(lead_pos.x,lead_pos.y);
@@ -72,19 +70,23 @@ void multi_coord(Vec2 [] pos, iVec2 lead_pos, boolean is) {
       ref_pos.set(lead_pos.x,lead_pos.y);
     }
   }
-  float speed = get_speed_mouse();
-  cloud_2D.rotation(speed,false);
-  if(get_spiral_mouse()>0) cloud_2D.spiral(get_spiral_mouse());
-  cloud_2D.range(get_min_radius_mouse(), get_max_radius_mouse());
 
-  if(get_motion_mouse() > 0) cloud_2D.growth(get_motion_mouse());
-  
-  time_count_spot++;
-  cloud_2D.time_count(time_count_spot);
-  cloud_2D.beat(get_beat_mouse());
-  cloud_2D.behavior("SIN");
-  
-	cloud_2D.update(ref_pos,get_radius_mouse());
+  if(!keep_structure) {
+    float speed = get_speed_mouse();
+    cloud_2D.rotation(speed,false);
+    if(get_spiral_mouse()>0) cloud_2D.spiral(get_spiral_mouse());
+    cloud_2D.range(get_min_radius_mouse(), get_max_radius_mouse());
+
+    if(get_motion_mouse() > 0) cloud_2D.growth(get_motion_mouse());
+    
+    time_count_spot++;
+    cloud_2D.time_count(time_count_spot);
+    cloud_2D.beat(get_beat_mouse());
+    cloud_2D.behavior("SIN");
+    cloud_2D.radius(get_radius_mouse());
+  }
+
+	cloud_2D.update(ref_pos);
 
 	Vec3 [] temp = cloud_2D.list();
 	for(int i = 0 ; i <pos.length ; i++) {

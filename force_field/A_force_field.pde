@@ -76,7 +76,7 @@ void change_type_ff() {
     build_ff(type_field, pattern_field, get_resultion_ff(), warp.get_image(), get_sorting_channel_ff_2D());
   }
 
-  if(type_field == r.MAGNETIC || type_field == r.GRAVITY || type_field == r.FLUID) {
+  if(get_super_type_ff() == r.DYNAMIC) {
     global_reset(); 
   }
 }

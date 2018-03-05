@@ -144,7 +144,7 @@ public class Vehicle implements Rope_Constants {
       Vec2 diam = ff.get_spot_size(index);
       int tesla = ff.get_spot_tesla(index);
       
-      // HOLE or GRAVITY
+      // GRAVITY case
       if(ff.type == GRAVITY) {
         // GET IN TO THE HOLE
         if(!ff.reverse_is) {
@@ -167,9 +167,7 @@ public class Vehicle implements Rope_Constants {
           go_spot();
         } 
       }    
-      // END choice
     } 
-    // END loop  
   }
 
 
@@ -220,8 +218,6 @@ public class Vehicle implements Rope_Constants {
     // go to a random position
     }
     
-
-
     boolean swap_is = false ;
     if(from_border_is == false) {
       if (position.x < -offset) swap_is = true;
@@ -271,8 +267,7 @@ public class Vehicle implements Rope_Constants {
     } else {
       if(starting_direction == null) {
         float theta = random(-PI,PI);
-        Vec2 new_dir = Vec2(cos(theta),sin(theta));
-        starting_direction = new_dir.copy() ;
+        starting_direction = Vec2(cos(theta),sin(theta));
       }
       steer = sub(starting_direction, velocity_total);
     }
@@ -288,12 +283,6 @@ public class Vehicle implements Rope_Constants {
     this.max_force = this.ref_max_force;
   }
 
-
-  
-  /**
-  apply force
-  v 0.0.1
-  */
   private void apply_force(Vec2 steer) {
     // We could add mass here if we want A = F / M
     acceleration.add(steer);
