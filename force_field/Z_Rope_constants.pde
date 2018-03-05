@@ -3,7 +3,7 @@ ROPE - Romanesco processing environment –
 * Copyleft (c) 2014-2018
 * Stan le Punk > http://stanlepunk.xyz/
 CONSTANT ROPE
-v 0.1.1.1
+v 0.1.2.0
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Rope
 */
@@ -55,6 +55,22 @@ public interface Rope_Constants {
 	static final String RANDOM       = "RANDOM";
 	static final String RANDOM_ZERO  = "RANDOM ZERO";
 	static final String RANDOM_RANGE = "RANDOM RANGE";
+	static final String RANDOM_ROOT = "ROOT_RANDOM";
+  static final String RANDOM_QUARTER ="QUARTER_RANDOM";
+  static final String RANDOM_2 = "2_RANDOM" ;
+  static final String RANDOM_3 = "3_RANDOM" ;
+  static final String RANDOM_4 = "4_RANDOM" ;
+  static final String RANDOM_X_A = "SPECIAL_A_RANDOM" ;
+  static final String RANDOM_X_B = "SPECIAL_B_RANDOM" ;
+
+  static final String SIN = "SIN" ;
+  static final String COS = "COS" ;
+  static final String TAN = "TAN" ;
+  static final String TRIG_0 = "SIN_TAN" ;
+  static final String TRIG_1 = "SIN_TAN_COS" ;
+  static final String TRIG_2 = "SIN_POW_SIN" ;
+  static final String TRIG_3 = "POW_SIN_PI" ;
+  static final String TRIG_4 = "SIN_TAN_POW_SIN" ;
 }
 
 

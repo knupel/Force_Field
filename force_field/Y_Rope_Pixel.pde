@@ -1,18 +1,17 @@
 
 /**
 CLASS PIX 
-v 0.3.2
+v 0.5.1
 2016-2018
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Pixel
 */
 
 
-abstract class Pix {
+abstract class Pix implements Rope_Constants {
   // P3D mode
   Vec3 pos, new_pos ;
   Vec3 size  ;
-  float angle = 0 ;
   
   // in cartesian mode
   Vec3 dir = null ;
@@ -20,6 +19,7 @@ abstract class Pix {
   Vec3 grid_position ;
   int ID, rank ;
   int costume_ID = 0 ; // 0 is for point
+  float costume_angle = 0 ;
   Vec4 colour, new_colour  ;
   
   // use for the motion
@@ -90,6 +90,13 @@ abstract class Pix {
   public void set_ID(int ID) {  
     this.ID = ID ; 
   }
+
+  public void costume_angle(float costume_angle) {
+    if(costume_ID == POINT_ROPE) {
+      printErrTempo(180, "class Pix method costume_angle() cannot be used with costume_ID POINT_ROPE");
+    }
+    this.costume_angle = costume_angle ;
+  }
   
 
   // size
@@ -110,12 +117,7 @@ abstract class Pix {
     size = Vec3(size_pix.x, size_pix.y, size_pix.z) ;
   }
 
-  // angle
-  public void angle(float angle) {
-    this.angle = angle ;
-  }
-
-  
+ 
   // normal direction
   public void direction(Vec3 dir) {
     this.dir = dir ;
@@ -365,9 +367,11 @@ abstract class Pix {
 
 /**
 CLOUD
+v 0.2.0
 */
 class Cloud extends Pix implements Rope_Constants {
   int num ;
+  int time_count = Integer.MIN_VALUE;
   float beat_ref = .001 ;
   float beat = .001 ;
   String behavior = "RADIUS";
@@ -388,7 +392,7 @@ class Cloud extends Pix implements Rope_Constants {
   Vec2 range;
 
 
-  Cloud(int num, String renderer_dimension) {
+  public Cloud(int num, String renderer_dimension) {
     init_mother_arg();
     this.num = num ;
     coord = new Vec3[num];
@@ -442,13 +446,6 @@ class Cloud extends Pix implements Rope_Constants {
     for(int i = 0 ; i < num ; i++ ) {
       if(distribution == r.ORDER) {
         tetha = dist +(angle *i);
-        // println(tetha);
-        /*
-        if(growth) {
-          tetha +=angle ;
-          println(i, tetha,"je deviens grand");
-        }
-        */
         coord[i] = Vec3(cos(tetha),sin(tetha), 0 ) ; 
       } else {
         tetha = dist + random(-PI, PI) ;
@@ -523,12 +520,16 @@ class Cloud extends Pix implements Rope_Constants {
 
   protected void give_points_to_costume_2D() {
     for(int i  = 0 ; i < coord.length ;i++) {
-      costume_rope(coord[i], size, angle, costume_ID) ;
+      costume_rope(coord[i], size, costume_angle, costume_ID) ;
     }
   }
 
   public void beat(int n) {
     this.beat = beat_ref *n ;
+  }
+
+  public void time_count(int count) {
+    time_count = count;
   }
 
   public Vec3 [] list() {
@@ -563,7 +564,6 @@ class Cloud extends Pix implements Rope_Constants {
  // distribution surface cartesian
  protected void distribution_surface_cartesian() {
     float radius_temp = radius;
-    // println(radius_temp, radius);
     
     if(spiral_rounds > 0) {
       int round = 0 ;
@@ -603,15 +603,15 @@ class Cloud extends Pix implements Rope_Constants {
   distribution behavior
   */
   // internal method
-  protected float distribution_behavior(Vec2 range, float radius, String behavior_distribution) {
-    // float pos = 1 ;
+  private float distribution_behavior(Vec2 range, float radius, String behavior_distribution) {
     float normal_distribution = 1 ;
     
+    // rules
     float root_1 = 0 ;
     float root_2 = 0 ;
     float root_3 = 0 ;
     float root_4 = 0 ;
-     if(behavior_distribution.contains("RANDOM")) {
+     if(behavior_distribution.contains(RANDOM)) {
       root_1 = random(1) ;
       if(behavior_distribution.contains("2") || behavior_distribution.contains("3") || behavior_distribution.contains("4")|| behavior_distribution.contains("SPECIAL")) {
         root_2 = random(1) ;
@@ -621,34 +621,38 @@ class Cloud extends Pix implements Rope_Constants {
     }
 
     float t = 0 ;
-    if(behavior_distribution.contains("SIN") || behavior_distribution.contains("COS")) {
-      t = frameCount *beat;
+    if(behavior_distribution.contains(SIN) || behavior_distribution.contains(COS)) {
+      if(time_count == Integer.MIN_VALUE) {
+        t = frameCount *beat; 
+      } else t = time_count *beat;   
     }
+
     float factor_1_2 = 1.2;
     float factor_0_5 = .5;
     float factor_12_0 = 12.;
     float factor_10_0 = 10.;
     
-    if(behavior_distribution == "RANDOM") normal_distribution = root_1;
-    else if(behavior_distribution == "ROOT_RANDOM") normal_distribution = sqrt(root_1);
-    else if(behavior_distribution == "QUARTER_RANDOM") normal_distribution = 1 -(.25 *root_1);
+    // distribution
+    if(behavior_distribution == RANDOM) normal_distribution = root_1;
+    else if(behavior_distribution == RANDOM_ROOT) normal_distribution = sqrt(root_1);
+    else if(behavior_distribution == RANDOM_QUARTER) normal_distribution = 1 -(.25 *root_1);
     
-    else if(behavior_distribution == "2_RANDOM") normal_distribution = root_1 *root_2;
+    else if(behavior_distribution == RANDOM_2) normal_distribution = root_1 *root_2;
 
-    else if(behavior_distribution == "3_RANDOM") normal_distribution = root_1 *root_2 *root_3;
+    else if(behavior_distribution == RANDOM_3) normal_distribution = root_1 *root_2 *root_3;
 
-    else if(behavior_distribution == "4_RANDOM") normal_distribution = root_1 *root_2 *root_3 *root_4;
-    else if(behavior_distribution == "SPECIAL_A_RANDOM") normal_distribution = .25 *(root_1 +root_2 +root_3 +root_4);
-    else if(behavior_distribution == "SPECIAL_B_RANDOM") {
+    else if(behavior_distribution == RANDOM_4) normal_distribution = root_1 *root_2 *root_3 *root_4;
+    else if(behavior_distribution == RANDOM_X_A) normal_distribution = .25 *(root_1 +root_2 +root_3 +root_4);
+    else if(behavior_distribution == RANDOM_X_B) {
       float temp = root_1 -root_2 +root_3 -root_4;
       if(temp < 0) temp += 4 ;
       normal_distribution = .25 *temp;
     }
 
-    else if(behavior_distribution == "SIN") normal_distribution = sin(t);
-    else if(behavior_distribution == "COS") normal_distribution = cos(t);
-    else if(behavior_distribution == "SIN_TAN_COS") normal_distribution = sin(tan(cos(t) *factor_1_2));
+    else if(behavior_distribution == SIN) normal_distribution = sin(t);
+    else if(behavior_distribution == COS) normal_distribution = cos(t);
     else if(behavior_distribution == "SIN_TAN") normal_distribution = sin(tan(t)*factor_0_5);
+    else if(behavior_distribution == "SIN_TAN_COS") normal_distribution = sin(tan(cos(t) *factor_1_2));
     else if(behavior_distribution == "SIN_POW_SIN") normal_distribution = sin(pow(8.,sin(t)));
     else if(behavior_distribution == "POW_SIN_PI") normal_distribution = pow(sin((t) *PI), factor_12_0);
     else if(behavior_distribution == "SIN_TAN_POW_SIN") normal_distribution = sin(tan(t) *pow(sin(t),factor_10_0));
@@ -670,7 +674,7 @@ class Cloud extends Pix implements Rope_Constants {
 
 
 /**
-CLOUD 3D
+CLOUD 2D
 */
 class Cloud_2D extends Cloud {
  
@@ -913,7 +917,7 @@ class Cloud_3D extends Cloud {
     if(!polar_is) {
       for(int i  = 0 ; i < coord.length ;i++) {
         // method from mother class need pass info arg
-        costume_rope(coord[i], size, angle, costume_ID) ;
+        costume_rope(coord[i], size, costume_angle, costume_ID) ;
       }
     } else {
       // method from here don't need to pass info about arg
@@ -950,7 +954,7 @@ class Cloud_3D extends Cloud {
       rotateXYZ(orientation) ;
       Vec3 pos_local_primitive = Vec3() ;
       Vec2 orientation_polar = Vec2() ;
-      costume_rope(pos_local_primitive, size, angle, orientation_polar, costume_ID) ;
+      costume_rope(pos_local_primitive, size, costume_angle, orientation_polar, costume_ID) ;
       stop_matrix() ;
       stop_matrix() ;
     }
@@ -1153,9 +1157,9 @@ class Pixel extends Pix  {
   // show
   public void show() {
     if (renderer_P3D()) {
-      costume_rope(pos, size, angle, dir, costume_ID) ;
+      costume_rope(pos, size, costume_angle, dir, costume_ID) ;
     } else {
-      costume_rope(pos, size, angle, costume_ID) ;
+      costume_rope(pos, size, costume_angle, costume_ID) ;
     }
   }
 }

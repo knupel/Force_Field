@@ -320,8 +320,6 @@ void update_ff() {
       }
       force_field.update();
     }
-
-
   } else {
     printErrTempo(240, "the force field is not init, maybe the media is not loaded ?");
   } 
@@ -378,8 +376,6 @@ void update_ff_magnetic() {
 GRAVITY CASE
 */
 void update_ff_gravity() {
-  // force_field.set_calm(.5);
-
   for(int i = 0 ; i < force_field.spot_list.size() && i < spot_list_coord.size() ; i++) {
     if(i < spot_list_mass.size()) {
       force_field.set_spot_mass(spot_list_mass.get(i),i);

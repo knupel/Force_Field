@@ -36,6 +36,8 @@ void force_field_spot_coord(iVec2 lead_pos, boolean is) {
     if(get_spot_num_ff() > 2) {
     	multi_coord(pos,lead_pos,is);
     }
+
+    //
     update_spot_ff_coord(pos);
   }
 }
@@ -46,6 +48,7 @@ Vec2 ref_pos ;
 boolean reset_cloud_coord = true;
 int num_multi_coord ;
 float angle_step_ref;
+int time_count_spot;
 void multi_coord(Vec2 [] pos, iVec2 lead_pos, boolean is) {
 	if(num_multi_coord != pos.length) {
 		num_multi_coord = pos.length;
@@ -76,6 +79,8 @@ void multi_coord(Vec2 [] pos, iVec2 lead_pos, boolean is) {
 
   if(get_motion_mouse() > 0) cloud_2D.growth(get_motion_mouse());
   
+  time_count_spot++;
+  cloud_2D.time_count(time_count_spot);
   cloud_2D.beat(get_beat_mouse());
   cloud_2D.behavior("SIN");
   

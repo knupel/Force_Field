@@ -114,16 +114,6 @@ DRAW
 
 */
 void draw() {
-
-  /*
-  println("vehicle",display_vehicle_is());
-  println("warp",display_warp_is());
-  println("background",display_bg_is());
-  println("alpha bg",get_alpha_bg());
-  println("alpha warp",get_alpha_warp());
-  println("alpha vehicle",get_alpha_vehicle());
-  */
-
   if(hide_menu_bar) PApplet.hideMenuBar();
   // cursor(CROSS);
   if(use_leapmotion) leap_update();
@@ -134,14 +124,12 @@ void draw() {
     inside_gui = false;
   }
 
-  boolean run_is = true;
-  if(pause_is) run_is = false ;
+  boolean run_spot_is = true;
+  if(pause_is && !mousePressed) run_spot_is = false ;
 
-
-  // spot
-  num_spot_ff(get_num_spot_gui(),get_range_spot_gui()); 
-  
-  if(run_is) {
+  // spot 
+  if(run_spot_is) {
+    num_spot_ff(get_num_spot_gui(),get_range_spot_gui()); 
     if(use_leapmotion) {
       force_field_spot_condition_leapmotion();
       force_field_spot_coord_leapmotion();
@@ -153,6 +141,8 @@ void draw() {
         force_field_spot_coord(iVec2(mouseX,mouseY),false);
       }
     }
+
+
     if(get_type_ff() == r.FLUID) {
       //
     } else if(get_type_ff() == r.MAGNETIC) {
