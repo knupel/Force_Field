@@ -90,6 +90,7 @@ void setup() {
   set_info(false);
   interface_setup(Vec2(0), Vec2(250,height));
   warp_instruction(); 
+  // init_ff(type_field,pattern_field,get_size_cell_ff(),g);
 }
 
 
@@ -224,6 +225,7 @@ void draw() {
   if(!ff_is()) {
     println("new force field grid, with cell size:", get_size_cell_ff());
     init_ff(get_type_ff(),get_pattern_ff(),get_size_cell_ff(),g);
+    // init_ff(type_field,pattern_field,get_size_cell_ff(),g);
   }
   /*
   if(get_type_ff() == IMAGE) {

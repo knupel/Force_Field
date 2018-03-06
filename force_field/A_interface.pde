@@ -723,6 +723,7 @@ void show_info(Force_field ff) {
   if(ff.get_pattern() == r.CHAOS) pattern_ff = "chaos" ;
 	else if(ff.get_pattern() == r.PERLIN) pattern_ff = "perlin" ;
 	else if(ff.get_pattern() == IMAGE) pattern_ff = "image" ;
+	else if(ff.get_pattern() == r.EQUATION) pattern_ff = "equation" ;
 
 	info_line("Force field" + " " + type_ff + " mapped on " + pattern_ff, pos_x, space_interface, 1, TOP);
 

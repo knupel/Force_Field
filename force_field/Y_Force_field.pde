@@ -201,7 +201,6 @@ public class Force_field implements Rope_Constants {
   private void init_field() {
     field = new Vec4[cols][rows];
     field_save = new Vec4[cols][rows];
-    // set_field(CHAOS);
   }
 
   private void init_spot() {
@@ -250,42 +249,114 @@ public class Force_field implements Rope_Constants {
   private void set_field(int pattern) {
     // Reseed noise so we get a new flow field every time
     sum_activities = 0 ;
-
     if(pattern == IMAGE && src != null) {
       set_field_img_2D();
     } else {
       if(pattern == PERLIN) {
         noiseSeed((int)random(10000));
-      }
-
-      float xoff = 0 ;
-      for (int x = 0 ; x < cols ; x++) {
-        float yoff = 0;
-        for (int y = 0 ; y < rows ; y++) {
-          float theta = 0;
-          float dist = 0 ;
-          if(pattern == PERLIN) {
-            theta = map(noise(xoff,yoff),0,1,0,TWO_PI);
-            dist = noise(xoff,yoff);
-          } if(pattern == CHAOS) {
-            theta = random(TWO_PI);
-            dist = random(1);
-          } 
-
-          // Polar to cartesian coordinate
-          float xx = cos(theta) ;
-          float yy = sin(theta) ;
-          float zz = 0 ;
-          float ww = dist ;
-          field[x][y] = Vec4(xx,yy,zz,ww); 
-          field_save[x][y] = Vec4(xx,yy,zz,ww);
-
-          sum_activities += field[x][y].sum() ;     
-          yoff += .1;
-        }
-        xoff += .1;
+        set_field_perlin();
+      } else if(pattern == CHAOS) {
+        set_field_chaos();
+      } else if(pattern == EQUATION) {
+        set_field_equation();
+      } else if(pattern == BLANK) {
+        set_field_blank();
+      } else {
+        set_field_blank();
       }
     }    
+  }
+  private void set_field_equation() {
+    float x = random(-1,1);
+    float y = random(-1,1);
+    Vec2 center = Vec2(x,y);
+    set_field_equation(center);
+
+  }
+
+  private void set_field_equation(Vec2 center_norm) {
+    float dx = cols +(cols *center_norm.x);
+    float dy = rows +(rows *center_norm.y);
+    // center
+    /*
+    float dx = cols *.5;
+    float dy = rows *.5;
+    */
+
+    for (int x = 0 ; x < cols ; x++) {
+      for (int y = 0 ; y < rows ; y++) {
+
+
+        float tx = x -dx;
+        float ty = y -dy;   
+        
+        float theta_x = map(tx, 0, cols, -HALF_PI,HALF_PI);
+        float theta_y = map(ty, 0, rows, 0,PI);
+
+        float div = dx+dy;
+
+        float dist = sqrt((tx*tx) +(ty*ty))/div;
+        // Polar to cartesian coordinate
+        float xx = cos(theta_x) ;
+        float yy = sin(theta_y) ;
+        float zz = 0 ;
+        float ww = dist ;
+        field[x][y] = Vec4(xx,yy,zz,ww); 
+        field_save[x][y] = Vec4(xx,yy,zz,ww);
+        sum_activities += field[x][y].sum() ;     
+      }
+    }
+  }
+
+
+  private void set_field_blank() {
+    for (int x = 0 ; x < cols ; x++) {
+      for (int y = 0 ; y < rows ; y++) {
+        field[x][y] = Vec4(0); 
+        field_save[x][y] = Vec4(0);   
+      }
+    }
+    sum_activities += 0 ;
+  }
+
+
+  
+  private void set_field_chaos() {
+    for (int x = 0 ; x < cols ; x++) {
+      for (int y = 0 ; y < rows ; y++) {
+        float theta = random(TWO_PI);
+        float dist = random(1);
+        // Polar to cartesian coordinate
+        float xx = cos(theta) ;
+        float yy = sin(theta) ;
+        float zz = 0 ;
+        float ww = dist ;
+        field[x][y] = Vec4(xx,yy,zz,ww); 
+        field_save[x][y] = Vec4(xx,yy,zz,ww);
+        sum_activities += field[x][y].sum() ;     
+      }
+    }
+  }
+
+  private void set_field_perlin() {
+    float xoff = 0 ;
+    for (int x = 0 ; x < cols ; x++) {
+      float yoff = 0;
+      for (int y = 0 ; y < rows ; y++) {
+        float theta = map(noise(xoff,yoff),0,1,0,TWO_PI);
+        float dist = noise(xoff,yoff);
+        // Polar to cartesian coordinate
+        float xx = cos(theta) ;
+        float yy = sin(theta) ;
+        float zz = 0 ;
+        float ww = dist ;
+        field[x][y] = Vec4(xx,yy,zz,ww); 
+        field_save[x][y] = Vec4(xx,yy,zz,ww);
+        sum_activities += field[x][y].sum() ;     
+        yoff += .1;
+      }
+      xoff += .1;
+    }
   }
 
 

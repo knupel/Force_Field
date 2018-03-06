@@ -49,29 +49,34 @@ boolean ff_is() {
 /**
 change type
 */
-int which_ff = 0 ;
-void change_type_and_pattern_ff() {
-  which_ff += 1 ;
-  if(which_ff > 5) which_ff = 0 ;
+int mode_ff = 0 ;
+void change_mode_ff(int step) {
+  mode_ff += step;
+  int num_mode = 6;
+  if(mode_ff > num_mode) mode_ff = 0 ;
+  if(mode_ff < 0) mode_ff = num_mode;
 
-  if(which_ff == 0 ) {
-    type_field = r.STATIC; 
-    pattern_field = IMAGE ; 
-  } else if(which_ff == 1) {
+  if(mode_ff == 0) {
     type_field = r.STATIC; 
     pattern_field = r.PERLIN; 
-  } else if(which_ff == 2) {
+  } else if(mode_ff == 1) {
+    type_field = r.STATIC; 
+    pattern_field = r.EQUATION; 
+  } else if(mode_ff == 2) {
     type_field = r.STATIC; 
     pattern_field = r.CHAOS; 
-  } else if(which_ff == 3) {
+  } else if(mode_ff == 3) {
     type_field = r.MAGNETIC; 
     pattern_field = r.BLANK; 
-  } else if(which_ff == 4) {
+  } else if(mode_ff == 4) {
     type_field = r.GRAVITY; 
     pattern_field = r.BLANK; 
-  } else if(which_ff == 5) {
+  } else if(mode_ff == 5) {
     type_field = r.FLUID; 
     pattern_field = r.BLANK; 
+  } else if(mode_ff == 6) {
+    type_field = r.STATIC; 
+    pattern_field = IMAGE ; 
   }
 
   force_field_init_is = false ;
@@ -593,19 +598,19 @@ PImage get_img_direction_ff() {
 int get_type_ff() {
   if(force_field != null ) {
     return force_field.get_type();
-  } else return -1;
+  } else return r.STATIC;
 }
 
 int get_super_type_ff() {
   if(force_field != null ) {
     return force_field.get_super_type();
-  } else return -1;
+  } else return r.STATIC;
 }
 
 int get_pattern_ff() {
   if(force_field != null ) {
     return force_field.get_pattern();
-  } else return -1;
+  } else return r.BLANK;
 }
 
 

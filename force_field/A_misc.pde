@@ -37,7 +37,6 @@ void global_reset() {
 
 /**
 KEYPRESSED
-
 */
 void keyPressed() {
   keys[keyCode] = true;
@@ -79,11 +78,12 @@ void keyPressed() {
 
   if(key == 'v') play_video_switch();
 
-  if(key == 'w') {
+  if(key == 's') {
     if(shader_filter_is) shader_filter_is = false ; else shader_filter_is = true ;
   }
 
-  if(key == 'x') change_type_and_pattern_ff();
+  if(key == 'w') change_mode_ff(-1);
+  if(key == 'x') change_mode_ff(+1);
 
   if(key == ' ') {
     if(pause_is) pause_is = false ; else pause_is = true ;
@@ -125,7 +125,6 @@ void keypressed_add_media() {
     replace_media_file(157, SHIFT, KeyEvent.VK_O);
     replace_media_folder(157, SHIFT, KeyEvent.VK_O);
   } else {
-    add_camera(CONTROL,SHIFT, KeyEvent.VK_V);
     add_media_folder(CONTROL, SHIFT, KeyEvent.VK_Q); // Q for A I don't how map AZERTY layout keyboard
     add_media_file(CONTROL, SHIFT, KeyEvent.VK_Q); // Q for A I don't how map AZERTY layout keyboard
     replace_media_file(CONTROL, SHIFT, KeyEvent.VK_O);

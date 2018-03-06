@@ -41,7 +41,7 @@ key r
 > FORCE FIELD: refresh force field, use to refresh PERLIN and CHAOS mode
 > WARP: reset the backgroung fluid image
 
-key w
+key s
 > WARP: switch filter
 
 key space 
@@ -49,3 +49,6 @@ key space
 
 key UP and DOWN
 > WARP: change media image or video for warp mode
+
+key x and w
+> change type and pattern
