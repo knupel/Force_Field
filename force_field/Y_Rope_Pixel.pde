@@ -1,7 +1,7 @@
 
 /**
 CLASS PIX 
-v 0.5.1
+v 0.5.2
 2016-2018
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Pixel
@@ -381,7 +381,7 @@ abstract class Pix implements Rope_Constants {
 
 /**
 CLOUD
-v 0.2.1
+v 0.2.2
 */
 class Cloud extends Pix implements Rope_Constants {
   int num ;
@@ -436,12 +436,27 @@ class Cloud extends Pix implements Rope_Constants {
     }
   }
 
+
+
+
+
+
+
   protected void growth(float angle_growth) {
     if(this.type == r.CARTESIAN && this.distribution == r.ORDER && this.renderer_dimension.equals(P2D)) {
       this.angle_growth = angle_growth ;
     } else {
       printErrTempo(180, "class CLOUD method growth() work only int type == r.CARTESIAN & int distribution = r.ORDER & String renderer_dimension P2D");
     }
+  }
+
+  public float get_growth() {
+    return dist_growth;
+  }
+
+
+  public void growth_size(float dist) {
+    dist_growth = dist ;
   }
 
 
@@ -510,6 +525,11 @@ class Cloud extends Pix implements Rope_Constants {
     }
   }
 
+
+
+
+
+
   
   protected void rotation(float rotation, boolean static_rot) {
     if(!polar_is && this.renderer_dimension == P2D) {
@@ -522,6 +542,13 @@ class Cloud extends Pix implements Rope_Constants {
       printErrTempo(180, "Class Pix method rotation() is available only in P2D rendering and for sub Class Cloud_2D, for Cloud_3D use rotation_x(), rotation_y() or rotation_z()");
     }
   }
+
+
+  public float get_rotation() {
+    return dist ;
+  }
+
+
 
   protected void choice_renderer_dimension(String dimension) {
     if(dimension == P3D) {

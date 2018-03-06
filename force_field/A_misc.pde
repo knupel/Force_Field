@@ -26,7 +26,7 @@ void global_reset() {
     set_check_gui_dynamic_mag_grav();
   }
 
-  update_gui_value(true,time_count_gui);
+  update_gui_value(true,time_count_ff);
   if(force_field.get_super_type() == r.DYNAMIC) {
     force_field.reset();
   }
@@ -58,7 +58,10 @@ void keyPressed() {
 
   if(key == 'i') display_info();
 
-  if(key == 'a') display_vehicle();
+  if(!checkKey(CONTROL) && !checkKey(157) && !checkKey(SHIFT) && checkKey(KeyEvent.VK_Q)) { 
+    // Q for a
+    display_vehicle();
+  } 
   if(key == 'z') display_warp();
   if(key == 'e') display_bg();
 
@@ -80,7 +83,7 @@ void keyPressed() {
     if(shader_filter_is) shader_filter_is = false ; else shader_filter_is = true ;
   }
 
-  if(key == 'x') change_type_ff() ;
+  if(key == 'x') change_type_and_pattern_ff();
 
 
 
@@ -116,80 +119,85 @@ void keyPressed() {
 
 
 
+
 void keypressed_add_media() {
-  // add media folder
   if(os_system.equals("Mac OS X")) {
-    // A use Q
-    // Q or q is for A because I don't find a solution to map AZERTY layout
-    if(checkKey(157) && checkKey(SHIFT) && checkKey(KeyEvent.VK_Q)) {
-      display_warp(true);
-      // @see if(key == 'o')
-      warp_add_media_folder();
-      play_video(false);
-    }
+    // add_camera(157,SHIFT, KeyEvent.VK_V);
+    add_media_folder(157, SHIFT, KeyEvent.VK_Q); // Q for A I don't how map AZERTY layout keyboard
+    add_media_file(157, SHIFT, KeyEvent.VK_Q); // Q for A I don't how map AZERTY layout keyboard
+    replace_media_file(157, SHIFT, KeyEvent.VK_O);
+    replace_media_folder(157, SHIFT, KeyEvent.VK_O);
   } else {
-    // Q or q is for A because I don't find a solution to map AZERTY layout
-    if(checkKey(CONTROL) && checkKey(SHIFT) && checkKey(KeyEvent.VK_Q)) {
-      display_warp(true);
-      // @see if(key == 'o')
-      warp_add_media_folder();
-      play_video(false);
-    }
-  }
-  // add media file
-  if(os_system.equals("Mac OS X")) {
-    // A use Q
-    // Q or q is for A because I don't find a solution to map AZERTY layout
-    if(checkKey(157) && !checkKey(SHIFT) && checkKey(KeyEvent.VK_Q)) {
-      display_warp(true);
-      // @see if(key == 'o')
-      warp_add_media_input();
-      play_video(false);
-    }
-  } else {
-    // Q or q is for A because I don't find a solution to map AZERTY layout
-    if(checkKey(CONTROL) && !checkKey(SHIFT) && checkKey(KeyEvent.VK_Q)) {
-      display_warp(true);
-      // @see if(key == 'o')
-      warp_add_media_input();
-      play_video(false);
-    }
-  }
-
-  // replace media folder
-  if(os_system.equals("Mac OS X")) {
-    if(checkKey(157) && checkKey(SHIFT) && checkKey(KeyEvent.VK_O)) {
-      display_warp(true);
-      // @see if(key == 'a')
-      warp_change_media_folder();
-      play_video(false);
-    }
-  } else {
-    if(checkKey(CONTROL) && checkKey(SHIFT) && checkKey(KeyEvent.VK_O)) {
-      display_warp(true);
-      // @see if(key == 'a')
-      warp_change_media_folder();
-      play_video(false);
-    }
-  }
-
-  // replace media file
-  if(os_system.equals("Mac OS X")) {
-    if(checkKey(157) && !checkKey(SHIFT) && checkKey(KeyEvent.VK_O)) {
-      display_warp(true);
-      // @see if(key == 'a')
-      warp_change_media_input();
-      play_video(false);
-    }
-  } else {
-    if(checkKey(CONTROL) && !checkKey(SHIFT) && checkKey(KeyEvent.VK_O)) {
-      display_warp(true);
-      // @see if(key == 'a')
-      warp_change_media_input();
-      play_video(false);
-    }
+    add_camera(CONTROL,SHIFT, KeyEvent.VK_V);
+    add_media_folder(CONTROL, SHIFT, KeyEvent.VK_Q); // Q for A I don't how map AZERTY layout keyboard
+    add_media_file(CONTROL, SHIFT, KeyEvent.VK_Q); // Q for A I don't how map AZERTY layout keyboard
+    replace_media_file(CONTROL, SHIFT, KeyEvent.VK_O);
+    replace_media_folder(CONTROL, SHIFT, KeyEvent.VK_O);
   }
 }
+
+void add_camera(int a, int b, int c) {
+  // true-false-true
+  if(checkKey(a) && !checkKey(b) && checkKey(c)) {
+    play_video_switch();
+    /*
+    display_warp(true);
+    warp_add_media_input();
+    play_video(false);
+    */
+  }
+
+}
+
+void add_media_folder(int a, int b, int c) {
+  // true-true-true
+  if(checkKey(a) && checkKey(b) && checkKey(c)) {
+    display_warp(true);
+    warp_add_media_folder();
+    play_video(false);
+  }
+}
+
+
+void add_media_file(int a, int b, int c) {
+  // true-false-true
+  if(checkKey(a) && !checkKey(b) && checkKey(c)) {
+    display_warp(true);
+    warp_add_media_input();
+    play_video(false);
+  }
+}
+
+
+void replace_media_folder(int a, int b, int c) {
+  // true-true-true
+  if(checkKey(a) && checkKey(b) && checkKey(c)) {
+    display_warp(true);
+    warp_change_media_folder();
+    play_video(false);
+  }
+}
+
+
+void replace_media_file(int a, int b, int c) {
+  // true-false-true
+  if(checkKey(a) && !checkKey(b) && checkKey(c)) {
+    display_warp(true);
+    warp_change_media_input();
+    play_video(false);
+  }
+}
+
+
+/*
+boolean three_key_ttt(int a, int b, int c) {
+  if(checkKey(a) && checkKey(b) && checkKey(c)) return true ; else return false ;
+}
+
+boolean three_key_tft(int a, int b, int c) {
+  if(checkKey(a) && !checkKey(b && checkKey(c)) return true ; else return false ;
+}
+*/
 
 /*
 key event
@@ -327,6 +335,24 @@ void display_bg() {
   display_bg = !!((display_bg == false));
   set_check_gui_main_display();
 }
+
+/*
+* Show must go on
+*/
+void show_must_go_on(boolean is) {
+  show_must_go_on = is;
+}
+
+boolean show_must_go_on_is() {
+  return show_must_go_on;
+}
+
+void show_must_go_on() {
+  show_must_go_on = !!((show_must_go_on == false));
+  set_check_gui_main_display();
+}
+
+
 
 
 

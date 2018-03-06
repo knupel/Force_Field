@@ -23,12 +23,12 @@ ControlP5 gui_vehicle;
 
 
 // global slider
-
 boolean gui_fullreset_field_is = false;
 boolean abs_cycling = true;
 boolean gui_resize_window = false;
 boolean gui_fullfit_image = true;
 boolean gui_display_bg = true;
+boolean gui_show_must_go_on = true;
 
 
 
@@ -60,17 +60,17 @@ void interface_setup(Vec2 pos, Vec2 size) {
   gui_main_movie(space_interface, max, slider_width, 2, BOTTOM, font_gui);
   
   // menu static field
-  gui_static_generative(space_interface, max, slider_width, 28.5, TOP, font_gui);
-  gui_static_image(space_interface, max, slider_width, 32, TOP, font_gui);
+  gui_static_generative(space_interface, max, slider_width, 29.5, TOP, font_gui);
+  gui_static_image(space_interface, max, slider_width, 33, TOP, font_gui);
 
   // menu dynamic field
-  gui_dynamic_fluid(space_interface, max, slider_width, 28.5, TOP, font_gui);
-  gui_dynamic_mag_grav(space_interface, max, slider_width, 28.5, TOP, font_gui);
+  gui_dynamic_fluid(space_interface, max, slider_width, 29.5, TOP, font_gui);
+  gui_dynamic_mag_grav(space_interface, max, slider_width, 29.5, TOP, font_gui);
 
-  gui_dynamic_mouse(space_interface, max, slider_width, 32, TOP, font_gui);
+  gui_dynamic_mouse(space_interface, max, slider_width, 33, TOP, font_gui);
 
   // vehicle
-  gui_vehicle(space_interface, max, slider_width, 40.5, TOP, font_gui);
+  gui_vehicle(space_interface, max, slider_width, 41.5, TOP, font_gui);
 
 }
 
@@ -135,44 +135,46 @@ void gui_main(int space, int max, int w, float start_pos, int from, PFont font) 
 	spot_num = 2.;
 	spot_range = 2.;
 
-	check_gui_main = gui_main.addCheckBox("main_setting").setPosition(10,pos_slider_y(space, start_pos +0, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2).addItem("resize_window",1).addItem("fit_image",1).addItem("background",1);
+	check_gui_main = gui_main.addCheckBox("main_setting").setPosition(10,pos_slider_y(space, start_pos +0, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2)
+														.addItem("resize_window",1).addItem("fit_image",1).addItem("background",1).addItem("show must go on",1);
   if(change_size_window_is) check_gui_main.activate(0);
   if(fullfit_image_is) check_gui_main.activate(1);
   if(display_bg) check_gui_main.activate(2);
+  if(show_must_go_on) check_gui_main.activate(3);
 
-  gui_main.addSlider("alpha_bg").setPosition(10,pos_slider_y(space, start_pos +3.5, from)).setWidth(w).setRange(0,max).setFont(font);
-  gui_main.addSlider("alpha_vehicle").setPosition(10,pos_slider_y(space, start_pos +4.5, from)).setWidth(w).setRange(0,max).setFont(font);
-  gui_main.addSlider("alpha_warp").setPosition(10,pos_slider_y(space, start_pos +5.5, from)).setWidth(w).setRange(0,max).setFont(font);
+  gui_main.addSlider("alpha_bg").setPosition(10,pos_slider_y(space, start_pos +4.5, from)).setWidth(w).setRange(0,max).setFont(font);
+  gui_main.addSlider("alpha_vehicle").setPosition(10,pos_slider_y(space, start_pos +5.5, from)).setWidth(w).setRange(0,max).setFont(font);
+  gui_main.addSlider("alpha_warp").setPosition(10,pos_slider_y(space, start_pos +6.5, from)).setWidth(w).setRange(0,max).setFont(font);
 
-  gui_main.addSlider("red_vehicle").setPosition(10,pos_slider_y(space, start_pos +6.75, from)).setWidth(w).setRange(0,max).setFont(font);
-	gui_main.addSlider("green_vehicle").setPosition(10,pos_slider_y(space, start_pos +7.75, from)).setWidth(w).setRange(0,max).setFont(font);
-	gui_main.addSlider("blue_vehicle").setPosition(10,pos_slider_y(space, start_pos +8.75, from)).setWidth(w).setRange(0,max).setFont(font);
+  gui_main.addSlider("red_vehicle").setPosition(10,pos_slider_y(space, start_pos +7.75, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("green_vehicle").setPosition(10,pos_slider_y(space, start_pos +8.75, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("blue_vehicle").setPosition(10,pos_slider_y(space, start_pos +9.75, from)).setWidth(w).setRange(0,max).setFont(font);
 
-	gui_main.addSlider("red_warp").setPosition(10,pos_slider_y(space, start_pos +10.0, from)).setWidth(w).setRange(0,max).setFont(font);
-	gui_main.addSlider("green_warp").setPosition(10,pos_slider_y(space, start_pos +11.0, from)).setWidth(w).setRange(0,max).setFont(font);
-	gui_main.addSlider("blue_warp").setPosition(10,pos_slider_y(space, start_pos +12.0, from)).setWidth(w).setRange(0,max).setFont(font);
-	gui_main.addSlider("power_warp").setPosition(10,pos_slider_y(space, start_pos +13.0, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("red_warp").setPosition(10,pos_slider_y(space, start_pos +11.0, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("green_warp").setPosition(10,pos_slider_y(space, start_pos +12.0, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("blue_warp").setPosition(10,pos_slider_y(space, start_pos +13.0, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("power_warp").setPosition(10,pos_slider_y(space, start_pos +14.0, from)).setWidth(w).setRange(0,max).setFont(font);
 
-	gui_main.addSlider("red_cycling").setPosition(10,pos_slider_y(space, start_pos +14.25, from)).setWidth(w).setRange(0,max).setFont(font);
-	gui_main.addSlider("green_cycling").setPosition(10,pos_slider_y(space, start_pos +15.25, from)).setWidth(w).setRange(0,max).setFont(font);
-	gui_main.addSlider("blue_cycling").setPosition(10,pos_slider_y(space, start_pos +16.25, from)).setWidth(w).setRange(0,max).setFont(font);
-	gui_main.addSlider("power_cycling").setPosition(10,pos_slider_y(space, start_pos +17.25, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("red_cycling").setPosition(10,pos_slider_y(space, start_pos +15.25, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("green_cycling").setPosition(10,pos_slider_y(space, start_pos +16.25, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("blue_cycling").setPosition(10,pos_slider_y(space, start_pos +17.25, from)).setWidth(w).setRange(0,max).setFont(font);
+	gui_main.addSlider("power_cycling").setPosition(10,pos_slider_y(space, start_pos +18.25, from)).setWidth(w).setRange(0,max).setFont(font);
 
 	// radio_button_cycling = gui_main.addRadioButton("abs_cycling").setValue(0).setPosition(10,pos_slider_y(space, start_pos +10, from)).setSize(w,10).addItem("absolute_cycling",1).setFont(font);
-	check_gui_main_channel = gui_main.addCheckBox("channel_setting").setPosition(10,pos_slider_y(space, start_pos +18.75, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2).addItem("absolute_cycling",1);
+	check_gui_main_channel = gui_main.addCheckBox("channel_setting").setPosition(10,pos_slider_y(space, start_pos +19.75, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2).addItem("absolute_cycling",1);
 	//check_img = gui_static_img_2D.addCheckBox("img_setting").setPosition(10,pos_slider_y(space, start_pos +6, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2).addItem("fit_image",1);
   
   int max_tempo = 10 ;
-	gui_main.addSlider("tempo_refresh").setPosition(10,pos_slider_y(space, start_pos +19.75, from)).setWidth(w).setRange(1,max_tempo).setNumberOfTickMarks(max_tempo).setFont(font);
+	gui_main.addSlider("tempo_refresh").setPosition(10,pos_slider_y(space, start_pos +20.75, from)).setWidth(w).setRange(1,max_tempo).setNumberOfTickMarks(max_tempo).setFont(font);
   
   int max_cell = 50;
-	gui_main.addSlider("cell_force_field").setPosition(10,pos_slider_y(space, start_pos +21.75, from)).setWidth(w).setRange(1,max_cell).setNumberOfTickMarks(max_cell).setFont(font);
+	gui_main.addSlider("cell_force_field").setPosition(10,pos_slider_y(space, start_pos +22.75, from)).setWidth(w).setRange(1,max_cell).setNumberOfTickMarks(max_cell).setFont(font);
   
   int max_spot = 100 ;
-	gui_main.addSlider("spot_num").setPosition(10,pos_slider_y(space, start_pos +23.75, from)).setWidth(w).setRange(1,max_spot).setNumberOfTickMarks(max_spot).setFont(font);
+	gui_main.addSlider("spot_num").setPosition(10,pos_slider_y(space, start_pos +24.75, from)).setWidth(w).setRange(1,max_spot).setNumberOfTickMarks(max_spot).setFont(font);
 
 	int range_spot = 10;
-	gui_main.addSlider("spot_range").setPosition(10,pos_slider_y(space, start_pos +25.5, from)).setWidth(w).setRange(0,range_spot).setNumberOfTickMarks(range_spot +1).setFont(font);
+	gui_main.addSlider("spot_range").setPosition(10,pos_slider_y(space, start_pos +26.5, from)).setWidth(w).setRange(0,range_spot).setNumberOfTickMarks(range_spot +1).setFont(font);
 }
 
 
@@ -390,6 +392,7 @@ void update_gui_value(boolean update_is, int t_count) {
   set_fit_image(gui_fullfit_image);
 
   display_bg(gui_display_bg);
+  show_must_go_on(gui_show_must_go_on);
 }
 
 void update_rgb_vehicle() {
@@ -440,6 +443,7 @@ public void controlEvent(ControlEvent theEvent) {
 		if(check_gui_main.getArrayValue(0) == 1) gui_resize_window = true ; else gui_resize_window = false ;
 		if(check_gui_main.getArrayValue(1) == 1) gui_fullfit_image = true ; else gui_fullfit_image = false ;
 		if(check_gui_main.getArrayValue(2) == 1) gui_display_bg = true ; else gui_display_bg = false;
+		if(check_gui_main.getArrayValue(3) == 1) gui_show_must_go_on = true ; else gui_show_must_go_on = false;
   }
 
   if(theEvent.isFrom(check_gui_main_channel)) {
@@ -635,6 +639,40 @@ float get_distribution_mouse() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
 display
 */
@@ -721,15 +759,15 @@ void show_info(Force_field ff) {
   	if(diaporama_is) diaporama_state = "play" ; else diaporama_state = "stop" ;
   } 
   // image display
-  info_line("media" + " " +warp.get_name(), pos_x, space_interface, 4 +step_y, TOP);
+  info_line("media" + " " +warp.get_name(), pos_x, space_interface, 		4 +step_y, TOP);
   // diaporama
 	info_line("Diaporama" + " " +diaporama_state, pos_x, space_interface, 5 +step_y, TOP);
 	// sorting channel
 	if(ff.get_pattern() == IMAGE) {
 		String [] sort = sorting_channel_toString(get_sorting_channel_ff_2D());
 		info_line("velocity sort:" + sort[2], pos_x, space_interface, 6 +step_y, TOP);
-		info_line("x coord sort:" + sort[0], pos_x, space_interface, 7 +step_y, TOP);
-		info_line("y coord sort:" + sort[1], pos_x, space_interface, 8 +step_y, TOP);
+		info_line("x coord sort:" + sort[0], pos_x, space_interface, 	7 +step_y, TOP);
+		info_line("y coord sort:" + sort[1], pos_x, space_interface, 	8 +step_y, TOP);
 	}
 	// frame rate
 	info_line("Frame rate" + " " +(int)frameRate, pos_x, space_interface, 10 +step_y, TOP);
@@ -738,10 +776,14 @@ void show_info(Force_field ff) {
 	if(use_leapmotion)  device_cursor = "leapmotion";
 	info_line("Device cursor: "+device_cursor, pos_x, space_interface, 11 +step_y, TOP);
 
-  info_line("DISPLAY", pos_x, space_interface, 13 +step_y, TOP);
+  info_line("DISPLAY", pos_x, space_interface, 													13 +step_y, TOP);
 	info_line("vehicles: "+ display_vehicle_is(), pos_x, space_interface, 14 +step_y, TOP);
-	info_line("warp: "+ display_warp_is(), pos_x, space_interface, 15 +step_y, TOP);
-	info_line("background: "+ display_bg_is(), pos_x, space_interface, 16 +step_y, TOP);
+	info_line("warp: "+ display_warp_is(), pos_x, space_interface, 				15 +step_y, TOP);
+	info_line("background: "+ display_bg_is(), pos_x, space_interface, 		16 +step_y, TOP);
+
+
+	info_line("MISC", pos_x, space_interface, 													17 +step_y, TOP);
+	info_line("pause: "+ pause_is, pos_x, space_interface, 							18 +step_y, TOP);
 }
 
 

@@ -4,7 +4,7 @@ FORCE FIELD
 2017-2018
 by Stan le Punk
 http://stanlepunk.xyz/
-v 0.1.0
+v 0.2.0
 */
 /**
 Force Field is a deep refactoring Flow field from The Nature of Code by Daniel Shiffman
@@ -29,11 +29,10 @@ boolean display_result_warp = false;
 boolean display_result_vehicle = false;
 
 boolean hide_menu_bar = false;
+boolean show_must_go_on = true;
+boolean inside_gui = false;
 
-int time_count_gui;
-
-
-
+int time_count_ff;
 
 PGraphics pg;
 
@@ -41,9 +40,7 @@ int type_field;
 int pattern_field;
 
 int which_cam = 0 ; // 0 is the camera fullsize / max frameRate by default if there is camera plug is the external cam is catch
-boolean inside_gui;
 
-// Using this variable to decide whether to draw all the stuff
 void settings() {
   if(fullScreen_is) {
     // fullScreen(P2D,1);
@@ -76,7 +73,6 @@ void settings() {
 
 /**
 SETUP
-
 */
 void setup() {
   info_system();
@@ -85,21 +81,8 @@ void setup() {
 
   if(use_leapmotion) leap_setup();
 
-  /**
-  force field setting
-  Choice which vector you want use
-  */
-
-  /**
-  vehicle
-  */
   set_vehicle(get_num_vehicle_gui());
 
-
-
-  /**
-  warp force field
-  */
   warp_setup();
   
   set_info(false);
@@ -113,10 +96,9 @@ void setup() {
 
 /**
 DRAW
-
 */
 void draw() {
-
+  if(!pause_is || show_must_go_on_is()) time_count_ff++;
   if(hide_menu_bar) PApplet.hideMenuBar();
   // cursor(CROSS);
   if(use_leapmotion) leap_update();
@@ -128,18 +110,15 @@ void draw() {
   }
 
   boolean run_spot_is = true;
-  // if(pause_is) run_spot_is = false;
   if(pause_is && !mousePressed) {
     run_spot_is = false;  
   } 
-    
-  if(pause_is) {
-    //
-  } else {
-    time_count_gui++;
-  }
+  
+
+
+
   // spot coord
-  if(run_spot_is) {
+  if(run_spot_is || show_must_go_on_is()) {
     num_spot_ff(get_num_spot_gui(),get_range_spot_gui()); 
     if(use_leapmotion) {
       force_field_spot_condition_leapmotion();
@@ -148,8 +127,13 @@ void draw() {
       force_field_spot_condition(true);
       if(!inside_gui){
         force_field_spot_coord(iVec2(mouseX,mouseY),mousePressed,pause_is);
-      } else {
+      } else if(show_must_go_on_is()){
         force_field_spot_coord(iVec2(mouseX,mouseY),false,pause_is);
+      } else if(inside_gui && show_must_go_on_is()) {
+        // force_field_spot_coord(iVec2(mouseX,mouseY),false,pause_is);
+        force_field_spot_coord(iVec2(mouseX,mouseY),false,show_must_go_on_is());
+      } else {
+        force_field_spot_coord(iVec2(mouseX,mouseY),false,show_must_go_on_is());
       }
     }
   }
@@ -165,7 +149,9 @@ void draw() {
       force_field_spot_diam();
       force_field_spot_mass();
     } 
-    if(!inside_gui) update_ff(); 
+    if(!inside_gui || show_must_go_on_is()) {
+      update_ff(); 
+    } 
   }
 
 
@@ -181,14 +167,19 @@ void draw() {
   /** 
   DISPLAY RESULT
   */
-
   if(display_bg_is()) {
     if(get_alpha_bg() > 0 ) background_rope(0,get_alpha_bg());
   }
 
   if(display_warp_is()) {
     tint(g.colorModeX,g.colorModeY,g.colorModeZ,get_alpha_warp());
-    warp_draw(get_tempo_refresh_gui(), get_rgba_warp_mapped_gui(), get_power_cycling_gui(), pause_is);
+    if(show_must_go_on_is()) {
+      warp_draw(get_tempo_refresh_gui(), get_rgba_warp_mapped_gui(), get_power_cycling_gui(), true);
+    } else if(!show_must_go_on_is() && pause_is) {
+      warp_draw(get_tempo_refresh_gui(), get_rgba_warp_mapped_gui(), get_power_cycling_gui(), false);
+    } else {
+      warp_draw(get_tempo_refresh_gui(), get_rgba_warp_mapped_gui(), get_power_cycling_gui(), false);
+    }
   }
   if(display_vehicle_is()) {
     if(!pause_is) {
@@ -211,7 +202,7 @@ void draw() {
 
 
   /**
-   INFO
+  INFO
    */
   info(display_field, display_grid, display_pole);
 
@@ -225,7 +216,7 @@ void draw() {
   interface gui
   */
   get_controller_gui();
-  update_gui_value(false, time_count_gui);
+  update_gui_value(false, time_count_ff);
   interface_display(use_leapmotion, force_field);
 
   if(!ff_is()) {

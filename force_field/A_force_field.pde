@@ -50,22 +50,28 @@ boolean ff_is() {
 change type
 */
 int which_ff = 0 ;
-void change_type_ff() {
+void change_type_and_pattern_ff() {
   which_ff += 1 ;
   if(which_ff > 5) which_ff = 0 ;
 
   if(which_ff == 0 ) {
-    type_field = r.STATIC; pattern_field = IMAGE ; 
+    type_field = r.STATIC; 
+    pattern_field = IMAGE ; 
   } else if(which_ff == 1) {
-    type_field = r.STATIC; pattern_field = r.PERLIN; 
+    type_field = r.STATIC; 
+    pattern_field = r.PERLIN; 
   } else if(which_ff == 2) {
-    type_field = r.STATIC; pattern_field = r.CHAOS; 
+    type_field = r.STATIC; 
+    pattern_field = r.CHAOS; 
   } else if(which_ff == 3) {
-    type_field = r.MAGNETIC; pattern_field = r.BLANK; 
+    type_field = r.MAGNETIC; 
+    pattern_field = r.BLANK; 
   } else if(which_ff == 4) {
-    type_field = r.GRAVITY; pattern_field = r.BLANK; 
+    type_field = r.GRAVITY; 
+    pattern_field = r.BLANK; 
   } else if(which_ff == 5) {
-    type_field = r.FLUID; pattern_field = r.BLANK; 
+    type_field = r.FLUID; 
+    pattern_field = r.BLANK; 
   }
 
   force_field_init_is = false ;
