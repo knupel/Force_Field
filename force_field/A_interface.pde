@@ -183,10 +183,10 @@ float num_vehicle;
 float velocity_vehicle;
 void gui_vehicle(int space, int max, int w, float start_pos, int from, PFont font) {
 	gui_vehicle = new ControlP5(this);
-	num_vehicle = 1000;
+	num_vehicle = .1;
   velocity_vehicle = 5;
-  int min_num_vehicle = 500 ;
-  int max_num_vehicle = 30_000 ;
+  int min_num_vehicle = 0 ;
+  int max_num_vehicle = 1 ;
   int max_speed = 25 ;
   //int min_velocity_vehicle = -max_speed ;
   int max_velocity_vehicle = max_speed ;
@@ -544,7 +544,7 @@ get GUI
 */
 
 int get_num_vehicle_gui() {
-	return (int)num_vehicle;
+	return int(num_vehicle *num_vehicle *num_vehicle * max_vehicle_ff);
 }
 
 float get_velocity_vehicle_gui() {
@@ -622,7 +622,7 @@ float get_max_radius_mouse() {
 }
 
 float get_motion_mouse() {
-	return motion_mouse * motion_mouse * motion_mouse * motion_mouse *motion_mouse;
+	return motion_mouse *motion_mouse *motion_mouse *motion_mouse *motion_mouse;
 }
 
 int get_beat_mouse() {
@@ -782,8 +782,9 @@ void show_info(Force_field ff) {
 	info_line("background: "+ display_bg_is(), pos_x, space_interface, 		16 +step_y, TOP);
 
 
-	info_line("MISC", pos_x, space_interface, 													17 +step_y, TOP);
-	info_line("pause: "+ pause_is, pos_x, space_interface, 							18 +step_y, TOP);
+	info_line("MISC", pos_x, space_interface, 																18 +step_y, TOP);
+	info_line("pause: "+ pause_is, pos_x, space_interface, 										19 +step_y, TOP);
+	info_line("Vehicles count: "+get_num_vehicle_gui(),pos_x, space_interface, 20 +step_y, TOP);
 }
 
 

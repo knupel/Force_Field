@@ -57,10 +57,11 @@ void keyPressed() {
   if(key == 'h') display_pole();
 
   if(key == 'i') display_info();
-
+  
   if(!checkKey(CONTROL) && !checkKey(157) && !checkKey(SHIFT) && checkKey(KeyEvent.VK_Q)) { 
     // Q for a
     display_vehicle();
+    reset_key();
   } 
   if(key == 'z') display_warp();
   if(key == 'e') display_bg();
@@ -76,7 +77,6 @@ void keyPressed() {
     global_reset();
   }
 
-
   if(key == 'v') play_video_switch();
 
   if(key == 'w') {
@@ -84,8 +84,6 @@ void keyPressed() {
   }
 
   if(key == 'x') change_type_and_pattern_ff();
-
-
 
   if(key == ' ') {
     if(pause_is) pause_is = false ; else pause_is = true ;
@@ -122,7 +120,6 @@ void keyPressed() {
 
 void keypressed_add_media() {
   if(os_system.equals("Mac OS X")) {
-    // add_camera(157,SHIFT, KeyEvent.VK_V);
     add_media_folder(157, SHIFT, KeyEvent.VK_Q); // Q for A I don't how map AZERTY layout keyboard
     add_media_file(157, SHIFT, KeyEvent.VK_Q); // Q for A I don't how map AZERTY layout keyboard
     replace_media_file(157, SHIFT, KeyEvent.VK_O);
@@ -136,18 +133,6 @@ void keypressed_add_media() {
   }
 }
 
-void add_camera(int a, int b, int c) {
-  // true-false-true
-  if(checkKey(a) && !checkKey(b) && checkKey(c)) {
-    play_video_switch();
-    /*
-    display_warp(true);
-    warp_add_media_input();
-    play_video(false);
-    */
-  }
-
-}
 
 void add_media_folder(int a, int b, int c) {
   // true-true-true

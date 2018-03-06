@@ -34,6 +34,8 @@ boolean inside_gui = false;
 
 int time_count_ff;
 
+int max_vehicle_ff = 100_000;
+
 PGraphics pg;
 
 int type_field;
