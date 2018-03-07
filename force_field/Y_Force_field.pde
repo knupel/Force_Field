@@ -274,8 +274,7 @@ public class Force_field implements Rope_Constants {
   void equation() {
 
   }
-  private void set_field_equation() {
-    
+  private void set_field_equation() {    
     float min = -1 ;
     float max = 1 ;
 
@@ -287,7 +286,6 @@ public class Force_field implements Rope_Constants {
     float dist_y = random(min,max);
     center_equation_dist = Vec2(dist_x,dist_y);
     
-
     if(center_equation_dir == null) center_equation_dir = Vec2(0);
     if(center_equation_dist == null) center_equation_dist = Vec2(0);
     set_field_equation(center_equation_dir, center_equation_dist);
