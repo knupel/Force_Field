@@ -54,8 +54,11 @@ void change_mode_ff(int step) {
   mode_ff += step;
   int num_mode = 6;
   if(mode_ff > num_mode) mode_ff = 0 ;
-  if(mode_ff < 0) mode_ff = num_mode;
+  if(mode_ff < 0) mode_ff = num_mode; 
+  mode_ff();
+}
 
+void mode_ff() {
   if(mode_ff == 0) {
     type_field = r.STATIC; 
     pattern_field = r.PERLIN; 
@@ -81,10 +84,10 @@ void change_mode_ff(int step) {
 
   force_field_init_is = false ;
   if(pattern_field != IMAGE) {
-    build_ff(type_field, pattern_field, get_resultion_ff());
+    build_ff(type_field, pattern_field, get_resolution_ff());
     num_spot_ff(get_spot_num_ff(), get_spot_area_level_ff());
   } else {
-    build_ff(type_field, pattern_field, get_resultion_ff(), warp.get_image(), get_sorting_channel_ff_2D());
+    build_ff(type_field, pattern_field, get_resolution_ff(), warp.get_image(), get_sorting_channel_ff_2D());
   }
 
   if(get_super_type_ff() == r.DYNAMIC) {
@@ -613,9 +616,7 @@ int get_pattern_ff() {
   } else return r.BLANK;
 }
 
-
-
-int get_resultion_ff() {
+int get_resolution_ff() {
   if(force_field != null ) {
     return force_field.get_resolution();
   } else return -1;
@@ -626,8 +627,6 @@ int get_spot_num_ff() {
     return force_field.get_spot_num();
   } else return -1;
 }
-
-
 
 int get_spot_area_level_ff() {
   if(force_field != null) {

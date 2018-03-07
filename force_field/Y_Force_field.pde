@@ -33,52 +33,55 @@ At this moment the force field is available only in 2D mode
 */
 
 public class Force_field implements Rope_Constants {
+  // FIELD
   private Vec4[][] field;
   private Vec4[][] field_save;
+  private int type = STATIC; // or STATIC, FLUID, MAGNETIC, CHAOS
+  private int super_type = STATIC; // or STATIC, DYNAMIC
+  private int pattern = PERLIN; // CHAOS, PERLIN, BLANK, IMAGE
+  private float sum_activities;
 
-  private PImage src;
-  private PImage texture_velocity;
-  private PImage texture_direction;
-
-  private float mass_field = 1.;
-
-  private int spot_area_level = 1 ;
-
-  private ArrayList<Vec> spot_fluid_pos_ref;
-  private ArrayList<Boolean> reset_ref_spot_pos_list_is;
-  private ArrayList<Spot> spot_list;
-  //  private ArrayList<Spot> spot_list_ref;
-
-  private ArrayList<Spot> spot_mag_north_list;
-  private ArrayList<Spot> spot_mag_south_list;
-  private ArrayList<Spot> spot_mag_neutral_list;
-
+  // CANVAS
   private iVec2 canvas, canvas_pos;
   private int cols, rows; // Columns and Rows
   private int resolution; // How large is each "cell" of the flow field
+  
+  // TEXTURE
+  private PImage src;
+  private PImage texture_velocity;
+  private PImage texture_direction;
+  
+  // SPOT
+  private int spot_area_level = 1 ;
+  private ArrayList<Vec> spot_fluid_pos_ref;
+  private ArrayList<Boolean> reset_ref_spot_pos_list_is;
+  private ArrayList<Spot> spot_list;
+  private ArrayList<Spot> spot_mag_north_list;
+  private ArrayList<Spot> spot_mag_south_list;
+  private ArrayList<Spot> spot_mag_neutral_list;
+  
+  // EQUATION
+  Vec2 center_equation_dir, center_equation_dist;
 
+  // GRAVITY
+  private float mass_field = 1.;
+  
+  // FLUID
   private Navier_Stokes_2D ns_2D;
   private Navier_Stokes_3D ns_3D;
   private int NX, NY, NZ;
-
   private float frequence = .01;
   private float viscosity = .0001;
   private float diffusion = .01;
   private float limit_vel = 100.;
 
-  private int type = STATIC; // or STATIC, FLUID, MAGNETIC, CHAOS
-  private int super_type = STATIC; // or STATIC, DYNAMIC
-  private int pattern = PERLIN; // CHAOS, PERLIN, BLANK, IMAGE
-
-  private boolean border_is = false;
-
-  private boolean reverse_is;
-
-  private float sum_activities;
-
+  // IMAGE
   private iVec4 sort;
-
-  boolean is;
+  
+  // MISC
+  private boolean border_is = false;
+  private boolean reverse_is;
+  private boolean is;
 
 
 
@@ -199,6 +202,7 @@ public class Force_field implements Rope_Constants {
   }
 
   private void init_field() {
+    sum_activities = 0;
     field = new Vec4[cols][rows];
     field_save = new Vec4[cols][rows];
   }
@@ -266,47 +270,65 @@ public class Force_field implements Rope_Constants {
       }
     }    
   }
-  private void set_field_equation() {
-    float x = random(-1,1);
-    float y = random(-1,1);
-    Vec2 center = Vec2(x,y);
-    set_field_equation(center);
+
+  void equation() {
 
   }
+  private void set_field_equation() {
+    
+    float min = -1 ;
+    float max = 1 ;
 
-  private void set_field_equation(Vec2 center_norm) {
-    float dx = cols +(cols *center_norm.x);
-    float dy = rows +(rows *center_norm.y);
-    // center
-    /*
-    float dx = cols *.5;
-    float dy = rows *.5;
-    */
+    float dir_x = random(min,max);
+    float dir_y = random(min,max);
+    center_equation_dir = Vec2(dir_x,dir_y);
+    
+    float dist_x = random(min,max);
+    float dist_y = random(min,max);
+    center_equation_dist = Vec2(dist_x,dist_y);
+    
 
-    for (int x = 0 ; x < cols ; x++) {
-      for (int y = 0 ; y < rows ; y++) {
+    if(center_equation_dir == null) center_equation_dir = Vec2(0);
+    if(center_equation_dist == null) center_equation_dist = Vec2(0);
+    set_field_equation(center_equation_dir, center_equation_dist);
+  }
 
+  private void set_field_equation(Vec2 c_dir,Vec2 c_dist) {
+    int start_x = int(cols *(c_dir.x - .5));
+    int start_y = int(rows *(c_dir.y - .5));
 
-        float tx = x -dx;
-        float ty = y -dy;   
-        
-        float theta_x = map(tx, 0, cols, -HALF_PI,HALF_PI);
-        float theta_y = map(ty, 0, rows, 0,PI);
+    float dx = cols *c_dist.x;
+    float dy = rows *c_dist.y;
 
-        float div = dx+dy;
-
-        float dist = sqrt((tx*tx) +(ty*ty))/div;
+    for (int x = start_x ; x < cols +start_x ; x++) {
+      for (int y = start_y ; y < rows +start_y ; y++) {
+        float tx = map(x, 0, cols, -HALF_PI,HALF_PI);
+        float ty = map(y, 0, rows, 0,PI);
+        float div = cols+rows;
+        float d = dist_vector(x,y,dx,dy,div);
         // Polar to cartesian coordinate
-        float xx = cos(theta_x) ;
-        float yy = sin(theta_y) ;
+        float xx = cos(tx) ;
+        float yy = sin(ty) ;
         float zz = 0 ;
-        float ww = dist ;
-        field[x][y] = Vec4(xx,yy,zz,ww); 
-        field_save[x][y] = Vec4(xx,yy,zz,ww);
-        sum_activities += field[x][y].sum() ;     
+        float ww = d ;
+
+        int cx = x -start_x;
+        int cy = y -start_y;
+        field[cx][cy] = Vec4(xx,yy,zz,ww); 
+        field_save[cx][cy] = Vec4(xx,yy,zz,ww);
+        sum_activities += field[cx][cy].sum() ;     
       }
     }
   }
+
+  private float dist_vector(int x, int y, float dx, float dy, float div) {
+    float fx = 0;
+    float fy = 0;
+    fx = x -dx;
+    fy = y -fy;
+    return sqrt((fx*fx)+(fy*fy))/div;
+  }
+
 
 
   private void set_field_blank() {

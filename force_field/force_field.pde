@@ -231,7 +231,7 @@ void draw() {
   if(get_type_ff() == IMAGE) {
     if(!sort_channel_is()) {
       force_field_init_is = false ;
-      build_ff(force_field.get_type(), get_resultion_ff(), warp.get_image(), get_sorting_channel_ff_2D());
+      build_ff(force_field.get_type(), get_resolution_ff(), warp.get_image(), get_sorting_channel_ff_2D());
       update_ff();
     }
   }

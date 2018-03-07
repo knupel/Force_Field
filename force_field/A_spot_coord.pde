@@ -164,7 +164,7 @@ void force_field_spot_condition(boolean is) {
 
 
 void force_field_spot_diam() {
-  int diam_spot = get_resultion_ff()/2 ;
+  int diam_spot = get_resolution_ff()/2 ;
   if(get_spot_num_ff() > 0) {
     int [] diam = new int[get_spot_num_ff()];
     for(int i = 0 ; i < diam.length ; i++) {

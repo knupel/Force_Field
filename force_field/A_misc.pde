@@ -14,11 +14,13 @@ void info_system() {
 void global_reset() {
   reset_vehicle(get_num_vehicle_gui(),get_ff());
   warp.reset();
+  force_field.reset();
+
   if(force_field.get_pattern() == IMAGE) {
     force_field_init_is = false ;
-    build_ff(force_field.get_type(), force_field.get_pattern(), get_resultion_ff(), warp.get_image(), get_sorting_channel_ff_2D());
+    build_ff(force_field.get_type(), force_field.get_pattern(), get_resolution_ff(), warp.get_image(), get_sorting_channel_ff_2D());
   } else {
-    build_ff(force_field.get_type(), force_field.get_pattern(), get_resultion_ff());
+    build_ff(force_field.get_type(), force_field.get_pattern(), get_resolution_ff());
   }
 
   if(force_field.get_type() == r.FLUID) {
@@ -27,9 +29,11 @@ void global_reset() {
   }
 
   update_gui_value(true,time_count_ff);
+  /*
   if(force_field.get_super_type() == r.DYNAMIC) {
     force_field.reset();
   }
+  */
 }
 
 
@@ -73,7 +77,8 @@ void keyPressed() {
   }
 
   if(key == 'r') {
-    global_reset();
+    mode_ff();
+    // global_reset();
   }
 
   if(key == 'v') play_video_switch();

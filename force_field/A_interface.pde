@@ -771,21 +771,24 @@ void show_info(Force_field ff) {
 		info_line("y coord sort:" + sort[1], pos_x, space_interface, 	8 +step_y, TOP);
 	}
 	// frame rate
-	info_line("Frame rate" + " " +(int)frameRate, pos_x, space_interface, 10 +step_y, TOP);
+	info_line("Frame rate: "  +(int)frameRate, pos_x, space_interface, 10 +step_y, TOP);
+	//grid
+	info_line("Grid: "  +get_ff().cols +"x"+get_ff().rows, pos_x, space_interface, 11 +step_y, TOP);
+	info_line("Cell size: "  +get_resolution_ff(), pos_x, space_interface, 12 +step_y, TOP);
 	// device
 	String device_cursor = "mouse";
 	if(use_leapmotion)  device_cursor = "leapmotion";
-	info_line("Device cursor: "+device_cursor, pos_x, space_interface, 11 +step_y, TOP);
+	info_line("Device cursor: "+device_cursor, pos_x, space_interface, 13 +step_y, TOP);
 
-  info_line("DISPLAY", pos_x, space_interface, 													13 +step_y, TOP);
-	info_line("vehicles: "+ display_vehicle_is(), pos_x, space_interface, 14 +step_y, TOP);
-	info_line("warp: "+ display_warp_is(), pos_x, space_interface, 				15 +step_y, TOP);
-	info_line("background: "+ display_bg_is(), pos_x, space_interface, 		16 +step_y, TOP);
+  info_line("DISPLAY", pos_x, space_interface, 													15 +step_y, TOP);
+	info_line("vehicles: "+ display_vehicle_is(), pos_x, space_interface, 16 +step_y, TOP);
+	info_line("warp: "+ display_warp_is(), pos_x, space_interface, 				17 +step_y, TOP);
+	info_line("background: "+ display_bg_is(), pos_x, space_interface, 		18 +step_y, TOP);
 
 
-	info_line("MISC", pos_x, space_interface, 																18 +step_y, TOP);
-	info_line("pause: "+ pause_is, pos_x, space_interface, 										19 +step_y, TOP);
-	info_line("Vehicles count: "+get_num_vehicle_gui(),pos_x, space_interface, 20 +step_y, TOP);
+	info_line("MISC", pos_x, space_interface, 																20 +step_y, TOP);
+	info_line("pause: "+ pause_is, pos_x, space_interface, 										21 +step_y, TOP);
+	info_line("Vehicles count: "+get_num_vehicle_gui(),pos_x, space_interface, 22 +step_y, TOP);
 }
 
 
