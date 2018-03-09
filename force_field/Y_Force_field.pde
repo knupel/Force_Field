@@ -1,9 +1,74 @@
+/**
+EQUATION
+2018-2018
+v 0.0.1
+* Equation work with field array 2D
+*/
+public class Equation implements Rope_Constants {
+  Vec3 center_eq_dir, center_eq_dist ;
+
+  // Center dir
+  private void eq_center_dir(float x, float y, float z) {
+    center_eq_dir = Vec3(x,y,z);
+  }
+
+  Vec2 get_center_dir_2D() {
+    return Vec2(center_eq_dir.x,center_eq_dir.y);
+  }
+
+  Vec3 get_center_dir_3D() {
+    return Vec3(center_eq_dir.x,center_eq_dir.y,center_eq_dir.z);
+  }
+
+  // Center dist
+  private void eq_center_dist(float x, float y, float z) {
+    center_eq_dist = Vec3(x,y,z);
+  }
+
+  Vec2 get_center_dist_2D() {
+    return Vec2(center_eq_dist.x,center_eq_dist.y);
+  }
+
+  Vec3 get_center_dist_3D() {
+    return Vec3(center_eq_dist.x,center_eq_dir.y,center_eq_dist.z);
+  }
+}
+
+
+
+// method
+Equation eq;
+void init_eq() {
+  if(eq == null) eq = new Equation();
+}
+
+void eq_center_dir(float x, float y) {
+  eq.eq_center_dir(x, y, 0);
+}
+
+void eq_center_dir(float x, float y, float z) {
+  eq.eq_center_dir(x, y, z);
+}
+
+void eq_center_dist(float x, float y) {
+  eq.eq_center_dist(x, y, 0);
+}
+
+void eq_center_dist(float x, float y, float z) {
+  eq.eq_center_dist(x, y, z);
+}
+
+
+
+
+
+
 
 /**
 Force Field
 2017-2018
 http://stanlepunk.xyz/
-v 1.10.1
+v 1.11.1
 */
 
 /**
@@ -118,16 +183,15 @@ public class Force_field implements Rope_Constants {
     init_field();
     init_spot();
     init_texture(cols,rows);
+    border_is = true ;
 
     if(type == FLUID) {
       printErr("FLUID have square or cube canvas, the HEIGHT be used for the canvas side");
       int iteration = 20 ;
+      border_is = false;
       ns_2D = new Navier_Stokes_2D(iVec2(NX,NY), iteration);
-      set_field();
-    } else {
-      border_is = true ;
-      set_field();
-    }
+    } 
+    set_field();
   }
 
   
@@ -163,26 +227,9 @@ public class Force_field implements Rope_Constants {
 
     border_is = true ;
     set_field();
-    // set_field_img_2D();
   }
 
-  private void sorting_channel(int... sorting) {
-    if(sorting.length == 1) {
-      this.sort = iVec4(sorting[0],sorting[0],sorting[0],sorting[0]);
-    } else if(sorting.length == 2) {
-      this.sort = iVec4(sorting[0],sorting[0],sorting[0],sorting[1]);
-    } else if(sorting.length == 3) {
-      this.sort = iVec4(sorting[0],sorting[1],-1,sorting[2]);
-    } else if(sorting.length == 4){
-      this.sort = iVec4(sorting[0],sorting[1],sorting[2],sorting[3]);
-    } else if(sorting.length > 4){
-      this.sort = iVec4(sorting[0],sorting[1],sorting[2],sorting[3]);
-      printErr("void sorting_channel(): Too much channel to sort, the first 4 is used");
-    } else {
-      this.sort = iVec4(1) ;
-      printErr("void sorting_channel(): No channel available to sort, the value 1 is used for all component");
-    }
-  }
+
 
   /**
   initialisation
@@ -270,22 +317,25 @@ public class Force_field implements Rope_Constants {
       }
     }    
   }
+  // equatiion field
 
-  void equation() {
 
+
+  private float eq_dist_vector(int x, int y, float dx, float dy, float div) {
+    float fx = 0;
+    float fy = 0;
+    fx = x -dx;
+    fy = y -fy;
+    return sqrt((fx*fx)+(fy*fy))/div;
   }
-  private void set_field_equation() {    
-    float min = -1 ;
-    float max = 1 ;
 
-    float dir_x = random(min,max);
-    float dir_y = random(min,max);
-    center_equation_dir = Vec2(dir_x,dir_y);
-    
-    float dist_x = random(min,max);
-    float dist_y = random(min,max);
-    center_equation_dist = Vec2(dist_x,dist_y);
-    
+
+  private void set_field_equation() { 
+    if(eq != null) {
+      center_equation_dir = eq.get_center_dir_2D().copy();
+      center_equation_dist = eq.get_center_dist_2D().copy();
+    }   
+
     if(center_equation_dir == null) center_equation_dir = Vec2(0);
     if(center_equation_dist == null) center_equation_dist = Vec2(0);
     set_field_equation(center_equation_dir, center_equation_dist);
@@ -300,10 +350,13 @@ public class Force_field implements Rope_Constants {
 
     for (int x = start_x ; x < cols +start_x ; x++) {
       for (int y = start_y ; y < rows +start_y ; y++) {
+        // dir
         float tx = map(x, 0, cols, -HALF_PI,HALF_PI);
         float ty = map(y, 0, rows, 0,PI);
+        
+        // vel
         float div = cols+rows;
-        float d = dist_vector(x,y,dx,dy,div);
+        float d = eq_dist_vector(x,y,dx,dy,div);
         // Polar to cartesian coordinate
         float xx = cos(tx) ;
         float yy = sin(ty) ;
@@ -319,13 +372,7 @@ public class Force_field implements Rope_Constants {
     }
   }
 
-  private float dist_vector(int x, int y, float dx, float dy, float div) {
-    float fx = 0;
-    float fy = 0;
-    fx = x -dx;
-    fy = y -fy;
-    return sqrt((fx*fx)+(fy*fy))/div;
-  }
+
 
 
 
@@ -338,7 +385,6 @@ public class Force_field implements Rope_Constants {
     }
     sum_activities += 0 ;
   }
-
 
   
   private void set_field_chaos() {
@@ -533,9 +579,6 @@ public class Force_field implements Rope_Constants {
   public set spot
   v 0.2.0
   */
-
-
-  
   public void set_spot(float pos_x, float pos_y, float size_x, float size_y) {
     for(int i = 0 ; i < spot_list.size() ; i++) {
       set_spot(pos_x,pos_y,size_x,size_y,i);
@@ -1105,6 +1148,7 @@ public class Force_field implements Rope_Constants {
       count_spot_mag();
       update_grav_mag_field();
     } else if(super_type == STATIC) {
+      // println("STATIC field convert to texture", frameCount);
       convert_field_to_texture();
     }
   }
@@ -1275,31 +1319,67 @@ public class Force_field implements Rope_Constants {
   CONVERT TO TEX VELOCITY & TEXTURE
   local method to convert vector to texture
   */
+  /**
 
+
+
+
+
+
+
+
+
+
+
+
+
+  */
   private void convert_field_to_texture() {
     for (int x = 0; x < cols ; x++) {
       for (int y = 0; y < rows ; y++) {
         // here we convert the vector field Vec4 to Vec2 to have a real vector
+        /*
         Vec2 flow = Vec2(field[x][y].x,field[x][y].y).mult(field[x][y].w);
         field_to_texture(x,y,flow.x,flow.y);
+        */
+        Vec2 flow_dir = Vec2(field[x][y].x,field[x][y].y);
+        field_to_tex_dir(x,y,flow_dir.x,flow_dir.y);
+        //Vec2 flow_vel = Vec2(field[x][y].x,field[x][y].y));
+        //if(x == cols /2 && y == rows /2) println(x,y, field[x][y]);
+        field_to_tex_vel(x,y,field[x][y].w);
         sum_activities += field[x][y].sum() ;
       }
     }
   }
 
-  private void field_to_texture(int x, int y, float vx, float vy) {
-    // velocity
-    float velocity = (float)Math.sqrt(vx*vx + vy*vy);
-    velocity = map(velocity, 0, 1, 0,g.colorModeX);
-    int colour_vel = color(velocity);
-    texture_velocity.set(x,y,colour_vel);
-    // direction
+  private void field_to_tex_dir(int x, int y, float vx, float vy) {
     float dir_rad = atan2(vx,vy) ;
     float direction = map(dir_rad, -PI, PI, 0, g.colorModeX);
     int colour_dir = color(direction);
     texture_direction.set(x,y,colour_dir);
   }
+
+  private void field_to_tex_vel(int x, int y, float vel) {
+    vel = map(vel,0,1,0,g.colorModeX);
+    int colour_vel = color(vel);
+    texture_velocity.set(x,y,colour_vel);
+  }
   
+  private void field_to_texture(int x, int y, float vx, float vy) {
+    // direction
+    float dir_rad = atan2(vx,vy) ;
+    float direction = map(dir_rad, -PI, PI, 0, g.colorModeX);
+    int colour_dir = color(direction);
+    texture_direction.set(x,y,colour_dir);
+
+    // velocity
+    float velocity = (float)Math.sqrt(vx*vx + vy*vy);
+    velocity = map(velocity, 0, 1, 0,g.colorModeX);
+    int colour_vel = color(velocity);
+    texture_velocity.set(x,y,colour_vel);
+  }
+
+
 
 
 
@@ -1783,13 +1863,7 @@ public class Force_field implements Rope_Constants {
   util v 0.0.3.1
   library private methods
   */
-  
-
   /**
-  util misc
-  */
-  /*
-  * theta v 0.3.0
   * compute angle to vectorial direction
   */
   private float theta_2D(Vec2 current_coord, Vec2 target) {
@@ -1798,6 +1872,31 @@ public class Force_field implements Rope_Constants {
     Vec2 dir = look_at(current_cell_pos, target);
     // why multiply by '-1' it's a mistery
     return -1 *dir.angle();
+  }
+
+
+
+
+  /**
+  * Sorting channel
+  * Here the sorting component must use the int Constants ROPE: r.RED, r.GREEN, r.BLUE, r.ALPHA, r.HUE, r.SATURATION, r.BRIGHTNESS
+  */
+  private void sorting_channel(int... sorting) {
+    if(sorting.length == 1) {
+      this.sort = iVec4(sorting[0],sorting[0],sorting[0],sorting[0]);
+    } else if(sorting.length == 2) {
+      this.sort = iVec4(sorting[0],sorting[0],sorting[0],sorting[1]);
+    } else if(sorting.length == 3) {
+      this.sort = iVec4(sorting[0],sorting[1],-1,sorting[2]);
+    } else if(sorting.length == 4){
+      this.sort = iVec4(sorting[0],sorting[1],sorting[2],sorting[3]);
+    } else if(sorting.length > 4){
+      this.sort = iVec4(sorting[0],sorting[1],sorting[2],sorting[3]);
+      printErr("void sorting_channel(): Too much channel to sort, the first 4 is used");
+    } else {
+      this.sort = iVec4(1) ;
+      printErr("void sorting_channel(): No channel available to sort, the value 1 is used for all component");
+    }
   }
 }
 

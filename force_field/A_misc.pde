@@ -673,16 +673,15 @@ void save_frame_jpg(float compression) {
 
 /**
 show vector field
-v 0.0.5
+v 0.1.0
 */
 void show_force_field() {
   float scale = 5 ;
-  boolean show_intensity_is = true;
-  show_force_field(force_field, scale, show_intensity_is);
+  show_force_field(force_field, scale);
 }
 
 
-void show_force_field(Force_field ff, float scale, boolean show_intensity_is) {
+void show_force_field(Force_field ff, float scale) {
   if(ff != null) {
     Vec2 offset = Vec2(ff.get_canvas_pos()) ;
     offset.sub(ff.get_resolution()/2);
@@ -690,22 +689,22 @@ void show_force_field(Force_field ff, float scale, boolean show_intensity_is) {
     for (int x = 0; x < ff.cols; x++) {
       for (int y = 0; y < ff.rows; y++) {
         Vec2 pos = Vec2(x *ff.get_resolution(), y *ff.get_resolution());
-        // pos.add(offset);
         Vec2 dir = Vec2(ff.field[x][y].x,ff.field[x][y].y);
         if(ff.get_super_type() == r.STATIC) {
-          dir.mult(ff.field[x][y].w);
-          // pos.sub(offset);
+          float mag = ff.field[x][y].w;
+          pattern_force_field(dir, mag, pos, ff.resolution *scale);
         } else {
           pos.add(offset);
+          float mag = (float)Math.sqrt(dir.x*dir.x + dir.y*dir.y + dir.z*dir.z); ;
+          pattern_force_field(dir, mag, pos, ff.resolution *scale);
         }
-        pattern_force_field(dir, pos, ff.resolution *scale, show_intensity_is);
       }
     }
   }  
 }
 
 // Renders a vector object 'v' as an arrow and a position 'x,y'
-void pattern_force_field(Vec2 dir, Vec2 pos, float scale, boolean show_intensity_is) {
+void pattern_force_field(Vec2 dir, float mag, Vec2 pos, float scale) {
   Vec5 colorMode = Vec5(getColorMode());
   colorMode(HSB,1);
 
@@ -715,9 +714,7 @@ void pattern_force_field(Vec2 dir, Vec2 pos, float scale, boolean show_intensity
   // Call vector heading function to get direction (note that pointing to the right is a heading of 0) and rotate
   rotate(dir.angle());
   // Calculate length of vector & scale it to be dir_vector or smaller if dir_vector
-  float mag = (float)Math.sqrt(dir.x*dir.x + dir.y*dir.y + dir.z*dir.z);
-
-  float len = dir.mag() *scale;
+  float len = mag *scale;
   float blue = .7 ;
   float red = 0 ;
   float hue = map(abs(len), 0, scale,blue,red);

@@ -84,8 +84,18 @@ void mode_ff() {
 
   force_field_init_is = false ;
   if(pattern_field != IMAGE) {
+    if(pattern_field == r.EQUATION) {
+      init_eq();
+      float x = random(-1,1);
+      float y = random(-1,1);
+      eq_center_dir(x,y);
+      x = random(-1,1);
+      y = random(-1,1);
+      eq_center_dist(x,y);
+    }
     build_ff(type_field, pattern_field, get_resolution_ff());
     num_spot_ff(get_spot_num_ff(), get_spot_area_level_ff());
+
   } else {
     build_ff(type_field, pattern_field, get_resolution_ff(), warp.get_image(), get_sorting_channel_ff_2D());
   }
