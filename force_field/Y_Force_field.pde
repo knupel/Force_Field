@@ -5,7 +5,7 @@ v 0.0.1
 * Equation work with field array 2D
 */
 public class Equation implements Rope_Constants {
-  Vec3 center_eq_dir, center_eq_dist ;
+  Vec3 center_eq_dir, center_eq_len ;
 
   // Center dir
   private void eq_center_dir(float x, float y, float z) {
@@ -20,17 +20,17 @@ public class Equation implements Rope_Constants {
     return Vec3(center_eq_dir.x,center_eq_dir.y,center_eq_dir.z);
   }
 
-  // Center dist
-  private void eq_center_dist(float x, float y, float z) {
-    center_eq_dist = Vec3(x,y,z);
+  // Center len
+  private void eq_center_len(float x, float y, float z) {
+    center_eq_len = Vec3(x,y,z);
   }
 
-  Vec2 get_center_dist_2D() {
-    return Vec2(center_eq_dist.x,center_eq_dist.y);
+  Vec2 get_center_len_2D() {
+    return Vec2(center_eq_len.x,center_eq_len.y);
   }
 
-  Vec3 get_center_dist_3D() {
-    return Vec3(center_eq_dist.x,center_eq_dir.y,center_eq_dist.z);
+  Vec3 get_center_len_3D() {
+    return Vec3(center_eq_len.x,center_eq_dir.y,center_eq_len.z);
   }
 }
 
@@ -50,12 +50,12 @@ void eq_center_dir(float x, float y, float z) {
   eq.eq_center_dir(x, y, z);
 }
 
-void eq_center_dist(float x, float y) {
-  eq.eq_center_dist(x, y, 0);
+void eq_center_len(float x, float y) {
+  eq.eq_center_len(x, y, 0);
 }
 
-void eq_center_dist(float x, float y, float z) {
-  eq.eq_center_dist(x, y, z);
+void eq_center_len(float x, float y, float z) {
+  eq.eq_center_len(x, y, z);
 }
 
 
@@ -126,7 +126,7 @@ public class Force_field implements Rope_Constants {
   private ArrayList<Spot> spot_mag_neutral_list;
   
   // EQUATION
-  Vec2 center_equation_dir, center_equation_dist;
+  Vec2 center_equation_dir, center_equation_len;
 
   // GRAVITY
   private float mass_field = 1.;
@@ -321,7 +321,7 @@ public class Force_field implements Rope_Constants {
 
 
 
-  private float eq_dist_vector(int x, int y, float dx, float dy, float div) {
+  private float eq_len_vector(int x, int y, float dx, float dy, float div) {
     float fx = 0;
     float fy = 0;
     fx = x -dx;
@@ -333,20 +333,20 @@ public class Force_field implements Rope_Constants {
   private void set_field_equation() { 
     if(eq != null) {
       center_equation_dir = eq.get_center_dir_2D().copy();
-      center_equation_dist = eq.get_center_dist_2D().copy();
+      center_equation_len = eq.get_center_len_2D().copy();
     }   
 
     if(center_equation_dir == null) center_equation_dir = Vec2(0);
-    if(center_equation_dist == null) center_equation_dist = Vec2(0);
-    set_field_equation(center_equation_dir, center_equation_dist);
+    if(center_equation_len == null) center_equation_len = Vec2(0);
+    set_field_equation(center_equation_dir, center_equation_len);
   }
 
-  private void set_field_equation(Vec2 c_dir,Vec2 c_dist) {
+  private void set_field_equation(Vec2 c_dir,Vec2 c_len) {
     int start_x = int(cols *(c_dir.x - .5));
     int start_y = int(rows *(c_dir.y - .5));
 
-    float dx = cols *c_dist.x;
-    float dy = rows *c_dist.y;
+    float dx = cols *c_len.x;
+    float dy = rows *c_len.y;
 
     for (int x = start_x ; x < cols +start_x ; x++) {
       for (int y = start_y ; y < rows +start_y ; y++) {
@@ -356,7 +356,7 @@ public class Force_field implements Rope_Constants {
         
         // vel
         float div = cols+rows;
-        float d = eq_dist_vector(x,y,dx,dy,div);
+        float d = eq_len_vector(x,y,dx,dy,div);
         // Polar to cartesian coordinate
         float xx = cos(tx) ;
         float yy = sin(ty) ;

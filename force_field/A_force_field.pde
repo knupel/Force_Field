@@ -91,7 +91,7 @@ void mode_ff() {
       eq_center_dir(x,y);
       x = random(-1,1);
       y = random(-1,1);
-      eq_center_dist(x,y);
+      eq_center_len(x,y);
     }
     build_ff(type_field, pattern_field, get_resolution_ff());
     num_spot_ff(get_spot_num_ff(), get_spot_area_level_ff());
