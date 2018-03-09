@@ -3,7 +3,7 @@ ROPE - Romanesco processing environment –
 * Copyleft (c) 2014-2018
 * Stan le Punk > http://stanlepunk.xyz/
 CONSTANT ROPE
-v 0.1.2.1
+v 0.1.2.2
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Rope
 */
@@ -45,13 +45,18 @@ public interface Rope_Constants {
 	// static final int GRAY = 4050 ; // this already existe
 	static final int GRAY_MEDIUM = -8618884;
 
-	static final int RED   = -65536;
-	static final int GREEN = -16711936;
-	static final int BLUE  = -16776961;
-
-	static public int YELLOW  = -256;
-	static public int MAGENTA = -65281;
+	static final int RED      = -65536;
+	/* ORANGE > HSB,1,1,1 > color(.08,1,1)  */
+	static final int ORANGE   = -34304;
+  static public int YELLOW  = -256;
+	static final int GREEN    = -16711936;
 	static public int CYAN    = -16711681;
+	/* BLUE > HSB,1,1,1 > color(.65,1,1) */
+	static final int BLUE     = -16770561; 
+	static public int MAGENTA = -65281;
+	/* PURPLE > HSB,1,1,1 > color(.75,1,1) */
+	static public int PURPLE  = -8453889; 
+
 
 	static final String RANDOM       = "RANDOM";
 	static final String RANDOM_ZERO  = "RANDOM ZERO";

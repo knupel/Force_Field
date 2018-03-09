@@ -3,7 +3,7 @@ ROPE - Romanesco processing environment –
 * Copyleft (c) 2014-2017 
 * Stan le Punk > http://stanlepunk.xyz/
 ROPE core
-v 0.0.4
+v 0.0.4.1
 2017-2018
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Rope
@@ -47,7 +47,7 @@ that's cool but that's very weird !!!!!
 */
 public void init_rope() {
 	r = new ROPE() ;
-	println("Init ROPE: Romanesco Processing Environment - 2015-2017");
+	println("Init ROPE: Romanesco Processing Environment - 2015-2018");
 }
 
 public class ROPE implements Rope_Constants {

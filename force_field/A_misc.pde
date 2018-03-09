@@ -677,9 +677,21 @@ v 0.1.0
 */
 void show_force_field() {
   float scale = 5 ;
+  color_force_field(r.HUE);
+  reverse_color_force_field(mousePressed);
   show_force_field(force_field, scale);
 }
 
+int color_force_field ;
+void color_force_field(int c) {
+  color_force_field = c;
+}
+
+boolean reverse_value_colour_force_field ;
+void reverse_color_force_field(boolean state) {
+  reverse_value_colour_force_field = state;
+
+}
 
 void show_force_field(Force_field ff, float scale) {
   if(ff != null) {
@@ -715,10 +727,32 @@ void pattern_force_field(Vec2 dir, float mag, Vec2 pos, float scale) {
   rotate(dir.angle());
   // Calculate length of vector & scale it to be dir_vector or smaller if dir_vector
   float len = mag *scale;
-  float blue = .7 ;
-  float red = 0 ;
-  float hue = map(abs(len), 0, scale,blue,red);
-  stroke(hue,1,1,1);
+  float max = .7 ;
+  float min = 0 ;
+  float value = map(abs(len), 0, scale,max,min);
+  if(reverse_value_colour_force_field) value = 1-value ;
+
+  if(color_force_field == r.HUE) {
+    stroke(value,1,1,1);
+  } else if(color_force_field == r.RED) {
+    stroke(0,1,value,1);
+  } else if(color_force_field == r.ORANGE) {
+    stroke(0.08,1,value,1);
+  } else if(color_force_field == r.YELLOW) {
+    stroke(0.2,1,value,1);
+  } else if(color_force_field == r.GREEN) {
+    stroke(0.4,1,value,1);
+  } else if(color_force_field == r.BLUE) {
+    stroke(0.65,1,value,1);
+  } else if(color_force_field == r.PURPLE) {
+    stroke(0.75,1,value,1);
+  } else if(color_force_field == r.WHITE) {
+    stroke(0,0,value,1);
+  } else if(color_force_field == r.BLACK) {
+    stroke(0,value,0,1);
+  } else {
+    stroke(value,1,1,1);
+  }
   if(len > scale) len = scale ;
   line(0,0,len,0);
 

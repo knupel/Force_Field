@@ -1,11 +1,14 @@
 /**
 EQUATION
 2018-2018
-v 0.0.1
+v 0.0.2
 * Equation work with field array 2D
 */
 public class Equation implements Rope_Constants {
-  Vec3 center_eq_dir, center_eq_len ;
+  Vec3 center_eq_dir, center_eq_len;
+  int pow_x = 1;
+  int pow_y = 1;
+  int pow_z = 1;
 
   // Center dir
   private void eq_center_dir(float x, float y, float z) {
@@ -38,24 +41,40 @@ public class Equation implements Rope_Constants {
 
 // method
 Equation eq;
-void init_eq() {
+public void init_eq() {
   if(eq == null) eq = new Equation();
 }
 
-void eq_center_dir(float x, float y) {
+// choice a center to compute the vector direction
+public void eq_center_dir(float x, float y) {
   eq.eq_center_dir(x, y, 0);
 }
 
-void eq_center_dir(float x, float y, float z) {
+public void eq_center_dir(float x, float y, float z) {
   eq.eq_center_dir(x, y, z);
 }
 
-void eq_center_len(float x, float y) {
+// choice a center to compute the length vector
+public void eq_center_len(float x, float y) {
   eq.eq_center_len(x, y, 0);
 }
 
-void eq_center_len(float x, float y, float z) {
+public void eq_center_len(float x, float y, float z) {
   eq.eq_center_len(x, y, z);
+}
+
+// pow
+public void eq_pow(int x, int y) {
+  eq_pow(x, y, 1);
+}
+
+public void eq_pow(int x, int y, int z) {
+  if(x < 1) x = 1 ;
+  if(y < 1) y = 1 ;
+  if(z < 1) z = 1 ;
+  eq.pow_x = x ;
+  eq.pow_y = y ;
+  eq.pow_z = z ;
 }
 
 
@@ -68,7 +87,7 @@ void eq_center_len(float x, float y, float z) {
 Force Field
 2017-2018
 http://stanlepunk.xyz/
-v 1.11.1
+v 1.11.2
 */
 
 /**
@@ -317,8 +336,6 @@ public class Force_field implements Rope_Constants {
       }
     }    
   }
-  // equatiion field
-
 
 
   private float eq_len_vector(int x, int y, float dx, float dy, float div) {
@@ -351,12 +368,41 @@ public class Force_field implements Rope_Constants {
     for (int x = start_x ; x < cols +start_x ; x++) {
       for (int y = start_y ; y < rows +start_y ; y++) {
         // dir
+
+        
         float tx = map(x, 0, cols, -HALF_PI,HALF_PI);
         float ty = map(y, 0, rows, 0,PI);
+        // float dir_x = tx ;
+        // float dir_y = ty ;
+        if(eq != null) {
+          if(eq.pow_x > 1) {
+            if(eq.pow_x%2 == 0) {
+              tx = pow(tx,eq.pow_x);
+            } else {
+              tx = -1 * pow(tx,eq.pow_x) ;
+            }  
+          }
+          if(eq.pow_y > 1) {
+            ty = pow(y,eq.pow_y);
+            if(eq.pow_y%2 == 0) {
+              ty = pow(ty,eq.pow_y);
+            } else {
+              ty = -1 * pow(ty,eq.pow_y) ;
+            }
+          }
+
+        }
         
-        // vel
+        // len
+        int len_x = x ;
+        int len_y = y ;
+        if(eq != null) {
+          
+        }
         float div = cols+rows;
-        float d = eq_len_vector(x,y,dx,dy,div);
+        float d = eq_len_vector(len_x,len_y,dx,dy,div);
+
+
         // Polar to cartesian coordinate
         float xx = cos(tx) ;
         float yy = sin(ty) ;
