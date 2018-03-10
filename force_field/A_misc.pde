@@ -535,7 +535,13 @@ void info(boolean display_force_field_is,  boolean display_grid_is, boolean disp
   strokeWeight(.5);
 
   if (display_force_field_is) {
-    show_force_field();
+    float scale = 5 ;
+    int c = r.HUE;
+    float min_c = .0; // red
+    float max_c = .7; // blue
+    boolean reverse_c = false;
+    set_show_force_field(scale,c,min_c,max_c,reverse_c);
+    show_force_field(get_ff());
   }
 
   if(display_grid_is) {
@@ -564,7 +570,6 @@ void info(boolean display_force_field_is,  boolean display_grid_is, boolean disp
       show_pole(force_field.get_spot_pos(i));
     }
   }
-  
 }
 
 
@@ -675,25 +680,37 @@ void save_frame_jpg(float compression) {
 show vector field
 v 0.1.0
 */
-void show_force_field() {
-  float scale = 5 ;
-  color_force_field(r.RED);
-  reverse_color_force_field(false);
-  show_force_field(force_field, scale);
+float scale_show_force_field = 5;
+int color_force_field;
+boolean reverse_value_colour_force_field;
+float min_range_colour_force_field = 0.;
+float max_range_colour_force_field = .7;
+
+void set_show_force_field(float scale, int colour_constant, float min, float max, boolean reverse_colour) {
+  scale_show_force_field = scale;
+  set_range_colour_force_field(min,max);
+  color_force_field(colour_constant);
+  reverse_color_force_field(reverse_colour);
 }
 
-int color_force_field ;
+
 void color_force_field(int c) {
   color_force_field = c;
 }
 
-boolean reverse_value_colour_force_field ;
-void reverse_color_force_field(boolean state) {
-  reverse_value_colour_force_field = state;
-
+void set_range_colour_force_field(float min, float max) {
+  min_range_colour_force_field = min;
+  max_range_colour_force_field = max;
 }
 
-void show_force_field(Force_field ff, float scale) {
+
+void reverse_color_force_field(boolean state) {
+  reverse_value_colour_force_field = state;
+}
+
+void show_force_field(Force_field ff) {
+  float scale = scale_show_force_field ;
+
   if(ff != null) {
     Vec2 offset = Vec2(ff.get_canvas_pos()) ;
     offset.sub(ff.get_resolution()/2);
@@ -727,8 +744,9 @@ void pattern_force_field(Vec2 dir, float mag, Vec2 pos, float scale) {
   rotate(dir.angle());
   // Calculate length of vector & scale it to be dir_vector or smaller if dir_vector
   float len = mag *scale;
-  float max = .7 ;
-  float min = 0 ;
+  float min = min_range_colour_force_field;
+  float max = max_range_colour_force_field;
+
   float value = map(abs(len), 0, scale,max,min);
   if(reverse_value_colour_force_field) {
     value = 1-value ;
