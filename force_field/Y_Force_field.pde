@@ -346,6 +346,27 @@ public class Force_field implements Rope_Constants {
     return sqrt((fx*fx)+(fy*fy))/div;
   }
 
+  private Vec2 eq_pow(Vec2 v) {
+    Vec2 r = Vec2();
+    if(eq.pow_x > 1) {
+      if(eq.pow_x%2 == 0) {
+        r.x = pow(v.x,eq.pow_x);
+      } else {
+        r.x = -1 * pow(v.x,eq.pow_x) ;
+      }  
+    }
+    if(eq.pow_y > 1) {
+      //r.y = pow(target_y,eq.pow_y);
+      if(eq.pow_y%2 == 0) {
+        r.y = pow(v.y,eq.pow_y);
+      } else {
+        r.y = -1 * pow(v.y,eq.pow_y) ;
+      }
+    }
+
+    return r;
+  }
+
 
   private void set_field_equation() { 
     if(eq != null) {
@@ -367,31 +388,17 @@ public class Force_field implements Rope_Constants {
 
     for (int x = start_x ; x < cols +start_x ; x++) {
       for (int y = start_y ; y < rows +start_y ; y++) {
+        Vec2 v = Vec2(x,y);
         // dir
+        if(eq != null) {
+          v.set(eq_pow(v));
+        } 
+
+        float tx = map(v.x, 0, cols, -HALF_PI,HALF_PI);
+        float ty = map(v.y, 0, rows, 0,PI);
+        
 
         
-        float tx = map(x, 0, cols, -HALF_PI,HALF_PI);
-        float ty = map(y, 0, rows, 0,PI);
-        // float dir_x = tx ;
-        // float dir_y = ty ;
-        if(eq != null) {
-          if(eq.pow_x > 1) {
-            if(eq.pow_x%2 == 0) {
-              tx = pow(tx,eq.pow_x);
-            } else {
-              tx = -1 * pow(tx,eq.pow_x) ;
-            }  
-          }
-          if(eq.pow_y > 1) {
-            ty = pow(y,eq.pow_y);
-            if(eq.pow_y%2 == 0) {
-              ty = pow(ty,eq.pow_y);
-            } else {
-              ty = -1 * pow(ty,eq.pow_y) ;
-            }
-          }
-
-        }
         
         // len
         int len_x = x ;

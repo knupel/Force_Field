@@ -677,8 +677,8 @@ v 0.1.0
 */
 void show_force_field() {
   float scale = 5 ;
-  color_force_field(r.HUE);
-  reverse_color_force_field(mousePressed);
+  color_force_field(r.RED);
+  reverse_color_force_field(false);
   show_force_field(force_field, scale);
 }
 
@@ -730,7 +730,9 @@ void pattern_force_field(Vec2 dir, float mag, Vec2 pos, float scale) {
   float max = .7 ;
   float min = 0 ;
   float value = map(abs(len), 0, scale,max,min);
-  if(reverse_value_colour_force_field) value = 1-value ;
+  if(reverse_value_colour_force_field) {
+    value = 1-value ;
+  }
 
   if(color_force_field == r.HUE) {
     stroke(value,1,1,1);
