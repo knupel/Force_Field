@@ -10,30 +10,49 @@ void info_system() {
 }
 
 
-
+/**
+RESET
+*/
 void global_reset() {
+  global_reset(force_field.get_type(), force_field.get_pattern(), force_field.get_super_type(), get_resolution_ff());
+}
+
+
+void global_reset(int type, int pattern, int super_type, int resolution) {
+  force_field_init_is = false ;
   reset_vehicle(get_num_vehicle_gui(),get_ff());
   warp.reset();
   force_field.reset();
 
-  if(force_field.get_pattern() == IMAGE) {
-    force_field_init_is = false ;
-    build_ff(force_field.get_type(), force_field.get_pattern(), get_resolution_ff(), warp.get_image(), get_sorting_channel_ff_2D());
-  } else {
-    build_ff(force_field.get_type(), force_field.get_pattern(), get_resolution_ff());
+  if(pattern == r.EQUATION) {
+    init_eq();
+    float x = random(-1,1);
+    float y = random(-1,1);
+    //eq_center_dir(x,y);
+    x = random(-1,1);
+    y = random(-1,1);
+    //eq_center_len(x,y);
+    eq_reverse_len(false);
+    //eq_pow(2,2);
+    // eq_root(2,2);
   }
 
-  if(force_field.get_type() == r.FLUID) {
+  if(pattern == IMAGE) {
+    build_ff(type,pattern,resolution, warp.get_image(), get_sorting_channel_ff_2D());
+  } else {
+    build_ff(type,pattern,resolution);
+    num_spot_ff(get_spot_num_ff(), get_spot_area_level_ff());
+  }
+
+  if(type == r.FLUID) {
     set_full_reset_field(false);
     set_check_gui_dynamic_mag_grav();
   }
 
-  update_gui_value(true,time_count_ff);
-  /*
-  if(force_field.get_super_type() == r.DYNAMIC) {
-    force_field.reset();
+  if(super_type == r.DYNAMIC){
+    update_gui_value(true,time_count_ff);
   }
-  */
+  // 
 }
 
 
@@ -77,8 +96,8 @@ void keyPressed() {
   }
 
   if(key == 'r') {
-    mode_ff();
-    // global_reset();
+    // mode_ff();
+    global_reset();
   }
 
   if(key == 'v') play_video_switch();
@@ -540,8 +559,8 @@ void info(boolean display_force_field_is,  boolean display_grid_is, boolean disp
     float min_c = .0; // red
     float max_c = .7; // blue
     boolean reverse_c = false;
-    set_show_force_field(scale,c,min_c,max_c,reverse_c);
-    show_force_field(get_ff());
+    set_show_field(scale,c,min_c,max_c,reverse_c);
+    show_field(get_ff());
   }
 
   if(display_grid_is) {
@@ -680,36 +699,36 @@ void save_frame_jpg(float compression) {
 show vector field
 v 0.1.0
 */
-float scale_show_force_field = 5;
-int color_force_field;
-boolean reverse_value_colour_force_field;
-float min_range_colour_force_field = 0.;
-float max_range_colour_force_field = .7;
+float scale_show_field = 5;
+int colour_field;
+boolean reverse_value_colour_field;
+float min_range_colour_field = 0.;
+float max_range_colour_field = .7;
 
-void set_show_force_field(float scale, int colour_constant, float min, float max, boolean reverse_colour) {
-  scale_show_force_field = scale;
-  set_range_colour_force_field(min,max);
-  color_force_field(colour_constant);
-  reverse_color_force_field(reverse_colour);
+void set_show_field(float scale, int colour_constant, float min, float max, boolean reverse_colour) {
+  scale_show_field = scale;
+  set_range_colour_field(min,max);
+  colour_field(colour_constant);
+  reverse_color_field(reverse_colour);
 }
 
 
-void color_force_field(int c) {
-  color_force_field = c;
+void colour_field(int c) {
+  colour_field = c;
 }
 
-void set_range_colour_force_field(float min, float max) {
-  min_range_colour_force_field = min;
-  max_range_colour_force_field = max;
+void set_range_colour_field(float min, float max) {
+  min_range_colour_field = min;
+  max_range_colour_field = max;
 }
 
 
-void reverse_color_force_field(boolean state) {
-  reverse_value_colour_force_field = state;
+void reverse_color_field(boolean state) {
+  reverse_value_colour_field = state;
 }
 
-void show_force_field(Force_field ff) {
-  float scale = scale_show_force_field ;
+void show_field(Force_field ff) {
+  float scale = scale_show_field ;
 
   if(ff != null) {
     Vec2 offset = Vec2(ff.get_canvas_pos()) ;
@@ -721,11 +740,11 @@ void show_force_field(Force_field ff) {
         Vec2 dir = Vec2(ff.field[x][y].x,ff.field[x][y].y);
         if(ff.get_super_type() == r.STATIC) {
           float mag = ff.field[x][y].w;
-          pattern_force_field(dir, mag, pos, ff.resolution *scale);
+          pattern_field(dir, mag, pos, ff.resolution *scale);
         } else {
           pos.add(offset);
           float mag = (float)Math.sqrt(dir.x*dir.x + dir.y*dir.y + dir.z*dir.z); ;
-          pattern_force_field(dir, mag, pos, ff.resolution *scale);
+          pattern_field(dir, mag, pos, ff.resolution *scale);
         }
       }
     }
@@ -733,7 +752,7 @@ void show_force_field(Force_field ff) {
 }
 
 // Renders a vector object 'v' as an arrow and a position 'x,y'
-void pattern_force_field(Vec2 dir, float mag, Vec2 pos, float scale) {
+void pattern_field(Vec2 dir, float mag, Vec2 pos, float scale) {
   Vec5 colorMode = Vec5(getColorMode());
   colorMode(HSB,1);
 
@@ -744,31 +763,31 @@ void pattern_force_field(Vec2 dir, float mag, Vec2 pos, float scale) {
   rotate(dir.angle());
   // Calculate length of vector & scale it to be dir_vector or smaller if dir_vector
   float len = mag *scale;
-  float min = min_range_colour_force_field;
-  float max = max_range_colour_force_field;
+  float min = min_range_colour_field;
+  float max = max_range_colour_field;
 
   float value = map(abs(len), 0, scale,max,min);
-  if(reverse_value_colour_force_field) {
+  if(reverse_value_colour_field) {
     value = 1-value ;
   }
 
-  if(color_force_field == r.HUE) {
+  if(colour_field == r.HUE) {
     stroke(value,1,1,1);
-  } else if(color_force_field == r.RED) {
+  } else if(colour_field == r.RED) {
     stroke(0,1,value,1);
-  } else if(color_force_field == r.ORANGE) {
+  } else if(colour_field == r.ORANGE) {
     stroke(0.08,1,value,1);
-  } else if(color_force_field == r.YELLOW) {
+  } else if(colour_field == r.YELLOW) {
     stroke(0.2,1,value,1);
-  } else if(color_force_field == r.GREEN) {
+  } else if(colour_field == r.GREEN) {
     stroke(0.4,1,value,1);
-  } else if(color_force_field == r.BLUE) {
+  } else if(colour_field == r.BLUE) {
     stroke(0.65,1,value,1);
-  } else if(color_force_field == r.PURPLE) {
+  } else if(colour_field == r.PURPLE) {
     stroke(0.75,1,value,1);
-  } else if(color_force_field == r.WHITE) {
+  } else if(colour_field == r.WHITE) {
     stroke(0,0,value,1);
-  } else if(color_force_field == r.BLACK) {
+  } else if(colour_field == r.BLACK) {
     stroke(0,value,0,1);
   } else {
     stroke(value,1,1,1);

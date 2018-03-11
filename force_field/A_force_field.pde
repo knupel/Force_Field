@@ -1,7 +1,7 @@
 /**
 Example
 force field 
-v 0.1.0
+v 0.2.0
 */
 Force_field force_field;
 boolean force_field_init_is;
@@ -69,41 +69,27 @@ void mode_ff() {
     type_field = r.STATIC; 
     pattern_field = r.CHAOS; 
   } else if(mode_ff == 3) {
+    if(warp.library() != null && warp.library_size() > 0) {
+      type_field = r.STATIC; 
+      pattern_field = IMAGE ;
+    } else {
+      println("The library is empty, load media before use this mode/n instead the pattern CHAOS is used");
+      type_field = r.STATIC; 
+      pattern_field = r.CHAOS;
+    }
+  } else if(mode_ff == 4) {
     type_field = r.MAGNETIC; 
     pattern_field = r.BLANK; 
-  } else if(mode_ff == 4) {
+  } else if(mode_ff == 5) {
     type_field = r.GRAVITY; 
     pattern_field = r.BLANK; 
-  } else if(mode_ff == 5) {
+  } else if(mode_ff == 6) {
     type_field = r.FLUID; 
     pattern_field = r.BLANK; 
-  } else if(mode_ff == 6) {
-    type_field = r.STATIC; 
-    pattern_field = IMAGE ; 
   }
-
-  force_field_init_is = false ;
-  if(pattern_field != IMAGE) {
-    if(pattern_field == r.EQUATION) {
-      init_eq();
-      float x = random(-1,1);
-      float y = random(-1,1);
-      eq_center_dir(x,y);
-      x = random(-1,1);
-      y = random(-1,1);
-      eq_center_len(x,y);
-      eq_pow(2,3);
-    }
-    build_ff(type_field, pattern_field, get_resolution_ff());
-    num_spot_ff(get_spot_num_ff(), get_spot_area_level_ff());
-
-  } else {
-    build_ff(type_field, pattern_field, get_resolution_ff(), warp.get_image(), get_sorting_channel_ff_2D());
-  }
-
-  if(get_super_type_ff() == r.DYNAMIC) {
-    global_reset(); 
-  }
+  int super_type_field = r.STATIC ;
+  if(type_field != r.STATIC) super_type_field = r.DYNAMIC;
+  global_reset(type_field, pattern_field, super_type_field, get_resolution_ff()); 
 }
 
 

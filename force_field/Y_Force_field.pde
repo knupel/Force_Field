@@ -1,14 +1,14 @@
 /**
 EQUATION
 2018-2018
-v 0.0.2
+v 0.0.3
 * Equation work with field array 2D
 */
 public class Equation implements Rope_Constants {
   Vec3 center_eq_dir, center_eq_len;
-  int pow_x = 1;
-  int pow_y = 1;
-  int pow_z = 1;
+  iVec3 pow;
+  iVec3 root;
+  boolean reverse_len;
 
   // Center dir
   private void eq_center_dir(float x, float y, float z) {
@@ -16,11 +16,13 @@ public class Equation implements Rope_Constants {
   }
 
   Vec2 get_center_dir_2D() {
-    return Vec2(center_eq_dir.x,center_eq_dir.y);
+    if(center_eq_dir != null) return Vec2(center_eq_dir.x,center_eq_dir.y);
+    else return null ;
   }
 
   Vec3 get_center_dir_3D() {
-    return Vec3(center_eq_dir.x,center_eq_dir.y,center_eq_dir.z);
+    if(center_eq_dir != null) return Vec3(center_eq_dir.x,center_eq_dir.y,center_eq_dir.z);
+    else return null;
   }
 
   // Center len
@@ -29,17 +31,20 @@ public class Equation implements Rope_Constants {
   }
 
   Vec2 get_center_len_2D() {
-    return Vec2(center_eq_len.x,center_eq_len.y);
+    if(center_eq_len != null) return Vec2(center_eq_len.x,center_eq_len.y);
+    else return null;
   }
 
   Vec3 get_center_len_3D() {
-    return Vec3(center_eq_len.x,center_eq_dir.y,center_eq_len.z);
+    if(center_eq_len != null) return Vec3(center_eq_len.x,center_eq_dir.y,center_eq_len.z);
+    else return null;
   }
 }
 
 
-
-// method
+/**
+EQ method
+*/
 Equation eq;
 public void init_eq() {
   if(eq == null) eq = new Equation();
@@ -64,18 +69,49 @@ public void eq_center_len(float x, float y, float z) {
 }
 
 // pow
-public void eq_pow(int x, int y) {
-  eq_pow(x, y, 1);
+public void eq_pow(int px, int py) {
+  eq_pow(px, py, 1);
 }
 
-public void eq_pow(int x, int y, int z) {
-  if(x < 1) x = 1 ;
-  if(y < 1) y = 1 ;
-  if(z < 1) z = 1 ;
-  eq.pow_x = x ;
-  eq.pow_y = y ;
-  eq.pow_z = z ;
+public void eq_pow(int px, int py, int pz) {
+  if(px < 1) px = 1 ;
+  if(py < 1) py = 1 ;
+  if(pz < 1) pz = 1 ;
+  if(eq.pow == null) {
+    eq.pow = iVec3(px,py,pz);
+  } else {
+    eq.pow.set(px,py,pz);
+  }
 }
+
+//root squareroot, cuberoot and timeroot for 4th dimension
+public void eq_root(int rx, int ry){
+  eq_root(rx,ry,1);
+}
+public void eq_root(int rx, int ry, int rz) {
+  int min = 1;
+  int max = 4;
+  if(rx < min) rx = min;
+  if(rx > max) rx = max;
+
+  if(ry < min) ry = min;
+  if(ry > max) ry = max;
+
+  if(rz < min) rz = min;
+  if(rz > max) rz = max;
+
+  if(eq.root == null) {
+    eq.root = iVec3(rx,ry,rz);
+  } else {
+    eq.root.set(rx,ry,rz);
+  }
+}
+
+// reverse len
+public void eq_reverse_len(boolean state){
+  eq.reverse_len = state;
+}
+
 
 
 
@@ -338,7 +374,7 @@ public class Force_field implements Rope_Constants {
   }
 
 
-  private float eq_len_vector(int x, int y, float dx, float dy, float div) {
+  private float eq_len_vector(float x, float y, float dx, float dy, float div) {
     float fx = 0;
     float fy = 0;
     fx = x -dx;
@@ -346,32 +382,31 @@ public class Force_field implements Rope_Constants {
     return sqrt((fx*fx)+(fy*fy))/div;
   }
 
-  private Vec2 eq_pow(Vec2 v) {
-    Vec2 r = Vec2();
-    if(eq.pow_x > 1) {
-      if(eq.pow_x%2 == 0) {
-        r.x = pow(v.x,eq.pow_x);
+  private Vec2 eq_pow(iVec3 pow, Vec2 v) {
+    Vec2 r = Vec2(v);
+    if(pow.x > 1) {
+      if(pow.x%2 == 0) {
+        r.x = pow(v.x,pow.x);
       } else {
-        r.x = -1 * pow(v.x,eq.pow_x) ;
+        r.x = -1 * pow(v.x,pow.x) ;
       }  
     }
-    if(eq.pow_y > 1) {
-      //r.y = pow(target_y,eq.pow_y);
-      if(eq.pow_y%2 == 0) {
-        r.y = pow(v.y,eq.pow_y);
+    if(pow.y > 1) {
+      if(pow.y%2 == 0) {
+        r.y = pow(v.y,pow.y);
       } else {
-        r.y = -1 * pow(v.y,eq.pow_y) ;
+        r.y = -1 * pow(v.y,pow.y) ;
       }
     }
-
     return r;
   }
 
 
+
   private void set_field_equation() { 
-    if(eq != null) {
-      center_equation_dir = eq.get_center_dir_2D().copy();
-      center_equation_len = eq.get_center_len_2D().copy();
+    if(eq != null ) {
+      if(eq.get_center_dir_2D() != null) center_equation_dir = eq.get_center_dir_2D().copy();
+      if(eq.get_center_len_2D() != null) center_equation_len = eq.get_center_len_2D().copy();
     }   
 
     if(center_equation_dir == null) center_equation_dir = Vec2(0);
@@ -380,53 +415,50 @@ public class Force_field implements Rope_Constants {
   }
 
   private void set_field_equation(Vec2 c_dir,Vec2 c_len) {
-    int start_x = int(cols *(c_dir.x - .5));
-    int start_y = int(rows *(c_dir.y - .5));
+    int dir_offset_x = int(cols *(c_dir.x - .5));
+    int dir_offset_y = int(rows *(c_dir.y - .5));
 
-    float dx = cols *c_len.x;
-    float dy = rows *c_len.y;
+    float len_offset_x = cols *c_len.x;
+    float len_offset_y = rows *c_len.y;
 
-    for (int x = start_x ; x < cols +start_x ; x++) {
-      for (int y = start_y ; y < rows +start_y ; y++) {
-        Vec2 v = Vec2(x,y);
+    for (int x = dir_offset_x ; x < cols +dir_offset_x ; x++) {
+      for (int y = dir_offset_y ; y < rows +dir_offset_y ; y++) {
+        Vec2 d = Vec2(x,y);
         // dir
-        if(eq != null) {
-          v.set(eq_pow(v));
+        if(eq != null && eq.pow != null) {
+          d.set(eq_pow(eq.pow,d));
         } 
-
-        float tx = map(v.x, 0, cols, -HALF_PI,HALF_PI);
-        float ty = map(v.y, 0, rows, 0,PI);
-        
-
-        
-        
+        float tx = map(d.x, 0, cols, -HALF_PI,HALF_PI);
+        float ty = map(d.y, 0, rows, 0,PI);
+             
         // len
-        int len_x = x ;
-        int len_y = y ;
-        if(eq != null) {
-          
+        Vec2 l = Vec2(x,y);
+        if(eq != null ) {
+          // l.set(eq_root(eq.root,l));
         }
         float div = cols+rows;
-        float d = eq_len_vector(len_x,len_y,dx,dy,div);
-
+        float len = eq_len_vector(l.x,l.y,len_offset_x,len_offset_y,div);
+        // if(len > 1) println(len,frameCount,"before");
+        if(eq != null ) {
+          if(eq.reverse_len) len = 1.3 -len;
+          if(len < 0) len = 0;
+        }
+        // if(len > 1) println(len,frameCount,"after");
 
         // Polar to cartesian coordinate
         float xx = cos(tx) ;
         float yy = sin(ty) ;
         float zz = 0 ;
-        float ww = d ;
+        float ww = len ;
 
-        int cx = x -start_x;
-        int cy = y -start_y;
+        int cx = x -dir_offset_x;
+        int cy = y -dir_offset_y;
         field[cx][cy] = Vec4(xx,yy,zz,ww); 
         field_save[cx][cy] = Vec4(xx,yy,zz,ww);
         sum_activities += field[cx][cy].sum() ;     
       }
     }
   }
-
-
-
 
 
   private void set_field_blank() {
@@ -438,7 +470,6 @@ public class Force_field implements Rope_Constants {
     }
     sum_activities += 0 ;
   }
-
   
   private void set_field_chaos() {
     for (int x = 0 ; x < cols ; x++) {
@@ -477,7 +508,6 @@ public class Force_field implements Rope_Constants {
       xoff += .1;
     }
   }
-
 
   private void set_field_img_2D() {
     src.loadPixels();
@@ -1398,7 +1428,6 @@ public class Force_field implements Rope_Constants {
         Vec2 flow_dir = Vec2(field[x][y].x,field[x][y].y);
         field_to_tex_dir(x,y,flow_dir.x,flow_dir.y);
         //Vec2 flow_vel = Vec2(field[x][y].x,field[x][y].y));
-        //if(x == cols /2 && y == rows /2) println(x,y, field[x][y]);
         field_to_tex_vel(x,y,field[x][y].w);
         sum_activities += field[x][y].sum() ;
       }
