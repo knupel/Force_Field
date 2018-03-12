@@ -101,6 +101,16 @@ void mode_ff() {
 
 
 
+
+
+
+
+
+
+
+
+
+
 /**
 channel sorting for image
 */
@@ -236,9 +246,10 @@ void build_ff(int type_ff, int pattern_ff, int resolution, PImage src, int... so
   // force_field.set_spot_area(1);
 }
 
-/*
-warning
-*/
+
+
+
+// warning
 void check_for_available_spot() {
   if(force_field.get_spot_num() < 1 ) {
     printErr("void build_force_field() There is no spot added for your force Field, this force field need one to work") ;
@@ -248,38 +259,31 @@ void check_for_available_spot() {
 Different mode to build force field
 v 0.0.2
 */
-/**
-* build classic
-*/
+// build classic
 void build_ff_classic(int type_force_field, int pattern_force_field, int resolution, iVec2 canvas_pos, iVec2 canvas) {
   force_field = new Force_field(resolution, canvas_pos, canvas, type_force_field, pattern_force_field);
   force_field_init_is = true ;
 }
-/**
-* buid force field FLUID
-*/
+
+// buid force field FLUID
 void build_ff_fluid(int resolution, iVec2 canvas_pos, iVec2 canvas) {
   force_field = new Force_field(resolution, canvas_pos, canvas, r.FLUID, r.BLANK);
-  force_field_init_is = true ;
-  
+  force_field_init_is = true ;  
 }
-/**
-* build force field image source to generate the vector field
-*/
+
+// build force field image source to generate the vector field
 void build_ff_img(int resolution, iVec2 canvas_pos, PImage img, int... sorting_channel) {
   force_field = new Force_field(resolution, canvas_pos, img, sorting_channel);
   force_field_init_is = true ;
 }
-/**
-* build force field gravity
-*/
+
+// build force field gravity
 void build_ff_gravity(int resolution, iVec2 canvas_pos, iVec2 canvas) {
   force_field = new Force_field(resolution, canvas_pos, canvas, r.GRAVITY, r.BLANK);
   force_field_init_is = true ;
 }
-/**
-* build force field magnetic
-*/
+
+// build force field magnetic
 void build_ff_magnetic(int resolution, iVec2 canvas_pos, iVec2 canvas) {
   force_field = new Force_field(resolution, canvas_pos, canvas, r.MAGNETIC, r.BLANK);
   // Force_field(int resolution, iVec2 canvas_pos, iVec2 canvas, int type, int pattern)

@@ -1,14 +1,95 @@
 /**
 EQUATION
 2018-2018
-v 0.0.3
+v 0.0.4
 * Equation work with field array 2D
 */
 public class Equation implements Rope_Constants {
+  // ArrayList<Integer> rank ;
   Vec3 center_eq_dir, center_eq_len;
-  iVec3 pow;
-  iVec3 root;
+  ArrayList<iVec4> pow;
+  ArrayList<iVec4> root;
+  ArrayList<Vec4> mult;
   boolean reverse_len;
+  int num_op = 0 ;
+  int x = 1;
+  int y = 2;
+  int z = 3;
+
+  Equation() {
+    // rank = new ArrayList<Integer>();
+  }
+
+
+  private void rank() {
+    /*
+    if(rank == null) {
+      rank = ArrayList<Integer>();
+    }
+    */
+    // rank.add(rank_id);
+    num_op++;
+  }
+
+  private int get_op() {
+    return num_op;
+  }
+
+  public void swap_xyz(String st_x, String st_y, String st_z) {
+    if(st_x.equals("x")) x = 1 ;
+    else if(st_x.equals("y")) x = 2 ;
+    else if(st_x.equals("z")) x = 3 ;
+    else x = 1 ;
+
+    if(st_y.equals("x")) y = 1 ;
+    else if(st_y.equals("y")) y = 2 ;
+    else if(st_y.equals("z")) y = 3 ;
+    else y = 2 ;
+
+    if(st_z.equals("x")) z = 1 ;
+    else if(st_z.equals("y")) z = 2 ;
+    else if(st_z.equals("z")) z = 3 ;
+    else z = 3 ;
+  }
+
+  public void swap_xy(String x, String y) {
+    swap_xyz(x,y,"z");
+  }
+
+  // operation
+  public void mult(float mx, float my, float mz) {
+    if(mult == null) mult = new ArrayList<Vec4>();
+    int rank = get_op() ;
+    mult.add(Vec4(mx,my,mz,rank));
+    rank();
+  }
+
+  public void pow(int px, int py, int pz) {
+    if(pow == null) pow = new ArrayList<iVec4>();
+    int rank = get_op();
+    if(px < 1) px = 1;
+    if(py < 1) py = 1;
+    if(pz < 1) pz = 1;
+    pow.add(iVec4(px,py,pz,rank));
+    rank();
+  }
+
+  public void root(int rx, int ry, int rz) {
+    if(root == null) root = new ArrayList<iVec4>();
+    int rank = get_op();
+    int min = 1;
+    int max = 4;
+    if(rx < min) rx = min;
+    if(rx > max) rx = max;
+
+    if(ry < min) ry = min;
+    if(ry > max) ry = max;
+
+    if(rz < min) rz = min;
+    if(rz > max) rz = max;
+    root.add(iVec4(rx,ry,rz,rank));
+    rank();
+  }
 
   // Center dir
   private void eq_center_dir(float x, float y, float z) {
@@ -44,12 +125,16 @@ public class Equation implements Rope_Constants {
 
 /**
 EQ method
+v 0.0.1
 */
 Equation eq;
 public void init_eq() {
-  if(eq == null) eq = new Equation();
+  eq = new Equation();
+  // if(eq == null) eq = new Equation();
 }
-
+/**
+misc
+*/
 // choice a center to compute the vector direction
 public void eq_center_dir(float x, float y) {
   eq.eq_center_dir(x, y, 0);
@@ -68,12 +153,33 @@ public void eq_center_len(float x, float y, float z) {
   eq.eq_center_len(x, y, z);
 }
 
+// reverse len
+public void eq_reverse_len(boolean state){
+  eq.reverse_len = state;
+}
+
+public void swap_xyz(String x, String y, String z) {
+  eq.swap_xyz(x,y,z);
+}
+
+public void swap_xy(String x, String y) {
+  swap_xyz(x,y,"z");
+}
+
+
+/**
+eq operation
+*/
 // pow
 public void eq_pow(int px, int py) {
+
   eq_pow(px, py, 1);
 }
 
 public void eq_pow(int px, int py, int pz) {
+  // eq.rank();
+  eq.pow(px,py,pz);
+  /*
   if(px < 1) px = 1 ;
   if(py < 1) py = 1 ;
   if(pz < 1) pz = 1 ;
@@ -82,6 +188,7 @@ public void eq_pow(int px, int py, int pz) {
   } else {
     eq.pow.set(px,py,pz);
   }
+  */
 }
 
 //root squareroot, cuberoot and timeroot for 4th dimension
@@ -89,6 +196,9 @@ public void eq_root(int rx, int ry){
   eq_root(rx,ry,1);
 }
 public void eq_root(int rx, int ry, int rz) {
+  // eq.rank();
+  eq.root(rx,ry,rz);
+  /*
   int min = 1;
   int max = 4;
   if(rx < min) rx = min;
@@ -105,12 +215,26 @@ public void eq_root(int rx, int ry, int rz) {
   } else {
     eq.root.set(rx,ry,rz);
   }
+  */
 }
 
-// reverse len
-public void eq_reverse_len(boolean state){
-  eq.reverse_len = state;
+//root squareroot, cuberoot and timeroot for 4th dimension
+public void eq_mult(float mx, float my){
+  eq_mult(mx,my,1);
 }
+public void eq_mult(float mx, float my, float mz) {
+  // eq.rank();
+  eq.mult(mx,my,mz);
+  /*
+  if(eq.mult == null) {
+    eq.mult = Vec3(mx,my,mz);
+  } else {
+    eq.mult.set(mx,my,mz);
+  }
+  */
+}
+
+
 
 
 
@@ -214,9 +338,7 @@ public class Force_field implements Rope_Constants {
   CONSTRUCTOR
   v 0.1.1
   */
-  /**
-  constructor CLASSIC
-  */
+  // CLASSIC
   public Force_field(int resolution, iVec2 canvas_pos, iVec2 canvas, int type, int pattern) {
     if(resolution == 0) {
       printErr("Contructor Force_field: resolution =", resolution, "instead the value 20 is used");
@@ -249,27 +371,24 @@ public class Force_field implements Rope_Constants {
     set_field();
   }
 
-  
-  /**
-  constructor PImage
-  */
+  //PImage
   public Force_field(int resolution, iVec2 canvas_pos, PImage src, int... component_sorting) {
     this.resolution = resolution;
-    this.type = STATIC ;
+    this.type = STATIC;
     init_super_type(this.type);
-    this.pattern = IMAGE ;
-    this.is = true ;
+    this.pattern = IMAGE;
+    this.is = true;
     sorting_channel(component_sorting);
     
-    if(this.src == null ) {
+    if(this.src == null) {
       this.src = createImage(src.width,src.height,ARGB);
-      src.loadPixels() ;
-      this.src.pixels = src.pixels ;
+      src.loadPixels();
+      this.src.pixels = src.pixels;
       this.src.updatePixels(); 
     } else {
       this.src.resize(src.width,src.height);
-      src.loadPixels() ;
-      this.src.pixels = src.pixels ;
+      src.loadPixels();
+      this.src.pixels = src.pixels;
       this.src.updatePixels(); 
     }
     // Determine the number of columns and rows based on sketch's width and height
@@ -373,6 +492,12 @@ public class Force_field implements Rope_Constants {
     }    
   }
 
+  private void eq_swap(Vec2 dir) {
+    float x = dir.x;
+    float y = dir.y;
+    if(eq.x == 2) dir.x = y;
+    if(eq.y == 1) dir.y = x;
+  }
 
   private float eq_len_vector(float x, float y, float dx, float dy, float div) {
     float fx = 0;
@@ -382,7 +507,7 @@ public class Force_field implements Rope_Constants {
     return sqrt((fx*fx)+(fy*fy))/div;
   }
 
-  private Vec2 eq_pow(iVec3 pow, Vec2 v) {
+  private Vec2 eq_pow(iVec4 pow, Vec2 v) {
     Vec2 r = Vec2(v);
     if(pow.x > 1) {
       if(pow.x%2 == 0) {
@@ -399,6 +524,39 @@ public class Force_field implements Rope_Constants {
       }
     }
     return r;
+  }
+
+  private Vec2 eq_mult(Vec4 mult, Vec2 v) {
+    Vec2 r = Vec2(v);
+    if(mult.x != 1) {
+      r.x = v.x *mult.x;
+    }
+    if(mult.y != 1) {
+      r.y = v.y *mult.y;
+    }
+    return r;
+  }
+
+
+  private void eq_op(Vec2 dir) {
+    for(int rank = 0 ; rank < eq.get_op() ; rank++) {
+      if(eq.pow != null) {
+        for(iVec4 pv : eq.pow) {
+          if(pv.w == rank) {
+            dir.set(eq_pow(pv,dir));
+            break;
+          }
+        }
+      }
+      if(eq.mult != null) {
+        for(Vec4 mv : eq.mult) {
+          if(mv.w == rank) {
+            dir.set(eq_mult(mv,dir));
+            break;
+          }
+        }
+      }
+    }
   }
 
 
@@ -425,9 +583,12 @@ public class Force_field implements Rope_Constants {
       for (int y = dir_offset_y ; y < rows +dir_offset_y ; y++) {
         Vec2 d = Vec2(x,y);
         // dir
-        if(eq != null && eq.pow != null) {
-          d.set(eq_pow(eq.pow,d));
-        } 
+        if(eq != null) {
+          eq_swap(d);
+          eq_op(d);
+          // d.set(y,x);
+        }
+
         float tx = map(d.x, 0, cols, -HALF_PI,HALF_PI);
         float ty = map(d.y, 0, rows, 0,PI);
              
@@ -1171,7 +1332,6 @@ public class Force_field implements Rope_Constants {
   * 
   */
   float ref_activities = 0 ;
-
   public boolean activity_is() {
     boolean spot_activity_is = false ;
     if(spot_list != null && spot_list.size() > 0) {
@@ -1401,21 +1561,6 @@ public class Force_field implements Rope_Constants {
   /**
   CONVERT TO TEX VELOCITY & TEXTURE
   local method to convert vector to texture
-  */
-  /**
-
-
-
-
-
-
-
-
-
-
-
-
-
   */
   private void convert_field_to_texture() {
     for (int x = 0; x < cols ; x++) {

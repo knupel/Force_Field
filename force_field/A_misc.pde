@@ -28,13 +28,20 @@ void global_reset(int type, int pattern, int super_type, int resolution) {
     init_eq();
     float x = random(-1,1);
     float y = random(-1,1);
-    //eq_center_dir(x,y);
+    eq_center_dir(x,y);
     x = random(-1,1);
     y = random(-1,1);
-    //eq_center_len(x,y);
+    eq_center_len(x,y);
     eq_reverse_len(false);
-    //eq_pow(2,2);
-    // eq_root(2,2);
+   swap_xy("y","x");
+    // swap_xy("x","y");
+    // swap_xy("y","y");
+    eq_mult(-1,2);
+
+    eq_pow(3,2);
+    // eq_mult(1,-2);
+
+
   }
 
   if(pattern == IMAGE) {
