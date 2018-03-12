@@ -375,10 +375,11 @@ void update_gui_value(boolean update_is, int t_count) {
 	update_value_ff_generative(range_min_gen,range_max_gen,power_gen,update_is);
 
   set_alpha_background(alpha_bg);
-
+  
   set_alpha_vehicle(alpha_vehicle);
   // nothing special at this time
   update_rgb_vehicle();
+  
 
   set_alpha_warp(alpha_warp);
 	update_rgba_warp(t_count);

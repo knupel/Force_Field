@@ -28,18 +28,21 @@ void global_reset(int type, int pattern, int super_type, int resolution) {
     init_eq();
     float x = random(-1,1);
     float y = random(-1,1);
+
     eq_center_dir(x,y);
     x = random(-1,1);
     y = random(-1,1);
     eq_center_len(x,y);
+
     eq_reverse_len(false);
-   swap_xy("y","x");
-    // swap_xy("x","y");
-    // swap_xy("y","y");
+    eq_swap_xy("y","x");
+    // eq_swap_xy("x","y");
+    // eq_swap_xy("y","y");
+    eq_pow(3,2);
     eq_mult(-1,2);
 
-    eq_pow(3,2);
-    // eq_mult(1,-2);
+
+    eq_root(2,1);
 
 
   }
@@ -265,6 +268,13 @@ void set_alpha_vehicle(float norm_f){
 }
 
 
+float set_alpha(float norm_f) {
+  float mult_f = norm_f *norm_f ;
+  return map(mult_f,0,1,0.,g.colorModeA);
+}
+
+
+
 float get_alpha_warp() {
   return a_warp;
 }
@@ -277,13 +287,8 @@ float get_alpha_bg() {
   return a_bg;
 }
 
-/*
-* local method
-*/
-float set_alpha(float norm_f) {
-  float mult_f = norm_f *norm_f ;
-  return map(mult_f,0,1,0.,g.colorModeA);
-}
+
+
 
 
 

@@ -158,12 +158,12 @@ public void eq_reverse_len(boolean state){
   eq.reverse_len = state;
 }
 
-public void swap_xyz(String x, String y, String z) {
+public void eq_swap_xyz(String x, String y, String z) {
   eq.swap_xyz(x,y,z);
 }
 
-public void swap_xy(String x, String y) {
-  swap_xyz(x,y,"z");
+public void eq_swap_xy(String x, String y) {
+  eq_swap_xyz(x,y,"z");
 }
 
 
@@ -172,23 +172,11 @@ eq operation
 */
 // pow
 public void eq_pow(int px, int py) {
-
   eq_pow(px, py, 1);
 }
 
 public void eq_pow(int px, int py, int pz) {
-  // eq.rank();
   eq.pow(px,py,pz);
-  /*
-  if(px < 1) px = 1 ;
-  if(py < 1) py = 1 ;
-  if(pz < 1) pz = 1 ;
-  if(eq.pow == null) {
-    eq.pow = iVec3(px,py,pz);
-  } else {
-    eq.pow.set(px,py,pz);
-  }
-  */
 }
 
 //root squareroot, cuberoot and timeroot for 4th dimension
@@ -196,26 +184,7 @@ public void eq_root(int rx, int ry){
   eq_root(rx,ry,1);
 }
 public void eq_root(int rx, int ry, int rz) {
-  // eq.rank();
   eq.root(rx,ry,rz);
-  /*
-  int min = 1;
-  int max = 4;
-  if(rx < min) rx = min;
-  if(rx > max) rx = max;
-
-  if(ry < min) ry = min;
-  if(ry > max) ry = max;
-
-  if(rz < min) rz = min;
-  if(rz > max) rz = max;
-
-  if(eq.root == null) {
-    eq.root = iVec3(rx,ry,rz);
-  } else {
-    eq.root.set(rx,ry,rz);
-  }
-  */
 }
 
 //root squareroot, cuberoot and timeroot for 4th dimension
@@ -223,15 +192,7 @@ public void eq_mult(float mx, float my){
   eq_mult(mx,my,1);
 }
 public void eq_mult(float mx, float my, float mz) {
-  // eq.rank();
   eq.mult(mx,my,mz);
-  /*
-  if(eq.mult == null) {
-    eq.mult = Vec3(mx,my,mz);
-  } else {
-    eq.mult.set(mx,my,mz);
-  }
-  */
 }
 
 
@@ -492,6 +453,11 @@ public class Force_field implements Rope_Constants {
     }    
   }
 
+
+
+
+
+
   private void eq_swap(Vec2 dir) {
     float x = dir.x;
     float y = dir.y;
@@ -507,6 +473,7 @@ public class Force_field implements Rope_Constants {
     return sqrt((fx*fx)+(fy*fy))/div;
   }
 
+  // specific op_ration
   private Vec2 eq_pow(iVec4 pow, Vec2 v) {
     Vec2 r = Vec2(v);
     if(pow.x > 1) {
@@ -537,7 +504,27 @@ public class Force_field implements Rope_Constants {
     return r;
   }
 
+  private Vec2 eq_root(iVec4 root, Vec2 v) {
+    Vec2 r = Vec2(v);
+    if(root.x == 2) {
+      r.x = sqrt(r.x);
+    } else if(root.x == 3) {
+      r.x = sqrt(sqrt(r.x));
+    } else if(root.x == 4) {
+      r.x = sqrt(sqrt(sqrt(r.x)));
+    }
 
+    if(root.y == 2) {
+      r.y = sqrt(r.y);
+    } else if(root.y == 3) {
+      r.y = sqrt(sqrt(r.y));
+    } else if(root.y == 4) {
+      r.y = sqrt(sqrt(sqrt(r.y)));
+    }  
+    return r;
+  }
+
+  // compute op-eration
   private void eq_op(Vec2 dir) {
     for(int rank = 0 ; rank < eq.get_op() ; rank++) {
       if(eq.pow != null) {
@@ -552,6 +539,14 @@ public class Force_field implements Rope_Constants {
         for(Vec4 mv : eq.mult) {
           if(mv.w == rank) {
             dir.set(eq_mult(mv,dir));
+            break;
+          }
+        }
+      }
+      if(eq.root != null) {
+        for(iVec4 rv : eq.root) {
+          if(rv.w == rank) {
+            dir.set(eq_root(rv,dir));
             break;
           }
         }

@@ -67,24 +67,60 @@ void update_vehicle(Force_field ff, float speed) {
   }
 }
 
+
+
+PGraphics pg_vehicles ;
+
 void show_vehicle(Vec3 colour_rgb, float alpha) {
   Vec3 temp = map_vec(colour_rgb,0,1,0,g.colorModeX);
-  int c = color(temp.x,temp.y,temp.z,alpha) ;
-  for (Vehicle v : vehicles) {
-    display_vehicle_pix(v, c);  
-    // display_vehicle_triangle(v, c,c,1) ;
+  int c = color(temp.x,temp.y,temp.z,alpha);
+  // display_vehicle_pixel_on_PGraphics(c);
+  int max_vehicles = 10_000;
+  display_vehicle_with_shape(c, max_vehicles);
+}
+
+
+
+// local display method
+void display_vehicle_pixel_on_PGraphics(int c) {
+  if(pg_vehicles == null || pg_vehicles.width != width || pg_vehicles.height != height) {
+    pg_vehicles = createGraphics(width,height,P2D);
+  } 
+  if(pg_vehicles != null) {
+    pg_vehicles.beginDraw();
+    pg_vehicles.clear();
+    for (Vehicle v : vehicles) {
+      vehicle_set(pg_vehicles,v, c);  
+    }
+    pg_vehicles.endDraw();
+    image(pg_vehicles);
+  }
+}
+
+void vehicle_set(PGraphics pg, Vehicle v, int c) {
+  int x = (int)v.get_position().x ;
+  int y = (int)v.get_position().y;
+  if(x < pg.width && y < pg.height) {
+     pg.set(x,y,c);
   }
 }
 
 
-/*
-*local display method
-*/
-void display_vehicle_pix(Vehicle v, int c) {
-  set(v.get_position(), c);
+void display_vehicle_with_shape(int c, int max) {
+  if(vehicles.size() > max) {
+    for(int i = 0 ; i < max ; i++) {
+      Vehicle v = vehicles.get(i);
+      float thickness = 1 ;
+      display_vehicle_triangle(v, c, c, thickness) ;
+    }
+  } else {
+    for (Vehicle v : vehicles) {
+      float thickness = 0 ;
+      display_vehicle_triangle(v, c, c, thickness) ;
+    }
+  }
+      
 }
-
-
 
 
 void display_vehicle_triangle(Vehicle v, int fill, int stroke, float thickness) {
@@ -92,10 +128,7 @@ void display_vehicle_triangle(Vehicle v, int fill, int stroke, float thickness) 
   float theta = v.get_direction() + radians(90);
   v.set_radius(10.);
   float r = v.radius ;
-  fill(fill);
-  strokeWeight(thickness);
-  stroke(stroke);
-
+  aspect_rope(fill,stroke,thickness);
   pushMatrix();
   translate(v.get_position());
   rotate(theta);
@@ -106,3 +139,7 @@ void display_vehicle_triangle(Vehicle v, int fill, int stroke, float thickness) 
   endShape();
   popMatrix();
 }
+
+
+
+
