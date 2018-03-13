@@ -24,11 +24,12 @@ ControlP5 gui_vehicle;
 
 // global slider
 boolean gui_fullreset_field_is = false;
-boolean abs_cycling = true;
+//boolean abs_cycling = true;
 boolean gui_resize_window = false;
 boolean gui_fullfit_image = true;
 boolean gui_display_bg = true;
 boolean gui_show_must_go_on = true;
+boolean gui_warp_is = true;
 
 
 
@@ -159,15 +160,17 @@ void gui_main(int space, int max, int w, float start_pos, int from, PFont font) 
 	gui_main.addSlider("green_warp").setPosition(10,pos_slider_y(space, start_pos +12.0, from)).setWidth(w).setRange(0,max).setFont(font);
 	gui_main.addSlider("blue_warp").setPosition(10,pos_slider_y(space, start_pos +13.0, from)).setWidth(w).setRange(0,max).setFont(font);
 	gui_main.addSlider("power_warp").setPosition(10,pos_slider_y(space, start_pos +14.0, from)).setWidth(w).setRange(0,max).setFont(font);
+  
+  CColor c = new CColor(r.BLOOD,r.CARMINE,r.RED,r.WHITE,r.WHITE);
+  //CColor c = new CColor(r.RED,r.BLOOD,r.CARMINE,r.WHITE,r.WHITE);
+	gui_main.addSlider("red_cycling").setPosition(10,pos_slider_y(space, start_pos +15.25, from)).setWidth(w).setRange(0,max).setFont(font).setColor(c);
+	gui_main.addSlider("green_cycling").setPosition(10,pos_slider_y(space, start_pos +16.25, from)).setWidth(w).setRange(0,max).setFont(font).setColor(c);
+	gui_main.addSlider("blue_cycling").setPosition(10,pos_slider_y(space, start_pos +17.25, from)).setWidth(w).setRange(0,max).setFont(font).setColor(c);
+	gui_main.addSlider("power_cycling").setPosition(10,pos_slider_y(space, start_pos +18.25, from)).setWidth(w).setRange(0,max).setFont(font).setColor(c);
 
-	gui_main.addSlider("red_cycling").setPosition(10,pos_slider_y(space, start_pos +15.25, from)).setWidth(w).setRange(0,max).setFont(font);
-	gui_main.addSlider("green_cycling").setPosition(10,pos_slider_y(space, start_pos +16.25, from)).setWidth(w).setRange(0,max).setFont(font);
-	gui_main.addSlider("blue_cycling").setPosition(10,pos_slider_y(space, start_pos +17.25, from)).setWidth(w).setRange(0,max).setFont(font);
-	gui_main.addSlider("power_cycling").setPosition(10,pos_slider_y(space, start_pos +18.25, from)).setWidth(w).setRange(0,max).setFont(font);
-
-	// radio_button_cycling = gui_main.addRadioButton("abs_cycling").setValue(0).setPosition(10,pos_slider_y(space, start_pos +10, from)).setSize(w,10).addItem("absolute_cycling",1).setFont(font);
-	check_gui_main_channel = gui_main.addCheckBox("channel_setting").setPosition(10,pos_slider_y(space, start_pos +19.75, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2).addItem("absolute_cycling",1);
-	//check_img = gui_static_img_2D.addCheckBox("img_setting").setPosition(10,pos_slider_y(space, start_pos +6, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2).addItem("fit_image",1);
+	check_gui_main_channel = gui_main.addCheckBox("channel_setting").setPosition(10,pos_slider_y(space, start_pos +19.75, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2)
+																		.addItem("WARP ON/OFF",1).setColor(c);
+	if(gui_warp_is) check_gui_main_channel.activate(0);
   
   int max_tempo = 10 ;
 	gui_main.addSlider("tempo_refresh").setPosition(10,pos_slider_y(space, start_pos +20.75, from)).setWidth(w).setRange(1,max_tempo).setNumberOfTickMarks(max_tempo).setFont(font);
@@ -411,12 +414,14 @@ void update_rgba_warp(int t_count) {
   if(blue_cycling != 0) {
   	cb = sin(t_count *(blue_cycling *blue_cycling *.1)); 
   }
-
+  
+  /*
   if(abs_cycling) {
   	cr = abs(cr) ;
   	cg = abs(cg) ;
   	cb = abs(cb) ;
   }
+  */
 
   Vec4 sin_val = Vec4(1);
   sin_val.set(cr,cg,cb,1);
@@ -446,7 +451,7 @@ public void controlEvent(ControlEvent theEvent) {
   }
 
   if(theEvent.isFrom(check_gui_main_channel)) {
-		if(check_gui_main_channel.getArrayValue(0) == 1) abs_cycling = true ; else abs_cycling = false ;
+		if(check_gui_main_channel.getArrayValue(0) == 1) gui_warp_is = true ; else gui_warp_is = false ;
   } 
 
   if(theEvent.isFrom(check_gui_dynamic_mag_grav_reset)) {
@@ -494,10 +499,13 @@ get controller
 */
 void get_controller_gui() {
 	get_controller_movie();
+	get_controller_main();
 }
 
 void get_controller_main() {
-	//
+	if(!gui_warp_is) gui_main.getController("power_cycling").setValue(0);
+	// gui_main.addSlider("power_cycling")
+
 }
 
 float movie_pos_normal ;
@@ -506,6 +514,8 @@ void get_controller_movie() {
 	gui_main_movie.getController("speed_movie");
 }
 
+
+/*
 void get_controller_fluid() {
 	gui_dynamic_fluid.getController("frequence");
   gui_dynamic_fluid.getController("viscosity");
@@ -519,6 +529,7 @@ void get_controller_mouse() {
   gui_dynamic_mouse.getController("speed_mouse");
   gui_dynamic_mouse.getController("angle_mouse");
 }
+*/
 
 
 

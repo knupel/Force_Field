@@ -109,9 +109,9 @@ class Warp {
     shader_warp_filter = filter_is ;
   }
 
-   // int mode = 0; // default mode is rendering
-   // mode = 500 ; // velocity mode
-   // mode = 501 ; // direction mode
+  // int mode = 0; // default mode is rendering
+  // mode = 500 ; // velocity mode
+  // mode = 501 ; // direction mode
   public void shader_mode(int which_mode) {
     shader_warp_mode = which_mode;
   }
@@ -365,7 +365,7 @@ class Warp {
     this.effect_multiply_is = effect_multiply_is;
   }
 
-    private boolean effect_overlay_is ;
+  private boolean effect_overlay_is ;
   private Vec4 effect_overlay_value ;
   public void effect_overlay(boolean effect_overlay_is, float... value) {
     Vec4 v = array_to_Vec4_rgba(value);
@@ -387,8 +387,7 @@ class Warp {
   /*
   rendering
   */
-  private void rendering(PGraphics result, PImage buffer, PImage inc, Force_field ff, float intensity) {
-    
+  private void rendering(PGraphics result, PImage buffer, PImage inc, Force_field ff, float intensity) {    
     // GPU: Graphic Processor Unit rendering
     if (rendering_warp_GPU) {
       if (refresh_image_is) {
