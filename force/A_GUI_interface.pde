@@ -11,21 +11,13 @@ float pos_slider_y(int space, float start_pos, int from) {
 	return pos_y ;
 }
 
-void background_interface() {
-	fill(0,125);
-	noStroke();
-	/* left part */
-	rect(pos_gui,size_gui);
-	/* right part */
-	rect(Vec2(width-size_gui.x,pos_gui.y),size_gui);
-}
+
 
 
 void hide_interface() {
 	if(interface_is) interface_is = false ; else interface_is = true;
 }
 
-boolean interface_is = false;
 boolean interface_is() {
 	return interface_is ;
 }
@@ -52,19 +44,35 @@ Vec2 get_size_interface() {
 
 
 
-
-
+/**
+background interface
+*/
+void background_interface() {
+	fill(0,125);
+	noStroke();
+	// left part
+	rect(pos_gui,size_gui);
+	// right part
+	rect(Vec2(width-size_gui.x,pos_gui.y),size_gui);
+	// down part
+	int size_down_y = instruction_height ;
+	rect(width/3,height - size_down_y, width/3,size_down_y);
+}
 /**
 instruction
 */
-void warp_instruction() {
+int instruction_height = 100 ;
+void instruction() {
   textAlign(CENTER);
   //background(255);
   fill(255) ;
   textFont(font_gui);
-  text("PRESS 'CMD' + 'O' TO SELECT MEDIA FILE", width/2, height/2);
-  text("PRESS 'CMD' + 'SHIFT' + 'O' TO SELECT MEDIA FOLDER", width/2, height/2 +(font_gui.getSize() *1.5));
-  text("PRESS 'V' TO SELECT CAMERA", width/2, height/2 +(font_gui.getSize() *3));
+  int x = width/2 ;
+  int y = height -instruction_height +15;
+  text("Press 'CMD' + 'O' to select media file", x, y);
+  text("Press 'CMD' + 'SHIFT' + 'O' to select media folder", x, y +(font_gui.getSize() *1.5));
+  text("Press 'V' to select computer camera", x, y +(font_gui.getSize() *3));
+  text("Press 'C' show or hide interface", x, y +(font_gui.getSize() *4.5));
 }
 
 
@@ -76,6 +84,7 @@ void interface_display(boolean mouse_is, Force_field ff) {
 		hide_all_gui();
 	} else {
 		background_interface();
+		instruction();
 		show_gui(mouse_is, ff);
 		show_info(ff);
 	}

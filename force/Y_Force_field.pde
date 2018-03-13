@@ -301,7 +301,7 @@ public class Force_field implements Rope_Constants {
   */
   // CLASSIC
   public Force_field(int resolution, iVec2 canvas_pos, iVec2 canvas, int type, int pattern) {
-    if(resolution == 0) {
+    if(resolution <= 0) {
       printErr("Contructor Force_field: resolution =", resolution, "instead the value 20 is used");
       this.resolution = 20 ;
     } else {

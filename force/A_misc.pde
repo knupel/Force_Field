@@ -22,7 +22,7 @@ void global_reset(int type, int pattern, int super_type, int resolution) {
   force_field_init_is = false ;
   reset_vehicle(get_num_vehicle_gui(),get_ff());
   warp.reset();
-  force_field.reset();
+  if(force_field != null) force_field.reset();
 
   if(pattern == r.EQUATION) {
     init_eq();
@@ -42,7 +42,7 @@ void global_reset(int type, int pattern, int super_type, int resolution) {
     eq_mult(-1,2);
 
 
-    eq_root(2,1);
+    //eq_root(2,1);
 
 
   }
@@ -86,7 +86,7 @@ void keyPressed() {
 
   if(key == 'g') display_grid();
 
-  if(key == 'h') display_pole();
+  if(key == 'h') display_spot();
 
   if(key == 'i') display_info();
   
@@ -560,7 +560,7 @@ void change_cursor_controller() {
 info
 
 */
-void info(boolean display_force_field_is,  boolean display_grid_is, boolean display_pole_is) {
+void info(boolean display_force_field_is,  boolean display_grid_is, boolean display_spot_is) {
   noFill() ;
   stroke(g.colorModeA *.6f);
   strokeWeight(.5);
@@ -596,7 +596,7 @@ void info(boolean display_force_field_is,  boolean display_grid_is, boolean disp
   }
   
   // show pole
-  if(display_pole_is) {
+  if(display_spot_is) {
     for(int i = 0 ; i < force_field.get_spot_num() ; i++) {
       show_pole(force_field.get_spot_pos(i));
     }
@@ -624,7 +624,7 @@ info
 */
 boolean display_field = false;
 boolean display_grid = false;
-boolean display_pole = false;
+boolean display_spot = false;
 boolean display_info = false ;
 
 void set_info(boolean display_info) {
@@ -632,11 +632,11 @@ void set_info(boolean display_info) {
   if(display_info) {
     display_field = true ;
     display_grid = true ;
-    display_pole = true;
+    display_spot = true;
   } else {
     display_field = false;
     display_grid = false;
-    display_pole = false;
+    display_spot = false;
   }
 }
 
@@ -647,9 +647,9 @@ void display_info() {
   set_info(display_info) ;
 }
 
-void display_pole(){
-  display_pole = !display_pole;
-  if(!display_pole) display_info = false ;
+void display_spot(){
+  display_spot = !display_spot;
+  if(!display_spot) display_info = false ;
 }
 
 void display_field(){

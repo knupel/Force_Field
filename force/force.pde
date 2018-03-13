@@ -24,10 +24,11 @@ boolean full_reset_field_is = false;
 boolean change_size_window_is = false;
 boolean fullfit_image_is = true;
 
-boolean display_bg = false;
+boolean display_bg = true;
 boolean display_result_warp = false;
 boolean display_result_vehicle = false;
 
+boolean interface_is = true;
 boolean hide_menu_bar = false;
 boolean show_must_go_on = true;
 boolean inside_gui = false;
@@ -56,10 +57,11 @@ void settings() {
   set_cell_grid_ff(10);
   // type_field = r.FLUID;
   //  type_field = r.GRAVITY; /* you can also use HOLE constant */
-  type_field = r.MAGNETIC;
+  // type_field = r.MAGNETIC;
+  type_field = r.STATIC;
 
-  pattern_field = r.BLANK;
-  //pattern_field = r.PERLIN;
+  // pattern_field = r.BLANK;
+  pattern_field = r.PERLIN;
   // pattern_field = r.CHAOS;
   // pattern_field = IMAGE;
 
@@ -89,8 +91,7 @@ void setup() {
   
   set_info(false);
   interface_setup(Vec2(0), Vec2(250,height));
-  warp_instruction(); 
-  // init_ff(type_field,pattern_field,get_size_cell_ff(),g);
+  mode_ff();
 }
 
 
@@ -207,9 +208,10 @@ void draw() {
   /**
   INFO
    */
-  info(display_field, display_grid, display_pole);
+  info(display_field, display_grid, display_spot);
 
   if(force_field != null) force_field.reverse_flow(false);
+
 
 
 
