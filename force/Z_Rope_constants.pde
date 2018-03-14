@@ -2,8 +2,9 @@
 ROPE - Romanesco processing environment – 
 * Copyleft (c) 2014-2018
 * Stan le Punk > http://stanlepunk.xyz/
-CONSTANT ROPE
-v 0.1.2.3
+CONSTANTS ROPE
+v 0.1.3.0
+Processing 3.3.7
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Rope
 */
@@ -39,29 +40,78 @@ public interface Rope_Constants {
 
 	static final int STATIC = 1000;
 	static final int DYNAMIC = 1001;
-
+  
+  /**
+  Colour constants
+  */
 	static final int BLACK = -16777216;
+	static final int NOIR = -16777216;
 	static final int WHITE = -1;
+	static final int BLANC = -1;
 	// static final int GRAY = 4050 ; // this already existe
-	static final int GRAY_MEDIUM = -8618884;
+	// static final int GRAY_MEDIUM = -8618884;
+
+	static final int GRAY_1 = -15132391;
+	static final int GRIS_1 = -15132391;
+	// GRAY_1 > HSB,1,1,1 > color(0,0,.1);
+	static final int GRAY_2 = -13421773;
+	static final int GRIS_2 = -13421773;
+	// GRAY_2 > HSB,1,1,1 > color(0,0,.2);
+	static final int GRAY_3 = -11776948;
+	static final int GRIS_3 = -11776948;
+	// GRAY_3 > HSB,1,1,1 > color(0,0,.3);
+	static final int GRAY_4 = -10066330;
+	static final int GRIS_4 = -10066330;
+	// GRAY_4 > HSB,1,1,1 > color(0,0,.4);
+	static final int GRAY_MEDIUM = -8421505;
+	static final int GRAY_5 = -8421505;
+	static final int GRIS = -8421505;
+	static final int GRIS_MOYEN = -8421505;
+	static final int GRIS_5 = -8421505;
+	// GRAY_5 > HSB,1,1,1 > color(0,0,.5);
+	static final int GRAY_6 = -6710887;
+	static final int GRIS_6 = -6710887;
+	// GRAY_6 > HSB,1,1,1 > color(0,0,.6);
+	static final int GRAY_7 = -5066062;
+	static final int GRIS_7 = -5066062;
+	// GRAY_7 > HSB,1,1,1 > color(0,0,.7);
+	static final int GRAY_8 = -3355444;
+	static final int GRIS_8 = -3355444;
+	// GRAY_8 > HSB,1,1,1 > color(0,0,.8);
+	static final int GRAY_9 = -1710619;
+	static final int GRIS_9 = -1710619;
+	// GRAY_9 > HSB,1,1,1 > color(0,0,.9);
 
 	static final int RED      = -65536;
-	/* BLOOD > HSB,1,1,1 > color(0,1,.75); */
-	static final int BLOOD   = -4259840; 
-	/* CARMINE > HSB,1,1,1 > color(0,1,.55); */
-	static final int CARMINE   = -7602176; 
-	/* ORANGE > HSB,1,1,1 > color(.08,1,1)  */
+	static final int ROUGE    = -65536;
+	// BLOOD > HSB,1,1,1 > color(0,1,.75);
+	static final int BLOOD  = -4259840;
+	static final int SANG   = -4259840; 
+	// CARMINE > HSB,1,1,1 > color(0,1,.55);
+	static final int CARMINE  = -7602176;
+	static final int CARMIN   = -7602176; 
+	// ORANGE > HSB,1,1,1 > color(.08,1,1);
 	static final int ORANGE   = -34304;
+
   static public int YELLOW  = -256;
+  static public int JAUNE  = -256;
+
 	static final int GREEN    = -16711936;
+	static final int VERT    = -16711936;
+
 	static public int CYAN    = -16711681;
-	/* BLUE > HSB,1,1,1 > color(.65,1,1) */
-	static final int BLUE     = -16770561; 
+	// BLUE > HSB,1,1,1 > color(.65,1,1);
+	static final int BLUE     = -16770561;
+	static final int BLEU     = -16770561;  
+
 	static public int MAGENTA = -65281;
-	/* PURPLE > HSB,1,1,1 > color(.75,1,1) */
-	static public int PURPLE  = -8453889; 
+	// PURPLE > HSB,1,1,1 > color(.75,1,1);
+	static public int PURPLE  = -8453889;
+	static public int VIOLET  = -8453889;  
 
-
+  /**
+  String Constants
+  */
 	static final String RANDOM       = "RANDOM";
 	static final String RANDOM_ZERO  = "RANDOM ZERO";
 	static final String RANDOM_RANGE = "RANDOM RANGE";

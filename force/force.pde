@@ -1,10 +1,11 @@
 
 /**
-FORCE FIELD
+FORCE
 2017-2018
 by Stan le Punk
 http://stanlepunk.xyz/
-v 0.2.0
+v 0.3.0
+Processing 3.3.7
 */
 /**
 Force Field is a deep refactoring Flow field from The Nature of Code by Daniel Shiffman
@@ -27,11 +28,13 @@ boolean fullfit_image_is = true;
 boolean display_bg = true;
 boolean display_result_warp = false;
 boolean display_result_vehicle = false;
+boolean vehicle_pixel_is = false;
 
 boolean interface_is = true;
 boolean hide_menu_bar = false;
 boolean show_must_go_on = true;
 boolean inside_gui = false;
+boolean warp_is = true;
 
 int time_count_ff;
 
@@ -56,7 +59,7 @@ void settings() {
   }
   set_cell_grid_ff(10);
   // type_field = r.FLUID;
-  //  type_field = r.GRAVITY; /* you can also use HOLE constant */
+  // type_field = r.GRAVITY; /* you can also use HOLE constant */
   // type_field = r.MAGNETIC;
   type_field = r.STATIC;
 
@@ -86,11 +89,9 @@ void setup() {
   if(use_leapmotion) leap_setup();
 
   set_vehicle(get_num_vehicle_gui());
-
   warp_setup();
-  
-  set_info(false);
-  interface_setup(Vec2(0), Vec2(250,height));
+  set_info(false);  
+  gui_setup(Vec2(0), Vec2(250,height));
   mode_ff();
 }
 

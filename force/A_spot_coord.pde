@@ -57,8 +57,8 @@ void multi_coord_cloud(Vec2 [] pos, iVec2 lead_pos, boolean is, boolean keep_str
 		num_multi_coord = pos.length;
 		reset_cloud_coord = true;
 	}
-  if(!keep_structure && get_distribution_mouse() != angle_step_ref) {
-    angle_step_ref = get_distribution_mouse();
+  if(!keep_structure && get_distribution_spot() != angle_step_ref) {
+    angle_step_ref = get_distribution_spot();
     reset_cloud_coord = true;
   }
   if(cloud_2D == null || reset_cloud_coord) {
@@ -87,21 +87,21 @@ void multi_coord_cloud(Vec2 [] pos, iVec2 lead_pos, boolean is, boolean keep_str
   }
 
   if(gui_param_spot_is || !keep_structure) {
-    float speed = get_speed_mouse();
+    float speed = get_speed_spot();
     cloud_2D.rotation(speed,false);
-    if(get_spiral_mouse()>0) cloud_2D.spiral(get_spiral_mouse());
-    cloud_2D.range(get_min_radius_mouse(), get_max_radius_mouse());
+    if(get_spiral_spot()>0) cloud_2D.spiral(get_spiral_spot());
+    cloud_2D.range(get_min_radius_spot(), get_max_radius_spot());
 
-    if(get_motion_mouse() > 0) {
-      cloud_2D.growth(get_motion_mouse());
+    if(get_motion_spot() > 0) {
+      cloud_2D.growth(get_motion_spot());
     }
     ref_growth_spot = cloud_2D.get_growth();
     
     time_count_spot++;
     cloud_2D.time_count(time_count_spot);
-    cloud_2D.beat(get_beat_mouse());
+    cloud_2D.beat(get_beat_spot());
     cloud_2D.behavior("SIN");
-    cloud_2D.radius(get_radius_mouse());
+    cloud_2D.radius(get_radius_spot());
   }
 
   if(keep_structure){
@@ -117,14 +117,14 @@ void multi_coord_cloud(Vec2 [] pos, iVec2 lead_pos, boolean is, boolean keep_str
 }
 
 float sum_spot_param() {
-  return get_distribution_mouse() 
-         +get_speed_mouse() 
-         +get_motion_mouse() 
-         +get_beat_mouse() 
-         +get_spiral_mouse() 
-         +get_radius_mouse()
-         +get_min_radius_mouse()
-         +get_max_radius_mouse() ;
+  return get_distribution_spot() 
+         +get_speed_spot() 
+         +get_motion_spot() 
+         +get_beat_spot() 
+         +get_spiral_spot() 
+         +get_radius_spot()
+         +get_min_radius_spot()
+         +get_max_radius_spot() ;
 }
 
 

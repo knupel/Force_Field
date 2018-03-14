@@ -74,9 +74,14 @@ PGraphics pg_vehicles ;
 void show_vehicle(Vec3 colour_rgb, float alpha) {
   Vec3 temp = map_vec(colour_rgb,0,1,0,g.colorModeX);
   int c = color(temp.x,temp.y,temp.z,alpha);
-  // display_vehicle_pixel_on_PGraphics(c);
-  int max_vehicles = 10_000;
-  display_vehicle_with_shape(c, max_vehicles);
+  // 
+
+  if(vehicle_pixel_is()) {
+    display_vehicle_pixel_on_PGraphics(c);
+  } else {
+    int max_vehicles = 10_000;
+    display_vehicle_with_shape(c, max_vehicles);
+  }
 }
 
 
@@ -107,26 +112,25 @@ void vehicle_set(PGraphics pg, Vehicle v, int c) {
 
 
 void display_vehicle_with_shape(int c, int max) {
+  float size = 3;
+  float thickness = 1 ;
   if(vehicles.size() > max) {
     for(int i = 0 ; i < max ; i++) {
       Vehicle v = vehicles.get(i);
-      float thickness = 1 ;
-      display_vehicle_triangle(v, c, c, thickness) ;
+      display_vehicle_triangle(v, c, c, thickness,size) ;
     }
   } else {
     for (Vehicle v : vehicles) {
-      float thickness = 0 ;
-      display_vehicle_triangle(v, c, c, thickness) ;
+      display_vehicle_triangle(v, c, c, thickness,size) ;
     }
-  }
-      
+  }     
 }
 
 
-void display_vehicle_triangle(Vehicle v, int fill, int stroke, float thickness) {
+void display_vehicle_triangle(Vehicle v, int fill, int stroke, float thickness, float size) {
   // Draw a triangle rotated in the direction of velocity
   float theta = v.get_direction() + radians(90);
-  v.set_radius(10.);
+  v.set_radius(size);
   float r = v.radius ;
   aspect_rope(fill,stroke,thickness);
   pushMatrix();

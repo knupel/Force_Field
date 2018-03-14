@@ -238,7 +238,9 @@ void hide_all_gui() {
 	gui_dynamic_fluid.hide();
 	gui_dynamic_mag_grav.hide();
 
-	gui_dynamic_mouse.hide();
+	gui_dynamic_spot.hide();
+
+	gui_vehicle.hide();
 	gui_main_movie.hide();
 }
 
@@ -260,18 +262,23 @@ void show_gui(boolean mouse_is, Force_field ff) {
   
   if(ff.get_pattern() == IMAGE) {
   	gui_static_img_2D.show(); 
-  } else gui_static_img_2D.hide();
+  } else {
+  	gui_static_img_2D.hide();
+  	gui_static_img_3D.hide();
+  }
 
 	if(ff.get_pattern() == r.CHAOS || ff.get_pattern() == r.PERLIN || ff.get_pattern() == IMAGE) {
 		gui_static_generative.show(); 
 	} else gui_static_generative.hide();
 
+	if(display_vehicle_is()) gui_vehicle.show() ; else gui_vehicle.hide();
+
 
 	if(movie_warp_is()) gui_main_movie.show(); else gui_main_movie.hide();	
 
 	if(!mouse_is && get_spot_num_ff() > 2) {
-		gui_dynamic_mouse.show(); 
+		gui_dynamic_spot.show(); 
 	} else {
-		gui_dynamic_mouse.hide();
+		gui_dynamic_spot.hide();
 	}
 }

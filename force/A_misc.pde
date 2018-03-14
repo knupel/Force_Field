@@ -64,7 +64,7 @@ void global_reset(int type, int pattern, int super_type, int resolution) {
 
   if(type == r.FLUID) {
     set_full_reset_field(false);
-    set_check_gui_dynamic_mag_grav();
+    set_check_gui_dynamic_mag_grav(get_full_reset_field_is_gui());
   }
 
   if(super_type == r.DYNAMIC){
@@ -308,20 +308,21 @@ float get_alpha_bg() {
 
 
 
+/**
+BOOLEAN CONTROL 
+use to dial between the keyboard, the controller and the user
 
+
+the mess
+
+
+*/
 /**
 display
 */
 /*
 * display vehilcle
 */
-void display_vehicle() {
-  display_result_vehicle = !!((display_result_vehicle == false));
-  if(display_vehicle_is()) {
-    set_check_gui_main_display();
-  }
-}
-
 boolean display_vehicle_is() {
   return display_result_vehicle ;
 }
@@ -330,22 +331,27 @@ void display_vehicle(boolean is) {
   display_result_vehicle = is;
 }
 
+// method to set the gui back
+void display_vehicle() {
+  display_result_vehicle = !!((display_result_vehicle == false));
+  if(display_vehicle_is()) set_check_gui_main_display(display_bg_is());
+}
+
 /*
 * display warp
 */
-void display_warp() {
-  display_result_warp = !!((display_result_warp == false));
-  if(display_warp_is()) {
-    set_check_gui_main_display();
-  }
-}
-
 boolean display_warp_is() {
   return display_result_warp ;
 }
 
 void display_warp(boolean is) {
   display_result_warp = is;
+}
+
+// method to set the gui back
+void display_warp() {
+  display_result_warp = !!((display_result_warp == false));
+  if(display_warp_is()) set_check_gui_main_display(display_bg_is());
 }
 
 /*
@@ -359,13 +365,14 @@ boolean display_bg_is() {
   return display_bg;
 }
 
+// method to set the gui back
 void display_bg() {
   display_bg = !!((display_bg == false));
-  set_check_gui_main_display();
+  set_check_gui_main_display(display_bg_is());
 }
 
-/*
-* Show must go on
+/**
+Show must go on
 */
 void show_must_go_on(boolean is) {
   show_must_go_on = is;
@@ -375,9 +382,21 @@ boolean show_must_go_on_is() {
   return show_must_go_on;
 }
 
+// method to set the gui back
 void show_must_go_on() {
   show_must_go_on = !!((show_must_go_on == false));
-  set_check_gui_main_display();
+  set_check_gui_main_display(display_bg_is());
+}
+
+/**
+choice vehicle shape or pixel
+*/
+void set_vehicle_pixel_is(boolean is) {
+  vehicle_pixel_is = is ;
+}
+
+boolean vehicle_pixel_is() {
+  return vehicle_pixel_is;
 }
 
 
@@ -449,13 +468,7 @@ cursor manager
 */
 void cursor_manager(boolean display) {
   if(display) {
-    iVec2 pos = iVec2(mouseX,mouseY);
-
-    fill(255);
-    stroke(0);
-    strokeWeight(1);
-    cross_rect(pos, 3,7) ;
-    // cursor(CROSS);
+    cursor(CROSS);
   } else {
     noCursor();
   }

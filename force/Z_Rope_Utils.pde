@@ -3,8 +3,9 @@ ROPE - Romanesco processing environment –
 * Copyleft (c) 2014-2018 
 * Stan le Punk > http://stanlepunk.xyz/
 Rope UTILS  2015 – 2018
-v 1.38.1
+v 1.38.2
 Rope – Romanesco Processing Environment – 
+Processing 3.3.7
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Rope
 */
@@ -2808,7 +2809,7 @@ void write_row(TableRow row, String col_name, Object o) {
 
 /**
 print
-v 0.1.1
+v 0.1.2
 */
 // util variable
 
@@ -2823,7 +2824,7 @@ void printErr(Object... obj) {
 
 // print tempo
 void printErrTempo(int tempo, Object... obj) {
-  if(frameCount%tempo == 0 || frameCount <= 1) {
+  if(frameCount%tempo == 0 || frameCount <= 1) {
     String message= ("");
     for(int i = 0 ; i < obj.length ; i++) {
       message = write_print_message(message, obj[i], obj.length, i);
@@ -2835,7 +2836,7 @@ void printErrTempo(int tempo, Object... obj) {
 }
 
 void printTempo(int tempo, Object... obj) {
-  if(frameCount%tempo == 0 || frameCount <= 1) {
+  if(frameCount%tempo == 0 || frameCount <= 1) {
     String message= ("");
     for(int i = 0 ; i < obj.length ; i++) {
       message = write_print_message(message, obj[i], obj.length, i);
@@ -2857,25 +2858,25 @@ String write_print_message(String message, Object obj, int length, int i) {
 
 
 void printArrayTempo(int tempo, Object[] obj) {
-  if(frameCount%tempo == 0 || frameCount <= 1) {
+  if(frameCount%tempo == 0 || frameCount <= 1) {
     printArray(obj);
   }
 }
 
 void printArrayTempo(int tempo, float[] var) {
-  if(frameCount%tempo == 0 || frameCount <= 10) {
+  if(frameCount%tempo == 0 || frameCount <= 10) {
     printArray(var);
   }
 }
 
 void printArrayTempo(int tempo, int[] var) {
-  if(frameCount%tempo == 0 || frameCount <= 1) {
+  if(frameCount%tempo == 0 || frameCount <= 10) {
     printArray(var);
   }
 }
 
 void printArrayTempo(int tempo, String[] var) {
-  if(frameCount%tempo == 0 || frameCount <= 1) {
+  if(frameCount%tempo == 0 || frameCount <= 10) {
     printArray(var);
   }
 }
