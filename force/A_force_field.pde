@@ -64,11 +64,11 @@ void mode_ff() {
     pattern_field = r.PERLIN; 
   } else if(mode_ff == 1) {
     type_field = r.STATIC; 
-    pattern_field = r.EQUATION; 
+    pattern_field = r.CHAOS; 
   } else if(mode_ff == 2) {
     type_field = r.STATIC; 
-    pattern_field = r.CHAOS; 
-  } else if(mode_ff == 3) {
+    pattern_field = r.EQUATION; 
+  }  else if(mode_ff == 3) {
     if(warp.library() != null && warp.library_size() > 0) {
       type_field = r.STATIC; 
       pattern_field = IMAGE ;
@@ -78,12 +78,12 @@ void mode_ff() {
       pattern_field = r.CHAOS;
     }
   } else if(mode_ff == 4) {
-    type_field = r.MAGNETIC; 
-    pattern_field = r.BLANK; 
-  } else if(mode_ff == 5) {
     type_field = r.GRAVITY; 
     pattern_field = r.BLANK; 
-  } else if(mode_ff == 6) {
+  } else if(mode_ff == 5) {
+    type_field = r.MAGNETIC; 
+    pattern_field = r.BLANK; 
+  }  else if(mode_ff == 6) {
     type_field = r.FLUID; 
     pattern_field = r.BLANK; 
   }
