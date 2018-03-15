@@ -1,7 +1,8 @@
 /**
 EQUATION
 2018-2018
-v 0.0.4
+v 0.0.5
+Processing 3.3.7
 * Equation work with field array 2D
 */
 public class Equation implements Rope_Constants {
@@ -17,17 +18,9 @@ public class Equation implements Rope_Constants {
   int z = 3;
 
   Equation() {
-    // rank = new ArrayList<Integer>();
   }
 
-
   private void rank() {
-    /*
-    if(rank == null) {
-      rank = ArrayList<Integer>();
-    }
-    */
-    // rank.add(rank_id);
     num_op++;
   }
 
@@ -208,11 +201,8 @@ public void eq_mult(float mx, float my, float mz) {
 Force Field
 2017-2018
 http://stanlepunk.xyz/
-v 1.11.2
-*/
-
-/**
-Run on Processing 3.3.6
+v 1.11.3
+Processing 3.3.7
 */
 
 /**
@@ -1609,7 +1599,7 @@ public class Force_field implements Rope_Constants {
 
   /**
   update spot
-  v 0.2.2
+  v 0.2.3
   */
   // spot mag
   private void count_spot_mag() {
@@ -1662,7 +1652,9 @@ public class Force_field implements Rope_Constants {
   }
 
   private Vec get_spot_fluid_ref(int which_one) {
-    return spot_fluid_pos_ref.get(which_one);
+    if(spot_fluid_pos_ref != null) {
+      return spot_fluid_pos_ref.get(which_one);
+    } else return null;
   }
 
   private void update_spot_fluid(Navier_Stokes n, Vec spot_pos, int which_one) {

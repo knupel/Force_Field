@@ -183,7 +183,7 @@ void load_media_folder(boolean sub_folder, String... type) {
 
 void load_media_input(String... type) {
   String path = selected_path_input();
-  println("chemin",path);
+  println("Path:",path);
   explore_folder(path, false, type);
   String [] ext_img = {"jpg", "JPG", "JPEG", "jpeg", "tif", "TIF", "tiff", "TIFF", "bmp", "BMP", "png", "PNG", "gif", "GIF"};
   String [] ext_movie = {"mov", "MOV", "avi", "AVI", "mp4", "MP4", "mkv", "MKV", "mpg", "MPG"};

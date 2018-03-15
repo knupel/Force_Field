@@ -1,6 +1,6 @@
 /**
 spot coord
-v 0.2.0
+v 0.2.1
 */
 float distance ;
 iVec2 ref_lead_pos ;
@@ -213,11 +213,14 @@ void force_field_spot_mass() {
 
 /**
 coord leapmotion
+v 0.2.1
 */
 Vec2 [] pos_finger ;
 void force_field_spot_coord_leapmotion() {
   // init var
-  if(pos_finger == null && get_spot_num_ff() > 0) {
+  boolean init_finger = false ;
+  if(pos_finger == null || pos_finger.length != get_spot_num_ff()) init_finger = true ;
+  if(init_finger  && get_spot_num_ff() > 0) {
     pos_finger = new Vec2[get_spot_num_ff()];
     for(int i = 0 ; i < pos_finger.length ; i++) {
       pos_finger[i] = Vec2(width/2,height/2);
@@ -225,6 +228,7 @@ void force_field_spot_coord_leapmotion() {
   }
 
   if(finger.is() && pos_finger != null) {
+    /*
     for(int i = 0 ; i < get_spot_num_ff() ; i++) {
       if(finger.visible()[i]) {
         float x = finger.get_pos()[i].x;
@@ -236,7 +240,7 @@ void force_field_spot_coord_leapmotion() {
         // pos_finger[i] = Vec2(-width,-height);
       }
     }
-    /*
+    */
     for(int i = 0 ; i < finger.get_num() && i < get_spot_num_ff() && i < pos_finger.length; i++) {
       if(finger.visible()[i]) {
         float x = finger.get_pos()[i].x;
@@ -246,7 +250,7 @@ void force_field_spot_coord_leapmotion() {
         pos_finger[i].mult(width,height);
       }
     }
-    */
+    
     update_spot_ff_coord(pos_finger);
   }
 }

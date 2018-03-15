@@ -50,7 +50,6 @@ void reset_vehicle(int num, Force_field ff) {
 
 
 boolean manage_border_is;
-
 void manage_border() {
   manage_border_is = (manage_border_is == true) ? false:true;
 }
@@ -69,7 +68,6 @@ void update_vehicle(Force_field ff, float speed) {
 
 
 
-PGraphics pg_vehicles ;
 
 void show_vehicle(Vec3 colour_rgb, float alpha) {
   Vec3 temp = map_vec(colour_rgb,0,1,0,g.colorModeX);
@@ -87,6 +85,8 @@ void show_vehicle(Vec3 colour_rgb, float alpha) {
 
 
 // local display method
+// Pixel method
+PGraphics pg_vehicles ;
 void display_vehicle_pixel_on_PGraphics(int c) {
   if(pg_vehicles == null || pg_vehicles.width != width || pg_vehicles.height != height) {
     pg_vehicles = createGraphics(width,height,P2D);
@@ -111,6 +111,11 @@ void vehicle_set(PGraphics pg, Vehicle v, int c) {
 }
 
 
+
+
+
+
+// shape method
 void display_vehicle_with_shape(int c, int max) {
   float size = 3;
   float thickness = 1 ;
@@ -125,7 +130,6 @@ void display_vehicle_with_shape(int c, int max) {
     }
   }     
 }
-
 
 void display_vehicle_triangle(Vehicle v, int fill, int stroke, float thickness, float size) {
   // Draw a triangle rotated in the direction of velocity

@@ -212,6 +212,7 @@ void gui_main(int space, int max, int w, float start_pos, int from, PFont font) 
 	gui_main.addSlider("cell_force_field").setPosition(10,pos_slider_y(space, start_pos +22.75, from)).setWidth(w).setRange(1,max_cell).setNumberOfTickMarks(max_cell).setFont(font).setColor(grey_0_gui);
   
   int max_spot = 100 ;
+  if(use_leapmotion) max_spot = 10;
 	gui_main.addSlider("spot_num").setPosition(10,pos_slider_y(space, start_pos +24.75, from)).setWidth(w).setRange(1,max_spot).setNumberOfTickMarks(max_spot).setFont(font).setColor(grey_0_gui);
 
 	int range_spot = 10;

@@ -18,7 +18,7 @@ Via Reynolds: http://www.red3d.com/cwr/steer/FlowFollow.html
 Stable fluids from Jos Stam's work on the Navier-Stokes equation
 */
 boolean pause_is ;
-boolean use_leapmotion = false;
+boolean use_leapmotion = true;
 
 boolean fullScreen_is = false;
 boolean full_reset_field_is = false;
