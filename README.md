@@ -1,4 +1,4 @@
-*Force
+Force
 
 Force is project to explore the different possibility of vector fields and how use to steer vehicle and warp image.
 
