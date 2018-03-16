@@ -16,5 +16,7 @@ switch between particles, image, video or camera ; display grid, vector, spot, i
 set the refresh color of warping image or particle.
 
 
+![La dame à l'hermine](/import/Dame_a_l_hermine_force_fluide.jpg)
+
 
 
