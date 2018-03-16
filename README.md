@@ -1,6 +1,20 @@
-Force Field
---
-Force field is project around the different vector field in Processing can be used in 2D world.
-I hope in the short time in the 3D world too.
+*Force
 
-It's possible to compute a Chaos field, Perlin field, a solid fluid field, a gravity field and magnetic field. And for the artist a picture field !
+Force is project to explore the different possibility of vector fields and how use to steer vehicle and warp image.
+
+With Force you have an access to two field types: static and dynamic. 
+For the static field you have four pattern: Chaos, Perlin, Equation and Picture field
+For the dynamic field your have three pattern is available: Gravity, magnetic and fluid field.
+
+The dynamic type field work with Spot class, this class manage the field transformation.
+
+Force use the vector field to display a steering vehicle and warp image.
+
+The sketch work easily, run and go.
+You can manage your sketch by setting the global variable on the top of the main tab, after you can use the GUI and the keyboard to manage the application :
+switch between particles, image, video or camera ; display grid, vector, spot, image...
+set the refresh color of warping image or particle.
+
+
+
+

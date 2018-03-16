@@ -8,6 +8,8 @@ v 0.3.1
 Processing 3.3.7
 */
 /**
+Inspiration
+
 Force Field is a deep refactoring Flow field from The Nature of Code by Daniel Shiffman
 http://natureofcode.com
 
@@ -18,7 +20,7 @@ Via Reynolds: http://www.red3d.com/cwr/steer/FlowFollow.html
 Stable fluids from Jos Stam's work on the Navier-Stokes equation
 */
 boolean pause_is ;
-boolean use_leapmotion = false;
+boolean use_leapmotion = true;
 
 boolean fullScreen_is = false;
 boolean full_reset_field_is = false;
