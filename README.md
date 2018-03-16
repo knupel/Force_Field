@@ -1,6 +1,6 @@
 Force
 
-Force is project to explore the different possibility of vector fields and how use to steer vehicle and warp image.
+Force is project to explore the different possibility of vector fields and how to use to steer vehicle and warp image.
 
 With Force you have an access to two field types: static and dynamic. 
 For the static field you have four pattern: Chaos, Perlin, Equation and Picture field
