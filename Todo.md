@@ -1,6 +1,6 @@
 TODO
 --
-BUG
+the setting variable must be write in an external file to be read by the main and gui sketch
 --
 
 

@@ -10,20 +10,11 @@ import netP5.*;
 OscP5 oscP5 ;
 NetAddress destination;
 
-boolean use_leapmotion = false;
-boolean warp_is = true; 
-boolean full_reset_field_is = true ; 
-boolean change_size_window_is = true ; 
-boolean fullfit_image_is = true ; 
-boolean display_bg = true ; 
-boolean vehicle_pixel_is = true ; 
-boolean show_must_go_on = true ; 
 
-int max_vehicle_ff = 100_000;
 
 
 void setup() {
-	size(300,750);
+	size(500,750,P2D);
 
 	oscP5 = new OscP5(this,12000);
 	destination = new NetAddress("127.0.0.1",12000);
@@ -39,25 +30,15 @@ void draw() {
 
 
 
-void send() {
-	OscMessage message = new OscMessage("courrier");
-	/*
-	message.add(f_1);
-	message.add(f_2);
-	message.add(i_1);
-	*/
-	oscP5.send(message,destination);
-}
+
 
 
 float ref_value_controller ;
 void send_value_controller() {
-	float current_value = 0 ;
-	if(current_value == ref_value_controller) {
-
-	} else {
+	float current_value = sum_controller();
+	if(current_value != ref_value_controller) {
 		send();
-		//println("on envoie du courrier");
+		// println("on envoie du courrier", frameCount);
 		ref_value_controller = current_value ;
 	}
 }

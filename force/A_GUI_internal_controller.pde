@@ -40,8 +40,7 @@ boolean gui_show_must_go_on;
 boolean gui_full_reset_field_is;
 
 
-Vec2 pos_gui ;
-Vec2 size_gui ;
+
 
 int space_interface ;
 
@@ -53,7 +52,7 @@ CColor grey_0_gui ;
 /**
 setup
 */
-void gui_setup(Vec2 pos, Vec2 size) {
+void gui_setup() {
 	// check boolean setting from top first tab sketch 
   if(pause_is);
   if(fullScreen_is);
@@ -80,8 +79,7 @@ void gui_setup(Vec2 pos, Vec2 size) {
 	red_gui = new CColor(r.BLOOD,r.CARMINE,r.RED,r.WHITE,r.WHITE);
 	grey_0_gui = new CColor(r.GRAY_3,r.GRAY_2,r.GRAY_4,r.WHITE,r.WHITE);
 
-	pos_gui = pos.copy();
-	size_gui = size.copy();
+
 	int slider_width = 100 ;
 	space_interface = ceil(font_gui.getSize() *1.5) ;
 	int max = 1;
@@ -120,59 +118,10 @@ void gui_setup(Vec2 pos, Vec2 size) {
 
 
 
-// main
-float alpha_bg;
-float alpha_vehicle;
-float alpha_warp;
 
-float red_vehicle;
-float green_vehicle;
-float blue_vehicle;
-
-Vec4 rgba_warp ;
-float red_warp;
-float green_warp;
-float blue_warp;
-float power_warp;
-float power_warp_max;
-
-float red_cycling;
-float green_cycling;
-float blue_cycling;
-float power_cycling;
-
-float tempo_refresh;
-
-float cell_force_field;
-
-float spot_num;
-float spot_range;
 
 void gui_main(int space, int max, int w, float start_pos, int from, PFont font) {
 	gui_main = new ControlP5(this);
-
-	alpha_bg = 1.;
-	alpha_vehicle = 1.;
-	red_vehicle = .9;
-	green_vehicle = 0;
-	blue_vehicle = 0;
-
-	alpha_warp = 1.;
-	rgba_warp = Vec4(1);
-	red_warp = .9;
-	green_warp = .9;
-	blue_warp = .9;
-	power_warp = .37;
-
-	red_cycling = 0;
-	green_cycling = 0;
-	blue_cycling = 0;
-	power_cycling = .35;
-
-  tempo_refresh = 1.;
-	cell_force_field = 25.;
-	spot_num = 2.;
-	spot_range = 2.;
 
 	check_gui_main = gui_main.addCheckBox("main_setting").setPosition(10,pos_slider_y(space, start_pos +0, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2)
 														.addItem("resize window",1).addItem("fit image",1).addItem("background",1).addItem("show must go on",1).setColor(grey_0_gui);
@@ -221,12 +170,8 @@ void gui_main(int space, int max, int w, float start_pos, int from, PFont font) 
 
 
 
-float num_vehicle;
-float velocity_vehicle;
 void gui_vehicle(int space, int max, int w, float start_pos, int from, PFont font) {
 	gui_vehicle = new ControlP5(this);
-	num_vehicle = .1;
-  velocity_vehicle = 5;
   int min_num_vehicle = 0 ;
   int max_num_vehicle = 1 ;
   int max_speed = 25 ;
@@ -241,12 +186,8 @@ void gui_vehicle(int space, int max, int w, float start_pos, int from, PFont fon
 
 
 // movie
-float header_movie;
-float speed_movie;
 void gui_main_movie(int space, int max, int w, float start_pos, int from, PFont font) {
 	gui_main_movie = new ControlP5(this);
-	header_movie = 0 ;
-	speed_movie = 1;
 	int max_speed = 6 ;
 
 	gui_main_movie.addSlider("header_movie").setPosition(10,pos_slider_y(space, start_pos, from)).setWidth(w).setRange(0,max).setFont(font).setColor(grey_0_gui);
@@ -256,15 +197,8 @@ void gui_main_movie(int space, int max, int w, float start_pos, int from, PFont 
 
 
 // fluid
-float frequence;
-float viscosity;
-float diffusion;
 void gui_dynamic_fluid(int space, int max, int w, float start_pos, int from, PFont font) {
 	gui_dynamic_fluid = new ControlP5(this);
-	frequence = .3;
-	viscosity = .3;
-	diffusion = .3;
-
 	gui_dynamic_fluid.addSlider("frequence").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(w).setRange(0,max).setFont(font).setColor(grey_0_gui);
   gui_dynamic_fluid.addSlider("viscosity").setPosition(10,pos_slider_y(space, start_pos +1, from)).setWidth(w).setRange(0,max).setFont(font).setColor(grey_0_gui);
   gui_dynamic_fluid.addSlider("diffusion").setPosition(10,pos_slider_y(space, start_pos +2, from)).setWidth(w).setRange(0,max).setFont(font).setColor(grey_0_gui);
@@ -281,15 +215,8 @@ void gui_dynamic_mag_grav(int space, int max, int w, float start_pos, int from, 
 
 
 // generative seting for CHAOS and PERLIN field
-float range_min_gen;
-float range_max_gen;
-float power_gen;
 void gui_static_generative(int space, int max, int w, float start_pos, int from, PFont font) {
 	gui_static_generative = new ControlP5(this);
-
-	range_min_gen = 0.;
-	range_max_gen = 1.;
-	power_gen = 1. ;
 	
 	gui_static_generative.addSlider("range_min_gen").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(w).setRange(0,max).setFont(font).setColor(grey_0_gui);
 	gui_static_generative.addSlider("range_max_gen").setPosition(10,pos_slider_y(space, start_pos +1, from)).setWidth(w).setRange(0,max).setFont(font).setColor(grey_0_gui);
@@ -302,19 +229,9 @@ void gui_static_generative(int space, int max, int w, float start_pos, int from,
 
 
 // image sorting channel
-float vel_sort = 6.;
-float x_sort = 1.;
-float y_sort = 1.;
-float z_sort = 1.;
-
 void gui_static_image(int space, int max, int w, float start_pos, int from, PFont font) {
 	gui_static_img_2D = new ControlP5(this);
 	gui_static_img_3D = new ControlP5(this);
-
-	vel_sort = 1.;
-	x_sort = 1.;
-	y_sort = 1.;
-	z_sort = 1.;
   
   int min_mark = 0;
 	int max_mark = 6;
@@ -330,28 +247,13 @@ void gui_static_image(int space, int max, int w, float start_pos, int from, PFon
 
 
 // mouse device
-float radius_spot;
-float min_radius_spot;
-float max_radius_spot;
-float speed_spot;
-float distribution_spot;
-float spiral_spot;
-float beat_spot;
-float motion_spot;
-
 void gui_dynamic_spot(int space, int max, int w, float start_pos, int from, PFont font){
 	gui_dynamic_spot = new ControlP5(this);
 
-	radius_spot = .3;
-
-	min_radius_spot = .0;
 	float max_min_radius = 1 ;
 
-	max_radius_spot = 1.;
 	float max_max_radius = 7. ;
 
-	speed_spot = 0.;
-	distribution_spot = 0.;
 
 	int min_mark_spiral = 0;
 	int max_mark_spiral = 20;
@@ -397,7 +299,7 @@ control event
 v 0.0.3
 */
 public void controlEvent(ControlEvent theEvent) {
-	if(gui_init_controller) {
+	if(gui_init_controller && !external_gui_is) {
 		if(theEvent.isFrom(check_gui_main)) {
 			if(check_gui_main.getArrayValue(0) == 1) gui_change_size_window_is = true; else gui_change_size_window_is = false;
 			if(check_gui_main.getArrayValue(1) == 1) gui_fullfit_image_is = true; else gui_fullfit_image_is = false;
@@ -499,217 +401,6 @@ void get_controller_mouse() {
   gui_dynamic_mouse.getController("angle_mouse");
 }
 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
-set GUI 
-value slider in the draw
-*/
-void set_pos_movie_norm_gui(float f) {
-	movie_pos_normal = f;
-}
-
-/**
-get GUI
-*/
-
-/**
-get boolean
-*/
-boolean get_full_reset_field_is_gui() {
-	return gui_full_reset_field_is ;
-}
-
-boolean get_vehicle_pixel_is_gui() {
-	return gui_vehicle_pixel_is;
-}
-
-/**
-get int
-*/
-int get_num_vehicle_gui() {
-	return int(num_vehicle *num_vehicle *num_vehicle * max_vehicle_ff);
-}
-
-int get_tempo_refresh_gui() {
-	return ceil(tempo_refresh);
-}
-
-int get_num_spot_gui() {
-	return int(spot_num) ;
-}
-
-int get_range_spot_gui() {
-	return int(spot_range) ;
-}
-
-int get_beat_spot() {
-	return (int)beat_spot;
-}
-
-int get_spiral_spot() {
-	return (int) spiral_spot;
-}
-
-
-
-
-/** 
-get float
-*/
-float get_velocity_vehicle_gui() {
-	return velocity_vehicle;
-}
-
-float get_red_vehicle_gui() {
-	return red_vehicle;
-}
-float get_green_vehicle_gui() {
-	return green_vehicle;
-}
-float get_blue_vehicle_gui() {
-	return blue_vehicle;
-}
-
-Vec3 get_rgb_vehicle_gui() {
-	return Vec3(red_vehicle,green_vehicle,blue_vehicle);
-}
-
-Vec4 get_rgba_warp_mapped_gui() {
-	return rgba_warp;
-}
-
-/*
-Vec3 get_rgb_channel_mapped_gui() {
-	return rgb_channel;
-}
-*/
-
-
-float get_power_cycling_gui() {
-	return power_cycling;
-}
-
-
-
-float get_pos_movie_norm_gui() {
-	return movie_pos_normal ;
-}
-
-float get_speed_movie_gui() {
-	return speed_movie ;
-}
-
-
-
-float get_speed_spot() {
-	return speed_spot *speed_spot *speed_spot;
-}
-
-float get_radius_spot() {
-	if(width > height) {
-		return radius_spot *height *.66;
-	} else return radius_spot*width *.66;
-}
-
-
-float get_min_radius_spot() {
-	return min_radius_spot;
-}
-
-float get_max_radius_spot() {
-	return max_radius_spot;
-}
-
-float get_motion_spot() {
-	return motion_spot *motion_spot *motion_spot *motion_spot *motion_spot;
-}
-
-
-
-float get_distribution_spot() {
-	return distribution_spot;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -19,28 +19,20 @@ Via Reynolds: http://www.red3d.com/cwr/steer/FlowFollow.html
 
 Stable fluids from Jos Stam's work on the Navier-Stokes equation
 */
-boolean pause_is ;
-boolean use_leapmotion = false;
+boolean external_gui_is = true;
+
+boolean pause_is = false;
 
 boolean fullScreen_is = false;
-boolean full_reset_field_is = false;
-boolean change_size_window_is = false;
-boolean fullfit_image_is = true;
 
-boolean display_bg = true;
 boolean display_result_warp = false;
 boolean display_result_vehicle = false;
-boolean vehicle_pixel_is = true;
 
 boolean interface_is = true;
 boolean hide_menu_bar = false;
-boolean show_must_go_on = true;
 boolean inside_gui = false;
-boolean warp_is = false;
 
 int time_count_ff;
-
-int max_vehicle_ff = 100_000;
 
 PGraphics pg;
 
@@ -86,14 +78,22 @@ SETUP
 void setup() {
   info_system();
   background(0);
-  // noCursor();
+
+
 
   if(use_leapmotion) leap_setup();
 
   set_vehicle(get_num_vehicle_gui());
   warp_setup();
-  set_info(false);  
-  gui_setup(Vec2(0), Vec2(250,height));
+  set_info(false); 
+  
+  set_interface(Vec2(0), Vec2(250,height));
+  if(external_gui_is) {
+    osc_setup();
+  } else {
+    gui_setup(); 
+  }
+  
   mode_ff();
 }
 
@@ -110,7 +110,7 @@ void draw() {
   // cursor(CROSS);
   if(use_leapmotion) leap_update();
 
-  if(interface_is()) {
+  if(interface_is() && !external_gui_is) {
     inside_gui = inside(get_pos_interface(), get_size_interface(), Vec2(mouseX,mouseY));
   } else {
     inside_gui = false;
@@ -223,7 +223,7 @@ void draw() {
   GUI
   interface gui
   */
-  get_controller_gui();
+  if(!external_gui_is) get_controller_gui();
   update_gui_value(false, time_count_ff);
   interface_display(use_leapmotion, force_field);
 
@@ -253,7 +253,6 @@ void draw() {
 
   if(reset_authorization_from_gui) {
     global_reset();
-
     reset_authorization_from_gui = false ;
   }
 }

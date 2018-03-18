@@ -1,4 +1,20 @@
 /**
+set interface
+*/
+Vec2 pos_gui ;
+Vec2 size_gui ;
+
+void set_interface(Vec2 pos, Vec2 size) {
+	pos_gui = pos.copy();
+	size_gui = size.copy();
+}
+
+
+
+
+
+
+/**
 util method
 */
 float pos_slider_y(int space, float start_pos, int from) {
@@ -66,13 +82,15 @@ void instruction() {
   textAlign(CENTER);
   //background(255);
   fill(255) ;
-  textFont(font_gui);
+  // textFont(font_gui);
+  int font_size = 10 ;
+
   int x = width/2 ;
   int y = height -instruction_height +15;
   text("Press 'CMD' + 'O' to select media file", x, y);
-  text("Press 'CMD' + 'SHIFT' + 'O' to select media folder", x, y +(font_gui.getSize() *1.5));
-  text("Press 'V' to select computer camera", x, y +(font_gui.getSize() *3));
-  text("Press 'C' show or hide interface", x, y +(font_gui.getSize() *4.5));
+  text("Press 'CMD' + 'SHIFT' + 'O' to select media folder", x, y +(font_size *1.5));
+  text("Press 'V' to select computer camera", x, y +(font_size *3));
+  text("Press 'C' show or hide interface", x, y +(font_size *4.5));
 }
 
 
@@ -81,11 +99,11 @@ void instruction() {
 void interface_display(boolean mouse_is, Force_field ff) {
 	size_gui.set(size_gui.x, height);
 	if(!interface_is()) { 
-		hide_all_gui();
+		if(!external_gui_is) hide_all_gui();
 	} else {
 		background_interface();
 		instruction();
-		show_gui(mouse_is, ff);
+		if(!external_gui_is) show_gui(mouse_is, ff);
 		show_info(ff);
 	}
 }
