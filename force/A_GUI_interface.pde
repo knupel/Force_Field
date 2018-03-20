@@ -174,7 +174,7 @@ void show_info(Force_field ff) {
   info_line("DISPLAY", pos_x, space_interface, 													15 +step_y, TOP);
 	info_line("vehicles: "+ display_vehicle_is(), pos_x, space_interface, 16 +step_y, TOP);
 	info_line("warp: "+ display_warp_is(), pos_x, space_interface, 				17 +step_y, TOP);
-	info_line("background: "+ display_bg_is(), pos_x, space_interface, 		18 +step_y, TOP);
+	info_line("background: "+ display_background_is(), pos_x, space_interface, 		18 +step_y, TOP);
 
 
 	info_line("MISC", pos_x, space_interface, 																20 +step_y, TOP);

@@ -1,4 +1,4 @@
-float sum_controller() {
+float sum_slider() {
 	float sum = 0;
 	// BACKGROUND
 	sum += alpha_bg;
@@ -55,6 +55,29 @@ float sum_controller() {
 
 }
 
+
+boolean state_button ;
+boolean state_button_is() {
+	return state_button ;
+}
+
+void state_button(boolean state) {
+	state_button = state;
+}
+
+/*
+void send_button() {
+	OscMessage message_button = new OscMessage("FORCE BUTTON");
+  for(int i = 0 ; i < mode.length ; i++) {
+  	if(mode[i]) message_button.add(1); else message_button.add(0);
+  }
+	if(display_background) message_button.add(1); else message_button.add(0);
+	if(display_vehicle) message_button.add(1); else message_button.add(0);
+	if(display_warp) message_button.add(1); else message_button.add(0);
+	osc_button.send(message_button,dest_button);
+}
+*/
+
 void send() {
 	OscMessage message = new OscMessage("FORCE CONTROL");
 	// BACKGROUND
@@ -107,6 +130,32 @@ void send() {
 	message.add(spiral_spot);
 	message.add(beat_spot);
 	message.add(motion_spot);
+
+
+
+
+	for(int i = 0 ; i < mode.length ; i++) {
+  	if(mode[i]) message.add(1); else message.add(0);
+  }
+	if(display_background) message.add(1); else message.add(0);
+	if(display_vehicle) message.add(1); else message.add(0);
+	if(display_warp) message.add(1); else message.add(0);
+
+	if(change_size_window_is) message.add(1); else message.add(0);
+	if(fullfit_image_is) message.add(1); else message.add(0);
+	if(show_must_go_on) message.add(1); else message.add(0);
+	if(warp_is) message.add(1); else message.add(0);
+	if(full_reset_field_is) message.add(1); else message.add(0);
+	if(vehicle_pixel_is) message.add(1); else message.add(0);
+	println(change_size_window_is);
+	println(fullfit_image_is);
+	println(show_must_go_on);
+	println(warp_is);
+	println(full_reset_field_is);
+	println(vehicle_pixel_is);
+	println(frameCount);
+
+
   // SEND RESULT
-	oscP5.send(message,destination);
+	osc.send(message,destination);
 }

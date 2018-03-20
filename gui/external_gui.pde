@@ -8,6 +8,13 @@ import controlP5.*;
 boolean gui_init_controller = false;
 
 ControlP5 gui_mode;
+ControlP5 gui_button;
+CheckBox checkbox_main ;
+CheckBox checkbox_channel ;
+CheckBox checkbox_mag_grav ;
+CheckBox checkbox_vehicle ;
+
+
 ControlP5 gui_main;
 ControlP5 gui_static_img_2D;
 ControlP5 gui_static_img_3D;
@@ -18,26 +25,20 @@ ControlP5 gui_dynamic_spot;
 ControlP5 gui_main_movie;
 ControlP5 gui_vehicle;
 
-CheckBox check_gui_main ;
-CheckBox check_gui_main_channel ;
-CheckBox check_gui_dynamic_mag_grav_reset ;
-CheckBox check_gui_vehicle ;
-
-
-
 
 
 
 // global slider
-boolean gui_fullreset_field_is;
-boolean gui_warp_is;
-//boolean abs_cycling = true;
+boolean gui_display_background;
+boolean gui_display_vehicle;
+boolean gui_display_warp;
+
 boolean gui_change_size_window_is ;
 boolean gui_fullfit_image_is ;
-boolean gui_display_bg ;
-boolean gui_vehicle_pixel_is;
 boolean gui_show_must_go_on;
+boolean gui_warp_is;
 boolean gui_full_reset_field_is;
+boolean gui_vehicle_pixel_is;
 
 
 Vec2 pos_gui ;
@@ -54,27 +55,11 @@ int col_2_x = 200 ;
 /**
 setup
 */
+
+
 void gui_setup(Vec2 pos, Vec2 size) {
-	// check boolean setting from top first tab sketch 
-  // if(pause_is);
-  // if(fullScreen_is);
-	// if(use_leapmotion);
-	// if(interface_is);
-	// if(hide_menu_bar);
-	// if(inside_gui);
-	// if(display_result_warp);
-	// if(display_result_vehicle);
-  
-  if(warp_is) gui_warp_is = true; else gui_warp_is = false;
-	if(full_reset_field_is) gui_full_reset_field_is = true ; else  gui_full_reset_field_is = false;
-	if(change_size_window_is) gui_change_size_window_is = true ; else gui_change_size_window_is = false;
-	if(fullfit_image_is) gui_fullfit_image_is = true ; else gui_fullfit_image_is = false;
-	if(display_bg) gui_display_bg = true ; else gui_display_bg = false;
-	if(vehicle_pixel_is) gui_vehicle_pixel_is = true ; else gui_vehicle_pixel_is = false;
-	if(show_must_go_on) gui_show_must_go_on = true ; else gui_show_must_go_on = false ;
-
-
-
+	// this variable is used in internal GUI
+	set_internal_boolean();
 	build_gui();
 
 	red_gui = new CColor(r.BLOOD,r.CARMINE,r.RED,r.WHITE,r.WHITE);
@@ -88,6 +73,7 @@ void gui_setup(Vec2 pos, Vec2 size) {
   
 
   gui_mode();
+  gui_button(space_interface, slider_width, 3, TOP);
   // main
   gui_main(space_interface, max, slider_width, 3, TOP);
 
@@ -99,7 +85,7 @@ void gui_setup(Vec2 pos, Vec2 size) {
 
   // menu dynamic field
   gui_dynamic_fluid(space_interface, max, slider_width, 29.5, TOP);
-  gui_dynamic_mag_grav(space_interface, max, slider_width, 29.5, TOP);
+  // gui_dynamic_mag_grav(space_interface, max, slider_width, 29.5, TOP);
 
   gui_dynamic_spot(space_interface, max, slider_width, 33, TOP);
 
@@ -112,6 +98,7 @@ void gui_setup(Vec2 pos, Vec2 size) {
 
 
 void build_gui() {
+	gui_button = new ControlP5(this);
 	gui_mode = new ControlP5(this);
 	gui_main = new ControlP5(this);
 	gui_vehicle = new ControlP5(this);
@@ -127,21 +114,173 @@ void build_gui() {
 
 void gui_mode() {
 	String [] mode = {"PERLIN","CHAOS","EQUATION","IMAGE","GRAVITY","MAGNETIC","FLUID"};
-	ButtonBar b = gui_mode.addButtonBar("mode").setPosition(0,0).setSize(width,20).addItems(mode).setColor(red_gui);
+	ButtonBar b = gui_mode.addButtonBar("mode").setPosition(0,0).setSize(width,15).addItems(mode).setColor(red_gui);
+}
+
+
+void gui_button(int space, int w, float start_pos, int from) {
+	String [] method_name = {"bool_background", "bool_vehicle", "bool_image"};
+	String [] label = {"background", "vehicle", "image"};
+	int w_button = width /label.length;
+	// bar
+	gui_button.addToggle(method_name[0]).setLabel(label[0]).setPosition(w_button*0,16).setSize(w_button,15).setColor(red_gui).getCaptionLabel().align(CENTER,CENTER);
+	gui_button.addToggle(method_name[1]).setLabel(label[1]).setPosition(w_button*1,16).setSize(w_button,15).setColor(red_gui).getCaptionLabel().align(CENTER,CENTER);
+	gui_button.addToggle(method_name[2]).setLabel(label[2]).setPosition(w_button*2,16).setSize(w_button,15).setColor(red_gui).getCaptionLabel().align(CENTER,CENTER);
+	
+	// column
+	checkbox_main = gui_button.addCheckBox("main_setting").setPosition(col_1_x,pos_slider_y(space, start_pos +0, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2)
+														.addItem("resize window",1).addItem("fit image",1).addItem("show must go on",1).setColor(grey_0_gui);
+  if(gui_change_size_window_is) checkbox_main.activate(0);
+  if(gui_fullfit_image_is) checkbox_main.activate(1);
+  if(gui_show_must_go_on) checkbox_main.activate(2);
+
+	checkbox_channel = gui_button.addCheckBox("channel_setting").setPosition(10,pos_slider_y(space, start_pos +4, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2)
+																.addItem("WARP",1).setColor(red_gui);
+	if(gui_warp_is) checkbox_channel.activate(0);
+
+	checkbox_mag_grav = gui_button.addCheckBox("spot_setting").setPosition(10,pos_slider_y(space, start_pos +5, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2)
+																.addItem("full_reset_field",1).setColor(grey_0_gui);
+	if(gui_full_reset_field_is) checkbox_mag_grav.activate(0);
+
+	checkbox_vehicle = gui_button.addCheckBox("vehicle_setting").setPosition(10,pos_slider_y(space, start_pos +6, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2)
+																.addItem("PIXEL / SHAPE",1).setColor(red_gui);
+	if(gui_vehicle_pixel_is) checkbox_vehicle.activate(0);
+
+
+}
+
+
+void bool_background(boolean state) {
+	state_button(true);
+	display_background = state ;
+}
+
+void bool_vehicle(boolean state) {
+	state_button(true);
+	display_vehicle = state ;
+}
+
+void bool_image(boolean state) {
+	//println("toggle image");
+	state_button(true);
+	display_warp = state ;
+	//println(display_warp);
 }
 
 void mode(int n) {
-	println("bar clicked, item-value:", n);
+	state_button(true);
+	for (int i = 0 ; i < mode.length ; i++) {
+		if(n == i) mode[i] = true; else mode[i] = false;
+	}
+	if(mode[0]) perlin_true();
+	else if (mode[1]) chaos_true();
+	else if (mode[2]) equation_true();
+	else if (mode[3]) image_true();
+	else if (mode[4]) gravity_true();
+	else if (mode[5]) magnetic_true();
+	else if (mode[6]) fluid_true();
+	else perlin_true();
 }
 
 
+
+
+
+
+
+
+
+// set button state
+void perlin_true() {
+	mode_perlin = true; 
+	mode_chaos = false;
+	mode_equation = false;
+	mode_image = false;
+	mode_gravity = false;
+	mode_magnetic = false;
+	mode_fluid = false;
+}
+
+void chaos_true() {
+	mode_perlin = false; 
+	mode_chaos = true;
+	mode_equation = false;
+	mode_image = false;
+	mode_gravity = false;
+	mode_magnetic = false;
+	mode_fluid = false;
+}
+
+void equation_true() {
+	mode_perlin = false; 
+	mode_chaos = false;
+	mode_equation = true;
+	mode_image = false;
+	mode_gravity = false;
+	mode_magnetic = false;
+	mode_fluid = false;
+}
+
+void image_true() {
+	mode_perlin = false; 
+	mode_chaos = false;
+	mode_equation = false;
+	mode_image = true;
+	mode_gravity = false;
+	mode_magnetic = false;
+	mode_fluid = false;
+}
+
+void gravity_true() {
+	mode_perlin = false; 
+	mode_chaos = false;
+	mode_equation = false;
+	mode_image = false;
+	mode_gravity = true;
+	mode_magnetic = false;
+	mode_fluid = false;
+}
+
+void magnetic_true() {
+	mode_perlin = false; 
+	mode_chaos = false;
+	mode_equation = false;
+	mode_image = false;
+	mode_gravity = false;
+	mode_magnetic = true;
+	mode_fluid = false;
+}
+
+void fluid_true() {
+	mode_perlin = false; 
+	mode_chaos = false;
+	mode_equation = false;
+	mode_image = false;
+	mode_gravity = false;
+	mode_magnetic = false;
+	mode_fluid = true;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 void gui_main(int space, int max, int w, float start_pos, int from) {	
-	check_gui_main = gui_main.addCheckBox("main_setting").setPosition(col_1_x,pos_slider_y(space, start_pos +0, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2)
-														.addItem("resize window",1).addItem("fit image",1).addItem("background",1).addItem("show must go on",1).setColor(grey_0_gui);
-  if(gui_change_size_window_is) check_gui_main.activate(0);
-  if(gui_fullfit_image_is) check_gui_main.activate(1);
-  if(gui_display_bg) check_gui_main.activate(2);
-  if(gui_show_must_go_on) check_gui_main.activate(3);
+
+  // if(gui_show_must_go_on) check_gui_main.activate(3);
 
   gui_main.addSlider("alpha_bg").setLabel("alpha background").setPosition(col_2_x,pos_slider_y(space, start_pos +0, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
   gui_main.addSlider("alpha_vehicle").setLabel("alpha vehicle").setPosition(col_2_x,pos_slider_y(space, start_pos +1, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
@@ -163,10 +302,6 @@ void gui_main(int space, int max, int w, float start_pos, int from) {
 
 	gui_main.addSlider("power_cycling").setPosition(col_2_x,pos_slider_y(space, start_pos +13.75, from)).setWidth(w).setRange(0,max).setColor(red_gui);
 
-	check_gui_main_channel = gui_main.addCheckBox("channel_setting").setPosition(10,pos_slider_y(space, start_pos +14.75, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2)
-																		.addItem("WARP ON/OFF",1).setColor(red_gui);
-	if(gui_warp_is) check_gui_main_channel.activate(0);
-  
   int max_tempo = 10 ;
 	gui_main.addSlider("tempo_refresh").setPosition(col_2_x,pos_slider_y(space, start_pos +15.75, from)).setWidth(w).setRange(1,max_tempo).setNumberOfTickMarks(max_tempo).setColor(grey_0_gui);
   
@@ -189,9 +324,6 @@ void gui_vehicle(int space, int max, int w, float start_pos, int from) {
   int max_velocity_vehicle = max_speed ;
 	gui_vehicle.addSlider("num_vehicle").setPosition(col_2_x,pos_slider_y(space, start_pos +0, from)).setWidth(w).setRange(min_num_vehicle,max_num_vehicle).setColor(grey_0_gui);
   gui_vehicle.addSlider("velocity_vehicle").setPosition(col_2_x,pos_slider_y(space, start_pos +1, from)).setWidth(w).setRange(0,max_velocity_vehicle).setColor(grey_0_gui);
-  check_gui_vehicle = gui_vehicle.addCheckBox("vehicle_setting").setPosition(10,pos_slider_y(space, start_pos +2, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2)
-																		.addItem("PIXEL / SHAPE",1).setColor(grey_0_gui);
-	if(gui_vehicle_pixel_is) check_gui_vehicle.activate(0);
 }
 
 
@@ -208,11 +340,11 @@ void gui_dynamic_fluid(int space, int max, int w, float start_pos, int from) {
   gui_dynamic_fluid.addSlider("diffusion").setPosition(col_2_x,pos_slider_y(space, start_pos +2, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
 }
 
-
+/*
 void gui_dynamic_mag_grav(int space, int max, int w, float start_pos, int from) {
-	check_gui_dynamic_mag_grav_reset = gui_dynamic_mag_grav.addCheckBox("spot_setting").setPosition(10,pos_slider_y(space, start_pos +0, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2).addItem("full_reset_field",1).setColor(grey_0_gui);
-	if(gui_full_reset_field_is) check_gui_dynamic_mag_grav_reset.activate(0);
+
 }
+*/
 
 
 void gui_static_generative(int space, int max, int w, float start_pos, int from) {
@@ -282,23 +414,26 @@ v 0.0.3
 */
 public void controlEvent(ControlEvent theEvent) {
 	if(gui_init_controller) {
-		if(theEvent.isFrom(check_gui_main)) {
-			if(check_gui_main.getArrayValue(0) == 1) gui_change_size_window_is = true; else gui_change_size_window_is = false;
-			if(check_gui_main.getArrayValue(1) == 1) gui_fullfit_image_is = true; else gui_fullfit_image_is = false;
-			if(check_gui_main.getArrayValue(2) == 1) gui_display_bg = true; else gui_display_bg = false;
-			if(check_gui_main.getArrayValue(3) == 1) gui_show_must_go_on = true; else gui_show_must_go_on = false;
+		if(theEvent.isFrom(checkbox_main)) {
+			state_button(true);
+			if(checkbox_main.getArrayValue(0) == 1) change_size_window_is = true; else change_size_window_is = false;
+			if(checkbox_main.getArrayValue(1) == 1) fullfit_image_is = true; else fullfit_image_is = false;
+			if(checkbox_main.getArrayValue(2) == 1) show_must_go_on = true; else show_must_go_on = false;
 	  }
 
-	  if(theEvent.isFrom(check_gui_main_channel)) {
-			if(check_gui_main_channel.getArrayValue(0) == 1) gui_warp_is = true; else gui_warp_is = false;
+	  if(theEvent.isFrom(checkbox_channel)) {
+	  	state_button(true);
+			if(checkbox_channel.getArrayValue(0) == 1) warp_is = true; else warp_is = false;
 	  }
 
-	  if(theEvent.isFrom(check_gui_vehicle)) {
-			if(check_gui_vehicle.getArrayValue(0) == 1) gui_vehicle_pixel_is = true; else gui_vehicle_pixel_is = false;
+	  if(theEvent.isFrom(checkbox_vehicle)) {
+	  	state_button(true);
+			if(checkbox_vehicle.getArrayValue(0) == 1) vehicle_pixel_is = true; else vehicle_pixel_is = false;
 	  } 
 
-	  if(theEvent.isFrom(check_gui_dynamic_mag_grav_reset)) {
-			if(check_gui_dynamic_mag_grav_reset.getArrayValue(0) == 1) gui_fullreset_field_is = true; else gui_fullreset_field_is = false;
+	  if(theEvent.isFrom(checkbox_mag_grav)) {
+	  	state_button(true);
+			if(checkbox_mag_grav.getArrayValue(0) == 1) full_reset_field_is = true; else full_reset_field_is = false;
 	  }
 	}	 
 }
@@ -308,22 +443,24 @@ public void controlEvent(ControlEvent theEvent) {
 /**
 set controller
 */
+/*
 void set_check_gui_main_display(boolean state) {
 	if(state) {
-		check_gui_main.activate(2);
+		checkbox_main.activate(2);
 	} else {
 		println("disable display");
-		check_gui_main.deactivate(2);
+		checkbox_main.deactivate(2);
 	}
 }
 
 void set_check_gui_dynamic_mag_grav(boolean state) {
 	if(state) {
-		check_gui_dynamic_mag_grav_reset.activate(0);
+		checkbox_mag_grav.activate(0);
 	} else {		
-		check_gui_dynamic_mag_grav_reset.deactivate(0);
+		checkbox_mag_grav.deactivate(0);
 	}
 }
+*/
 
 
 
@@ -367,6 +504,65 @@ void get_controller_movie() {
 	gui_main_movie.getController("speed_movie");
 }
 
+
+
+
+
+
+
+
+
+
+
+
+void set_internal_boolean() {
+	if(display_background) gui_display_background = true ; else gui_display_background = false;
+  if(change_size_window_is) gui_change_size_window_is = true ; else gui_change_size_window_is = false;
+	if(fullfit_image_is) gui_fullfit_image_is = true ; else gui_fullfit_image_is = false;
+	if(show_must_go_on) gui_show_must_go_on = true ; else gui_show_must_go_on = false ;
+	if(warp_is) gui_warp_is = true; else gui_warp_is = false;
+	if(full_reset_field_is) gui_full_reset_field_is = true ; else  gui_full_reset_field_is = false;
+	if(vehicle_pixel_is) gui_vehicle_pixel_is = true ; else gui_vehicle_pixel_is = false;
+}
+
+
+void show_gui(boolean mouse_is) {
+	gui_main.show();
+
+	// show menu depend of force field type
+  if(mode_gravity_is() || mode_magnetic_is() || mode_fluid_is()) {
+  	if(mode_fluid_is()) {
+  		gui_dynamic_fluid.show(); 
+  	} else gui_dynamic_fluid.hide();
+  	if(mode_gravity_is() || mode_magnetic_is()) {
+  		gui_dynamic_mag_grav.show(); 
+  	} else gui_dynamic_mag_grav.hide();
+  } else {
+  	gui_dynamic_fluid.hide();
+  	gui_dynamic_mag_grav.hide();
+  }
+  
+  if(mode_image_is()) {
+  	gui_static_img_2D.show(); 
+  } else {
+  	gui_static_img_2D.hide();
+  	gui_static_img_3D.hide();
+  }
+
+	if(mode_chaos_is() || mode_perlin_is() || mode_image_is()) {
+		gui_static_generative.show(); 
+	} else gui_static_generative.hide();
+
+	if(display_vehicle_is()) gui_vehicle.show() ; else gui_vehicle.hide();
+
+	if(movie_warp_is()) gui_main_movie.show(); else gui_main_movie.hide();	
+
+	if(!mouse_is && spot_num > 2) {
+		gui_dynamic_spot.show(); 
+	} else {
+		gui_dynamic_spot.hide();
+	}
+}
 
 
 

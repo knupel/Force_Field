@@ -54,14 +54,16 @@ setup
 */
 void gui_setup() {
 	// check boolean setting from top first tab sketch 
+	/*
   if(pause_is);
   if(fullScreen_is);
 	if(use_leapmotion);
 	if(interface_is);
 	if(hide_menu_bar);
 	if(inside_gui);
-	if(display_result_warp);
-	if(display_result_vehicle);
+	if(display_warp);
+	if(display_vehicle);
+	*/
   
   if(warp_is) gui_warp_is = true; else gui_warp_is = false;
 	if(full_reset_field_is) gui_full_reset_field_is = true ; else  gui_full_reset_field_is = false;

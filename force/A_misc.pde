@@ -64,7 +64,14 @@ void global_reset(int type, int pattern, int super_type, int resolution) {
 
   if(type == r.FLUID) {
     set_full_reset_field(false);
-    set_check_gui_dynamic_mag_grav(get_full_reset_field_is_gui());
+    if(!external_gui_is) {
+      /**
+      Why check something for gravity or magnetic field in Fluid system ?????
+      */
+      set_check_gui_dynamic_mag_grav(get_full_reset_field_is_gui());
+    } else {
+
+    }
   }
 
   if(super_type == r.DYNAMIC){
@@ -83,6 +90,10 @@ void keyPressed() {
   keys[keyCode] = true;
   
   keypressed_add_media() ;
+  /**
+  if(key == 'a')
+  that control with advenced method see below
+  */
 
   if(key == 'b') manage_border();
 
@@ -104,7 +115,7 @@ void keyPressed() {
     reset_key();
   } 
   if(key == 'z') display_warp();
-  if(key == 'e') display_bg();
+  if(key == 'e') display_background();
 
   if(key == 'l') change_cursor_controller();
 
@@ -124,8 +135,8 @@ void keyPressed() {
     if(shader_filter_is) shader_filter_is = false ; else shader_filter_is = true ;
   }
 
-  if(key == 'w') change_mode_ff(-1);
-  if(key == 'x') change_mode_ff(+1);
+  if(key == 'w') next_mode_ff(-1);
+  if(key == 'x') next_mode_ff(+1);
 
   if(key == ' ') {
     if(pause_is) pause_is = false ; else pause_is = true ;
@@ -324,51 +335,51 @@ display
 * display vehilcle
 */
 boolean display_vehicle_is() {
-  return display_result_vehicle ;
+  return display_vehicle ;
 }
 
 void display_vehicle(boolean is) {
-  display_result_vehicle = is;
+  display_vehicle = is;
 }
 
 // method to set the gui back
 void display_vehicle() {
-  display_result_vehicle = !!((display_result_vehicle == false));
-  if(display_vehicle_is()) set_check_gui_main_display(display_bg_is());
+  display_vehicle = !!((display_vehicle == false));
+  if(display_vehicle_is() && !external_gui_is) set_check_gui_main_display(display_background_is());
 }
 
 /*
 * display warp
 */
 boolean display_warp_is() {
-  return display_result_warp ;
+  return display_warp ;
 }
 
 void display_warp(boolean is) {
-  display_result_warp = is;
+  display_warp = is;
 }
 
 // method to set the gui back
 void display_warp() {
-  display_result_warp = !!((display_result_warp == false));
-  if(display_warp_is()) set_check_gui_main_display(display_bg_is());
+  display_warp = !!((display_warp == false));
+  if(display_warp_is() && !external_gui_is) set_check_gui_main_display(display_background_is());
 }
 
 /*
 * display result
 */
-void display_bg(boolean is) {
+void display_background(boolean is) {
   display_bg = is;
 }
 
-boolean display_bg_is() {
+boolean display_background_is() {
   return display_bg;
 }
 
 // method to set the gui back
-void display_bg() {
+void display_background() {
   display_bg = !!((display_bg == false));
-  set_check_gui_main_display(display_bg_is());
+  if(!external_gui_is) set_check_gui_main_display(display_background_is());
 }
 
 /**
@@ -385,7 +396,7 @@ boolean show_must_go_on_is() {
 // method to set the gui back
 void show_must_go_on() {
   show_must_go_on = !!((show_must_go_on == false));
-  set_check_gui_main_display(display_bg_is());
+  if(!external_gui_is) set_check_gui_main_display(display_background_is());
 }
 
 /**
@@ -459,6 +470,10 @@ void set_full_reset_field(boolean state) {
   full_reset_field_is = state;
 }
 
+
+void set_warp_is(boolean state) {
+  warp_is = state;
+}
 
 
 

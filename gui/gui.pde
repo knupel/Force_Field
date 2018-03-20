@@ -7,17 +7,19 @@ v 0.0.1
 import oscP5.*;
 import netP5.*;
 
-OscP5 oscP5 ;
+OscP5 osc ;
 NetAddress destination;
+int port = 12_000;
 
-
+boolean use_leapmotion = false;
 
 
 void setup() {
 	size(500,750,P2D);
+	osc = new OscP5(this,port);
+	destination = new NetAddress("127.0.0.1",port);
 
-	oscP5 = new OscP5(this,12000);
-	destination = new NetAddress("127.0.0.1",12000);
+	mode = new boolean[num_mode];
 	gui_setup(Vec2(0), Vec2(250,height));
 
 }
@@ -25,7 +27,7 @@ void setup() {
 void draw() {
 	background(0);
 	send_value_controller();
-	//println(value);
+	show_gui(use_leapmotion);
 }
 
 
@@ -33,13 +35,16 @@ void draw() {
 
 
 
-float ref_value_controller ;
+
+
+float ref_value_slider ;
 void send_value_controller() {
-	float current_value = sum_controller();
-	if(current_value != ref_value_controller) {
+	float current_value_slider = sum_slider();
+	if(current_value_slider != ref_value_slider || state_button_is()) {
+		println("FORCE CONTROL send new controller values", frameCount);
+		state_button(false);
 		send();
-		// println("on envoie du courrier", frameCount);
-		ref_value_controller = current_value ;
+		ref_value_slider = current_value_slider ;
 	}
 }
 

@@ -1,25 +1,45 @@
 /**
 variable global share with the main sketch
-v 0.0.1
+v 0.0.5
 
 In the future those values must be write in an external file to be read by the main and gui sketche
 */
-boolean use_leapmotion = false;
-boolean warp_is = true; 
-boolean full_reset_field_is = true; 
-boolean change_size_window_is = true; 
-boolean fullfit_image_is = true; 
-boolean display_bg = true; 
-boolean vehicle_pixel_is = true; 
+/**
+BUTTON variable
+*/
+
+
+
+/**
+the variable is in the order send or receive OSC data
+* perlin, chaos, equation, image;
+* gravity, magnetic, fluid;
+*/
+int num_mode = 7;
+boolean [] mode = new boolean[num_mode];
+boolean mode_perlin, mode_chaos, mode_equation, mode_image, mode_gravity, mode_magnetic, mode_fluid ;
+
+boolean display_background = true; 
+boolean display_warp = false;
+boolean display_vehicle = false;
+
+boolean change_size_window_is = false; 
+boolean fullfit_image_is = true;
 boolean show_must_go_on = true; 
+boolean warp_is = true; 
+boolean full_reset_field_is = false; 
+boolean vehicle_pixel_is = true; 
 
 
-int which_mode = 0 ;
 
 
 
 
 
+
+/**
+SLIDER variable
+*/
 // BACKGROUND
 float alpha_bg = 1.;
 

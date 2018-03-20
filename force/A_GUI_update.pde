@@ -4,76 +4,100 @@ Message reception
 */
 import oscP5.*;
 import netP5.*;
-OscP5 oscP5;
+OscP5 osc_reception;
 NetAddress destination;
 
 void osc_setup() {
-  oscP5 = new OscP5(this,12000);
+  osc_reception = new OscP5(this,12000);
   destination = new NetAddress("127.0.0.1",12000);
+
 }
 
 void oscEvent(OscMessage theOscMessage) {
-   println("type", theOscMessage.typetag());
-   if(external_gui_is) {
-    print("Message from address pattern",theOscMessage.addrPattern());
+  println(frameCount);
+  if(external_gui_is) {
+    print("Message from:",theOscMessage.addrPattern(),frameCount);
     catch_osc_data(theOscMessage.arguments());
   }
 }
 
 
 void catch_osc_data(Object [] data) {
-  /*
-  alpha_bg = float(data[0]);
+  // slider
+  alpha_bg = (Float)data[0];
   // VECTOR FIELD
-  cell_force_field = float(data[1]);
+  cell_force_field = (Float)data[1];
   // MISC
-  tempo_refresh = float(data[2]);
+  tempo_refresh = (Float)data[2];
   // VEHICLE
-  alpha_vehicle = float(data[3]);
-  red_vehicle = float(data[4]);
-  green_vehicle = float(data[5]);
-  blue_vehicle = float(data[6]);
-  num_vehicle = float(data[7]);
-  velocity_vehicle = float(data[9]);
+  alpha_vehicle = (Float)data[3];
+  red_vehicle = (Float)data[4];
+  green_vehicle = (Float)data[5];
+  blue_vehicle = (Float)data[6];
+  num_vehicle = (Float)data[7];
+  velocity_vehicle = (Float)data[8];
   // WARP IMAGE
-  alpha_warp = float(data[9]);
-  red_warp = float(data[10]);
-  green_warp = float(data[11]);
-  blue_warp = float(data[12]);
-  power_warp = float(data[13]);
-  red_cycling = float(data[14]);
-  green_cycling = float(data[15]);
-  blue_cycling = float(data[16]);
-  power_cycling = float(data[17]);
+  alpha_warp = (Float)data[9];
+  red_warp = (Float)data[10];
+  green_warp = (Float)data[11];
+  blue_warp = (Float)data[12];
+  power_warp = (Float)data[13];
+  red_cycling = (Float)data[14];
+  green_cycling = (Float)data[15];
+  blue_cycling = (Float)data[16];
+  power_cycling = (Float)data[17];
   // MOVIE
-  header_movie = float(data[18]);
-  speed_movie = float(data[19]);
+  header_movie = (Float)data[18];
+  speed_movie = (Float)data[19];
   // FLUID
-  frequence = float(data[20]);
-  viscosity = float(data[21]);
-  diffusion = float(data[22]);
+  frequence = (Float)data[20];
+  viscosity = (Float)data[21];
+  diffusion = (Float)data[22];
   // generative seting for CHAOS and PERLIN field
-  range_min_gen = float(data[23]);
-  range_max_gen = float(data[24]);
-  power_gen = float(data[25]);
+  range_min_gen = (Float)data[23];
+  range_max_gen = (Float)data[24];
+  power_gen = (Float)data[25];
   // SORT IMAGE
-  vel_sort = float(data[26]);
-  x_sort = float(data[27]);
-  y_sort = float(data[28]);
-  z_sort = float(data[29]);
+  vel_sort = (Float)data[26];
+  x_sort = (Float)data[27];
+  y_sort = (Float)data[28];
+  z_sort = (Float)data[29];
   // SPOT
-  spot_num = float(data[30]);
-  spot_range = float(data[31]);
-  radius_spot = float(data[32]);
-  min_radius_spot = float(data[33]);
-  max_radius_spot = float(data[34]);
-  speed_spot = float(data[35]);
-  distribution_spot = float(data[36]);
-  spiral_spot = float(data[37]);
-  beat_spot = float(data[38]);
-  motion_spot = float(data[39]);
-  */
+  spot_num = (Float)data[30];
+  spot_range = (Float)data[31];
+  radius_spot = (Float)data[32];
+  min_radius_spot = (Float)data[33];
+  max_radius_spot = (Float)data[34];
+  speed_spot = (Float)data[35];
+  distribution_spot = (Float)data[36];
+  spiral_spot = (Float)data[37];
+  beat_spot = (Float)data[38];
+  motion_spot = (Float)data[39];
+
+
+  // button
+  for(int i = 0 ; i < mode.length ; i++) {
+    if((int)data[40 +i] == 0) mode[i] = false ; else mode[i] = true;
+  }
+
+  if((int)data[47] == 0) display_background(false); else display_background(true);
+  if((int)data[48] == 0) display_vehicle(false); else display_vehicle(true);
+  if((int)data[49] == 0) display_warp(false); else display_warp(true);
+  println("warp", display_warp_is());
+
+  if((int)data[50] == 0) set_resize_window(false); else set_resize_window(true);
+  if((int)data[51] == 0) set_fit_image(false); else set_fit_image(true);
+  if((int)data[52] == 0) show_must_go_on(false); else show_must_go_on(true);
+  if((int)data[53] == 0) set_warp_is(false); else set_warp_is(true);
+  if((int)data[54] == 0) set_full_reset_field(false); else set_full_reset_field(true);
+  if((int)data[55] == 0) set_vehicle_pixel_is(false); else  set_vehicle_pixel_is(true);
+  
 }
+
+
+
+
+
 
 
 
@@ -230,6 +254,9 @@ int ref_cell_size;
 int ref_num_vehicle;
 int ref_sort_channel;
 void update_gui_value(boolean update_is, int t_count) {
+  // check internal or external gui
+
+  //
 	int size = ceil(cell_force_field) +2;
 	int sort_channel_sum = int(x_sort + y_sort +vel_sort);
 	if(ref_cell_size != size || ref_num_vehicle != get_num_vehicle_gui() || sort_channel_sum != ref_sort_channel) {
@@ -249,19 +276,31 @@ void update_gui_value(boolean update_is, int t_count) {
   // nothing special at this time
   update_rgb_vehicle();
   
-
   set_alpha_warp(alpha_warp);
 	update_rgba_warp(t_count);
   
   set_sorting_channel_ff_2D(floor(x_sort), floor(y_sort), floor(vel_sort));
+  
+  if(!external_gui_is) {
+    set_resize_window(gui_change_size_window_is);
+    set_full_reset_field(gui_fullreset_field_is);
+    set_fit_image(gui_fullfit_image_is);
+    set_vehicle_pixel_is(gui_vehicle_pixel_is);
+    display_background(gui_display_bg);
+    show_must_go_on(gui_show_must_go_on);
+  } else {
+    /**
+    * When the change is from external GUI, the update is done in 
+    void catch_osc_data(Object [] data)
+    */
+    for(int i = 0 ; i < mode.length; i++) {
+      if(mode[i]) {
+        set_mode_ff(i);
+        break;
+      }
+    }  
+  }
 
-  set_resize_window(gui_change_size_window_is);
-  set_full_reset_field(gui_fullreset_field_is);
-  set_fit_image(gui_fullfit_image_is);
-  set_vehicle_pixel_is(gui_vehicle_pixel_is);
-
-  display_bg(gui_display_bg);
-  show_must_go_on(gui_show_must_go_on);
 }
 
 void update_rgb_vehicle() {

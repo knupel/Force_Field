@@ -25,8 +25,7 @@ boolean pause_is = false;
 
 boolean fullScreen_is = false;
 
-boolean display_result_warp = false;
-boolean display_result_vehicle = false;
+
 
 boolean interface_is = true;
 boolean hide_menu_bar = false;
@@ -174,10 +173,10 @@ void draw() {
   /** 
   DISPLAY RESULT
   */
-  if(display_bg_is()) {
+  if(display_background_is()) {
     if(get_alpha_bg() > 0 ) background_rope(0,get_alpha_bg());
   }
-
+//  println(display_warp_is(), frameCount);
   if(display_warp_is()) {
     tint(g.colorModeX,g.colorModeY,g.colorModeZ,get_alpha_warp());
     if(show_must_go_on_is()) {

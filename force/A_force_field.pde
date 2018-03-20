@@ -50,12 +50,23 @@ boolean ff_is() {
 change type
 */
 int mode_ff = 0 ;
-void change_mode_ff(int step) {
+int ref_mode_ff ;
+void next_mode_ff(int step) {
   mode_ff += step;
-  int num_mode = 6;
-  if(mode_ff > num_mode) mode_ff = 0 ;
+  
+  if(mode_ff >= num_mode) mode_ff = 0 ;
   if(mode_ff < 0) mode_ff = num_mode; 
   mode_ff();
+}
+
+void set_mode_ff(int target) {
+  if(target < 0) target = 0 ;
+  if(target >= num_mode) target = 6 ;
+  mode_ff = target;
+  if(ref_mode_ff != mode_ff) {
+    mode_ff();
+    ref_mode_ff = mode_ff;
+  }
 }
 
 void mode_ff() {
