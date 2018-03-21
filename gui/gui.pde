@@ -28,6 +28,16 @@ void draw() {
 	background(0);
 	send_value_controller();
 	show_gui(use_leapmotion);
+	if(mousePressed) update_media_list();
+}
+
+
+
+
+void update_media_list() {
+	String [] medias = {"Et voila","de nouveau","media","en français"} ;
+	media.clear();
+	media.addItems(medias);
 }
 
 

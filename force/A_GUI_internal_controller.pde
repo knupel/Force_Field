@@ -69,7 +69,7 @@ void gui_setup() {
 	if(full_reset_field_is) gui_full_reset_field_is = true ; else  gui_full_reset_field_is = false;
 	if(change_size_window_is) gui_change_size_window_is = true ; else gui_change_size_window_is = false;
 	if(fullfit_image_is) gui_fullfit_image_is = true ; else gui_fullfit_image_is = false;
-	if(display_bg) gui_display_bg = true ; else gui_display_bg = false;
+	if(display_background) gui_display_bg = true ; else gui_display_bg = false;
 	if(vehicle_pixel_is) gui_vehicle_pixel_is = true ; else gui_vehicle_pixel_is = false;
 	if(show_must_go_on) gui_show_must_go_on = true ; else gui_show_must_go_on = false ;
 

@@ -16,55 +16,75 @@ void warp_setup() {
 
 
 /**
- add, change folder or file
+ Media add, change folder or file
 */
 /*
 file part
 */
-boolean media_added_is ;
-boolean media_add_is() {
-  return media_added_is ;
+void media_end() {
+  if(media_add_is() || media_path_save_is()) {
+    if(media_add_is()) {
+      reset_key();
+      media_add(false);
+    }
+    if(media_path_save_is()) {
+      save_media_path();
+      media_path_save(false);
+    }   
+  }
 }
 
-void media_ready_to_add() {
-  media_added_is = false;
-}
+
+
+
+
 
 // file part
 void warp_add_media_input() {
   select_input();
-  media_added_is = true;
-  println("nouveau fichier");
+  media_add(true);
+  // media_path_save(true);
+  println("add input");
 }
 
 void warp_change_media_input() {
   if(get_files() != null) {
-    println("nouveau fichier");
+    println("change input");
     warp_media_loaded(false);
     get_files().clear();
     warp.image_library_clear();
     movie_library_clear();
+  } else {
+    println("load input");
   }
   select_input();
-  media_added_is = true ;
+  media_add(true);
+  // media_path_save(true);
+
 }
 
 
 // folder part
 void warp_add_media_folder() {
   select_folder();
-  media_added_is = true ;
+  media_add(true);
+  // media_path_save(true);
+  println("add folder");
 }
 
 void warp_change_media_folder() { 
   if(get_files() != null) {
+    println("change folder");
     warp_media_loaded(false);
     get_files().clear();
     warp.image_library_clear();
     movie_library_clear();
-  } 
+  } else {
+    println("load folder");
+  }
   select_folder();
-  media_added_is = true ;
+  media_add(true);
+  //media_path_save(true);
 }
 
 
@@ -116,9 +136,7 @@ void warp_init_media(int type_f, int pattern_f,  int size_cell, boolean change_c
       warp.image_library_fit(g, fullfit);
       warp.image_library_crop(g);
     }
-
   }
-
 
   if(movie_warp_is() && get_movie_warp(which_movie) != null && get_movie_warp(which_movie).width != 0 && get_movie_warp(which_movie).height != 0) {
     

@@ -161,9 +161,12 @@ void load_media_folder(boolean sub_folder, String... type) {
     for(File f : get_files()) {
       String ext = extension(f.getName());
       // add image to library
+      
       for(String s : ext_img) {
         if(ext.equals(s)) {
+          file_path("Image",f.getAbsolutePath());
           warp.load_image(f.getAbsolutePath());
+          media_path_save(true);
           warp_media_loaded(true);
           break;
         }
@@ -171,7 +174,9 @@ void load_media_folder(boolean sub_folder, String... type) {
       // add video to library
       for(String s : ext_movie) {
         if(ext.equals(s)) {
+          file_path("Movie",f.getAbsolutePath());
           load_movie(f.getAbsolutePath());
+          media_path_save(true);
           warp_media_loaded(true);
           break;
         }
@@ -183,7 +188,6 @@ void load_media_folder(boolean sub_folder, String... type) {
 
 void load_media_input(String... type) {
   String path = selected_path_input();
-  println("Path:",path);
   explore_folder(path, false, type);
   String [] ext_img = {"jpg", "JPG", "JPEG", "jpeg", "tif", "TIF", "tiff", "TIFF", "bmp", "BMP", "png", "PNG", "gif", "GIF"};
   String [] ext_movie = {"mov", "MOV", "avi", "AVI", "mp4", "MP4", "mkv", "MKV", "mpg", "MPG"};
@@ -193,7 +197,9 @@ void load_media_input(String... type) {
       // add image to library
       for(String s : ext_img) {
         if(ext.equals(s)) {
+          file_path("Image",f.getAbsolutePath());
           warp.load_image(f.getAbsolutePath());
+          media_path_save(true);
           warp_media_loaded(true);
           break;
         }
@@ -201,7 +207,9 @@ void load_media_input(String... type) {
       // add video to library
       for(String s : ext_movie) {
         if(ext.equals(s)) {
+          file_path("Movie",f.getAbsolutePath());
           load_movie(f.getAbsolutePath());
+          media_path_save(true);
           warp_media_loaded(true);
           break;
         }
@@ -209,6 +217,68 @@ void load_media_input(String... type) {
     }
   }
 }
+
+/**
+* local method
+*/
+String ext_path_file ;
+void file_path(String type,String path) {
+  if(path != null && type != null) {
+    println(type,path);
+    ext_path_file += ("///"+type+path);
+  }
+}
+
+void save_media_path() {
+  if(ext_path_file != null) {
+    println("save file txt",frameCount);
+    String [] s = split(ext_path_file, "///");
+    saveStrings(sketchPath(1)+"/save/path_media.txt",s);
+  }
+}
+
+
+
+boolean media_path_save_is;
+boolean media_path_save_is() {
+  return media_path_save_is;
+}
+
+void media_path_save(boolean state){
+  media_path_save_is = state;
+}
+
+
+boolean media_add_is ;
+boolean media_add_is() {
+  return media_add_is ;
+}
+
+void media_add(boolean state) {
+  media_add_is = state;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

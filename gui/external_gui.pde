@@ -14,6 +14,8 @@ CheckBox checkbox_channel ;
 CheckBox checkbox_mag_grav ;
 CheckBox checkbox_vehicle ;
 
+DropdownList media;
+
 
 ControlP5 gui_main;
 ControlP5 gui_static_img_2D;
@@ -121,11 +123,16 @@ void gui_mode() {
 void gui_button(int space, int w, float start_pos, int from) {
 	String [] method_name = {"bool_background", "bool_vehicle", "bool_image"};
 	String [] label = {"background", "vehicle", "image"};
-	int w_button = width /label.length;
+	int w_button = width /(label.length +2);
 	// bar
 	gui_button.addToggle(method_name[0]).setLabel(label[0]).setPosition(w_button*0,16).setSize(w_button,15).setColor(red_gui).getCaptionLabel().align(CENTER,CENTER);
 	gui_button.addToggle(method_name[1]).setLabel(label[1]).setPosition(w_button*1,16).setSize(w_button,15).setColor(red_gui).getCaptionLabel().align(CENTER,CENTER);
 	gui_button.addToggle(method_name[2]).setLabel(label[2]).setPosition(w_button*2,16).setSize(w_button,15).setColor(red_gui).getCaptionLabel().align(CENTER,CENTER);
+
+	// dropdown
+	String [] medias = {"List empty","load items","from the","main sketch"} ;
+	media = gui_button.addDropdownList("media_list").setPosition(width-w_button,16).setBarHeight(15).setColor(red_gui).addItems(medias);
+	//customize(media);
 	
 	// column
 	checkbox_main = gui_button.addCheckBox("main_setting").setPosition(col_1_x,pos_slider_y(space, start_pos +0, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2)
@@ -147,6 +154,21 @@ void gui_button(int space, int w, float start_pos, int from) {
 	if(gui_vehicle_pixel_is) checkbox_vehicle.activate(0);
 
 
+}
+
+
+void customize(DropdownList ddl) {
+  // a convenience function to customize a DropdownList
+  ddl.setBackgroundColor(color(190));
+  ddl.setItemHeight(20);
+  ddl.setBarHeight(15);
+  ddl.getCaptionLabel().set("dropdown");
+  for (int i=0;i<40;i++) {
+    ddl.addItem("item "+i, i);
+  }
+  //ddl.scroll(0);
+  ddl.setColorBackground(color(60));
+  ddl.setColorActive(color(255, 128));
 }
 
 

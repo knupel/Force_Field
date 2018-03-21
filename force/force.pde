@@ -21,6 +21,8 @@ Stable fluids from Jos Stam's work on the Navier-Stokes equation
 */
 boolean external_gui_is = true;
 
+boolean use_leapmotion = false;
+
 boolean pause_is = false;
 
 boolean fullScreen_is = false;
@@ -244,15 +246,38 @@ void draw() {
   cursor_manager(interface_is());
 
   diaporama(240);
-
-  if(media_add_is()) {
-    reset_key();
-    media_ready_to_add();
+  
+  media_end() ;
+  /*
+  if(media_add_is() || media_path_save_is()) {
+    if(media_add_is()) {
+      reset_key();
+      media_add(false);
+    }
+    if(media_path_save_is()) {
+      save_media_path();
+      media_path_save(false);
+    }   
   }
+  */
 
   if(reset_authorization_from_gui) {
     global_reset();
     reset_authorization_from_gui = false ;
+  }
+}
+
+
+void media_end() {
+  if(media_add_is() || media_path_save_is()) {
+    if(media_add_is()) {
+      reset_key();
+      media_add(false);
+    }
+    if(media_path_save_is()) {
+      save_media_path();
+      media_path_save(false);
+    }   
   }
 }
 

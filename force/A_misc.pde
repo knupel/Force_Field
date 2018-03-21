@@ -1,17 +1,11 @@
 /**
-info system
+MISCV
+v 0.1.0
 */
-String os_system ;
-void info_system() {
-  println("java Version Name:",javaVersionName);
-  os_system = System.getProperty("os.name");
-  println("os.name:",os_system);
-  println("os.version:",System.getProperty("os.version"));
-}
-
 
 /**
 RESET
+v 0.2.0
 */
 void global_reset() {
   global_reset(force_field.get_type(), force_field.get_pattern(), force_field.get_super_type(), get_resolution_ff());
@@ -73,12 +67,62 @@ void global_reset(int type, int pattern, int super_type, int resolution) {
 
     }
   }
-
   if(super_type == r.DYNAMIC){
     update_gui_value(true,time_count_ff);
   }
   // 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+info system
+*/
+String os_system ;
+void info_system() {
+  println("java Version Name:",javaVersionName);
+  os_system = System.getProperty("os.name");
+  println("os.name:",os_system);
+  println("os.version:",System.getProperty("os.version"));
+}
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -226,15 +270,7 @@ void replace_media_file(int a, int b, int c) {
 }
 
 
-/*
-boolean three_key_ttt(int a, int b, int c) {
-  if(checkKey(a) && checkKey(b) && checkKey(c)) return true ; else return false ;
-}
 
-boolean three_key_tft(int a, int b, int c) {
-  if(checkKey(a) && !checkKey(b && checkKey(c)) return true ; else return false ;
-}
-*/
 
 /*
 key event
@@ -369,16 +405,16 @@ void display_warp() {
 * display result
 */
 void display_background(boolean is) {
-  display_bg = is;
+  display_background = is;
 }
 
 boolean display_background_is() {
-  return display_bg;
+  return display_background;
 }
 
 // method to set the gui back
 void display_background() {
-  display_bg = !!((display_bg == false));
+  display_background = !!((display_background == false));
   if(!external_gui_is) set_check_gui_main_display(display_background_is());
 }
 
