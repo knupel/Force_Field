@@ -43,8 +43,8 @@ class Warp {
   /**
   select
   */
-  public void select_image(int which_img) {
-    img_manager.select(which_img);
+  public void select_image(int target_img) {
+    img_manager.select(target_img);
   }
 
   public void select_image(String target_name) {

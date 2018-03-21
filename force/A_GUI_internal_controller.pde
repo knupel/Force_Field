@@ -383,7 +383,7 @@ void get_controller_main() {
 
 float movie_pos_normal ;
 void get_controller_movie() {
-	gui_main_movie.getController("header_movie").setValue(movie_pos_normal);
+	gui_main_movie.getController("header_movie").setValue(get_movie_pos_norm());
 	gui_main_movie.getController("speed_movie");
 }
 

@@ -2,7 +2,7 @@
 internal GUI Force
 2017-2018
 http://stanlepunk.xyz/
-v 0.3.0
+v 0.3.3
 */
 import controlP5.*;
 boolean gui_init_controller = false;
@@ -52,7 +52,7 @@ CColor red_gui ;
 CColor grey_0_gui ;
 
 int col_1_x = 10 ;
-int col_2_x = 200 ;
+int col_2_x = 150 ;
 
 /**
 setup
@@ -131,8 +131,7 @@ void gui_button(int space, int w, float start_pos, int from) {
 
 	// dropdown
 	String [] medias = {"List empty","load items","from the","main sketch"} ;
-	media = gui_button.addDropdownList("media_list").setPosition(width-w_button,16).setBarHeight(15).setColor(red_gui).addItems(medias);
-	//customize(media);
+	media = gui_button.addDropdownList("media_list").setPosition(width-w_button,16).setHeight(150).setBarHeight(15).setColor(red_gui).addItems(medias);
 	
 	// column
 	checkbox_main = gui_button.addCheckBox("main_setting").setPosition(col_1_x,pos_slider_y(space, start_pos +0, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2)
@@ -152,24 +151,8 @@ void gui_button(int space, int w, float start_pos, int from) {
 	checkbox_vehicle = gui_button.addCheckBox("vehicle_setting").setPosition(10,pos_slider_y(space, start_pos +6, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2)
 																.addItem("PIXEL / SHAPE",1).setColor(red_gui);
 	if(gui_vehicle_pixel_is) checkbox_vehicle.activate(0);
-
-
 }
 
-
-void customize(DropdownList ddl) {
-  // a convenience function to customize a DropdownList
-  ddl.setBackgroundColor(color(190));
-  ddl.setItemHeight(20);
-  ddl.setBarHeight(15);
-  ddl.getCaptionLabel().set("dropdown");
-  for (int i=0;i<40;i++) {
-    ddl.addItem("item "+i, i);
-  }
-  //ddl.scroll(0);
-  ddl.setColorBackground(color(60));
-  ddl.setColorActive(color(255, 128));
-}
 
 
 void bool_background(boolean state) {
@@ -183,10 +166,8 @@ void bool_vehicle(boolean state) {
 }
 
 void bool_image(boolean state) {
-	//println("toggle image");
 	state_button(true);
 	display_warp = state ;
-	//println(display_warp);
 }
 
 void mode(int n) {
@@ -203,6 +184,9 @@ void mode(int n) {
 	else if (mode[6]) fluid_true();
 	else perlin_true();
 }
+
+
+
 
 
 
@@ -301,9 +285,6 @@ void fluid_true() {
 
 
 void gui_main(int space, int max, int w, float start_pos, int from) {	
-
-  // if(gui_show_must_go_on) check_gui_main.activate(3);
-
   gui_main.addSlider("alpha_bg").setLabel("alpha background").setPosition(col_2_x,pos_slider_y(space, start_pos +0, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
   gui_main.addSlider("alpha_vehicle").setLabel("alpha vehicle").setPosition(col_2_x,pos_slider_y(space, start_pos +1, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
   gui_main.addSlider("alpha_warp").setLabel("alpha warp").setPosition(col_2_x,pos_slider_y(space, start_pos +2, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
@@ -457,6 +438,11 @@ public void controlEvent(ControlEvent theEvent) {
 	  	state_button(true);
 			if(checkbox_mag_grav.getArrayValue(0) == 1) full_reset_field_is = true; else full_reset_field_is = false;
 	  }
+    
+    if (theEvent.isFrom(media)) {
+    	state_button(true);
+	    which_media = (int)theEvent.getController().getValue();
+	  }
 	}	 
 }
 
@@ -501,14 +487,14 @@ void set_check_gui_dynamic_mag_grav(boolean state) {
 get controller
 */
 void get_controller_gui() {
-	get_controller_movie();
+	// get_controller_movie();
 	get_controller_main();
 }
 
 float ref_power_cycling;
 boolean switch_off_power_cycling;
 void get_controller_main() {
-	if(!gui_warp_is) {
+	if(!warp_is) {
 		if(!switch_off_power_cycling) ref_power_cycling = power_cycling;
 		switch_off_power_cycling = true;
 		gui_main.getController("power_cycling").setValue(0);
@@ -520,11 +506,13 @@ void get_controller_main() {
 	}
 }
 
+/*
 float movie_pos_normal ;
 void get_controller_movie() {
 	gui_main_movie.getController("header_movie").setValue(movie_pos_normal);
 	gui_main_movie.getController("speed_movie");
 }
+*/
 
 
 

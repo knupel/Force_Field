@@ -108,7 +108,6 @@ DRAW
 void draw() {
   if(!pause_is || show_must_go_on_is()) time_count_ff++;
   if(hide_menu_bar) PApplet.hideMenuBar();
-  // cursor(CROSS);
   if(use_leapmotion) leap_update();
 
   if(interface_is() && !external_gui_is) {
@@ -138,7 +137,6 @@ void draw() {
       } else if(show_must_go_on_is()){
         force_field_spot_coord(iVec2(mouseX,mouseY),false,pause_is);
       } else if(inside_gui && show_must_go_on_is()) {
-        // force_field_spot_coord(iVec2(mouseX,mouseY),false,pause_is);
         force_field_spot_coord(iVec2(mouseX,mouseY),false,show_must_go_on_is());
       } else {
         force_field_spot_coord(iVec2(mouseX,mouseY),false,show_must_go_on_is());
@@ -178,7 +176,7 @@ void draw() {
   if(display_background_is()) {
     if(get_alpha_bg() > 0 ) background_rope(0,get_alpha_bg());
   }
-//  println(display_warp_is(), frameCount);
+
   if(display_warp_is()) {
     tint(g.colorModeX,g.colorModeY,g.colorModeZ,get_alpha_warp());
     if(show_must_go_on_is()) {
@@ -244,22 +242,9 @@ void draw() {
   */
 
   cursor_manager(interface_is());
-
-  diaporama(240);
-  
-  media_end() ;
-  /*
-  if(media_add_is() || media_path_save_is()) {
-    if(media_add_is()) {
-      reset_key();
-      media_add(false);
-    }
-    if(media_path_save_is()) {
-      save_media_path();
-      media_path_save(false);
-    }   
-  }
-  */
+  diaporama(240);  
+  media_end();
+  save_value_app_too_controller(60);
 
   if(reset_authorization_from_gui) {
     global_reset();
@@ -268,18 +253,7 @@ void draw() {
 }
 
 
-void media_end() {
-  if(media_add_is() || media_path_save_is()) {
-    if(media_add_is()) {
-      reset_key();
-      media_add(false);
-    }
-    if(media_path_save_is()) {
-      save_media_path();
-      media_path_save(false);
-    }   
-  }
-}
+
 
 
 

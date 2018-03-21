@@ -11,6 +11,7 @@ void warp_setup() {
   set_size_ref(width, height);
   surface_g = "surface g";
   warp.load_shader();
+  set_media_info();
 }
 
 
@@ -43,11 +44,11 @@ void media_end() {
 void warp_add_media_input() {
   select_input();
   media_add(true);
-  // media_path_save(true);
   println("add input");
 }
 
 void warp_change_media_input() {
+  reset_media_info();
   if(get_files() != null) {
     println("change input");
     warp_media_loaded(false);
@@ -57,10 +58,9 @@ void warp_change_media_input() {
   } else {
     println("load input");
   }
+  file_path_clear();
   select_input();
   media_add(true);
-  // media_path_save(true);
-
 }
 
 
@@ -68,11 +68,11 @@ void warp_change_media_input() {
 void warp_add_media_folder() {
   select_folder();
   media_add(true);
-  // media_path_save(true);
   println("add folder");
 }
 
 void warp_change_media_folder() { 
+  reset_media_info();
   if(get_files() != null) {
     println("change folder");
     warp_media_loaded(false);
@@ -82,9 +82,9 @@ void warp_change_media_folder() {
   } else {
     println("load folder");
   }
+  file_path_clear();
   select_folder();
   media_add(true);
-  //media_path_save(true);
 }
 
 
@@ -138,8 +138,7 @@ void warp_init_media(int type_f, int pattern_f,  int size_cell, boolean change_c
     }
   }
 
-  if(movie_warp_is() && get_movie_warp(which_movie) != null && get_movie_warp(which_movie).width != 0 && get_movie_warp(which_movie).height != 0) {
-    
+  if(movie_warp_is() && get_movie_warp(which_movie) != null && get_movie_warp(which_movie).width != 0 && get_movie_warp(which_movie).height != 0) {    
     if(change_canvas_is) {
       iVec2 temp_size_window = def_window_size(get_movie_warp(which_movie).width, get_movie_warp(which_movie).height);
       set_size_ref(temp_size_window.x,temp_size_window.y);

@@ -1,3 +1,8 @@
+/**
+send
+v 0.0.2
+*/
+
 float sum_slider() {
 	float sum = 0;
 	// BACKGROUND
@@ -131,9 +136,6 @@ void send() {
 	message.add(beat_spot);
 	message.add(motion_spot);
 
-
-
-
 	for(int i = 0 ; i < mode.length ; i++) {
   	if(mode[i]) message.add(1); else message.add(0);
   }
@@ -146,15 +148,8 @@ void send() {
 	if(show_must_go_on) message.add(1); else message.add(0);
 	if(warp_is) message.add(1); else message.add(0);
 	if(full_reset_field_is) message.add(1); else message.add(0);
-	if(vehicle_pixel_is) message.add(1); else message.add(0);
-	println(change_size_window_is);
-	println(fullfit_image_is);
-	println(show_must_go_on);
-	println(warp_is);
-	println(full_reset_field_is);
-	println(vehicle_pixel_is);
-	println(frameCount);
 
+	message.add(which_media);
 
   // SEND RESULT
 	osc.send(message,destination);

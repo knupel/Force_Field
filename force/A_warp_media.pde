@@ -102,20 +102,26 @@ void display_movie(PGraphics pg) {
 
 float speed_movie_warp_ref = 1 ;
 void update_movie_warp_interface() {
-  if(get_movie_warp(which_movie) != null && header_movie != get_pos_movie_norm_gui()) {
-    float header = get_movie_warp(which_movie).duration() *header_movie;
-    get_movie_warp(which_movie).jump(header);
+  
+  if(controller_news_is() || !external_gui_is) {
+    println("update_movie_warp_interface()",controller_news_is(), header_movie);
+    if(get_movie_warp(which_movie) != null && header_movie != get_movie_pos_norm()) {
+      float header = get_movie_warp(which_movie).duration() *header_movie;
+      get_movie_warp(which_movie).jump(header);
+    }
   }
+
+  
 
   if(get_movie_warp(which_movie) != null) {
     float norm_pos = get_movie_warp(which_movie).time() / get_movie_warp(which_movie).duration();
-    set_pos_movie_norm_gui(norm_pos);
-    if(speed_movie_warp_ref != get_speed_movie_gui()) {
-      speed_movie_warp_ref = get_speed_movie_gui() ;
+    set_movie_pos_norm(norm_pos);
+    if(speed_movie_warp_ref != get_movie_speed()) {
+      speed_movie_warp_ref = get_movie_speed() ;
       if(speed_movie_warp_ref == 0) {
         get_movie_warp(which_movie).pause() ;
       } else {
-        get_movie_warp(which_movie).read() ;
+        get_movie_warp(which_movie).read();
         get_movie_warp(which_movie).speed(speed_movie_warp_ref);
       }   
     }
@@ -148,6 +154,24 @@ see void warp_init(int type_field, int size_cell)
 */
 int which_img = 1 ;
 int which_movie = 0 ;
+
+Info_int_dict media_info;
+int rank_media;
+int rank_img;
+int rank_movie;
+void set_media_info() {
+  if(media_info == null) media_info = new Info_int_dict();
+}
+
+void reset_media_info() {
+  media_info.clear();
+  rank_media = 0;
+  rank_img = 0;
+  rank_movie = 0;
+
+}
+
+
 /**
 image
 */
@@ -160,10 +184,12 @@ void load_media_folder(boolean sub_folder, String... type) {
   if(get_files() != null && get_files().size() > 0) {
     for(File f : get_files()) {
       String ext = extension(f.getName());
-      // add image to library
-      
+      // add image to library     
       for(String s : ext_img) {
         if(ext.equals(s)) {
+          media_info.add("Image",rank_media,rank_img);
+          rank_img++;
+          rank_media++;
           file_path("Image",f.getAbsolutePath());
           warp.load_image(f.getAbsolutePath());
           media_path_save(true);
@@ -174,6 +200,9 @@ void load_media_folder(boolean sub_folder, String... type) {
       // add video to library
       for(String s : ext_movie) {
         if(ext.equals(s)) {
+          media_info.add("Movie",rank_media,rank_movie);
+          rank_movie++;
+          rank_media++;
           file_path("Movie",f.getAbsolutePath());
           load_movie(f.getAbsolutePath());
           media_path_save(true);
@@ -197,6 +226,9 @@ void load_media_input(String... type) {
       // add image to library
       for(String s : ext_img) {
         if(ext.equals(s)) {
+          media_info.add("Image",rank_media,rank_img);
+          rank_img++;
+          rank_media++;
           file_path("Image",f.getAbsolutePath());
           warp.load_image(f.getAbsolutePath());
           media_path_save(true);
@@ -207,6 +239,9 @@ void load_media_input(String... type) {
       // add video to library
       for(String s : ext_movie) {
         if(ext.equals(s)) {
+          media_info.add("Image",rank_media,rank_movie);
+          rank_movie++;
+          rank_media++;
           file_path("Movie",f.getAbsolutePath());
           load_movie(f.getAbsolutePath());
           media_path_save(true);
@@ -218,45 +253,7 @@ void load_media_input(String... type) {
   }
 }
 
-/**
-* local method
-*/
-String ext_path_file ;
-void file_path(String type,String path) {
-  if(path != null && type != null) {
-    println(type,path);
-    ext_path_file += ("///"+type+path);
-  }
-}
 
-void save_media_path() {
-  if(ext_path_file != null) {
-    println("save file txt",frameCount);
-    String [] s = split(ext_path_file, "///");
-    saveStrings(sketchPath(1)+"/save/path_media.txt",s);
-  }
-}
-
-
-
-boolean media_path_save_is;
-boolean media_path_save_is() {
-  return media_path_save_is;
-}
-
-void media_path_save(boolean state){
-  media_path_save_is = state;
-}
-
-
-boolean media_add_is ;
-boolean media_add_is() {
-  return media_add_is ;
-}
-
-void media_add(boolean state) {
-  media_add_is = state;
-}
 
 
 

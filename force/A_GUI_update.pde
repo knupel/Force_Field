@@ -6,17 +6,22 @@ import oscP5.*;
 import netP5.*;
 OscP5 osc_reception;
 NetAddress destination;
+boolean news_from_controller;
 
 void osc_setup() {
   osc_reception = new OscP5(this,12000);
   destination = new NetAddress("127.0.0.1",12000);
+}
 
+
+boolean controller_news_is() {
+  return news_from_controller;
 }
 
 void oscEvent(OscMessage theOscMessage) {
-  println(frameCount);
+  news_from_controller = true;
   if(external_gui_is) {
-    print("Message from:",theOscMessage.addrPattern(),frameCount);
+    // print("Message from:",theOscMessage.addrPattern(),frameCount);
     catch_osc_data(theOscMessage.arguments());
   }
 }
@@ -48,6 +53,7 @@ void catch_osc_data(Object [] data) {
   power_cycling = (Float)data[17];
   // MOVIE
   header_movie = (Float)data[18];
+  println("catch_osc_data()",header_movie);
   speed_movie = (Float)data[19];
   // FLUID
   frequence = (Float)data[20];
@@ -83,7 +89,6 @@ void catch_osc_data(Object [] data) {
   if((int)data[47] == 0) display_background(false); else display_background(true);
   if((int)data[48] == 0) display_vehicle(false); else display_vehicle(true);
   if((int)data[49] == 0) display_warp(false); else display_warp(true);
-  println("warp", display_warp_is());
 
   if((int)data[50] == 0) set_resize_window(false); else set_resize_window(true);
   if((int)data[51] == 0) set_fit_image(false); else set_fit_image(true);
@@ -91,7 +96,11 @@ void catch_osc_data(Object [] data) {
   if((int)data[53] == 0) set_warp_is(false); else set_warp_is(true);
   if((int)data[54] == 0) set_full_reset_field(false); else set_full_reset_field(true);
   if((int)data[55] == 0) set_vehicle_pixel_is(false); else  set_vehicle_pixel_is(true);
-  
+
+  which_media = (int)data[56];
+  Info_int i = media_info.get(which_media);
+  if(i.get_name().equals("Movie")) which_movie = i.get(1) +1;
+  if(i.get_name().equals("Image")) which_img = i.get(1) +1;
 }
 
 
@@ -107,13 +116,6 @@ v 0.0.1
 */
 Vec4 rgba_warp = Vec4(1);
 float power_warp_max;
-/**
-set GUI 
-value slider in the draw
-*/
-void set_pos_movie_norm_gui(float f) {
-  movie_pos_normal = f;
-}
 
 /**
 get GUI
@@ -185,27 +187,10 @@ Vec4 get_rgba_warp_mapped_gui() {
   return rgba_warp;
 }
 
-/*
-Vec3 get_rgb_channel_mapped_gui() {
-  return rgb_channel;
-}
-*/
-
 
 float get_power_cycling_gui() {
   return power_cycling;
 }
-
-
-
-float get_pos_movie_norm_gui() {
-  return movie_pos_normal ;
-}
-
-float get_speed_movie_gui() {
-  return speed_movie ;
-}
-
 
 
 float get_speed_spot() {
@@ -300,7 +285,7 @@ void update_gui_value(boolean update_is, int t_count) {
       }
     }  
   }
-
+  news_from_controller = false;
 }
 
 void update_rgb_vehicle() {

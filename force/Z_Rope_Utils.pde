@@ -3,7 +3,7 @@ ROPE - Romanesco processing environment –
 * Copyleft (c) 2014-2018 
 * Stan le Punk > http://stanlepunk.xyz/
 Rope UTILS  2015 – 2018
-v 1.38.3
+v 1.38.4
 Rope – Romanesco Processing Environment – 
 Processing 3.3.7
 * @author Stan le Punk
@@ -3464,7 +3464,7 @@ public class Info_Vec_dict extends Info_dict {
 
 
 /**
-Info 0.1.0.1
+Info 0.1.0.2
 
 */
 interface Info {
@@ -3524,7 +3524,7 @@ class Info_int extends Info_method {
 
 
   // get
-  int [] get_all() {
+  int [] get() {
     int [] list = new int[]{a,b,c,d,e,f,g} ;
     return list ;
   }
@@ -3632,7 +3632,7 @@ class Info_String extends Info_method {
 
 
   // get
-  String [] get_all() {
+  String [] get() {
     String [] list = new String[]{a,b,c,d,e,f,g} ;
     return list ;
   }
@@ -3740,7 +3740,7 @@ class Info_float extends Info_method {
   }
 
   // get
-  float [] get_all() {
+  float [] get() {
     float [] list = new float[]{a,b,c,d,e,f,g} ;
     return list ;
   }
@@ -3852,7 +3852,7 @@ class Info_Vec extends Info_method {
 
 
   // get
-  Vec [] get_all() {
+  Vec [] get() {
     Vec [] list = new Vec[]{a,b,c,d,e,f,g} ;
     return list ;
   }
@@ -3966,7 +3966,7 @@ class Info_Object extends Info_method {
 
 
   // get
-  Object [] get_all() {
+  Object [] get() {
     Object [] list = new Object []{a,b,c,d,e,f,g} ;
     return list ;
   }

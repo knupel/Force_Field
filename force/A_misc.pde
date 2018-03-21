@@ -4,6 +4,105 @@ v 0.1.0
 */
 
 /**
+SAVE / LOAD
+v 0.0.1
+*/
+
+/**
+* local method
+*/
+String ext_path_file = null;
+void file_path_clear() {
+  ext_path_file = null;
+}
+
+void file_path(String type,String path) {
+  if(path != null && type != null) {
+    ext_path_file += ("///"+type+path);
+  }
+}
+
+void save_media_path() {
+  if(ext_path_file != null) {
+    println("save file txt");
+    String [] s = split(ext_path_file, "///");
+    saveStrings(sketchPath(1)+"/save/path_media.txt",s);
+  }
+}
+
+
+boolean media_path_save_is;
+boolean media_path_save_is() {
+  return media_path_save_is;
+}
+
+void media_path_save(boolean state){
+  media_path_save_is = state;
+}
+
+
+boolean media_add_is ;
+boolean media_add_is() {
+  return media_add_is ;
+}
+
+void media_add(boolean state) {
+  media_add_is = state;
+}
+
+
+Table value_app_force;
+TableRow [] row;
+void save_value_app_too_controller(int tempo) {
+  if(frameCount%tempo == 0) {
+    if(value_app_force == null) {
+      value_app_force = new Table();
+      value_app_force.addColumn("variable");
+      value_app_force.addColumn("value");
+      int num_row = 1 ;
+      row = new TableRow[num_row] ;
+      for(int i = 0 ; i < row.length ; i++) {
+        row[i] = value_app_force.addRow();
+      }    
+    }
+    
+    row[0].setString("variable", "movie position");
+    row[0].setFloat("value", get_movie_pos_norm());
+    saveTable(value_app_force,sketchPath(1)+"/save/value_app_force.csv");
+  }  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
 RESET
 v 0.2.0
 */
@@ -356,7 +455,7 @@ float get_alpha_bg() {
 
 
 /**
-BOOLEAN CONTROL 
+DATA CONTROL
 use to dial between the keyboard, the controller and the user
 
 
@@ -445,6 +544,47 @@ void set_vehicle_pixel_is(boolean is) {
 boolean vehicle_pixel_is() {
   return vehicle_pixel_is;
 }
+
+
+/**
+movie setting
+*/
+float get_movie_pos_norm() {
+  return movie_pos_normal ;
+}
+
+void set_movie_pos_norm(float normal_f) {
+  movie_pos_normal = normal_f;
+}
+
+float get_movie_speed() {
+  return speed_movie ;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

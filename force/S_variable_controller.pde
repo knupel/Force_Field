@@ -1,6 +1,6 @@
 /**
 variable global share with the main sketch
-v 0.0.5
+v 0.0.6
 
 In the future those values must be write in an external file to be read by the main and gui sketche
 */
@@ -29,6 +29,9 @@ boolean show_must_go_on = true;
 boolean warp_is = true; 
 boolean full_reset_field_is = false; 
 boolean vehicle_pixel_is = true; 
+
+
+int which_media;
 
 
 

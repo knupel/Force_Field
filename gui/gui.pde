@@ -28,7 +28,9 @@ void draw() {
 	background(0);
 	send_value_controller();
 	show_gui(use_leapmotion);
+	get_controller_gui();
 	if(mousePressed) update_media_list();
+	load_data_from_app_force(240, !mousePressed);
 }
 
 
@@ -42,7 +44,10 @@ void update_media_list() {
   }
 	if(medias != null) {
 		media.clear();
-		media.addItems(medias);
+		for(int i = 1 ; i < medias.length ;i++) {
+			media.addItem(medias[i],i-1);
+		}
+		// media.addItems(medias);
 	} else {
 		printErr("method update_media_list() don't find a file to update");
 	}
@@ -59,7 +64,6 @@ float ref_value_slider ;
 void send_value_controller() {
 	float current_value_slider = sum_slider();
 	if(current_value_slider != ref_value_slider || state_button_is()) {
-		println("FORCE CONTROL send new controller values", frameCount);
 		state_button(false);
 		send();
 		ref_value_slider = current_value_slider ;
