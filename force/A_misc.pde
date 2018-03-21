@@ -286,28 +286,19 @@ void keyPressed() {
   }
   
   // navigation in the media movie or picture
-  if(keyCode == UP) { 
-    which_img--;
-    // we don't use 0 to the first element of the array because this one is use for G / surface
-    // see void warp_init(int type_field, int size_cell) 
-    if(which_img < 1) which_img = warp.library_size() -1 ;
-    if(movie_warp_list != null) {
-      which_movie--;
-      if(which_movie < 0) which_movie = movie_warp_list.size() -1 ;
-    }   
+  if(keyCode == UP) {
+    which_media--;
+    if(which_media < 0) which_media = media_info.size() -1;
+    select_media_to_display(); 
   }
 
   if(keyCode == DOWN) { 
-    which_img++; 
-    // we don't use 0 to the first element of the array because this one is use for G / surface
-    // see void warp_init(int type_field, int size_cell) 
-    if(which_img >= warp.library_size()) which_img = 1 ;
-    if(movie_warp_list != null) {
-      which_movie++;
-      if(which_movie >= movie_warp_list.size()) which_movie = 0 ;
-    }    
+    which_media++;
+    if(which_media >= media_info.size()) which_media = 0 ;
+    select_media_to_display(); 
   }
 }
+
 
 
 

@@ -1,3 +1,9 @@
+/**
+APP WARP
+v 0.1.1
+*/
+
+
 Warp warp = new Warp();
 
 boolean shader_filter_is = false;
@@ -34,6 +40,8 @@ void media_end() {
     }   
   }
 }
+
+
 
 
 
@@ -86,6 +94,18 @@ void warp_change_media_folder() {
   select_folder();
   media_add(true);
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -185,13 +205,35 @@ void add_g_surface() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
 warp draw
+v 0.2.0
 */
-/*
-main method
-*/
-
 void warp_draw(int tempo, Vec4 rgba_mapped, float intensity, boolean refresh) {
   if(warp_media_is()) {
     //background_rope(0, alpha);
@@ -216,7 +258,7 @@ void warp_media_display() {
     warp.select_image(surface_g);
     update_movie_warp_interface();
     play_video(false);
-    display_movie(g);
+    display_movie(g, which_movie);
   } else {
     warp.select_image(which_img);
     play_video(false);
@@ -243,12 +285,10 @@ void warp_show(Vec4 channel_warp_rgb_mapped, float intensity_warp, boolean keep)
   }
   // refresh_warp(channel_rgba);
  // warp_post_effect_test();
- 
+
   /**
   SHADER ENGINE
   */
-
-
   //float intensity_warp = 0.9 ;
   if(!init_warp_is) {
     // here we need to have a full turn without display to charge pixel "g / surface 

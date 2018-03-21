@@ -16,6 +16,7 @@ boolean use_leapmotion = false;
 
 void setup() {
 	size(500,750,P2D);
+	surface.setLocation(30,30);
 	osc = new OscP5(this,port);
 	destination = new NetAddress("127.0.0.1",port);
 

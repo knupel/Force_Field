@@ -148,6 +148,7 @@ void send() {
 	if(show_must_go_on) message.add(1); else message.add(0);
 	if(warp_is) message.add(1); else message.add(0);
 	if(full_reset_field_is) message.add(1); else message.add(0);
+	if(vehicle_pixel_is) message.add(1); else message.add(0);
 
 	message.add(which_media);
 

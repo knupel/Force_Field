@@ -6,7 +6,7 @@ void load_data_from_app_force(int tempo, boolean authorization) {
 	if(frameCount%tempo == 0 && authorization) {
 		Table data_from_app = loadTable(sketchPath(1)+"/save/value_app_force.csv","header");
 		TableRow row = data_from_app.getRow(0);
-		gui_main_movie.getController("header_movie").setValue(row.getFloat("value"));
+		// gui_main_movie.getController("header_movie").setValue(row.getFloat("value"));
 	}
 }
 

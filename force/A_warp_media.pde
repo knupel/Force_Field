@@ -1,9 +1,13 @@
 /**
+WARP media manager
+v 0.3.0
+*/
+
+
+/**
 common method media, video and camera
 */
-// load media statement
 boolean warp_media_loaded_is ;
-
 boolean warp_media_is() {
   return warp_media_loaded_is ;
 }
@@ -15,15 +19,24 @@ void warp_media_loaded(boolean state) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 /**
 movie
 */
 import processing.video.*;
-// movie
+
 ArrayList<Movie> movie_warp_list;
 boolean play_movie_warp_is = true ;
-
-
 
 void play_movie_warp_is(boolean state) {
   play_movie_warp_is = state;
@@ -47,7 +60,7 @@ void movie_library_clear() {
     play_movie_warp_is(false);
     movie_warp_is(false);
     new_movie_is = true ;
-    if(get_movie_warp(which_movie) != null) get_movie_warp(which_movie).stop();
+    if(get_movie_warp() != null) get_movie_warp().stop();
     movie_warp_list.clear();
   }
 }
@@ -76,53 +89,52 @@ void warp_video_window_ratio(PGraphics pg, int target) {
 }
 
 int ref_movie = -1;
-void display_movie(PGraphics pg) {
-  if(movie_warp_list != null && get_movie_warp(which_movie) != null) {
-    if(ref_movie != which_movie) {
+void display_movie(PGraphics pg, int target) {
+  if(movie_warp_list != null && get_movie_warp(target) != null) {
+    if(ref_movie != target) {
       new_movie_is = true ;
-      get_movie_warp(which_movie).stop();
+      get_movie_warp(target).stop();
     }
-    warp_video_window_ratio(pg, which_movie);
-    ref_movie = which_movie ;
-    get_movie_warp(which_movie).read();
-    get_movie_warp(which_movie).loop();
+    warp_video_window_ratio(pg, target);
+    ref_movie = target ;
+    get_movie_warp(target).read();
+    get_movie_warp(target).loop();
 
     if(ratio_display_video != 1.) {
-      int w = ceil(get_movie_warp(which_movie).width *ratio_display_video);
-      int h = ceil(get_movie_warp(which_movie).height *ratio_display_video);
+      int w = ceil(get_movie_warp(target).width *ratio_display_video);
+      int h = ceil(get_movie_warp(target).height *ratio_display_video);
       float y = (pg.height /2) -(h /2);
 
-      image(get_movie_warp(which_movie),0,y,w,h);
+      image(get_movie_warp(target),0,y,w,h);
     } else {
-      image(get_movie_warp(which_movie),0,0);
+      image(get_movie_warp(target),0,0);
     }   
   } 
 }
 
 
 float speed_movie_warp_ref = 1 ;
-void update_movie_warp_interface() {
-  
+void update_movie_warp_interface() { 
   if(controller_news_is() || !external_gui_is) {
-    println("update_movie_warp_interface()",controller_news_is(), header_movie);
+   //  println("update_movie_warp_interface()",controller_news_is(), header_movie);
     if(get_movie_warp(which_movie) != null && header_movie != get_movie_pos_norm()) {
-      float header = get_movie_warp(which_movie).duration() *header_movie;
-      get_movie_warp(which_movie).jump(header);
+      float header = get_movie_warp().duration() *header_movie;
+      get_movie_warp().jump(header);
     }
   }
 
   
 
   if(get_movie_warp(which_movie) != null) {
-    float norm_pos = get_movie_warp(which_movie).time() / get_movie_warp(which_movie).duration();
+    float norm_pos = get_movie_warp().time() / get_movie_warp().duration();
     set_movie_pos_norm(norm_pos);
     if(speed_movie_warp_ref != get_movie_speed()) {
       speed_movie_warp_ref = get_movie_speed() ;
       if(speed_movie_warp_ref == 0) {
-        get_movie_warp(which_movie).pause() ;
+        get_movie_warp().pause() ;
       } else {
-        get_movie_warp(which_movie).read();
-        get_movie_warp(which_movie).speed(speed_movie_warp_ref);
+        get_movie_warp().read();
+        get_movie_warp().speed(speed_movie_warp_ref);
       }   
     }
   }
@@ -144,6 +156,22 @@ Movie get_movie_warp(int target) {
   } else return null ;
 }
 
+Movie get_movie_warp() {
+  return get_movie_warp(which_movie);
+}
+
+void select_media_to_display() {
+  Info_int i = media_info.get(which_media);
+  if(i.get_name().equals("Movie")) {
+    movie_warp_is(true);
+    which_movie = i.get(1);
+  }
+  if(i.get_name().equals("Image")) {
+    movie_warp_is(false);
+    which_img = i.get(1) +1;
+  }
+}
+
 
 
 
@@ -153,7 +181,8 @@ we don't use 0 to the first element of the array because this one is use for G /
 see void warp_init(int type_field, int size_cell) 
 */
 int which_img = 1 ;
-int which_movie = 0 ;
+
+int which_movie = 0;
 
 Info_int_dict media_info;
 int rank_media;
@@ -168,8 +197,30 @@ void reset_media_info() {
   rank_media = 0;
   rank_img = 0;
   rank_movie = 0;
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /**
@@ -239,7 +290,7 @@ void load_media_input(String... type) {
       // add video to library
       for(String s : ext_movie) {
         if(ext.equals(s)) {
-          media_info.add("Image",rank_media,rank_movie);
+          media_info.add("Movie",rank_media,rank_movie);
           rank_movie++;
           rank_media++;
           file_path("Movie",f.getAbsolutePath());

@@ -21,7 +21,7 @@ boolean controller_news_is() {
 void oscEvent(OscMessage theOscMessage) {
   news_from_controller = true;
   if(external_gui_is) {
-    // print("Message from:",theOscMessage.addrPattern(),frameCount);
+    print("Message from:",theOscMessage.addrPattern(),frameCount);
     catch_osc_data(theOscMessage.arguments());
   }
 }
@@ -53,7 +53,7 @@ void catch_osc_data(Object [] data) {
   power_cycling = (Float)data[17];
   // MOVIE
   header_movie = (Float)data[18];
-  println("catch_osc_data()",header_movie);
+  // println("catch_osc_data()",header_movie);
   speed_movie = (Float)data[19];
   // FLUID
   frequence = (Float)data[20];
@@ -96,12 +96,12 @@ void catch_osc_data(Object [] data) {
   if((int)data[53] == 0) set_warp_is(false); else set_warp_is(true);
   if((int)data[54] == 0) set_full_reset_field(false); else set_full_reset_field(true);
   if((int)data[55] == 0) set_vehicle_pixel_is(false); else  set_vehicle_pixel_is(true);
-
+  
   which_media = (int)data[56];
-  Info_int i = media_info.get(which_media);
-  if(i.get_name().equals("Movie")) which_movie = i.get(1) +1;
-  if(i.get_name().equals("Image")) which_img = i.get(1) +1;
+  select_media_to_display(); 
 }
+
+
 
 
 
