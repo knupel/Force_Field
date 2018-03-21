@@ -35,9 +35,17 @@ void draw() {
 
 
 void update_media_list() {
-	String [] medias = {"Et voila","de nouveau","media","en français"} ;
-	media.clear();
-	media.addItems(medias);
+	String[] medias = loadStrings(sketchPath(1)+"/save/path_media.txt");
+  for(int i = 0 ; i < medias.length ; i++) {
+  	String [] s = split(medias[i], "/");
+  	medias[i] = s[s.length -1];
+  }
+	if(medias != null) {
+		media.clear();
+		media.addItems(medias);
+	} else {
+		printErr("method update_media_list() don't find a file to update");
+	}
 }
 
 
