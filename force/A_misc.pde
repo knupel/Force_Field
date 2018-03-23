@@ -1,13 +1,160 @@
 /**
-MISCV
-v 0.1.0
+MISC
+v 0.3.1
 */
+/**
+info system
+*/
+String os_system ;
+void info_system() {
+  println("java Version Name:",javaVersionName);
+  os_system = System.getProperty("os.name");
+  println("os.name:",os_system);
+  println("os.version:",System.getProperty("os.version"));
+}
+
+
+
+
+
+
+/**
+MASK MAPPING
+v 0.0.1
+*/
+
+
+Mask_mapping [] masks;
+void mask_mapping(boolean change_is) {
+  if(masks == null) {
+    int h = 40;
+    iVec2 [] coord_mask_0 = {iVec2(0,0),iVec2(width,0),iVec2(width,h),iVec2(0,h)};
+    iVec2 [] coord_mask_1 = {iVec2(0,height-h),iVec2(width,height-h),iVec2(width,height),iVec2(0,height)};
+    int num_mask = 2;
+    masks = new Mask_mapping[num_mask];
+    masks[0] = new Mask_mapping(coord_mask_0);
+    masks[1] = new Mask_mapping(coord_mask_1);
+  }
+
+  fill(0);
+  noStroke();
+  masks[0].draw(change_is);
+  masks[1].draw(change_is);
+}
+
+
+
+
+
+class Mask_mapping {
+  private int num;
+  private iVec3 [] coord;
+  private boolean init;
+
+  public Mask_mapping(iVec2 [] list) {
+    this.num = list.length;
+    coord = new iVec3[num];
+    for(int i = 0 ; i < coord.length ;i++) {
+      coord[i] = iVec3(list[i].x,list[i].y,0);
+    }
+    init = true;
+  }
+  /*
+  public setup() {
+    init = true;
+  }
+  */
+
+
+  public void draw(boolean modify_is) {
+    if(init) {
+      draw_shape(coord);
+      if(modify_is)move_point(coord);
+    } else {
+      printErr("class Mask_mapping(), must be iniatilized with an array list iVec2 [] coord)");
+    }
+
+  }
+
+  private boolean drag_is = false ;
+  private void move_point(iVec3 [] list) {
+    if(!drag_is) {
+      for(iVec3 iv : list) {
+        iVec2 drag = iVec2(mouseX,mouseY);
+        iVec2 area = iVec2(10);
+        if(inside(drag,area,iVec2(iv.x,iv.y)) && iv.z == 0) {
+          if(mousePressed) {
+            iv.set(iv.x,iv.y,1);
+            drag_is = true ;
+          }
+        }
+      }
+    }
+    
+    for(iVec3 iv : list) {
+      if(iv.z == 1) iv.set(mouseX,mouseY,1);
+    }
+
+    if(!mousePressed) {
+      drag_is = false;
+      for(iVec3 iv : list) {
+        iv.set(iv.x,iv.y,0);
+      }
+    }
+  }
+
+  private void draw_shape(iVec3 [] list) {
+    beginShape();
+    for(int i = 0 ; i < list.length ; i++) {
+      vertex(list[i]);
+    }
+    endShape(CLOSE);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
 SAVE / LOAD
 v 0.0.1
 */
-
 /**
 * local method
 */
@@ -167,48 +314,49 @@ void global_reset(int type, int pattern, int super_type, int resolution) {
     }
   }
   if(super_type == r.DYNAMIC){
-    update_gui_value(true,time_count_ff);
+    // update_gui_value(true,time_count_ff);
   }
   // 
 }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
-info system
-*/
-String os_system ;
-void info_system() {
-  println("java Version Name:",javaVersionName);
-  os_system = System.getProperty("os.name");
-  println("os.name:",os_system);
-  println("os.version:",System.getProperty("os.version"));
+void reset_mode() {
+  for(int i = 0 ; i < mode.length ; i++) {
+    mode[i] = false;
+  }
 }
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
-
-
 
 
 
@@ -230,9 +378,11 @@ void info_system() {
 KEYPRESSED
 */
 void keyPressed() {
+  news_from_gui = true;
   keys[keyCode] = true;
   
-  keypressed_add_media() ;
+  key_pressed_add_media() ;
+
   /**
   if(key == 'a')
   that control with advenced method see below
@@ -278,8 +428,8 @@ void keyPressed() {
     if(shader_filter_is) shader_filter_is = false ; else shader_filter_is = true ;
   }
 
-  if(key == 'w') next_mode_ff(-1);
-  if(key == 'x') next_mode_ff(+1);
+  key_pressed_change_mode();
+
 
   if(key == ' ') {
     if(pause_is) pause_is = false ; else pause_is = true ;
@@ -303,9 +453,26 @@ void keyPressed() {
 
 
 
+void key_pressed_change_mode() {
+  if(key == 'w') next_mode_ff(-1);
+  if(key == 'x') next_mode_ff(+1);
+
+  char [] key_num = {'1','2','3','4','5','6','7','8','9','0'};
+  
+  for(int i = 0 ; i < num_mode ; i++) {
+    if(key == key_num[i]) {
+      reset_mode();
+      mode[i] = true;
+    }
+  }
+}
 
 
-void keypressed_add_media() {
+
+
+
+
+void key_pressed_add_media() {
   if(os_system.equals("Mac OS X")) {
     add_media_folder(157, SHIFT, KeyEvent.VK_Q); // Q for A I don't how map AZERTY layout keyboard
     add_media_file(157, SHIFT, KeyEvent.VK_Q); // Q for A I don't how map AZERTY layout keyboard
@@ -362,9 +529,7 @@ void replace_media_file(int a, int b, int c) {
 
 
 
-/*
-key event
-*/
+// key event
 import java.awt.event.KeyEvent;
 boolean[] keys = new boolean[526];
 

@@ -1,8 +1,7 @@
 /**
 WARP media manager
-v 0.3.0
+v 0.3.1
 */
-
 
 /**
 common method media, video and camera
@@ -32,9 +31,9 @@ void warp_media_loaded(boolean state) {
 
 /**
 movie
+v 0.1.0
 */
 import processing.video.*;
-
 ArrayList<Movie> movie_warp_list;
 boolean play_movie_warp_is = true ;
 
@@ -115,15 +114,13 @@ void display_movie(PGraphics pg, int target) {
 
 float speed_movie_warp_ref = 1 ;
 void update_movie_warp_interface() { 
-  if(controller_news_is() || !external_gui_is) {
+  if(gui_news_is() || !external_gui_is) {
    //  println("update_movie_warp_interface()",controller_news_is(), header_movie);
     if(get_movie_warp(which_movie) != null && header_movie != get_movie_pos_norm()) {
       float header = get_movie_warp().duration() *header_movie;
       get_movie_warp().jump(header);
     }
   }
-
-  
 
   if(get_movie_warp(which_movie) != null) {
     float norm_pos = get_movie_warp().time() / get_movie_warp().duration();
@@ -162,14 +159,16 @@ Movie get_movie_warp() {
 
 void select_media_to_display() {
   Info_int i = media_info.get(which_media);
-  if(i.get_name().equals("Movie")) {
-    movie_warp_is(true);
-    which_movie = i.get(1);
-  }
-  if(i.get_name().equals("Image")) {
-    movie_warp_is(false);
-    which_img = i.get(1) +1;
-  }
+  if(i !=null) {
+    if(i.get_name().equals("Movie")) {
+      movie_warp_is(true);
+      which_movie = i.get(1);
+    }
+    if(i.get_name().equals("Image")) {
+      movie_warp_is(false);
+      which_img = i.get(1) +1;
+    }
+  } 
 }
 
 
@@ -181,9 +180,7 @@ we don't use 0 to the first element of the array because this one is use for G /
 see void warp_init(int type_field, int size_cell) 
 */
 int which_img = 1 ;
-
 int which_movie = 0;
-
 Info_int_dict media_info;
 int rank_media;
 int rank_img;
@@ -342,7 +339,6 @@ video
 */
 Capture video;
 iVec2 video_size ;
-
 void init_video(int w, int h, int which_cam) {
   if(video == null ) {
     // printArray(Capture.list());
@@ -351,7 +347,6 @@ void init_video(int w, int h, int which_cam) {
     video_size = iVec2(width,height);
   } 
 }
-
 
 void display_video() {
   if (video_warp_is()) {
@@ -424,19 +419,16 @@ boolean video_available() {
   if(video != null) {
     return video.available();
   } else return false;
-  
 }
 
 void play_video(boolean play) {
   video_play_is = play ;
 }
 
-
 boolean video_play_is = false;
 void play_video_switch() {
   if(video_play_is) video_play_is = false ; else video_play_is = true ;
 }
-
 
 boolean video_warp_is() {
   return video_play_is;

@@ -223,7 +223,7 @@ void draw() {
   interface gui
   */
   if(!external_gui_is) get_controller_gui();
-  update_gui_value(false, time_count_ff);
+  if(gui_news_is()) update_gui_value(false, time_count_ff);
   interface_display(use_leapmotion, force_field);
 
   if(!ff_is()) {
@@ -250,6 +250,10 @@ void draw() {
     global_reset();
     reset_authorization_from_gui = false ;
   }
+
+
+
+  mask_mapping(false);
 }
 
 

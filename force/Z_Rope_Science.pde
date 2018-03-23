@@ -2,14 +2,23 @@
 ROPE - Romanesco processing environment – 
 * Copyleft (c) 2014-2017 
 * Stan le Punk > http://stanlepunk.xyz/
-Rope SCIENCE 2016 – 2017
-v 0.1.1
+Rope SCIENCE 2016 – 2018
+v 0.2.0
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Rope
 *
 the sketch method tab is not included on this repository if you need
 * @see https://github.com/StanLepunK/Old_code/tree/master/Science_rope_2017_12_8
 */
+
+
+
+
+
+
+
+
+
 
 /**
 Physique Rope
@@ -45,7 +54,7 @@ float decimale (float var, int n) {
 
 /**
 geometry util
-v. 0.0.4.0
+v. 0.0.5
 */
 float perimeter_disc(int r) {
   return 2 *r *PI ;
@@ -56,8 +65,12 @@ float radius_from_circle_surface(int surface) {
 }
 
 
+boolean inside(iVec2 pos, iVec2 size, iVec2 target_pos) {
+  return inside(Vec2(pos), Vec2(size), Vec2(target_pos), ELLIPSE);
+}
+
 boolean inside(Vec2 pos, Vec2 size, Vec2 target_pos) {
-  return inside(pos, size, target_pos, RECT);
+  return inside(pos, size, target_pos, ELLIPSE);
 }
 
 boolean inside(Vec2 pos, Vec2 size, Vec2 target_pos, int type) {
@@ -1296,38 +1309,3 @@ void addVerts(float x, float y, float z) {
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

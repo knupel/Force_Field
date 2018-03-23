@@ -1,18 +1,12 @@
 /**
 APP WARP
-v 0.1.1
+v 0.1.2
 */
-
-
 Warp warp = new Warp();
-
 boolean shader_filter_is = false;
 boolean init_warp_is = false;
 String surface_g = "";
 int ref_warp_w, ref_warp_h ;
-
-
-
 void warp_setup() {
   set_size_ref(width, height);
   surface_g = "surface g";
@@ -24,9 +18,6 @@ void warp_setup() {
 
 /**
  Media add, change folder or file
-*/
-/*
-file part
 */
 void media_end() {
   if(media_add_is() || media_path_save_is()) {
@@ -40,13 +31,6 @@ void media_end() {
     }   
   }
 }
-
-
-
-
-
-
-
 
 // file part
 void warp_add_media_input() {
@@ -70,7 +54,6 @@ void warp_change_media_input() {
   select_input();
   media_add(true);
 }
-
 
 // folder part
 void warp_add_media_folder() {
@@ -123,8 +106,6 @@ void warp_init(int type_f, int pattern_f, int size_cell, int which_cam, boolean 
   }
 }
 
-
-
 boolean init_video_is = false ;
 void warp_init_video(int type_f, int pattern_f, int size_cell, int which_cam) {
   init_video(width,height, which_cam);
@@ -136,7 +117,6 @@ void warp_init_video(int type_f, int pattern_f, int size_cell, int which_cam) {
     warp_media_loaded(true);
   } 
 }
-
 
 void warp_init_media(int type_f, int pattern_f,  int size_cell, boolean change_canvas_is, boolean fullfit) {
   if(folder_selected_is()) {
@@ -184,9 +164,8 @@ void warp_init_media(int type_f, int pattern_f,  int size_cell, boolean change_c
   }
 }
 
-/*
-local method
-*/
+
+// local method
 void add_g_surface() {
   if(warp.library() != null && warp.library_size() > 0 ) {
     if(warp.get_name(0).equals(surface_g)) {
@@ -232,7 +211,7 @@ void add_g_surface() {
 
 /**
 warp draw
-v 0.2.0
+v 0.2.1
 */
 void warp_draw(int tempo, Vec4 rgba_mapped, float intensity, boolean refresh) {
   if(warp_media_is()) {
@@ -246,9 +225,7 @@ void warp_draw(int tempo, Vec4 rgba_mapped, float intensity, boolean refresh) {
   init_warp_is = false ;
 }
 
-/*
-follower method
-*/
+// follower method
 void warp_media_display() {
   if (video_warp_is()) {
     movie_warp_is(false);
@@ -268,9 +245,6 @@ void warp_media_display() {
 
 Vec4 ref_rgba_mapped ;
 void warp_show(Vec4 channel_warp_rgb_mapped, float intensity_warp, boolean keep) {
-  /**
-  SHOW IMAGE WARPED via FORCE FIELD
-  */
   boolean new_gui_value = false ;
   if(ref_rgba_mapped == null || !ref_rgba_mapped.compare(channel_warp_rgb_mapped)) {
     new_gui_value = true;
@@ -283,15 +257,16 @@ void warp_show(Vec4 channel_warp_rgb_mapped, float intensity_warp, boolean keep)
     warp.shader_filter(shader_filter_is);
     warp.shader_mode(0);
   }
-  // refresh_warp(channel_rgba);
- // warp_post_effect_test();
-
   /**
-  SHADER ENGINE
+  * A TESTER
+  refresh_warp(channel_rgba);
+  warp_post_effect_test();
   */
-  //float intensity_warp = 0.9 ;
+
+
+  // SHADER ENGINE
   if(!init_warp_is) {
-    // here we need to have a full turn without display to charge pixel "g / surface 
+    // here we need a full round without display to charge pixel "g / surface 
     warp.show(intensity_warp);
   }
 }

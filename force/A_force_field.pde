@@ -53,16 +53,21 @@ int mode_ff = 0 ;
 int ref_mode_ff ;
 void next_mode_ff(int step) {
   mode_ff += step;
-  
+  println("après",mode_ff, step, num_mode);
   if(mode_ff >= num_mode) mode_ff = 0 ;
   if(mode_ff < 0) mode_ff = num_mode; 
+  println("mode after compute", mode_ff);
   mode_ff();
 }
 
 void set_mode_ff(int target) {
-  if(target < 0) target = 0 ;
-  if(target >= num_mode) target = 6 ;
   mode_ff = target;
+  if(mode_ff < 0) {
+    mode_ff = 0 ;
+  }
+  if(mode_ff >= num_mode) { 
+    mode_ff = num_mode -1 ;
+  }
   if(ref_mode_ff != mode_ff) {
     mode_ff();
     ref_mode_ff = mode_ff;
@@ -79,7 +84,7 @@ void mode_ff() {
   } else if(mode_ff == 2) {
     type_field = r.STATIC; 
     pattern_field = r.EQUATION; 
-  }  else if(mode_ff == 3) {
+  } else if(mode_ff == 3) {
     if(warp.library() != null && warp.library_size() > 0) {
       type_field = r.STATIC; 
       pattern_field = IMAGE ;
@@ -178,7 +183,7 @@ int get_size_cell_ff() {
 
 /**
 BUILD
-v 0.1.0
+v 0.2.0
 */
 /** 
 add spot
@@ -231,19 +236,16 @@ void build_ff(int type_ff, int pattern_ff, int resolution, PImage src, int... so
     canvas_pos = iVec2(0 -offset/2);
   }
 
-  if(type_ff == r.GRAVITY) {
+  if(enought_spots() && type_ff == r.GRAVITY) {
     build_ff_gravity(resolution, canvas_pos, canvas);
-    check_for_available_spot();
-  } else if (type_ff == r.MAGNETIC) {
+  } else if (enought_spots() && type_ff == r.MAGNETIC) {
     build_ff_magnetic(resolution, canvas_pos, canvas);
-    check_for_available_spot();
-  } else if (type_ff == r.FLUID) {
+  } else if (enought_spots() && type_ff == r.FLUID) {
     build_ff_fluid(resolution, canvas_pos, canvas);
     // default fluid value
     freq_ff = 2/frameRate;
     visc_ff = .001;;
-    diff_ff = 1.;   
-    check_for_available_spot();
+    diff_ff = 1.;  
   } else if(pattern_ff == IMAGE) {
     if(src != null && src.pixels != null) {
         build_ff_img(resolution, canvas_pos, src, sorting_channel);
@@ -261,11 +263,18 @@ void build_ff(int type_ff, int pattern_ff, int resolution, PImage src, int... so
 
 
 // warning
-void check_for_available_spot() {
-  if(force_field.get_spot_num() < 1 ) {
+boolean enought_spots() {
+  if(get_num_spot_gui() < 1 ) {
+  // if(force_field.get_spot_num() < 1 ) {
     printErr("void build_force_field() There is no spot added for your force Field, this force field need one to work") ;
-  }
+    return false;
+  } else return true ;
 }
+
+
+
+
+
 /**
 Different mode to build force field
 v 0.0.2
@@ -274,12 +283,6 @@ v 0.0.2
 void build_ff_classic(int type_force_field, int pattern_force_field, int resolution, iVec2 canvas_pos, iVec2 canvas) {
   force_field = new Force_field(resolution, canvas_pos, canvas, type_force_field, pattern_force_field);
   force_field_init_is = true ;
-}
-
-// buid force field FLUID
-void build_ff_fluid(int resolution, iVec2 canvas_pos, iVec2 canvas) {
-  force_field = new Force_field(resolution, canvas_pos, canvas, r.FLUID, r.BLANK);
-  force_field_init_is = true ;  
 }
 
 // build force field image source to generate the vector field
@@ -299,6 +302,12 @@ void build_ff_magnetic(int resolution, iVec2 canvas_pos, iVec2 canvas) {
   force_field = new Force_field(resolution, canvas_pos, canvas, r.MAGNETIC, r.BLANK);
   // Force_field(int resolution, iVec2 canvas_pos, iVec2 canvas, int type, int pattern)
   force_field_init_is = true ;
+}
+
+// buid force field FLUID
+void build_ff_fluid(int resolution, iVec2 canvas_pos, iVec2 canvas) {
+  force_field = new Force_field(resolution, canvas_pos, canvas, r.FLUID, r.BLANK);
+  force_field_init_is = true ;  
 }
 
 
