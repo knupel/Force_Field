@@ -85,6 +85,8 @@ void send_button() {
 
 void send() {
 	OscMessage message = new OscMessage("FORCE CONTROL");
+	// GUI STATE
+	//message.add(gui_is());
 	// BACKGROUND
 	message.add(alpha_bg);
 	// VECTOR FIELD

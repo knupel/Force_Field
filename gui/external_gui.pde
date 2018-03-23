@@ -57,8 +57,6 @@ int col_2_x = 150 ;
 /**
 setup
 */
-
-
 void gui_setup(Vec2 pos, Vec2 size) {
 	// this variable is used in internal GUI
 	set_internal_boolean();
@@ -73,26 +71,23 @@ void gui_setup(Vec2 pos, Vec2 size) {
 	space_interface = 15;
 	int max = 1;
   
-
   gui_mode();
   gui_button(space_interface, slider_width, 3, TOP);
   // main
   gui_main(space_interface, max, slider_width, 3, TOP);
-
   gui_main_movie(space_interface, max, slider_width, 2, BOTTOM);
-  
   // menu static field
   gui_static_generative(space_interface, max, slider_width, 29.5, TOP);
   gui_static_image(space_interface, max, slider_width, 33, TOP);
-
   // menu dynamic field
   gui_dynamic_fluid(space_interface, max, slider_width, 29.5, TOP);
   // gui_dynamic_mag_grav(space_interface, max, slider_width, 29.5, TOP);
-
   gui_dynamic_spot(space_interface, max, slider_width, 33, TOP);
-
   // vehicle
   gui_vehicle(space_interface, max, slider_width, 41.5, TOP);
+
+
+
   
   // boolean to give authorization to update controller
   gui_init_controller = true;
@@ -447,6 +442,31 @@ public void controlEvent(ControlEvent theEvent) {
 }
 
 
+/**
+I cannot manage the call back to work with a specific slider or button,
+it only work with all GUI :(
+*/
+/*
+public void controlEvent(CallbackEvent theEvent) {
+	// if(theEvent.getAction() == ControlP5.ACTION_ENTER) {
+	//	if(gui_main_movie.getController("header_movie").getAction() == ControlP5.ACTION_ENTER) {
+	//	println(theEvent.getController().equals(gui_main_movie));
+	if(theEvent.getController().equals("header_movie")) {
+			gui_is = 1 ;
+	} else if(theEvent.getAction() == ControlP5.ACTION_LEAVE) {
+		gui_is = 0;
+	}
+	
+}
+int gui_is ;
+int gui_is() {
+	return gui_is ;
+}
+*/
+
+
+
+
 
 /**
 set controller
@@ -487,8 +507,9 @@ void set_check_gui_dynamic_mag_grav(boolean state) {
 get controller
 */
 void get_controller_gui() {
-	// get_controller_movie();
+	// 
 	get_controller_main();
+	//get_controller_movie();
 }
 
 float ref_power_cycling;
@@ -506,13 +527,14 @@ void get_controller_main() {
 	}
 }
 
-/*
+
 float movie_pos_normal ;
 void get_controller_movie() {
-	gui_main_movie.getController("header_movie").setValue(movie_pos_normal);
-	gui_main_movie.getController("speed_movie");
+	gui_main_movie.getController("header_movie");
+	// gui_main_movie.getController("header_movie").setValue(movie_pos_normal);
+	//gui_main_movie.getController("speed_movie");
 }
-*/
+
 
 
 

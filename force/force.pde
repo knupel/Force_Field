@@ -223,7 +223,7 @@ void draw() {
   interface gui
   */
   if(!external_gui_is) get_controller_gui();
-  if(gui_news_is()) update_gui_value(false, time_count_ff);
+  if(gui_news_is() || gui_news_ext_is()) update_gui_value(false, time_count_ff);
   interface_display(use_leapmotion, force_field);
 
   if(!ff_is()) {
@@ -253,7 +253,7 @@ void draw() {
 
 
 
-  mask_mapping(false);
+  mask_mapping(set_mask_is());
 }
 
 

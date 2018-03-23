@@ -8,6 +8,11 @@ boolean gui_news_is() {
   return news_from_gui;
 }
 
+boolean news_from_gui_ext;
+boolean gui_news_ext_is() {
+  return news_from_gui_ext;
+}
+
 
 
 /**
@@ -64,7 +69,8 @@ void update_gui_value(boolean update_is, int t_count) {
     println("temp mode", temp_mode, frameCount);
     if(temp_mode != -1) set_mode_ff(temp_mode);  
   }
-  news_from_gui = false; 
+  news_from_gui = false;
+  news_from_gui_ext = false; 
 }
 
 void update_rgb_vehicle() {
@@ -285,6 +291,7 @@ void osc_setup() {
 
 void oscEvent(OscMessage theOscMessage) {
   news_from_gui = true;
+  news_from_gui_ext = true ;
   if(external_gui_is) {
     catch_osc_data(theOscMessage.arguments());
   }

@@ -36,8 +36,6 @@ void mask_mapping(boolean change_is) {
     masks[1] = new Mask_mapping(coord_mask_1);
   }
 
-  fill(0);
-  noStroke();
   masks[0].draw(change_is);
   masks[1].draw(change_is);
 }
@@ -46,10 +44,12 @@ void mask_mapping(boolean change_is) {
 
 
 
-class Mask_mapping {
+public class Mask_mapping {
   private int num;
   private iVec3 [] coord;
   private boolean init;
+  private int c = r.BLACK;
+  private int range = 10;
 
   public Mask_mapping(iVec2 [] list) {
     this.num = list.length;
@@ -64,28 +64,53 @@ class Mask_mapping {
     init = true;
   }
   */
+  public void set_fill(int c) {
+    this.c = c;
+  }
+
 
 
   public void draw(boolean modify_is) {
     if(init) {
+      if(modify_is) {
+        fill(r.RED);
+      } else {
+        fill(c);
+      }
+      noStroke();
       draw_shape(coord);
-      if(modify_is)move_point(coord);
+      if(modify_is) {
+        show_point(coord);
+        move_point(coord);
+      }
     } else {
       printErr("class Mask_mapping(), must be iniatilized with an array list iVec2 [] coord)");
     }
-
   }
-
+  private void show_point(iVec3 [] list) {
+    for(iVec3 iv : list) {
+      // fill(255);
+      stroke(r.WHITE);
+      strokeWeight(range);
+      point(iv);
+    }
+  }
   private boolean drag_is = false ;
   private void move_point(iVec3 [] list) {
     if(!drag_is) {
       for(iVec3 iv : list) {
         iVec2 drag = iVec2(mouseX,mouseY);
-        iVec2 area = iVec2(10);
+        iVec2 area = iVec2(range);
         if(inside(drag,area,iVec2(iv.x,iv.y)) && iv.z == 0) {
           if(mousePressed) {
             iv.set(iv.x,iv.y,1);
             drag_is = true ;
+          } else {
+            // border magnetism
+            if(iv.x < 0 + range) iv.x = 0 ;
+            if(iv.x > width -range) iv.x = width;
+            if(iv.y < 0 + range) iv.y = 0 ;
+            if(iv.y > height -range) iv.y = height;
           }
         }
       }
@@ -215,6 +240,7 @@ void save_value_app_too_controller(int tempo) {
     
     row[0].setString("variable", "movie position");
     row[0].setFloat("value", get_movie_pos_norm());
+    // println()
     saveTable(value_app_force,sketchPath(1)+"/save/value_app_force.csv");
   }  
 }
@@ -313,10 +339,12 @@ void global_reset(int type, int pattern, int super_type, int resolution) {
 
     }
   }
+  /*
+  the method line cause a bug with dynamic mode when this one is refresh from selected mode by target, keyboard or external GUI
   if(super_type == r.DYNAMIC){
-    // update_gui_value(true,time_count_ff);
+    update_gui_value(true,time_count_ff);
   }
-  // 
+  */
 }
 
 
@@ -412,13 +440,14 @@ void keyPressed() {
 
   if(key == 'l') change_cursor_controller();
 
+  if(key == 'm') set_mask();
+
   if(key == 'p') {
     println("export jpg");
     saveFrame();   
   }
 
   if(key == 'r') {
-    // mode_ff();
     global_reset();
   }
 
@@ -577,13 +606,10 @@ void set_alpha_vehicle(float norm_f){
   a_vehicle = set_alpha(norm_f);
 }
 
-
 float set_alpha(float norm_f) {
   float mult_f = norm_f *norm_f ;
   return map(mult_f,0,1,0.,g.colorModeA);
 }
-
-
 
 float get_alpha_warp() {
   return a_warp;
@@ -619,6 +645,15 @@ the mess
 
 
 */
+boolean set_mask_is;
+void set_mask() {
+  set_mask_is = !!((set_mask_is == false));
+}
+
+boolean set_mask_is() {
+  return set_mask_is;
+}
+
 /**
 display
 */
@@ -994,7 +1029,6 @@ boolean display_field = false;
 boolean display_grid = false;
 boolean display_spot = false;
 boolean display_info = false ;
-
 void set_info(boolean display_info) {
   this.display_info = display_info;
   if(display_info) {
@@ -1046,8 +1080,8 @@ save jpg
 void save_frame_jpg(float compression) {
   String filename = "image_" +year()+"_"+month()+"_"+day()+"_"+hour() + "_" +minute() + "_" + second() + ".jpg" ; 
  // String path = sketchPath()+"/bmp/";
-  String path = sketchPath();
-  path += "/jpg" ;
+  String path = sketchPath(1) +"/screenshot";
+  // path += "/screenshot";
   // saveFrame(path, filename, compression, get_canvas());
   saveFrame(path, filename, compression);
 }

@@ -114,8 +114,7 @@ void display_movie(PGraphics pg, int target) {
 
 float speed_movie_warp_ref = 1 ;
 void update_movie_warp_interface() { 
-  if(gui_news_is() || !external_gui_is) {
-   //  println("update_movie_warp_interface()",controller_news_is(), header_movie);
+  if(gui_news_ext_is() || !external_gui_is) {
     if(get_movie_warp(which_movie) != null && header_movie != get_movie_pos_norm()) {
       float header = get_movie_warp().duration() *header_movie;
       get_movie_warp().jump(header);
