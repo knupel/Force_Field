@@ -1,6 +1,6 @@
 /**
 variable global share with the main sketch
-v 0.0.6
+v 0.0.7
 
 In the future those values must be write in an external file to be read by the main and gui sketche
 */
@@ -20,8 +20,10 @@ boolean [] mode = new boolean[num_mode];
 boolean mode_perlin, mode_chaos, mode_equation, mode_image, mode_gravity, mode_magnetic, mode_fluid ;
 
 boolean display_background = true; 
-boolean display_warp = false;
 boolean display_vehicle = false;
+boolean display_warp = false;
+boolean display_field = false;
+boolean display_spot = false;
 
 boolean change_size_window_is = false; 
 boolean fullfit_image_is = true;
@@ -29,7 +31,6 @@ boolean show_must_go_on = true;
 boolean warp_is = true; 
 boolean full_reset_field_is = false; 
 boolean vehicle_pixel_is = true; 
-
 
 int which_media;
 

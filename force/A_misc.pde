@@ -11,6 +11,7 @@ void info_system() {
   os_system = System.getProperty("os.name");
   println("os.name:",os_system);
   println("os.version:",System.getProperty("os.version"));
+  println("force.version:",force_version);
 }
 
 
@@ -654,11 +655,76 @@ boolean set_mask_is() {
   return set_mask_is;
 }
 
+
+
+
+
+
+
 /**
 display
 */
+void display_info() {
+  display_info = !display_info ;
+  set_info(display_info) ;
+}
+
+
+void display_grid() {
+  display_grid = !display_grid;
+  if(!display_grid) display_info = false ;
+}
+
+/**
+display field
+*/
 /*
-* display vehilcle
+void display_spot(){
+  display_spot = !display_spot;
+  if(!display_spot) display_info = false ;
+}
+*/
+boolean display_spot_is() {
+  return display_spot;
+}
+
+void display_spot(boolean is) {
+  display_spot = is;
+}
+
+// method to set the gui back
+void display_spot() {
+  display_spot = !!((display_spot == false));
+  //if(display_field_is() && !external_gui_is) set_check_gui_main_display(display_field_is());
+  if(!display_spot) display_info = false ;
+}
+
+/**
+display field
+*/
+/*
+void display_field(){
+  display_field = !display_field;
+  if(!display_field) display_info = false ;
+}
+*/
+boolean display_field_is() {
+  return display_field;
+}
+
+void display_field(boolean is) {
+  display_field = is;
+}
+
+// method to set the gui back
+void display_field() {
+  display_field = !!((display_field == false));
+  //if(display_field_is() && !external_gui_is) set_check_gui_main_display(display_field_is());
+  if(!display_field) display_info = false ;
+}
+
+/**
+display vehilcle
 */
 boolean display_vehicle_is() {
   return display_vehicle ;
@@ -674,8 +740,9 @@ void display_vehicle() {
   if(display_vehicle_is() && !external_gui_is) set_check_gui_main_display(display_background_is());
 }
 
-/*
-* display warp
+
+/**
+display warp
 */
 boolean display_warp_is() {
   return display_warp ;
@@ -691,8 +758,9 @@ void display_warp() {
   if(display_warp_is() && !external_gui_is) set_check_gui_main_display(display_background_is());
 }
 
-/*
-* display result
+
+/**
+display background
 */
 void display_background(boolean is) {
   display_background = is;
@@ -1027,9 +1095,9 @@ void show_pole(Vec2 pos) {
 /**
 info
 */
-boolean display_field = false;
+// boolean display_field = false;
 boolean display_grid = false;
-boolean display_spot = false;
+//boolean display_spot = false;
 boolean display_info = false ;
 void set_info(boolean display_info) {
   this.display_info = display_info;
@@ -1046,25 +1114,7 @@ void set_info(boolean display_info) {
 
 
 
-void display_info() {
-  display_info = !display_info ;
-  set_info(display_info) ;
-}
 
-void display_spot(){
-  display_spot = !display_spot;
-  if(!display_spot) display_info = false ;
-}
-
-void display_field(){
-  display_field = !display_field;
-  if(!display_field) display_info = false ;
-}
-
-void display_grid() {
-  display_grid = !display_grid;
-  if(!display_grid) display_info = false ;
-}
 
 
 

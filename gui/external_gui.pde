@@ -122,13 +122,15 @@ void gui_mode() {
 
 
 void gui_button(int space, int w, float pos_x, float pos_y, int from) {
-	String [] method_name = {"bool_background", "bool_vehicle", "bool_image"};
-	String [] label = {"background", "vehicle", "image"};
+	String [] method_name = {"bool_background", "bool_vehicle", "bool_warp", "bool_field", "bool_spot"};
+	String [] label = {"background", "vehicle", "warp", "force field", "spot"};
 	int w_button = width /(label.length +2);
 	// bar
 	gui_button.addToggle(method_name[0]).setLabel(label[0]).setPosition(w_button*0,16).setSize(w_button,15).setColor(red_gui).getCaptionLabel().align(CENTER,CENTER);
 	gui_button.addToggle(method_name[1]).setLabel(label[1]).setPosition(w_button*1,16).setSize(w_button,15).setColor(red_gui).getCaptionLabel().align(CENTER,CENTER);
 	gui_button.addToggle(method_name[2]).setLabel(label[2]).setPosition(w_button*2,16).setSize(w_button,15).setColor(red_gui).getCaptionLabel().align(CENTER,CENTER);
+	gui_button.addToggle(method_name[3]).setLabel(label[3]).setPosition(w_button*3,16).setSize(w_button,15).setColor(red_gui).getCaptionLabel().align(CENTER,CENTER);
+	gui_button.addToggle(method_name[4]).setLabel(label[4]).setPosition(w_button*4,16).setSize(w_button,15).setColor(red_gui).getCaptionLabel().align(CENTER,CENTER);
 
 	// dropdown
 	String [] medias = {"List empty","load items","from the","main sketch"} ;
@@ -166,9 +168,19 @@ void bool_vehicle(boolean state) {
 	display_vehicle = state ;
 }
 
-void bool_image(boolean state) {
+void bool_warp(boolean state) {
 	state_button(true);
 	display_warp = state ;
+}
+
+void bool_field(boolean state) {
+	state_button(true);
+	display_field = state ;
+}
+
+void bool_spot(boolean state) {
+	state_button(true);
+	display_spot = state ;
 }
 
 void mode(int n) {

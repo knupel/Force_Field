@@ -4,7 +4,6 @@ FORCE
 2017-2018
 by Stan le Punk
 http://stanlepunk.xyz/
-v 0.3.1
 Processing 3.3.7
 */
 /**
@@ -19,6 +18,7 @@ Via Reynolds: http://www.red3d.com/cwr/steer/FlowFollow.html
 
 Stable fluids from Jos Stam's work on the Navier-Stokes equation
 */
+String force_version = "0.3.2";
 boolean external_gui_is = true;
 
 boolean use_leapmotion = false;
@@ -114,8 +114,10 @@ boolean first_draw_round;
 void draw() {
   if(first_draw_round) {
     super_draw();
+  } else {
+    background(0);
+    first_draw_round = true;
   }
-  first_draw_round = true;
 }
 
 void super_draw() {

@@ -358,15 +358,17 @@ void catch_osc_data(Object [] data) {
   if((int)data[47] == 0) display_background(false); else display_background(true);
   if((int)data[48] == 0) display_vehicle(false); else display_vehicle(true);
   if((int)data[49] == 0) display_warp(false); else display_warp(true);
+  if((int)data[50] == 0) display_field(false); else display_field(true);
+  if((int)data[51] == 0) display_spot(false); else display_spot(true);
 
-  if((int)data[50] == 0) set_resize_window(false); else set_resize_window(true);
-  if((int)data[51] == 0) set_fit_image(false); else set_fit_image(true);
-  if((int)data[52] == 0) show_must_go_on(false); else show_must_go_on(true);
-  if((int)data[53] == 0) set_warp_is(false); else set_warp_is(true);
-  if((int)data[54] == 0) set_full_reset_field(false); else set_full_reset_field(true);
-  if((int)data[55] == 0) set_vehicle_pixel_is(false); else  set_vehicle_pixel_is(true);
+  if((int)data[52] == 0) set_resize_window(false); else set_resize_window(true);
+  if((int)data[53] == 0) set_fit_image(false); else set_fit_image(true);
+  if((int)data[54] == 0) show_must_go_on(false); else show_must_go_on(true);
+  if((int)data[55] == 0) set_warp_is(false); else set_warp_is(true);
+  if((int)data[56] == 0) set_full_reset_field(false); else set_full_reset_field(true);
+  if((int)data[57] == 0) set_vehicle_pixel_is(false); else  set_vehicle_pixel_is(true);
   
-  which_media = (int)data[56];
+  which_media = (int)data[58];
   select_media_to_display(); 
 }
 
