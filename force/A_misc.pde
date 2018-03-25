@@ -848,7 +848,9 @@ void set_warp_is(boolean state) {
 /**
 cursor manager
 */
-void cursor_manager(boolean display) {
+void cursor_manager() {
+  boolean display = false;
+  if(set_mask_is() || interface_is()) display = true;
   if(display) {
     cursor(CROSS);
   } else {

@@ -28,6 +28,9 @@ key i
 key l 
 > FORCE FIELD: swith between mouse and leap motion
 
+key m 
+> APP : switch on/off the mask mapping
+
 key n 
 >WARP : load a new media library
 

@@ -1,5 +1,6 @@
 /**
-set interface
+INTERFACE
+v 0.2.0
 */
 Vec2 pos_gui ;
 Vec2 size_gui ;
@@ -11,44 +12,21 @@ void set_interface(Vec2 pos, Vec2 size) {
 
 
 
-
-
-
-/**
-util method
-*/
-float pos_slider_y(int space, float start_pos, int from) {
-	float pos_y = 0 ;
-	if(from == BOTTOM || from == DOWN) {
-		pos_y = height -(space *start_pos);
+void interface_display(boolean mouse_is, Force_field ff) {
+	size_gui.set(size_gui.x, height);
+	if(!interface_is()) { 
+		if(!external_gui_is) hide_all_gui();
 	} else {
-		pos_y = space *start_pos;
+		background_interface();
+		instruction();
+		if(!external_gui_is) show_gui(mouse_is, ff);
+		show_info(ff);
 	}
-	return pos_y ;
 }
 
 
 
 
-void hide_interface() {
-	if(interface_is) interface_is = false ; else interface_is = true;
-}
-
-boolean interface_is() {
-	return interface_is ;
-}
-
-
-/**
-get
-*/
-Vec2 get_pos_interface() {
-	return pos_gui;
-}
-
-Vec2 get_size_interface() {
-	return size_gui;
-}
 
 
 
@@ -67,7 +45,7 @@ void background_interface() {
 	fill(0,125);
 	noStroke();
 	// left part
-	rect(pos_gui,size_gui);
+	if(!external_gui_is) rect(pos_gui,size_gui);
 	// right part
 	rect(Vec2(width-size_gui.x,pos_gui.y),size_gui);
 	// down part
@@ -95,21 +73,6 @@ void instruction() {
 
 
 
-
-void interface_display(boolean mouse_is, Force_field ff) {
-	size_gui.set(size_gui.x, height);
-	if(!interface_is()) { 
-		if(!external_gui_is) hide_all_gui();
-	} else {
-		background_interface();
-		instruction();
-		if(!external_gui_is) show_gui(mouse_is, ff);
-		show_info(ff);
-	}
-}
-
-
-
 /**
 info on the right place
 */
@@ -131,7 +94,7 @@ void show_info(Force_field ff) {
 
 	info_line("Force field" + " " + type_ff + " mapped on " + pattern_ff, pos_x, space_interface, 1, TOP);
 
-  display_texture(pos_x, 2) ;
+  display_texture(pos_x,2) ;
 
 	int step_y = get_img_velocity_ff().height / 7 ;
 	if(step_y < 10 ) step_y = 10 ;
@@ -241,7 +204,7 @@ String [] sorting_channel_toString(int [] a) {
 
 void info_line(String s, int pos_x, int space, int rank, int from) {
 	float pos_y = pos_slider_y(space, rank, from);
-	// int pos_x = ceil(width-size_gui.x +10) ;
+	// int pos_x = ceil(width-size_gui.x +10);
 	textAlign(LEFT);
 	text(s,pos_x,pos_y);
 }
@@ -300,3 +263,75 @@ void show_gui(boolean mouse_is, Force_field ff) {
 		gui_dynamic_spot.hide();
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+util method
+*/
+float pos_slider_y(int space, float start_pos, int from) {
+	float pos_y = 0 ;
+	if(from == BOTTOM || from == DOWN) {
+		pos_y = height -(space *start_pos);
+	} else {
+		pos_y = space *start_pos;
+	}
+	return pos_y ;
+}
+
+
+
+// get
+Vec2 get_pos_interface() {
+	return pos_gui;
+}
+
+Vec2 get_size_interface() {
+	return size_gui;
+}
+
+// misc
+void hide_interface() {
+	if(interface_is) interface_is = false ; else interface_is = true;
+}
+
+boolean interface_is() {
+	return interface_is ;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

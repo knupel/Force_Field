@@ -15,7 +15,7 @@ boolean use_leapmotion = false;
 
 
 void setup() {
-	size(500,750,P2D);
+	size(500,550,P2D);
 	surface.setLocation(30,30);
 	osc = new OscP5(this,port);
 	destination = new NetAddress("127.0.0.1",port);
@@ -28,8 +28,8 @@ void setup() {
 void draw() {
 	background(0);
 	send_value_controller();
-	show_gui(use_leapmotion);
-	get_controller_gui();
+	show_gui();
+	set_controller_from_outside();
 	if(mousePressed) update_media_list();
 	load_data_from_app_force(240, !mousePressed);
 }

@@ -66,7 +66,6 @@ void update_gui_value(boolean update_is, int t_count) {
         temp_mode = i;
       }
     }
-    println("temp mode", temp_mode, frameCount);
     if(temp_mode != -1) set_mode_ff(temp_mode);  
   }
   news_from_gui = false;

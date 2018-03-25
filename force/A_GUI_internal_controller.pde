@@ -12,11 +12,9 @@ ControlP5 gui_main;
 CheckBox check_gui_main ;
 CheckBox check_gui_main_channel ;
 
-
 ControlP5 gui_static_img_2D,gui_static_img_3D;
 
 ControlP5 gui_static_generative;
-
 
 ControlP5 gui_dynamic_mag_grav;
 CheckBox check_gui_dynamic_mag_grav_reset ;
@@ -26,7 +24,6 @@ ControlP5 gui_dynamic_spot, gui_main_movie;
 
 ControlP5 gui_vehicle;
 CheckBox check_gui_vehicle ;
-
 
 // global slider
 boolean gui_fullreset_field_is;
@@ -38,9 +35,6 @@ boolean gui_display_bg ;
 boolean gui_vehicle_pixel_is;
 boolean gui_show_must_go_on;
 boolean gui_full_reset_field_is;
-
-
-
 
 int space_interface ;
 
@@ -76,33 +70,40 @@ void gui_setup() {
 
 	int size_font = 10 ;
 	font_gui = createFont("Lucida",size_font,false); // use true/false for smooth/no-smooth
-	// font_gui = createFont("ArialNarrow",size_font,false); // use true/false for smooth/no-smooth
-	// PFont pfont = createFont("DIN-Light",8,false); // use true/false for smooth/no-smooth
+
 	red_gui = new CColor(r.BLOOD,r.CARMINE,r.RED,r.WHITE,r.WHITE);
 	grey_0_gui = new CColor(r.GRAY_3,r.GRAY_2,r.GRAY_4,r.WHITE,r.WHITE);
 
-
-	int slider_width = 100 ;
+  
+	
 	space_interface = ceil(font_gui.getSize() *1.5) ;
-	int max = 1;
+	
+	if(!external_gui_is) gui_int_controller(space_interface);
 
   // main
-  gui_main(space_interface, max, slider_width, 1, TOP, font_gui);
+  
+}
 
-  gui_main_movie(space_interface, max, slider_width, 2, BOTTOM, font_gui);
+
+void gui_int_controller(int space) {
+	int slider_width = 100 ;
+	int max = 1;
+	gui_main(space, max, slider_width, 1, TOP, font_gui);
+
+  gui_main_movie(space, max, slider_width, 2, BOTTOM, font_gui);
   
   // menu static field
-  gui_static_generative(space_interface, max, slider_width, 29.5, TOP, font_gui);
-  gui_static_image(space_interface, max, slider_width, 33, TOP, font_gui);
+  gui_static_generative(space, max, slider_width, 29.5, TOP, font_gui);
+  gui_static_image(space, max, slider_width, 33, TOP, font_gui);
 
   // menu dynamic field
-  gui_dynamic_fluid(space_interface, max, slider_width, 29.5, TOP, font_gui);
+  gui_dynamic_fluid(space, max, slider_width, 29.5, TOP, font_gui);
   gui_dynamic_mag_grav(space_interface, max, slider_width, 29.5, TOP, font_gui);
 
-  gui_dynamic_spot(space_interface, max, slider_width, 33, TOP, font_gui);
+  gui_dynamic_spot(space, max, slider_width, 33, TOP, font_gui);
 
   // vehicle
-  gui_vehicle(space_interface, max, slider_width, 41.5, TOP, font_gui);
+  gui_vehicle(space, max, slider_width, 41.5, TOP, font_gui);
   
   // boolean to give authorization to update controller
   gui_init_controller = true;

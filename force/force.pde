@@ -51,6 +51,7 @@ void settings() {
     // size(800,800,P2D);
     //size(1600,870,P2D); // 2eme écran macbook
     // size(1900,1200,P2D); // 2 recopie écran macbook
+
   }
   set_cell_grid_ff(10);
   // type_field = r.FLUID;
@@ -78,9 +79,13 @@ SETUP
 */
 void setup() {
   info_system();
+    if(!fullscreen_is) {
+    int offset_x = 30 ;
+    int offset_y = 50 ;
+    surface.setLocation(get_display_size().x -width -offset_x, offset_y);
+  }
+
   background(0);
-
-
 
   if(use_leapmotion) leap_setup();
 
@@ -91,9 +96,9 @@ void setup() {
   set_interface(Vec2(0), Vec2(250,height));
   if(external_gui_is) {
     osc_setup();
-  } else {
-    gui_setup(); 
   }
+  gui_setup(); 
+
   
   mode_ff();
 }
@@ -105,7 +110,15 @@ void setup() {
 /**
 DRAW
 */
+boolean first_draw_round;
 void draw() {
+  if(first_draw_round) {
+    super_draw();
+  }
+  first_draw_round = true;
+}
+
+void super_draw() {
   if(!pause_is || show_must_go_on_is()) time_count_ff++;
   if(hide_menu_bar) PApplet.hideMenuBar();
   if(use_leapmotion) leap_update();
@@ -222,6 +235,8 @@ void draw() {
   GUI
   interface gui
   */
+  mask_mapping(set_mask_is());
+
   if(!external_gui_is) get_controller_gui();
   if(gui_news_is() || gui_news_ext_is()) update_gui_value(false, time_count_ff);
   interface_display(use_leapmotion, force_field);
@@ -229,7 +244,6 @@ void draw() {
   if(!ff_is()) {
     println("new force field grid, with cell size:", get_size_cell_ff());
     init_ff(get_type_ff(),get_pattern_ff(),get_size_cell_ff(),g);
-    // init_ff(type_field,pattern_field,get_size_cell_ff(),g);
   }
   /*
   if(get_type_ff() == IMAGE) {
@@ -241,7 +255,7 @@ void draw() {
   }
   */
 
-  cursor_manager(interface_is());
+  cursor_manager();
   diaporama(240);  
   media_end();
   save_value_app_too_controller(60);
@@ -250,10 +264,6 @@ void draw() {
     global_reset();
     reset_authorization_from_gui = false ;
   }
-
-
-
-  mask_mapping(set_mask_is());
 }
 
 
