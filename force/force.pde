@@ -84,7 +84,6 @@ void setup() {
     int offset_y = 50 ;
     surface.setLocation(get_display_size().x -width -offset_x, offset_y);
   }
-
   background(0);
 
   if(use_leapmotion) leap_setup();
@@ -98,8 +97,7 @@ void setup() {
     osc_setup();
   }
   gui_setup(); 
-
-  
+ 
   mode_ff();
 }
 
@@ -202,12 +200,17 @@ void super_draw() {
       warp_draw(get_tempo_refresh_gui(), get_rgba_warp_mapped_gui(), get_power_cycling_gui(), false);
     }
   }
+
   if(display_vehicle_is()) {
     if(!pause_is) {
       update_vehicle(get_ff(),get_velocity_vehicle_gui());
     }
     show_vehicle(get_rgb_vehicle_gui(), get_alpha_vehicle());
   } 
+
+  if(display_spot_is()) {
+    show_spot();
+  }
 
 
 
@@ -225,7 +228,7 @@ void super_draw() {
   /**
   INFO
    */
-  info(display_field, display_grid, display_spot);
+  info();
 
   if(force_field != null) force_field.reverse_flow(false);
 
@@ -240,32 +243,21 @@ void super_draw() {
   mask_mapping(set_mask_is());
 
   if(!external_gui_is) get_controller_gui();
-  if(gui_news_is() || gui_news_ext_is()) update_gui_value(false, time_count_ff);
+  update_value(time_count_ff);
+
   interface_display(use_leapmotion, force_field);
 
   if(!ff_is()) {
     println("new force field grid, with cell size:", get_size_cell_ff());
     init_ff(get_type_ff(),get_pattern_ff(),get_size_cell_ff(),g);
   }
-  /*
-  if(get_type_ff() == IMAGE) {
-    if(!sort_channel_is()) {
-      force_field_init_is = false ;
-      build_ff(force_field.get_type(), get_resolution_ff(), warp.get_image(), get_sorting_channel_ff_2D());
-      update_ff();
-    }
-  }
-  */
+
 
   cursor_manager();
   diaporama(240);  
   media_end();
-  save_value_app_too_controller(60);
-
-  if(reset_authorization_from_gui) {
-    global_reset();
-    reset_authorization_from_gui = false ;
-  }
+  save_value_app_too_controller(30);
+  global_reset();
 }
 
 

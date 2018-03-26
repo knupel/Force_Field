@@ -499,6 +499,7 @@ void set_check_gui_dynamic_mag_grav(boolean state) {
 
 /**
 set controller
+v 0.0.2
 */
 void set_controller_from_outside() {
 	set_controller_main();
@@ -511,10 +512,10 @@ void set_controller_main() {
 	if(!warp_is) {
 		if(!switch_off_power_cycling) ref_power_cycling = power_cycling;
 		switch_off_power_cycling = true;
-		gui_main.getController("power_cycling").setValue(0);
+		gui_warp.getController("power_cycling").setValue(0);
 	} else {
 		if(switch_off_power_cycling) {
-			gui_main.getController("power_cycling").setValue(ref_power_cycling);
+			gui_warp.getController("power_cycling").setValue(ref_power_cycling);
 		} 
 		switch_off_power_cycling = false;
 	}

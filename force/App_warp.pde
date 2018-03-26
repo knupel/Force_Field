@@ -82,17 +82,6 @@ void warp_change_media_folder() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 /**
  init for media or camera
  */
@@ -209,9 +198,13 @@ void add_g_surface() {
 
 
 
+
+
+
+
 /**
 warp draw
-v 0.2.1
+v 0.2.2
 */
 void warp_draw(int tempo, Vec4 rgba_mapped, float intensity, boolean refresh) {
   if(warp_media_is()) {
@@ -245,13 +238,13 @@ void warp_media_display() {
 
 Vec4 ref_rgba_mapped ;
 void warp_show(Vec4 channel_warp_rgb_mapped, float intensity_warp, boolean keep) {
-  boolean new_gui_value = false ;
+  boolean new_channel_values = false ;
   if(ref_rgba_mapped == null || !ref_rgba_mapped.compare(channel_warp_rgb_mapped)) {
-    new_gui_value = true;
+    new_channel_values = true;
     if(ref_rgba_mapped == null) ref_rgba_mapped = channel_warp_rgb_mapped.copy();
     else ref_rgba_mapped.set(channel_warp_rgb_mapped);
   }
-  if(!keep || new_gui_value) {
+  if(!keep || new_channel_values) {
     warp.refresh(channel_warp_rgb_mapped);
     warp.shader_init();
     warp.shader_filter(shader_filter_is);

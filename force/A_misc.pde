@@ -19,12 +19,19 @@ void info_system() {
 
 
 
+
+
+
+
+
+
+
+
+
 /**
 MASK MAPPING
 v 0.0.1
 */
-
-
 Mask_mapping [] masks;
 void mask_mapping(boolean change_is) {
   if(masks == null) {
@@ -40,9 +47,6 @@ void mask_mapping(boolean change_is) {
   masks[0].draw(change_is);
   masks[1].draw(change_is);
 }
-
-
-
 
 
 public class Mask_mapping {
@@ -181,9 +185,6 @@ public class Mask_mapping {
 SAVE / LOAD
 v 0.0.1
 */
-/**
-* local method
-*/
 String ext_path_file = null;
 void file_path_clear() {
   ext_path_file = null;
@@ -270,6 +271,78 @@ void save_value_app_too_controller(int tempo) {
 
 
 
+/**
+UPDATE VALUE
+v 0.0.1
+*/
+
+Vec4 rgba_warp = Vec4(1);
+float power_warp_max;
+void update_rgba_warp(int t_count) {
+  float cr = 1.;
+  float cg = 1.;
+  float cb = 1.;
+  if(red_cycling != 0) {
+    cr = sin(t_count *(red_cycling *red_cycling *.1)); 
+  }
+  if(green_cycling != 0) {
+    cg = sin(t_count *(green_cycling *green_cycling *.1)); 
+  }
+  if(blue_cycling != 0) {
+    cb = sin(t_count *(blue_cycling *blue_cycling *.1)); 
+  }
+  
+  Vec4 sin_val = Vec4(1);
+  sin_val.set(cr,cg,cb,1);
+
+  rgba_warp.set(red_warp,green_warp,blue_warp,1);
+  power_warp_max = (power_warp *power_warp) *10f;
+  
+  rgba_warp.mult(power_warp_max);
+  
+  float min_src = 0 ;
+  float max_src = 1 ;
+  float min_dst = .01 ;
+  rgba_warp.set(sin_val.map_vec(Vec4(min_src), Vec4(max_src), Vec4(min_dst), rgba_warp));
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -278,17 +351,32 @@ void save_value_app_too_controller(int tempo) {
 
 /**
 RESET
-v 0.2.0
+v 0.3.0
 */
 void global_reset() {
-  global_reset(force_field.get_type(), force_field.get_pattern(), force_field.get_super_type(), get_resolution_ff());
+  if(vehicle_reset_gui_is || warp_reset_gui_is || field_reset_gui_is) {
+    bVec3 reset = bVec3(vehicle_reset_gui_is,warp_reset_gui_is,field_reset_gui_is);
+    vehicle_reset_gui_is = false;
+    warp_reset_gui_is = false;
+    field_reset_gui_is = false;
+    reset(reset, force_field.get_type(), force_field.get_pattern(), force_field.get_super_type(), get_resolution_ff());
+  } 
 }
 
-
-void global_reset(int type, int pattern, int super_type, int resolution) {
+void reset(bVec3 reset, int type, int pattern, int super_type, int resolution) {
   force_field_init_is = false ;
-  reset_vehicle(get_num_vehicle_gui(),get_ff());
-  warp.reset();
+  if(reset.x)reset_vehicle(get_num_vehicle_gui(),get_ff());
+  if(reset.y)warp.reset();
+  if(reset.z)reset_field(type, pattern, super_type, resolution);
+  /*
+  the method line cause a bug with dynamic mode when this one is refresh from selected mode by target, keyboard or external GUI
+  if(super_type == r.DYNAMIC){
+    update_gui_value(true,time_count_ff);
+  }
+  */
+}
+
+void reset_field(int type, int pattern, int super_type, int resolution) {
   if(force_field != null) force_field.reset();
 
   if(pattern == r.EQUATION) {
@@ -340,15 +428,7 @@ void global_reset(int type, int pattern, int super_type, int resolution) {
 
     }
   }
-  /*
-  the method line cause a bug with dynamic mode when this one is refresh from selected mode by target, keyboard or external GUI
-  if(super_type == r.DYNAMIC){
-    update_gui_value(true,time_count_ff);
-  }
-  */
 }
-
-
 
 void reset_mode() {
   for(int i = 0 ; i < mode.length ; i++) {
@@ -405,6 +485,7 @@ void reset_mode() {
 
 /**
 KEYPRESSED
+v 0.2.0
 */
 void keyPressed() {
   news_from_gui = true;
@@ -449,6 +530,9 @@ void keyPressed() {
   }
 
   if(key == 'r') {
+    vehicle_reset_gui_is = true;
+    warp_reset_gui_is = true;
+    field_reset_gui_is = true;
     global_reset();
   }
 
@@ -1031,14 +1115,15 @@ void change_cursor_controller() {
 
 /**
 info
-
+v 0.2.0
 */
-void info(boolean display_force_field_is,  boolean display_grid_is, boolean display_spot_is) {
+void info() {
   noFill() ;
   stroke(g.colorModeA *.6f);
   strokeWeight(.5);
 
-  if (display_force_field_is) {
+  // FIELD
+  if (display_field) {
     float scale = 5 ;
     int c = r.HUE;
     float min_c = .0; // red
@@ -1048,7 +1133,8 @@ void info(boolean display_force_field_is,  boolean display_grid_is, boolean disp
     show_field(get_ff());
   }
 
-  if(display_grid_is) {
+  // GRID
+  if(display_grid) {
     // center
     stroke(g.colorModeA *.6f);
     line(0, height/2, width, height/2);
@@ -1068,11 +1154,12 @@ void info(boolean display_force_field_is,  boolean display_grid_is, boolean disp
     }  
   }
   
-  // show pole
-  if(display_spot_is) {
-    for(int i = 0 ; i < force_field.get_spot_num() ; i++) {
-      show_pole(force_field.get_spot_pos(i));
-    }
+  // SPOT
+  if(display_info) {
+    strokeWeight(2) ;
+    noFill() ;
+    stroke(255);
+    show_spot(false);
   }
 }
 
@@ -1083,12 +1170,7 @@ void info(boolean display_force_field_is,  boolean display_grid_is, boolean disp
 
 
 
-void show_pole(Vec2 pos) {
-  strokeWeight(10) ;
-  noFill() ;
-  stroke(255);
-  point(pos);
-}
+
 
 
 
@@ -1104,11 +1186,9 @@ void set_info(boolean display_info) {
   if(display_info) {
     display_field = true ;
     display_grid = true ;
-    display_spot = true;
   } else {
     display_field = false;
     display_grid = false;
-    display_spot = false;
   }
 }
 
@@ -1133,7 +1213,6 @@ void save_frame_jpg(float compression) {
   String filename = "image_" +year()+"_"+month()+"_"+day()+"_"+hour() + "_" +minute() + "_" + second() + ".jpg" ; 
  // String path = sketchPath()+"/bmp/";
   String path = sketchPath(1) +"/screenshot";
-  // path += "/screenshot";
   // saveFrame(path, filename, compression, get_canvas());
   saveFrame(path, filename, compression);
 }

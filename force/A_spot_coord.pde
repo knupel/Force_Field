@@ -1,4 +1,45 @@
 /**
+SPOT
+v 0.0.1
+*/
+/**
+Spot display
+v 0.0.2
+*/
+void show_spot() {
+  
+  show_spot(true);
+}
+
+
+
+
+void show_spot(boolean shape_is) {
+  for(int i = 0 ; i < force_field.get_spot_num() ; i++) {
+    if(shape_is) {
+      spot_shape(force_field.get_spot_pos(i));
+    } else {
+      point(force_field.get_spot_pos(i));
+    }
+  }
+}
+
+
+ROPE_svg shape_spot; 
+void spot_shape(Vec2 pos) {
+  if(shape_spot == null) {
+    shape_spot = new ROPE_svg(this, sketchPath(1)+"/import/corbeau.svg");
+    shape_spot.build();
+  }
+  shape_spot.mode(CENTER);
+  shape_spot.pos(pos);
+  shape_spot.draw() ; 
+}
+
+
+
+
+/**
 spot coord
 v 0.2.1
 */

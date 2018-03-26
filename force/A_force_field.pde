@@ -105,7 +105,8 @@ void mode_ff() {
   }
   int super_type_field = r.STATIC ;
   if(type_field != r.STATIC) super_type_field = r.DYNAMIC;
-  global_reset(type_field, pattern_field, super_type_field, get_resolution_ff()); 
+  bVec3 reset = bVec3(false,false,true);
+  reset(reset,type_field, pattern_field, super_type_field, get_resolution_ff()); 
 }
 
 
