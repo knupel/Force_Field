@@ -6,12 +6,19 @@ v 0.0.2
 float sum_slider() {
 	float sum = 0;
 	// BACKGROUND
-	sum += alpha_bg;
+	sum += alpha_background;
 	// VECTOR FIELD
 	sum += cell_force_field;
 	// MISC
 	sum += tempo_refresh;
+	// SPOT
+	sum += size_spot;
+	sum += alpha_spot;
+	sum += red_spot;
+	sum += green_spot;
+	sum += blue_spot;
 	// VEHICLE
+	sum += size_vehicle;
 	sum += alpha_vehicle;
 	sum += red_vehicle;
 	sum += green_vehicle;
@@ -88,12 +95,19 @@ void send() {
 	// GUI STATE
 	//message.add(gui_is());
 	// BACKGROUND
-	message.add(alpha_bg);
+	message.add(alpha_background);
 	// VECTOR FIELD
 	message.add(cell_force_field);
 	// MISC
 	message.add(tempo_refresh);
+	// SPOT
+	message.add(size_spot);
+	message.add(alpha_spot);
+	message.add(red_spot);
+	message.add(green_spot);
+	message.add(blue_spot);
 	// VEHICLE
+	message.add(size_vehicle);
 	message.add(alpha_vehicle);
 	message.add(red_vehicle);
 	message.add(green_vehicle);

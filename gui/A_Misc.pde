@@ -22,7 +22,9 @@ void load_data_from_app_force(int tempo, boolean authorization) {
 
 
 
-
+boolean display_spot_is() {
+  return display_spot;
+}
 
 boolean display_vehicle_is() {
   return display_vehicle ;
@@ -30,10 +32,6 @@ boolean display_vehicle_is() {
 
 boolean display_warp_is() {
   return display_warp;
-}
-
-boolean display_vahicle_is() {
-  return display_vehicle;
 }
 
 boolean movie_warp_is = true ;

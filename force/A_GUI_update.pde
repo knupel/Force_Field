@@ -63,9 +63,12 @@ void must_update_from_gui(int t_count) {
   update_value_ff_fluid(frequence,viscosity,diffusion,update_is);
   update_value_ff_generative(range_min_gen,range_max_gen,power_gen,update_is);
 
+/*
   set_alpha_background(alpha_bg);
+  set_alpha_spot(alpha_spot);
   set_alpha_vehicle(alpha_vehicle);
   set_alpha_warp(alpha_warp);
+  */
 
   float sum_warp_value = red_cycling +green_cycling +blue_cycling +power_cycling 
                         +red_warp +green_warp +blue_warp          +power_warp;
@@ -198,22 +201,48 @@ int get_spiral_spot() {
 /** 
 get float
 */
+float get_alpha_background() {
+  return map_colour(alpha_background, g.colorModeA);
+}
+
+
+
+
+// vehicle
+float get_size_vehicle() {
+  return size_vehicle *height;
+}
+
 float get_velocity_vehicle_gui() {
   return velocity_vehicle;
 }
 
-float get_red_vehicle_gui() {
-  return red_vehicle;
-}
-float get_green_vehicle_gui() {
-  return green_vehicle;
-}
-float get_blue_vehicle_gui() {
-  return blue_vehicle;
+float get_alpha_vehicle() {
+  return map_colour(alpha_vehicle, g.colorModeA);
 }
 
-Vec3 get_rgb_vehicle_gui() {
-  return Vec3(red_vehicle,green_vehicle,blue_vehicle);
+float get_red_vehicle() {
+  return map_colour(red_vehicle, g.colorModeX);
+}
+
+float get_green_vehicle() {
+  return map_colour(green_vehicle, g.colorModeY);
+}
+float get_blue_vehicle() {
+  return map_colour(blue_vehicle, g.colorModeZ);
+}
+
+Vec3 get_rgb_vehicle() {
+  return Vec3(get_red_vehicle(), get_green_vehicle(), get_blue_vehicle());
+}
+
+
+
+
+// warp
+
+float get_alpha_warp() {
+  return map_colour(alpha_warp, g.colorModeA);
 }
 
 Vec4 get_rgba_warp_mapped_gui() {
@@ -225,6 +254,34 @@ float get_power_cycling_gui() {
   return power_cycling;
 }
 
+
+
+
+
+
+// spot
+float get_size_spot() {
+  return size_spot *height;
+}
+
+float get_alpha_spot() {
+  return map_colour(alpha_spot, g.colorModeA);
+}
+
+float get_red_spot() {
+  return map_colour(red_spot, g.colorModeX);
+}
+
+float get_green_spot() {
+  return map_colour(green_spot, g.colorModeY);
+}
+float get_blue_spot() {
+  return map_colour(blue_spot, g.colorModeZ);
+}
+
+Vec3 get_rgb_spot() {
+  return Vec3(get_red_spot(), get_green_spot(), get_blue_spot());
+}
 
 float get_speed_spot() {
   return speed_spot *speed_spot *speed_spot;
@@ -252,6 +309,17 @@ float get_motion_spot() {
 float get_distribution_spot() {
   return distribution_spot;
 }
+
+
+
+
+/**
+local setting
+*/
+float map_colour(float mult_f, float max) {
+  return map(mult_f,0,1,0.,max);
+}
+
 
 
 
@@ -314,76 +382,83 @@ void oscEvent(OscMessage theOscMessage) {
 
 void catch_osc_data(Object [] data) {
   // slider
-  alpha_bg = (Float)data[0];
+  alpha_background = (Float)data[0];
   // VECTOR FIELD
   cell_force_field = (Float)data[1];
   // MISC
   tempo_refresh = (Float)data[2];
-  // VEHICLE
-  alpha_vehicle = (Float)data[3];
-  red_vehicle = (Float)data[4];
-  green_vehicle = (Float)data[5];
-  blue_vehicle = (Float)data[6];
-  num_vehicle = (Float)data[7];
-  velocity_vehicle = (Float)data[8];
-  // WARP IMAGE
-  alpha_warp = (Float)data[9];
-  red_warp = (Float)data[10];
-  green_warp = (Float)data[11];
-  blue_warp = (Float)data[12];
-  power_warp = (Float)data[13];
-  red_cycling = (Float)data[14];
-  green_cycling = (Float)data[15];
-  blue_cycling = (Float)data[16];
-  power_cycling = (Float)data[17];
-  // MOVIE
-  header_movie = (Float)data[18];
-  speed_movie = (Float)data[19];
-  // FLUID
-  frequence = (Float)data[20];
-  viscosity = (Float)data[21];
-  diffusion = (Float)data[22];
-  // generative seting for CHAOS and PERLIN field
-  range_min_gen = (Float)data[23];
-  range_max_gen = (Float)data[24];
-  power_gen = (Float)data[25];
-  // SORT IMAGE
-  vel_sort = (Float)data[26];
-  x_sort = (Float)data[27];
-  y_sort = (Float)data[28];
-  z_sort = (Float)data[29];
   // SPOT
-  spot_num = (Float)data[30];
-  spot_range = (Float)data[31];
-  radius_spot = (Float)data[32];
-  min_radius_spot = (Float)data[33];
-  max_radius_spot = (Float)data[34];
-  speed_spot = (Float)data[35];
-  distribution_spot = (Float)data[36];
-  spiral_spot = (Float)data[37];
-  beat_spot = (Float)data[38];
-  motion_spot = (Float)data[39];
+  size_spot = (Float)data[3];
+  alpha_spot = (Float)data[4];
+  red_spot = (Float)data[5];
+  green_spot = (Float)data[6];
+  blue_spot = (Float)data[7];
+  // VEHICLE
+  size_vehicle = (Float)data[8];
+  alpha_vehicle = (Float)data[9];
+  red_vehicle = (Float)data[10];
+  green_vehicle = (Float)data[11];
+  blue_vehicle = (Float)data[12];
+  num_vehicle = (Float)data[13];
+  velocity_vehicle = (Float)data[14];
+  // WARP IMAGE
+  alpha_warp = (Float)data[15];
+  red_warp = (Float)data[16];
+  green_warp = (Float)data[17];
+  blue_warp = (Float)data[18];
+  power_warp = (Float)data[19];
+  red_cycling = (Float)data[20];
+  green_cycling = (Float)data[21];
+  blue_cycling = (Float)data[22];
+  power_cycling = (Float)data[23];
+  // MOVIE
+  header_movie = (Float)data[24];
+  speed_movie = (Float)data[25];
+  // FLUID
+  frequence = (Float)data[26];
+  viscosity = (Float)data[27];
+  diffusion = (Float)data[28];
+  // generative seting for CHAOS and PERLIN field
+  range_min_gen = (Float)data[29];
+  range_max_gen = (Float)data[30];
+  power_gen = (Float)data[31];
+  // SORT IMAGE
+  vel_sort = (Float)data[32];
+  x_sort = (Float)data[33];
+  y_sort = (Float)data[34];
+  z_sort = (Float)data[35];
+  // SPOT
+  spot_num = (Float)data[36];
+  spot_range = (Float)data[37];
+  radius_spot = (Float)data[38];
+  min_radius_spot = (Float)data[39];
+  max_radius_spot = (Float)data[40];
+  speed_spot = (Float)data[41];
+  distribution_spot = (Float)data[42];
+  spiral_spot = (Float)data[43];
+  beat_spot = (Float)data[44];
+  motion_spot = (Float)data[45];
 
 
   // button
   for(int i = 0 ; i < mode.length ; i++) {
-    if((int)data[40 +i] == 0) mode[i] = false ; else mode[i] = true;
+    if((int)data[46 +i] == 0) mode[i] = false ; else mode[i] = true;
   }
 
-  if((int)data[47] == 0) display_background(false); else display_background(true);
-  if((int)data[48] == 0) display_vehicle(false); else display_vehicle(true);
-  if((int)data[49] == 0) display_warp(false); else display_warp(true);
-  if((int)data[50] == 0) display_field(false); else display_field(true);
-  if((int)data[51] == 0) display_spot(false); else display_spot(true);
+  if((int)data[53] == 0) display_background(false); else display_background(true);
+  if((int)data[54] == 0) display_vehicle(false); else display_vehicle(true);
+  if((int)data[55] == 0) display_warp(false); else display_warp(true);
+  if((int)data[56] == 0) display_field(false); else display_field(true);
+  if((int)data[57] == 0) display_spot(false); else display_spot(true);
 
-  if((int)data[52] == 0) set_resize_window(false); else set_resize_window(true);
-  if((int)data[53] == 0) set_fit_image(false); else set_fit_image(true);
-  if((int)data[54] == 0) show_must_go_on(false); else show_must_go_on(true);
-  if((int)data[55] == 0) set_warp_is(false); else set_warp_is(true);
-  if((int)data[56] == 0) set_full_reset_field(false); else set_full_reset_field(true);
-  if((int)data[57] == 0) set_vehicle_pixel_is(false); else  set_vehicle_pixel_is(true);
+  if((int)data[58] == 0) set_resize_window(false); else set_resize_window(true);
+  if((int)data[59] == 0) set_fit_image(false); else set_fit_image(true);
+  if((int)data[60] == 0) show_must_go_on(false); else show_must_go_on(true);
+  if((int)data[61] == 0) set_warp_is(false); else set_warp_is(true);
+  if((int)data[62] == 0) set_full_reset_field(false); else set_full_reset_field(true);
+  if((int)data[63] == 0) set_vehicle_pixel_is(false); else  set_vehicle_pixel_is(true);
   
-  which_media = (int)data[58];
+  which_media = (int)data[64];
   select_media_to_display(); 
 }
 

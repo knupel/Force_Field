@@ -7,7 +7,6 @@ Spot display
 v 0.0.2
 */
 void show_spot() {
-  
   show_spot(true);
 }
 
@@ -17,7 +16,7 @@ void show_spot() {
 void show_spot(boolean shape_is) {
   for(int i = 0 ; i < force_field.get_spot_num() ; i++) {
     if(shape_is) {
-      spot_shape(force_field.get_spot_pos(i));
+      spot_shape(force_field.get_spot_pos(i), get_rgb_spot(),get_alpha_spot());
     } else {
       point(force_field.get_spot_pos(i));
     }
@@ -26,11 +25,14 @@ void show_spot(boolean shape_is) {
 
 
 ROPE_svg shape_spot; 
-void spot_shape(Vec2 pos) {
+void spot_shape(Vec2 pos, Vec3 fill, float alpha) {
   if(shape_spot == null) {
     shape_spot = new ROPE_svg(this, sketchPath(1)+"/import/corbeau.svg");
     shape_spot.build();
   }
+  shape_spot.fill(get_rgb_spot().x,get_rgb_spot().y,get_rgb_spot().z,get_alpha_spot());
+  shape_spot.noStroke();
+  shape_spot.scaling(get_size_spot() *.01);
   shape_spot.mode(CENTER);
   shape_spot.pos(pos);
   shape_spot.draw() ; 

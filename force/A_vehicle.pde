@@ -69,16 +69,16 @@ void update_vehicle(Force_field ff, float speed) {
 
 
 
-void show_vehicle(Vec3 colour_rgb, float alpha) {
-  Vec3 temp = map_vec(colour_rgb,0,1,0,g.colorModeX);
-  int c = color(temp.x,temp.y,temp.z,alpha);
+void show_vehicle(Vec3 colour, float alpha) {
+  int c = color(colour.x,colour.y,colour.z,alpha);
   // 
 
   if(vehicle_pixel_is()) {
     display_vehicle_pixel_on_PGraphics(c);
   } else {
     int max_vehicles = 10_000;
-    display_vehicle_with_shape(c, max_vehicles);
+    int size = ceil(get_size_vehicle());
+    display_vehicle_with_shape(c, size, max_vehicles);
   }
 }
 
@@ -116,8 +116,8 @@ void vehicle_set(PGraphics pg, Vehicle v, int c) {
 
 
 // shape method
-void display_vehicle_with_shape(int c, int max) {
-  float size = 3;
+void display_vehicle_with_shape(int c, int size, int max) {
+  // float size = 3;
   float thickness = 1 ;
   if(vehicles.size() > max) {
     for(int i = 0 ; i < max ; i++) {

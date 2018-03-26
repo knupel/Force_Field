@@ -1,6 +1,6 @@
 /**
 variable global share with the main sketch
-v 0.0.7
+v 0.0.9
 
 In the future those values must be write in an external file to be read by the main and gui sketche
 */
@@ -45,7 +45,7 @@ int which_media;
 SLIDER variable
 */
 // BACKGROUND
-float alpha_bg = 1.;
+float alpha_background = 1.;
 
 // VECTOR FIELD
 float cell_force_field = 25.;
@@ -53,12 +53,19 @@ float cell_force_field = 25.;
 // MISC
 float tempo_refresh = 1.;
 
+// SPOT
+float size_spot = .05;
+float alpha_spot = 1.;
+float red_spot = .9;
+float green_spot = 0;
+float blue_spot = 0;
+
 // VEHICLE
+float size_vehicle = .05;
 float alpha_vehicle = 1.;
 float red_vehicle = .9;
 float green_vehicle = 0;
 float blue_vehicle = 0;
-
 float num_vehicle = .1;
 float velocity_vehicle = 5;
 int max_vehicle_ff = 100_000;
@@ -108,12 +115,6 @@ float distribution_spot= 0.;
 float spiral_spot = 0.;
 float beat_spot = 0.;
 float motion_spot = 0.;
-
-
-
-
-
-
 
 
 

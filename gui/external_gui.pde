@@ -27,6 +27,7 @@ ControlP5 gui_dynamic_fluid;
 ControlP5 gui_dynamic_spot;
 ControlP5 gui_main_movie;
 ControlP5 gui_vehicle;
+ControlP5 gui_spot;
 
 
 
@@ -69,7 +70,7 @@ void gui_setup(Vec2 pos, Vec2 size) {
 	pos_gui = pos.copy();
 	size_gui = size.copy();
 	int slider_width = 100 ;
-	space_interface = 15;
+	space_interface = 12;
 	int max = 1;
   
   gui_mode();
@@ -88,8 +89,8 @@ void gui_setup(Vec2 pos, Vec2 size) {
 
   // COL 2
   gui_misc(space_interface, max, slider_width, col_2_x, 3, TOP);
-  gui_vehicle(space_interface, max, slider_width, col_2_x, 29.5, TOP);
-  gui_main_movie(space_interface, max, slider_width, col_2_x, 2, BOTTOM);
+  gui_vehicle(space_interface, max, slider_width, col_2_x, 32, TOP);
+  gui_main_movie(space_interface, max, slider_width, col_2_x, 1, BOTTOM);
 
 
 
@@ -105,6 +106,7 @@ void build_gui() {
 	gui_main = new ControlP5(this);
 	gui_warp = new ControlP5(this);
 	gui_vehicle = new ControlP5(this);
+	gui_spot = new ControlP5(this);
 	gui_dynamic_mag_grav = new ControlP5(this);
 	gui_dynamic_fluid = new ControlP5(this);
 	gui_main_movie = new ControlP5(this);
@@ -279,40 +281,66 @@ void fluid_true() {
 
 
 
-void gui_misc(int space, int max, int w, float pos_x, float pos_y, int from) {	
-  gui_main.addSlider("alpha_bg").setLabel("alpha background").setPosition(pos_x,pos_slider_y(space, pos_y +0, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
-  gui_vehicle.addSlider("alpha_vehicle").setLabel("alpha vehicle").setPosition(pos_x,pos_slider_y(space, pos_y +1, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
-  gui_warp.addSlider("alpha_warp").setLabel("alpha warp").setPosition(pos_x,pos_slider_y(space, pos_y +2, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
-
-  gui_vehicle.addSlider("red_vehicle").setPosition(pos_x,pos_slider_y(space, pos_y +3.25, from)).setWidth(w).setRange(0,max).setColor(red_gui);
-	gui_vehicle.addSlider("green_vehicle").setPosition(pos_x,pos_slider_y(space, pos_y +4.25, from)).setWidth(w).setRange(0,max).setColor(red_gui);
-	gui_vehicle.addSlider("blue_vehicle").setPosition(col_2_x,pos_slider_y(space, pos_y +5.25, from)).setWidth(w).setRange(0,max).setColor(red_gui);
-
-	gui_warp.addSlider("red_warp").setPosition(pos_x,pos_slider_y(space, pos_y +6.5, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
-	gui_warp.addSlider("green_warp").setPosition(pos_x,pos_slider_y(space, pos_y +7.5, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
-	gui_warp.addSlider("blue_warp").setPosition(pos_x,pos_slider_y(space, pos_y +8.5, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
-
-	gui_warp.addSlider("power_warp").setPosition(pos_x,pos_slider_y(space, pos_y +9.5, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
-  
-	gui_warp.addSlider("red_cycling").setPosition(pos_x,pos_slider_y(space, pos_y +10.75, from)).setWidth(w).setRange(0,max).setColor(red_gui);
-	gui_warp.addSlider("green_cycling").setPosition(pos_x,pos_slider_y(space, pos_y +11.75, from)).setWidth(w).setRange(0,max).setColor(red_gui);
-	gui_warp.addSlider("blue_cycling").setPosition(pos_x,pos_slider_y(space, pos_y +12.75, from)).setWidth(w).setRange(0,max).setColor(red_gui);
-
-	gui_warp.addSlider("power_cycling").setPosition(pos_x,pos_slider_y(space, pos_y +13.75, from)).setWidth(w).setRange(0,max).setColor(red_gui);
+void gui_misc(int space, int max, int w, float pos_x, float pos_y, int from) {
+	slider_misc_alpha(space, max, w, pos_x, pos_y, from);
+	slider_misc_spot(space, max, w, pos_x , pos_y +4.25,from);
+	slider_misc_vehicle(space, max, w, pos_x , pos_y +8.5,from);
+	slider_misc_warp(space, max, w, pos_x , pos_y +13.,from);
 
   int max_tempo = 10 ;
-	gui_warp.addSlider("tempo_refresh").setPosition(pos_x,pos_slider_y(space, pos_y +15.75, from)).setWidth(w).setRange(1,max_tempo).setNumberOfTickMarks(max_tempo).setColor(grey_0_gui);
+	gui_warp.addSlider("tempo_refresh").setPosition(pos_x,pos_slider_y(space, pos_y +22, from)).setWidth(w).setRange(1,max_tempo).setNumberOfTickMarks(max_tempo).setColor(grey_0_gui);
   
   int max_cell = 50;
-	gui_main.addSlider("cell_force_field").setPosition(pos_x,pos_slider_y(space, pos_y +18.25, from)).setWidth(w).setRange(1,max_cell).setNumberOfTickMarks(max_cell).setColor(grey_0_gui);
+	gui_main.addSlider("cell_force_field").setPosition(pos_x,pos_slider_y(space, pos_y +24, from)).setWidth(w).setRange(1,max_cell).setNumberOfTickMarks(max_cell).setColor(grey_0_gui);
   
   int max_spot = 100 ;
   if(use_leapmotion) max_spot = 10;
-	gui_main.addSlider("spot_num").setPosition(pos_x,pos_slider_y(space, pos_y +20.25, from)).setWidth(w).setRange(1,max_spot).setNumberOfTickMarks(max_spot).setColor(grey_0_gui);
+	gui_main.addSlider("spot_num").setPosition(pos_x,pos_slider_y(space, pos_y +25, from)).setWidth(w).setRange(1,max_spot).setNumberOfTickMarks(max_spot).setColor(grey_0_gui);
 
 	int range_spot = 10;
-	gui_main.addSlider("spot_range").setPosition(pos_x,pos_slider_y(space, pos_y +22, from)).setWidth(w).setRange(0,range_spot).setNumberOfTickMarks(range_spot +1).setColor(grey_0_gui);
+	gui_main.addSlider("spot_range").setPosition(pos_x,pos_slider_y(space, pos_y +27, from)).setWidth(w).setRange(0,range_spot).setNumberOfTickMarks(range_spot +1).setColor(grey_0_gui);
 }
+
+
+void slider_misc_alpha(int space, int max, int w, float pos_x, float pos_y, int from) {
+	gui_main.addSlider("alpha_background").setLabel("alpha background").setPosition(pos_x,pos_slider_y(space, pos_y +0, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
+  gui_spot.addSlider("alpha_spot").setLabel("alpha spot").setPosition(pos_x,pos_slider_y(space, pos_y +1, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
+  gui_vehicle.addSlider("alpha_vehicle").setLabel("alpha vehicle").setPosition(pos_x,pos_slider_y(space, pos_y +2, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
+  gui_warp.addSlider("alpha_warp").setLabel("alpha warp").setPosition(pos_x,pos_slider_y(space, pos_y +3, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
+}
+
+void slider_misc_spot(int space, int max, int w, float pos_x, float pos_y, int from) {
+	gui_spot.addSlider("size_spot").setLabel("size spot").setPosition(pos_x,pos_slider_y(space, pos_y +0, from)).setWidth(w).setRange(0,max).setColor(red_gui);
+	gui_spot.addSlider("red_spot").setLabel("red spot").setPosition(pos_x,pos_slider_y(space, pos_y +1, from)).setWidth(w).setRange(0,max).setColor(red_gui);
+	gui_spot.addSlider("green_spot").setLabel("green spot").setPosition(pos_x,pos_slider_y(space, pos_y +2, from)).setWidth(w).setRange(0,max).setColor(red_gui);
+	gui_spot.addSlider("blue_spot").setLabel("blue spot").setPosition(col_2_x,pos_slider_y(space, pos_y +3, from)).setWidth(w).setRange(0,max).setColor(red_gui);	
+
+}
+
+void slider_misc_vehicle(int space, int max, int w, float pos_x, float pos_y, int from) {
+	gui_vehicle.addSlider("size_vehicle").setLabel("size vehicle").setPosition(pos_x,pos_slider_y(space, pos_y +0, from)).setWidth(w).setRange(0,max).setColor(red_gui);
+	gui_vehicle.addSlider("red_vehicle").setLabel("red vehicle").setPosition(pos_x,pos_slider_y(space, pos_y +1, from)).setWidth(w).setRange(0,max).setColor(red_gui);
+	gui_vehicle.addSlider("green_vehicle").setLabel("green vehicle").setPosition(pos_x,pos_slider_y(space, pos_y +2, from)).setWidth(w).setRange(0,max).setColor(red_gui);
+	gui_vehicle.addSlider("blue_vehicle").setLabel("green vehicle").setPosition(col_2_x,pos_slider_y(space, pos_y +3, from)).setWidth(w).setRange(0,max).setColor(red_gui);	
+}
+
+
+void slider_misc_warp(int space, int max, int w, float pos_x, float pos_y, int from) {
+	gui_warp.addSlider("red_warp").setPosition(pos_x,pos_slider_y(space, pos_y +0, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
+	gui_warp.addSlider("green_warp").setPosition(pos_x,pos_slider_y(space, pos_y +1, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
+	gui_warp.addSlider("blue_warp").setPosition(pos_x,pos_slider_y(space, pos_y +2, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
+	gui_warp.addSlider("power_warp").setPosition(pos_x,pos_slider_y(space, pos_y +3, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
+  
+	gui_warp.addSlider("red_cycling").setPosition(pos_x,pos_slider_y(space, pos_y +4.25, from)).setWidth(w).setRange(0,max).setColor(red_gui);
+	gui_warp.addSlider("green_cycling").setPosition(pos_x,pos_slider_y(space, pos_y +5.25, from)).setWidth(w).setRange(0,max).setColor(red_gui);
+	gui_warp.addSlider("blue_cycling").setPosition(pos_x,pos_slider_y(space, pos_y +6.25, from)).setWidth(w).setRange(0,max).setColor(red_gui);
+	gui_warp.addSlider("power_cycling").setPosition(pos_x,pos_slider_y(space, pos_y +7.25, from)).setWidth(w).setRange(0,max).setColor(red_gui);
+}
+
+
+
+
+
 
 
 void gui_vehicle(int space, int max, int w, float pos_x, float pos_y, int from) {	
@@ -462,28 +490,6 @@ int gui_is() {
 
 
 
-/**
-set controller
-*/
-/*
-void set_check_gui_main_display(boolean state) {
-	if(state) {
-		checkbox_main.activate(2);
-	} else {
-		println("disable display");
-		checkbox_main.deactivate(2);
-	}
-}
-
-void set_check_gui_dynamic_mag_grav(boolean state) {
-	if(state) {
-		checkbox_mag_grav.activate(0);
-	} else {		
-		checkbox_mag_grav.deactivate(0);
-	}
-}
-*/
-
 
 
 
@@ -580,8 +586,9 @@ void show_gui() {
 		gui_static_generative.show(); 
 	} else gui_static_generative.hide();
 
-	if(display_vehicle_is()) gui_vehicle.show() ; else gui_vehicle.hide();
+	if(display_spot_is()) gui_spot.show() ; else gui_spot.hide();
 
+	if(display_vehicle_is()) gui_vehicle.show() ; else gui_vehicle.hide();
 
 	if(display_warp_is()) gui_warp.show(); else gui_warp.hide();
 

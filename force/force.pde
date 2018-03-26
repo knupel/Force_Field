@@ -118,6 +118,10 @@ void draw() {
   }
 }
 
+
+/**
+SUPER DRAW
+*/
 void super_draw() {
   if(!pause_is || show_must_go_on_is()) time_count_ff++;
   if(hide_menu_bar) PApplet.hideMenuBar();
@@ -184,12 +188,14 @@ void super_draw() {
 
 
   /** 
-  DISPLAY RESULT
+  DISPLAY
   */
+  // BACKGROUND
   if(display_background_is()) {
-    if(get_alpha_bg() > 0 ) background_rope(0,get_alpha_bg());
+    if(get_alpha_background() > 0 ) background_rope(0,get_alpha_background());
   }
 
+  // WARP
   if(display_warp_is()) {
     tint(g.colorModeX,g.colorModeY,g.colorModeZ,get_alpha_warp());
     if(show_must_go_on_is()) {
@@ -200,40 +206,25 @@ void super_draw() {
       warp_draw(get_tempo_refresh_gui(), get_rgba_warp_mapped_gui(), get_power_cycling_gui(), false);
     }
   }
-
+  
+  // VEHICLE
   if(display_vehicle_is()) {
     if(!pause_is) {
-      update_vehicle(get_ff(),get_velocity_vehicle_gui());
+      update_vehicle(get_ff(), get_velocity_vehicle_gui());
     }
-    show_vehicle(get_rgb_vehicle_gui(), get_alpha_vehicle());
-  } 
+    show_vehicle(get_rgb_vehicle(), get_alpha_vehicle());
+  }
+  
+  // INFO
+  info();
 
+  // SPOT
   if(display_spot_is()) {
     show_spot();
   }
 
-
-
-  
-
-   
-  
-   
-  
-
-
-
-
-
-  /**
-  INFO
-   */
-  info();
-
+  // REVERSE
   if(force_field != null) force_field.reverse_flow(false);
-
-
-
 
 
   /**
@@ -252,7 +243,9 @@ void super_draw() {
     init_ff(get_type_ff(),get_pattern_ff(),get_size_cell_ff(),g);
   }
 
-
+  /**
+  MISC
+  */
   cursor_manager();
   diaporama(240);  
   media_end();

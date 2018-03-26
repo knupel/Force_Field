@@ -675,12 +675,18 @@ void reset_key() {
 /**
 alpha
 */
+/*
 float a_bg;
 float a_warp;
 float a_vehicle;
+float a_spot;
 
 void set_alpha_background(float norm_f){
   a_bg = set_alpha(norm_f);
+}
+
+void set_alpha_spot(float norm_f){
+  a_spot = set_alpha(norm_f);
 }
 
 void set_alpha_warp(float norm_f){
@@ -691,9 +697,14 @@ void set_alpha_vehicle(float norm_f){
   a_vehicle = set_alpha(norm_f);
 }
 
+// main method
 float set_alpha(float norm_f) {
   float mult_f = norm_f *norm_f ;
   return map(mult_f,0,1,0.,g.colorModeA);
+}
+
+float get_alpha_spot() {
+  return a_spot;
 }
 
 float get_alpha_warp() {
@@ -707,6 +718,7 @@ float get_alpha_vehicle() {
 float get_alpha_bg() {
   return a_bg;
 }
+*/
 
 
 

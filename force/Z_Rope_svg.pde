@@ -1,9 +1,9 @@
 /**
-Class ROPE_svg 1.2.5
+Class ROPE_svg 1.2.7
 Rope – Romanesco Processing Environment – 
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/SVG_Vertex-Processing
-* 2016-2016
+* 2016-2018
 */
 
 class ROPE_svg {
@@ -778,9 +778,7 @@ class ROPE_svg {
       if(!bool_scale_svg) {
         scale_svg.set(1) ;
       }
-    }
-    
-    if(!keep_change) {
+    } else {
       original_style(true, true) ;
       fill_factor(1,1,1,1) ;
       stroke_factor(1,1,1,1) ;
