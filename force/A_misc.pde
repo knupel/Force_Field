@@ -64,11 +64,7 @@ public class Mask_mapping {
     }
     init = true;
   }
-  /*
-  public setup() {
-    init = true;
-  }
-  */
+
   public void set_fill(int c) {
     this.c = c;
   }
@@ -183,7 +179,7 @@ public class Mask_mapping {
 
 /**
 SAVE / LOAD
-v 0.0.1
+v 0.0.2
 */
 String ext_path_file = null;
 void file_path_clear() {
@@ -231,18 +227,57 @@ void save_value_app_too_controller(int tempo) {
   if(frameCount%tempo == 0) {
     if(value_app_force == null) {
       value_app_force = new Table();
-      value_app_force.addColumn("variable");
+      value_app_force.addColumn("name");
       value_app_force.addColumn("value");
-      int num_row = 1 ;
+      int num_row = 17 ;
       row = new TableRow[num_row] ;
       for(int i = 0 ; i < row.length ; i++) {
         row[i] = value_app_force.addRow();
       }    
     }
     
-    row[0].setString("variable", "movie position");
+    row[0].setString("name", "movie position");
     row[0].setFloat("value", get_movie_pos_norm());
-    // println()
+
+    row[1].setString("name", "perlin");
+    if(mode_perlin) row[1].setInt("value",1); else row[1].setInt("value",0);
+    row[2].setString("name", "chaos");
+    if(mode_chaos) row[2].setInt("value",1); else row[2].setInt("value",0);
+    row[3].setString("name", "equation");
+    if(mode_equation) row[3].setInt("value",1); else row[3].setInt("value",0);
+    row[4].setString("name", "image");
+    if(mode_image) row[4].setInt("value",1); else row[4].setInt("value",0);
+    row[5].setString("name", "gravity");
+    if(mode_gravity) row[5].setInt("value",1); else row[5].setInt("value",0);
+    row[6].setString("name", "magnetic");
+    if(mode_magnetic) row[6].setInt("value",1); else row[6].setInt("value",0);
+    row[7].setString("name", "fluid");
+    if(mode_fluid) row[7].setInt("value",1); else row[7].setInt("value",0);
+
+    row[8].setString("name", "background");
+    if(display_background) row[8].setInt("value",1); else row[8].setInt("value",0);
+    row[9].setString("name", "vehicle");
+    if(display_vehicle) row[9].setInt("value",1); else row[9].setInt("value",0);
+    row[10].setString("name", "warp");
+    if(display_warp) row[10].setInt("value",1); else row[10].setInt("value",0);
+    row[11].setString("name", "field");
+    if(display_field) row[11].setInt("value",1); else row[11].setInt("value",0);
+    row[12].setString("name", "spot");
+    if(display_spot) row[12].setInt("value",1); else row[12].setInt("value",0);
+
+    row[13].setString("name", "pause");
+    if(pause_is) row[13].setInt("value",1); else row[13].setInt("value",0);
+    row[14].setString("name", "warp effect");
+    if(warp_is) row[14].setInt("value",1); else row[14].setInt("value",0);
+    row[15].setString("name", "full reset");
+    if(full_reset_field_is) row[15].setInt("value",1); else row[15].setInt("value",0);
+    row[16].setString("name", "type vehicle");
+    row[16].setInt("value",get_type_vehicle());
+    row[15].setString("name", "type spot");
+    row[16].setInt("value",get_type_spot());
+  
+
+
     saveTable(value_app_force,sketchPath(1)+"/save/value_app_force.csv");
   }  
 }
@@ -365,7 +400,7 @@ void global_reset() {
 
 void reset(bVec3 reset, int type, int pattern, int super_type, int resolution) {
   force_field_init_is = false ;
-  if(reset.x)reset_vehicle(get_num_vehicle_gui(),get_ff());
+  if(reset.x)reset_vehicle(get_num_vehicle(),get_ff());
   if(reset.y)warp.reset();
   if(reset.z)reset_field(type, pattern, super_type, resolution);
   /*
@@ -892,6 +927,7 @@ void show_must_go_on() {
 /**
 choice vehicle shape or pixel
 */
+/*
 void set_vehicle_pixel_is(boolean is) {
   vehicle_pixel_is = is ;
 }
@@ -899,6 +935,7 @@ void set_vehicle_pixel_is(boolean is) {
 boolean vehicle_pixel_is() {
   return vehicle_pixel_is;
 }
+*/
 
 
 /**
@@ -914,6 +951,17 @@ void set_movie_pos_norm(float normal_f) {
 
 float get_movie_speed() {
   return speed_movie ;
+}
+
+/**
+get shape
+*/
+int get_type_vehicle() {
+  return type_vehicle;
+}
+
+int get_type_spot() {
+  return type_spot;
 }
 
 
@@ -1171,7 +1219,7 @@ void info() {
     strokeWeight(2) ;
     noFill() ;
     stroke(255);
-    show_spot(false);
+    show_spot(POINT);
   }
 }
 

@@ -53,8 +53,8 @@ void must_update_from_gui(int t_count) {
   }
 
   // reset vehicle
-  if(ref_num_vehicle != get_num_vehicle_gui()) {
-    ref_num_vehicle = get_num_vehicle_gui();
+  if(ref_num_vehicle != get_num_vehicle()) {
+    ref_num_vehicle = get_num_vehicle();
     vehicle_reset_gui_is = true;
   }
   
@@ -87,7 +87,7 @@ void must_update_from_gui(int t_count) {
     set_resize_window(gui_change_size_window_is);
     set_full_reset_field(gui_fullreset_field_is);
     set_fit_image(gui_fullfit_image_is);
-    set_vehicle_pixel_is(gui_vehicle_pixel_is);
+    // set_vehicle_pixel_is(get_type_vehicle());
     display_background(gui_display_bg);
     show_must_go_on(gui_show_must_go_on);
   } else {
@@ -164,15 +164,21 @@ boolean get_full_reset_field_is_gui() {
   return gui_full_reset_field_is ;
 }
 
+/*
 boolean get_vehicle_pixel_is_gui() {
   return gui_vehicle_pixel_is;
 }
+*/
 
 /**
 get int
 */
-int get_num_vehicle_gui() {
-  return int(num_vehicle *num_vehicle *num_vehicle * max_vehicle_ff);
+int get_num_vehicle() {
+  int max = max_vehicle_ff ;
+  if(get_type_vehicle() == r.PIXEL) max = max_vehicle_ff;
+  else if(get_type_vehicle() == SHAPE) max = int(max_vehicle_ff / 250.);
+  else max /= 5;
+  return int(num_vehicle *num_vehicle *num_vehicle *max);
 }
 
 int get_tempo_refresh_gui() {
@@ -208,11 +214,30 @@ float get_alpha_background() {
 
 
 
-// vehicle
+// sprite
 float get_size_vehicle() {
-  return size_vehicle *height;
+  float size = 1 +(size_vehicle *height *.1);
+  if(get_type_vehicle() == r.PIXEL) size =1;
+  if(get_type_vehicle() == TRIANGLE) size *= .5;
+  else if(get_type_vehicle() == SHAPE) size *= .2;
+  return size;
 }
 
+float get_size_spot() {
+  float size = 1 +(size_spot *height *.1);
+  if(get_type_spot() == r.PIXEL) size =1;
+  if(get_type_spot() == TRIANGLE) size *= .5;
+  else if(get_type_spot() == SHAPE) size *= .2;
+  return size;
+}
+
+
+
+
+
+
+
+// vehicle
 float get_velocity_vehicle_gui() {
   return velocity_vehicle;
 }
@@ -260,10 +285,6 @@ float get_power_cycling_gui() {
 
 
 // spot
-float get_size_spot() {
-  return size_spot *height;
-}
-
 float get_alpha_spot() {
   return map_colour(alpha_spot, g.colorModeA);
 }
@@ -456,9 +477,10 @@ void catch_osc_data(Object [] data) {
   if((int)data[60] == 0) show_must_go_on(false); else show_must_go_on(true);
   if((int)data[61] == 0) set_warp_is(false); else set_warp_is(true);
   if((int)data[62] == 0) set_full_reset_field(false); else set_full_reset_field(true);
-  if((int)data[63] == 0) set_vehicle_pixel_is(false); else  set_vehicle_pixel_is(true);
-  
-  which_media = (int)data[64];
+
+  type_vehicle = (int)data[63];
+  type_spot = (int)data[64];
+  which_media = (int)data[65];
   select_media_to_display(); 
 }
 

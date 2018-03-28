@@ -7,32 +7,91 @@ Spot display
 v 0.0.2
 */
 void show_spot() {
-  show_spot(true);
+  show_spot(get_type_spot());
 }
 
 
-
-
-void show_spot(boolean shape_is) {
-  for(int i = 0 ; i < force_field.get_spot_num() ; i++) {
-    if(shape_is) {
-      spot_shape(force_field.get_spot_pos(i), get_rgb_spot(),get_alpha_spot());
-    } else {
-      point(force_field.get_spot_pos(i));
+void show_spot(int type) {
+  int c = color(get_rgb_spot().x,get_rgb_spot().y,get_rgb_spot().z,get_alpha_spot());
+  if(type == r.PIXEL) {
+    display_pixel_on_PGraphics(pg_spot, c, force_field.get_spot_pos());
+    // force_field.get_spot_pos()
+  } else {
+    for(int i = 0 ; i < force_field.get_spot_num() ; i++) {
+      if(type == POINT) {
+        aspect_rope(c,c,get_size_spot());
+        point(force_field.get_spot_pos(i));
+      } else if(type == TRIANGLE) {
+        display_spot_triangle(force_field.get_spot_pos(i), c, get_size_spot());
+      } else if(type == SHAPE) {
+        display_spot_shape(force_field.get_spot_pos(i), get_rgb_spot(),get_alpha_spot());  
+      }   
     }
+  }  
+}
+
+// spot pixel
+PGraphics pg_spot;
+void display_pixel_on_PGraphics(PGraphics pg, int c, Vec2 [] coord) {
+  if(pg == null || pg.width != width || pg.height != height) {
+    pg = createGraphics(width,height,P2D);
+  } 
+  if(pg != null) {
+    pg.beginDraw();
+    pg.clear();
+    for (Vec2 p : coord) {
+      spot_set(pg,p,c);  
+    }
+    pg.endDraw();
+    image(pg);
+  }
+}
+
+void spot_set(PGraphics pg, Vec2 pos, int c) {
+  int x = (int)pos.x ;
+  int y = (int)pos.y;
+  if(x < pg.width && y < pg.height) {
+     pg.set(x,y,c);
   }
 }
 
 
+
+
+
+// spot triangle
+void display_spot_triangle(Vec2 pos, int c, float size) {
+  // Draw a triangle rotated in the direction of velocity
+  float theta = radians(90);
+  // v.set_radius(size);
+  float r = size ;
+  fill(c);
+  noStroke();
+  pushMatrix();
+  translate(pos);
+  rotate(theta);
+  beginShape(TRIANGLES);
+  vertex(0, -r *2);
+  vertex(-r, r *2);
+  vertex(r, r *2);
+  endShape();
+  popMatrix();
+}
+
+
+// spot shape
 ROPE_svg shape_spot; 
-void spot_shape(Vec2 pos, Vec3 fill, float alpha) {
+void set_spot_shape(String path) {
   if(shape_spot == null) {
-    shape_spot = new ROPE_svg(this, sketchPath(1)+"/import/corbeau.svg");
+    shape_spot = new ROPE_svg(this,path);
     shape_spot.build();
   }
-  shape_spot.fill(get_rgb_spot().x,get_rgb_spot().y,get_rgb_spot().z,get_alpha_spot());
+}
+
+void display_spot_shape(Vec2 pos, Vec3 fill, float alpha) {
+  shape_spot.fill(fill.x,fill.y,fill.z,alpha);
   shape_spot.noStroke();
-  shape_spot.scaling(get_size_spot() *.01);
+  shape_spot.scaling(get_size_spot());
   shape_spot.mode(CENTER);
   shape_spot.pos(pos);
   shape_spot.draw() ; 

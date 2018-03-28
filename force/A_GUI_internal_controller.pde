@@ -32,7 +32,7 @@ boolean gui_warp_is;
 boolean gui_change_size_window_is ;
 boolean gui_fullfit_image_is ;
 boolean gui_display_bg ;
-boolean gui_vehicle_pixel_is;
+// boolean gui_vehicle_pixel_is;
 boolean gui_show_must_go_on;
 boolean gui_full_reset_field_is;
 
@@ -64,7 +64,7 @@ void gui_setup() {
 	if(change_size_window_is) gui_change_size_window_is = true ; else gui_change_size_window_is = false;
 	if(fullfit_image_is) gui_fullfit_image_is = true ; else gui_fullfit_image_is = false;
 	if(display_background) gui_display_bg = true ; else gui_display_bg = false;
-	if(vehicle_pixel_is) gui_vehicle_pixel_is = true ; else gui_vehicle_pixel_is = false;
+	// if(vehicle_pixel_is) gui_vehicle_pixel_is = true ; else gui_vehicle_pixel_is = false;
 	if(show_must_go_on) gui_show_must_go_on = true ; else gui_show_must_go_on = false ;
 
 
@@ -182,9 +182,11 @@ void gui_vehicle(int space, int max, int w, float start_pos, int from, PFont fon
   int max_velocity_vehicle = max_speed ;
 	gui_vehicle.addSlider("num_vehicle").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(w).setRange(min_num_vehicle,max_num_vehicle).setFont(font).setColor(grey_0_gui);
   gui_vehicle.addSlider("velocity_vehicle").setPosition(10,pos_slider_y(space, start_pos +1, from)).setWidth(w).setRange(0,max_velocity_vehicle).setFont(font).setColor(grey_0_gui);
+  /*
   check_gui_vehicle = gui_vehicle.addCheckBox("vehicle_setting").setPosition(10,pos_slider_y(space, start_pos +2, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2)
 																		.addItem("PIXEL / SHAPE",1).setColor(grey_0_gui);
 	if(gui_vehicle_pixel_is) check_gui_vehicle.activate(0);
+	*/
 }
 
 
@@ -313,10 +315,11 @@ public void controlEvent(ControlEvent theEvent) {
 	  if(theEvent.isFrom(check_gui_main_channel)) {
 			if(check_gui_main_channel.getArrayValue(0) == 1) gui_warp_is = true; else gui_warp_is = false;
 	  }
-
+/*
 	  if(theEvent.isFrom(check_gui_vehicle)) {
 			if(check_gui_vehicle.getArrayValue(0) == 1) gui_vehicle_pixel_is = true; else gui_vehicle_pixel_is = false;
 	  } 
+	  */
 
 	  if(theEvent.isFrom(check_gui_dynamic_mag_grav_reset)) {
 			if(check_gui_dynamic_mag_grav_reset.getArrayValue(0) == 1) gui_fullreset_field_is = true; else gui_fullreset_field_is = false;

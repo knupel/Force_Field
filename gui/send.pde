@@ -1,6 +1,6 @@
 /**
 send
-v 0.0.2
+v 0.0.3
 */
 
 float sum_slider() {
@@ -154,21 +154,22 @@ void send() {
 
 	for(int i = 0 ; i < mode.length ; i++) {
   	if(mode[i]) message.add(1); else message.add(0);
-  }
-	if(display_background) message.add(1); else message.add(0);
+  } 
+  // DISPLAY	
+  if(display_background) message.add(1); else message.add(0);
 	if(display_vehicle) message.add(1); else message.add(0);
 	if(display_warp) message.add(1); else message.add(0);
 	if(display_field) message.add(1); else message.add(0);
 	if(display_spot) message.add(1); else message.add(0);
-
-
+  // MISC BUTTON
 	if(change_size_window_is) message.add(1); else message.add(0);
 	if(fullfit_image_is) message.add(1); else message.add(0);
 	if(show_must_go_on) message.add(1); else message.add(0);
 	if(warp_is) message.add(1); else message.add(0);
 	if(full_reset_field_is) message.add(1); else message.add(0);
-	if(vehicle_pixel_is) message.add(1); else message.add(0);
-
+	// DROPDOWN MENU
+	message.add(type_vehicle);
+	message.add(type_spot);
 	message.add(which_media);
 
   // SEND RESULT

@@ -142,7 +142,7 @@ void show_info(Force_field ff) {
 
 	info_line("MISC", pos_x, space_interface, 																20 +step_y, TOP);
 	info_line("pause: "+ pause_is, pos_x, space_interface, 										21 +step_y, TOP);
-	info_line("Vehicles count: "+get_num_vehicle_gui(),pos_x, space_interface, 22 +step_y, TOP);
+	info_line("Vehicles count: "+get_num_vehicle(),pos_x, space_interface, 22 +step_y, TOP);
 }
 
 

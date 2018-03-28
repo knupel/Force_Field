@@ -1,6 +1,6 @@
 /**
 Vehicule example
-v 0.1.0
+v 0.2.0
 */
 ArrayList<Vehicle> vehicles;
 int n_ve ;
@@ -71,14 +71,12 @@ void update_vehicle(Force_field ff, float speed) {
 
 void show_vehicle(Vec3 colour, float alpha) {
   int c = color(colour.x,colour.y,colour.z,alpha);
-  // 
-
-  if(vehicle_pixel_is()) {
+  int shape_type = 0 ;
+  if(get_type_vehicle() == r.PIXEL) {
     display_vehicle_pixel_on_PGraphics(c);
-  } else {
-    int max_vehicles = 10_000;
+  } else if(get_type_vehicle() != r.PIXEL){
     int size = ceil(get_size_vehicle());
-    display_vehicle_with_shape(c, size, max_vehicles);
+    display_vehicle_with_shape(c, size, get_type_vehicle());
   }
 }
 
@@ -86,7 +84,7 @@ void show_vehicle(Vec3 colour, float alpha) {
 
 // local display method
 // Pixel method
-PGraphics pg_vehicles ;
+PGraphics pg_vehicles;
 void display_vehicle_pixel_on_PGraphics(int c) {
   if(pg_vehicles == null || pg_vehicles.width != width || pg_vehicles.height != height) {
     pg_vehicles = createGraphics(width,height,P2D);
@@ -116,27 +114,26 @@ void vehicle_set(PGraphics pg, Vehicle v, int c) {
 
 
 // shape method
-void display_vehicle_with_shape(int c, int size, int max) {
-  // float size = 3;
+void display_vehicle_with_shape(int c, int size, int type) {
   float thickness = 1 ;
-  if(vehicles.size() > max) {
-    for(int i = 0 ; i < max ; i++) {
-      Vehicle v = vehicles.get(i);
-      display_vehicle_triangle(v, c, c, thickness,size) ;
+  for (Vehicle v : vehicles) {
+    if(type == POINT) display_vehicle_point(v,c,c,thickness,size);
+    else if(type == TRIANGLE) display_vehicle_triangle(v,c,size);
+    else if(type == SHAPE) {
+      display_vehicle_custom_shape(v,c,size);
     }
-  } else {
-    for (Vehicle v : vehicles) {
-      display_vehicle_triangle(v, c, c, thickness,size) ;
-    }
-  }     
+  }  
 }
 
-void display_vehicle_triangle(Vehicle v, int fill, int stroke, float thickness, float size) {
+
+// triangle
+void display_vehicle_triangle(Vehicle v, int c, float size) {
   // Draw a triangle rotated in the direction of velocity
   float theta = v.get_direction() + radians(90);
   v.set_radius(size);
   float r = v.radius ;
-  aspect_rope(fill,stroke,thickness);
+  fill(c);
+  noStroke();
   pushMatrix();
   translate(v.get_position());
   rotate(theta);
@@ -148,6 +145,34 @@ void display_vehicle_triangle(Vehicle v, int fill, int stroke, float thickness, 
   popMatrix();
 }
 
+
+// triangle
+void display_vehicle_point(Vehicle v, int fill, int stroke, float thickness, float size) {
+  aspect_rope(fill,stroke,size);
+  point(v.get_position());
+}
+
+// custom shape
+void display_vehicle_custom_shape(Vehicle v, int c, float size) {
+  shape_vehicle.fill(c);
+  shape_vehicle.noStroke();
+  shape_vehicle.scaling(size);
+  shape_vehicle.mode(CENTER);
+  shape_vehicle.pos(v.get_position());
+  shape_vehicle.draw() ; 
+}
+
+
+
+
+
+ROPE_svg shape_vehicle; 
+void set_vehicle_shape(String path) {
+  if(shape_vehicle == null) {
+    shape_vehicle = new ROPE_svg(this,path);
+    shape_vehicle.build();
+  }
+}
 
 
 

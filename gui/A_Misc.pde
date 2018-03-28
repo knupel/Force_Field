@@ -8,6 +8,27 @@ void load_data_from_app_force(int tempo, boolean authorization) {
 		if(data_from_app.getRowCount() > 0) {
 			TableRow row = data_from_app.getRow(0);
 			gui_main_movie.getController("header_movie").setValue(row.getFloat("value"));
+      // radio loop
+      for(int i = 0 ; i < radio_mode.getItems().size() ; i++) {
+      	row = data_from_app.getRow(i+1);
+      	if(row.getFloat("value") == 1) radio_mode.activate(i);
+      }
+      /*
+			row = data_from_app.getRow(1);
+			if(row.getFloat("value") == 1) radio_mode.activate(0);
+			*/
+			/*
+			if(gui_mode.getController("mode") != null) {
+				// println(gui_mode.getController("mode"),row.getFloat("value"));
+				println("array length",gui_mode.getController("mode").getArrayValue().length);
+				printArray(gui_mode.getController("mode").getArrayValue());
+				ButtonBar b = (ButtonBar)gui_mode.getController("mode");
+				println("get_array value",b.getArrayValue(0));
+
+			}
+			*/
+
+			//gui_button.getController("PERLIN").setValue(row.getFloat("value"));
 		} else {
 			// printErr("There is no Row available is the Table, maybe a save is on progress");
 		}

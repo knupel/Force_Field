@@ -8,13 +8,18 @@ import controlP5.*;
 boolean gui_init_controller = false;
 
 ControlP5 gui_mode;
+RadioButton radio_mode;
+
 ControlP5 gui_button;
+
 CheckBox checkbox_main ;
 CheckBox checkbox_channel ;
 CheckBox checkbox_mag_grav ;
 CheckBox checkbox_vehicle ;
 
 DropdownList media;
+DropdownList vehicle;
+DropdownList spot;
 
 
 ControlP5 gui_main;
@@ -28,8 +33,6 @@ ControlP5 gui_dynamic_spot;
 ControlP5 gui_main_movie;
 ControlP5 gui_vehicle;
 ControlP5 gui_spot;
-
-
 
 
 // global slider
@@ -76,7 +79,6 @@ void gui_setup(Vec2 pos, Vec2 size) {
   gui_mode();
 
   // COL 1
-  gui_button(space_interface, slider_width, col_1_x, 3, TOP);
   // menu static field
   gui_static_generative(space_interface, max, slider_width, col_1_x, 19.5, TOP);
   gui_static_image(space_interface, max, slider_width, col_1_x, 23, TOP);
@@ -91,6 +93,8 @@ void gui_setup(Vec2 pos, Vec2 size) {
   gui_misc(space_interface, max, slider_width, col_2_x, 3, TOP);
   gui_vehicle(space_interface, max, slider_width, col_2_x, 32, TOP);
   gui_main_movie(space_interface, max, slider_width, col_2_x, 1, BOTTOM);
+
+  gui_button(space_interface, slider_width, col_1_x, 3, TOP);
 
 
 
@@ -118,12 +122,37 @@ void build_gui() {
 
 
 void gui_mode() {
-	String [] mode = {"PERLIN","CHAOS","EQUATION","IMAGE","GRAVITY","MAGNETIC","FLUID"};
-	ButtonBar b = gui_mode.addButtonBar("mode").setPosition(0,0).setSize(width,15).addItems(mode).setColor(red_gui);
+	String [] station = {"PERLIN","CHAOS","EQUATION","IMAGE","GRAVITY","MAGNETIC","FLUID"};
+  String name = "mode";
+  iVec2 pos = iVec2(0,0);
+  int num_by_line = station.length;
+  iVec2 size = iVec2((int)width/num_by_line,15); 
+  iVec2 spacing = iVec2(0,0);
+  radio_mode = set_radio(name, pos, size, num_by_line, spacing, gui_mode, radio_mode, station, red_gui);
+}
+
+void mode(int n) {
+	state_button(true);
+	for (int i = 0 ; i < mode.length ; i++) {
+		if(n == i) {
+			mode[i] = true; 
+		} else {
+			mode[i] = false;
+		}
+	}
+	if(mode[0]) perlin_true();
+	else if (mode[1]) chaos_true();
+	else if (mode[2]) equation_true();
+	else if (mode[3]) image_true();
+	else if (mode[4]) gravity_true();
+	else if (mode[5]) magnetic_true();
+	else if (mode[6]) fluid_true();
+	else perlin_true();
 }
 
 
 void gui_button(int space, int w, float pos_x, float pos_y, int from) {
+	/*
 	String [] method_name = {"bool_background", "bool_vehicle", "bool_warp", "bool_field", "bool_spot"};
 	String [] label = {"background", "vehicle", "warp", "force field", "spot"};
 	int w_button = width /(label.length +2);
@@ -133,10 +162,27 @@ void gui_button(int space, int w, float pos_x, float pos_y, int from) {
 	gui_button.addToggle(method_name[2]).setLabel(label[2]).setPosition(w_button*2,16).setSize(w_button,15).setColor(red_gui).getCaptionLabel().align(CENTER,CENTER);
 	gui_button.addToggle(method_name[3]).setLabel(label[3]).setPosition(w_button*3,16).setSize(w_button,15).setColor(red_gui).getCaptionLabel().align(CENTER,CENTER);
 	gui_button.addToggle(method_name[4]).setLabel(label[4]).setPosition(w_button*4,16).setSize(w_button,15).setColor(red_gui).getCaptionLabel().align(CENTER,CENTER);
+	*/
+	String [] method_name = {"bool_background", "bool_vehicle", "bool_warp", "bool_field", "bool_spot"};
+	String [] label = {"background", "vehicle", "warp", "force field", "spot"};
+  String name = "display";
+  iVec2 pos = iVec2(0,16);
+  int num_by_line = label.length;
+  iVec2 size = iVec2 (int(width/(num_by_line *1.5)),15); 
+  iVec2 spacing = iVec2(0,0);
+
+  set_buttons(pos, size, num_by_line, spacing, gui_button, method_name, label, red_gui);
+
 
 	// dropdown
-	String [] medias = {"List empty","load items","from the","main sketch"} ;
-	media = gui_button.addDropdownList("media_list").setPosition(width-w_button,16).setHeight(150).setBarHeight(15).setColor(red_gui).addItems(medias);
+	int h_dropdown = 150 ;
+	int w_dropdown = int(size.x *1.5);
+	String [] media_menu = {"List empty","load items","from the","main sketch"} ;
+	media = gui_button.addDropdownList("media_list").setPosition(width -w_dropdown,16 +(h_dropdown*0)).setSize(w_dropdown,h_dropdown).setBarHeight(15).setColor(red_gui).addItems(media_menu);
+
+	String [] shape_menu = {"pixel","point","triangle","shape"} ;
+	vehicle = gui_button.addDropdownList("vehicle_list").setPosition(width -w_dropdown,16+(h_dropdown*1)).setSize(w_dropdown,h_dropdown).setBarHeight(15).setColor(red_gui).addItems(shape_menu);
+	spot = gui_button.addDropdownList("spot_list").setPosition(width -w_dropdown,16+(h_dropdown*2)).setSize(w_dropdown,h_dropdown).setBarHeight(15).setColor(red_gui).addItems(shape_menu);
 	
 	// column
 	checkbox_main = gui_button.addCheckBox("main_setting").setPosition(pos_x,pos_slider_y(space, pos_y +0, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2)
@@ -153,9 +199,6 @@ void gui_button(int space, int w, float pos_x, float pos_y, int from) {
 																.addItem("full_reset_field",1).setColor(grey_0_gui);
 	if(gui_full_reset_field_is) checkbox_mag_grav.activate(0);
 
-	checkbox_vehicle = gui_button.addCheckBox("vehicle_setting").setPosition(pos_x,pos_slider_y(space, pos_y +6, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2)
-																.addItem("PIXEL / SHAPE",1).setColor(red_gui);
-	if(gui_vehicle_pixel_is) checkbox_vehicle.activate(0);
 }
 
 
@@ -185,20 +228,8 @@ void bool_spot(boolean state) {
 	display_spot = state ;
 }
 
-void mode(int n) {
-	state_button(true);
-	for (int i = 0 ; i < mode.length ; i++) {
-		if(n == i) mode[i] = true; else mode[i] = false;
-	}
-	if(mode[0]) perlin_true();
-	else if (mode[1]) chaos_true();
-	else if (mode[2]) equation_true();
-	else if (mode[3]) image_true();
-	else if (mode[4]) gravity_true();
-	else if (mode[5]) magnetic_true();
-	else if (mode[6]) fluid_true();
-	else perlin_true();
-}
+
+
 
 // set button state
 void perlin_true() {
@@ -446,11 +477,6 @@ public void controlEvent(ControlEvent theEvent) {
 			if(checkbox_channel.getArrayValue(0) == 1) warp_is = true; else warp_is = false;
 	  }
 
-	  if(theEvent.isFrom(checkbox_vehicle)) {
-	  	state_button(true);
-			if(checkbox_vehicle.getArrayValue(0) == 1) vehicle_pixel_is = true; else vehicle_pixel_is = false;
-	  } 
-
 	  if(theEvent.isFrom(checkbox_mag_grav)) {
 	  	state_button(true);
 			if(checkbox_mag_grav.getArrayValue(0) == 1) full_reset_field_is = true; else full_reset_field_is = false;
@@ -460,31 +486,31 @@ public void controlEvent(ControlEvent theEvent) {
     	state_button(true);
 	    which_media = (int)theEvent.getController().getValue();
 	  }
+
+	  if (theEvent.isFrom(vehicle)) {
+    	state_button(true);
+    	type_vehicle = get_shape_type(theEvent.getController().getValue());
+	  }
+
+	  if (theEvent.isFrom(spot)) {
+    	state_button(true);
+	    type_spot = get_shape_type(theEvent.getController().getValue());
+	  }
 	}	 
 }
 
+// see menu dropdwon "pixel","point","triangle","shape"
+int get_shape_type(float value_controller) {
+	int v = (int)value_controller;
+	if(v==0) return r.PIXEL;
+	else if(v==1) return POINT;
+	else if(v==2) return TRIANGLE;
+	else if(v==3) return SHAPE;
+	else return r.PIXEL;
+}
 
-/**
-I cannot manage the call back to work with a specific slider or button,
-it only work with all GUI :(
-*/
-/*
-public void controlEvent(CallbackEvent theEvent) {
-	// if(theEvent.getAction() == ControlP5.ACTION_ENTER) {
-	//	if(gui_main_movie.getController("header_movie").getAction() == ControlP5.ACTION_ENTER) {
-	//	println(theEvent.getController().equals(gui_main_movie));
-	if(theEvent.getController().equals("header_movie")) {
-			gui_is = 1 ;
-	} else if(theEvent.getAction() == ControlP5.ACTION_LEAVE) {
-		gui_is = 0;
-	}
-	
-}
-int gui_is ;
-int gui_is() {
-	return gui_is ;
-}
-*/
+
+
 
 
 
@@ -509,7 +535,6 @@ v 0.0.2
 */
 void set_controller_from_outside() {
 	set_controller_main();
-	//get_controller_movie();
 }
 
 float ref_power_cycling;
@@ -526,15 +551,6 @@ void set_controller_main() {
 		switch_off_power_cycling = false;
 	}
 }
-
-/*
-float movie_pos_normal ;
-void get_controller_movie() {
-	gui_main_movie.getController("header_movie");
-	// gui_main_movie.getController("header_movie").setValue(movie_pos_normal);
-	//gui_main_movie.getController("speed_movie");
-}
-*/
 
 
 
@@ -555,13 +571,12 @@ void set_internal_boolean() {
 	if(show_must_go_on) gui_show_must_go_on = true ; else gui_show_must_go_on = false ;
 	if(warp_is) gui_warp_is = true; else gui_warp_is = false;
 	if(full_reset_field_is) gui_full_reset_field_is = true ; else  gui_full_reset_field_is = false;
-	if(vehicle_pixel_is) gui_vehicle_pixel_is = true ; else gui_vehicle_pixel_is = false;
+	//if(vehicle_pixel_is) gui_vehicle_pixel_is = true ; else gui_vehicle_pixel_is = false;
 }
 
 
 void show_gui() {
 	gui_main.show();
-
 	// show menu depend of force field type
   if(mode_gravity_is() || mode_magnetic_is() || mode_fluid_is()) {
   	if(mode_fluid_is()) {
@@ -600,6 +615,54 @@ void show_gui() {
 		gui_dynamic_spot.hide();
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+global method CP5
+v 0.0.1
+*/
+RadioButton set_radio(String name, iVec2 pos, iVec2 size, int num, iVec2 spacing, ControlP5 cp5, RadioButton rb, String [] station, CColor c) {
+  cp5 = new ControlP5(this);
+  rb = cp5.addRadioButton(name).setPosition(pos.x,pos.y).setSize(size.x,size.y).setItemsPerRow(num).setSpacingColumn(spacing.x).setSpacingRow(spacing.y);
+
+  for(int i = 0 ; i < station.length ;i++) {
+    rb.addItem(station[i],i).setColor(c) ; 
+  }
+
+  int target = 0 ;
+  for(Toggle t : rb.getItems()) {
+    t.setLabel(station[target]).getCaptionLabel().align(CENTER,CENTER);
+    target++;
+  }
+  return rb ;  
+}
+
+void set_buttons(iVec2 pos, iVec2 size, int num, iVec2 spacing, ControlP5 cp5, String [] method_name, String [] label, CColor c) {
+  cp5 = new ControlP5(this);
+  for(int i = 0 ; i < method_name.length ;i++) {
+
+  	cp5.addToggle(method_name[i]).setLabel(label[i])
+  			.setPosition(pos.x+(size.x *i),pos.y).setSize(size.x,size.y)
+  			//.setItemsPerRow(num).setSpacingColumn(spacing.x).setSpacingRow(spacing.y)
+  			.setColor(c).getCaptionLabel().align(CENTER,CENTER);
+  }
+}
+
+
+
 
 
 

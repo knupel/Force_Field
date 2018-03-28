@@ -1,4 +1,4 @@
-
+ 
 /**
 FORCE
 2017-2018
@@ -18,7 +18,7 @@ Via Reynolds: http://www.red3d.com/cwr/steer/FlowFollow.html
 
 Stable fluids from Jos Stam's work on the Navier-Stokes equation
 */
-String force_version = "0.3.2";
+String force_version = "0.3.4";
 boolean external_gui_is = true;
 
 boolean use_leapmotion = false;
@@ -44,10 +44,10 @@ int which_cam = 0 ; // 0 is the camera fullsize / max frameRate by default if th
 
 void settings() {
   if(fullScreen_is) {
-    // fullScreen(P2D,1);
-    fullScreen(P2D);      
+    fullScreen(P2D,1);
+    //fullScreen(P2D);      
   } else {
-    size(1200,750,P2D);
+    size(900,550,P2D);
     // size(800,800,P2D);
     //size(1600,870,P2D); // 2eme écran macbook
     // size(1900,1200,P2D); // 2 recopie écran macbook
@@ -82,13 +82,17 @@ void setup() {
     if(!fullscreen_is) {
     int offset_x = 30 ;
     int offset_y = 50 ;
-    surface.setLocation(get_display_size().x -width -offset_x, offset_y);
+    if(!fullScreen_is) surface.setLocation(get_display_size().x -width -offset_x, offset_y);
+    //   surface.setLocation(0,-600);
   }
   background(0);
 
   if(use_leapmotion) leap_setup();
+  set_spot_shape(sketchPath(1)+"/import/corbeau.svg");
+  set_vehicle_shape(sketchPath(1)+"/import/corbeau.svg");
 
-  set_vehicle(get_num_vehicle_gui());
+  set_vehicle(get_num_vehicle());
+
   warp_setup();
   set_info(false); 
   
@@ -113,7 +117,6 @@ void draw() {
   if(first_draw_round) {
     super_draw();
   } else {
-    background(0);
     first_draw_round = true;
   }
 }

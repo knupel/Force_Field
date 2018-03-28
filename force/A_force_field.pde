@@ -78,31 +78,40 @@ void mode_ff() {
   if(mode_ff == 0) {
     type_field = r.STATIC; 
     pattern_field = r.PERLIN; 
+    mode_perlin=true; mode_chaos=false; mode_equation=false; mode_image=false; mode_gravity=false; mode_magnetic=false; mode_fluid=false;
   } else if(mode_ff == 1) {
     type_field = r.STATIC; 
-    pattern_field = r.CHAOS; 
+    pattern_field = r.CHAOS;
+    mode_perlin=false; mode_chaos=true; mode_equation=false; mode_image=false; mode_gravity=false; mode_magnetic=false; mode_fluid=false;
   } else if(mode_ff == 2) {
     type_field = r.STATIC; 
     pattern_field = r.EQUATION; 
+    mode_perlin=false; mode_chaos=false; mode_equation=true; mode_image=false; mode_gravity=false; mode_magnetic=false; mode_fluid=false;
   } else if(mode_ff == 3) {
     if(warp.library() != null && warp.library_size() > 0) {
       type_field = r.STATIC; 
       pattern_field = IMAGE ;
+      mode_perlin=false; mode_chaos=false; mode_equation=false; mode_image=true; mode_gravity=false; mode_magnetic=false; mode_fluid=false;
     } else {
       println("The library is empty, load media before use this mode/n instead the pattern CHAOS is used");
       type_field = r.STATIC; 
       pattern_field = r.CHAOS;
+      mode_perlin=false; mode_chaos=true; mode_equation=false; mode_image=false; mode_gravity=false; mode_magnetic=false; mode_fluid=false;
     }
   } else if(mode_ff == 4) {
     type_field = r.GRAVITY; 
-    pattern_field = r.BLANK; 
+    pattern_field = r.BLANK;
+    mode_perlin=false; mode_chaos=false; mode_equation=false; mode_image=false; mode_gravity=true; mode_magnetic=false; mode_fluid=false; 
   } else if(mode_ff == 5) {
     type_field = r.MAGNETIC; 
     pattern_field = r.BLANK; 
-  }  else if(mode_ff == 6) {
+    mode_perlin=false; mode_chaos=false; mode_equation=false; mode_image=false; mode_gravity=false; mode_magnetic=true; mode_fluid=false;
+  } else if(mode_ff == 6) {
     type_field = r.FLUID; 
     pattern_field = r.BLANK; 
+    mode_perlin=false; mode_chaos=false; mode_equation=false; mode_image=false; mode_gravity=false; mode_magnetic=false; mode_fluid=true;
   }
+
   int super_type_field = r.STATIC ;
   if(type_field != r.STATIC) super_type_field = r.DYNAMIC;
   bVec3 reset = bVec3(false,false,true);
@@ -113,6 +122,9 @@ void mode_ff() {
 
 
 
+
+
+// mode_perlin, mode_chaos, mode_equation, mode_image, mode_gravity, mode_magnetic, mode_fluid
 
 
 

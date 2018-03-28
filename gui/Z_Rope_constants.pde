@@ -3,7 +3,7 @@ ROPE - Romanesco processing environment –
 * Copyleft (c) 2014-2018
 * Stan le Punk > http://stanlepunk.xyz/
 CONSTANTS ROPE
-v 0.1.3.0
+v 0.1.3.1
 Processing 3.3.7
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Rope
@@ -40,9 +40,16 @@ public interface Rope_Constants {
 
 	static final int STATIC = 1000;
 	static final int DYNAMIC = 1001;
+
+
+	/**
+	GRAPHIC
+	*/
+	static final int PIXEL = 800;
+	static final int STAR = 810;
   
   /**
-  Colour constants
+  COLOUR
   */
 	static final int BLACK = -16777216;
 	static final int NOIR = -16777216;
