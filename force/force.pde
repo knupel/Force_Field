@@ -18,14 +18,14 @@ Via Reynolds: http://www.red3d.com/cwr/steer/FlowFollow.html
 
 Stable fluids from Jos Stam's work on the Navier-Stokes equation
 */
-String force_version = "0.3.4";
+String force_version = "0.3.6";
 boolean external_gui_is = true;
 
 boolean use_leapmotion = false;
 
 boolean pause_is = false;
 
-boolean fullScreen_is = false;
+boolean full_screen_is = true;
 
 
 
@@ -43,15 +43,11 @@ int pattern_field;
 int which_cam = 0 ; // 0 is the camera fullsize / max frameRate by default if there is camera plug is the external cam is catch
 
 void settings() {
-  if(fullScreen_is) {
-    fullScreen(P2D,1);
+  if(full_screen_is) {
+    fullScreen(P2D,2);
     //fullScreen(P2D);      
   } else {
-    size(900,550,P2D);
-    // size(800,800,P2D);
-    //size(1600,870,P2D); // 2eme écran macbook
-    // size(1900,1200,P2D); // 2 recopie écran macbook
-
+    size(950,500,P2D); // taille pour VP Lovetimers
   }
   set_cell_grid_ff(10);
   // type_field = r.FLUID;
@@ -79,12 +75,8 @@ SETUP
 */
 void setup() {
   info_system();
-    if(!fullscreen_is) {
-    int offset_x = 30 ;
-    int offset_y = 50 ;
-    if(!fullScreen_is) surface.setLocation(get_display_size().x -width -offset_x, offset_y);
-    //   surface.setLocation(0,-600);
-  }
+  // set_window_on_other_display(1200,750);
+
   background(0);
 
   if(use_leapmotion) leap_setup();
@@ -234,7 +226,8 @@ void super_draw() {
   GUI
   interface gui
   */
-  mask_mapping(set_mask_is());
+  boolean border_mask = true;
+  mask_mapping(set_mask_is(),border_mask);
 
   if(!external_gui_is) get_controller_gui();
   update_value(time_count_ff);

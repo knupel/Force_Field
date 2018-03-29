@@ -3,7 +3,7 @@ ROPE - Romanesco processing environment –
 * Copyleft (c) 2014-2018 
 * Stan le Punk > http://stanlepunk.xyz/
 Rope UTILS  2015 – 2018
-v 1.38.4
+v 1.39.0
 Rope – Romanesco Processing Environment – 
 Processing 3.3.7
 * @author Stan le Punk
@@ -1642,6 +1642,77 @@ void level(PGraphics p, PImage tex, float... ratio) {
 
 
 
+/**
+DISPLAY
+v 0.1.0
+*/
+void set_window_on_other_display(iVec2 size, iVec2 pos_screen, iVec2 pos_display) {
+  int new_w = size.x;
+  int new_h = size.y;
+  int temp_w = get_display_size(1).x;
+  int temp_h = get_display_size(1).y;
+
+  int offset_x = pos_screen.x ;
+  int offset_y = pos_screen.y;
+  int dx = pos_display.x ;
+  int dy = pos_display.y;
+
+  surface.setSize(new_w,new_h);
+  surface.setLocation(offset_x +dx, offset_y +dy);
+}
+
+/**
+check display
+*/
+iVec2 get_display_size() {
+  return get_display_size(sketchDisplay() -1);
+}
+
+
+iVec2 get_display_size(int which_display) {
+  GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+  GraphicsDevice[] awtDevices = environment.getScreenDevices();
+  int target = 0 ;
+  if(which_display < awtDevices.length) {
+    target = which_display ; 
+  } else {
+    printErr("No display match with your request, instead we use the current display");
+    target = sketchDisplay() -1;
+  }
+  GraphicsDevice awtDisplayDevice = awtDevices[target];
+  Rectangle display = awtDisplayDevice.getDefaultConfiguration().getBounds();
+  return iVec2((int)display.getWidth(), (int)display.getHeight());
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
 CANVAS
@@ -1758,9 +1829,9 @@ void alpha_canvas(int target, float change) {
 
 /**
 show canvas
-v 0.0.3
+v 0.0.4
 */
-boolean fullscreen_is = false ;
+boolean fullscreen_canvas_is = false ;
 iVec2 show_pos ;
 /**
 Add to set the center of the canvas in relation with the window
@@ -1768,7 +1839,7 @@ Add to set the center of the canvas in relation with the window
 int offset_canvas_x = 0 ;
 int offset_canvas_y = 0 ;
 void set_show() {
-  if(!fullscreen_is) {
+  if(!fullscreen_canvas_is) {
     surface.setSize(get_canvas().width, get_canvas().height);
   } else {
     offset_canvas_x = width/2 - (get_canvas().width/2);
@@ -1790,7 +1861,7 @@ int get_offset_canvas_y() {
 }
 
 void show_canvas(int num) {
-  if(fullscreen_is) {
+  if(fullscreen_canvas_is) {
     image(get_canvas(num), show_pos);
   } else {
     image(get_canvas(num));
@@ -2721,6 +2792,25 @@ void background_rope(Vec2 c) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
 TABLE METHOD 
 v 0.0.3.1
@@ -2807,6 +2897,19 @@ void write_row(TableRow row, String col_name, Object o) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
 print
 v 0.1.2
@@ -2880,6 +2983,31 @@ void printArrayTempo(int tempo, String[] var) {
     printArray(var);
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -4301,37 +4429,10 @@ int [][] loadPixels_array_2D() {
 
 
 
-
 /**
 CHECK
-v 0.2.2
+v 0.2.3
 */
-
-
-/**
-check display
-*/
-iVec2 get_display_size() {
-  return get_display_size(sketchDisplay() -1);
-}
-
-
-iVec2 get_display_size(int which_display) {
-  GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-  GraphicsDevice[] awtDevices = environment.getScreenDevices();
-  int target = 0 ;
-  if(which_display < awtDevices.length) {
-    target = which_display ; 
-  } else {
-    printErr("No display match with your request, instead we use the current display");
-    target = sketchDisplay() -1;
-  }
-  GraphicsDevice awtDisplayDevice = awtDevices[target];
-  Rectangle display = awtDisplayDevice.getDefaultConfiguration().getBounds();
-  return iVec2((int)display.getWidth(), (int)display.getHeight());
-}
-
-
 /**
 Check renderer
 */
@@ -4358,12 +4459,6 @@ String get_renderer_name(final PGraphics graph) {
   }
   return "Unknown";
 }
-
-
-
-
-
-
 
 
 /**
