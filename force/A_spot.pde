@@ -15,7 +15,6 @@ void show_spot(int type) {
   int c = color(get_rgb_spot().x,get_rgb_spot().y,get_rgb_spot().z,get_alpha_spot());
   if(type == r.PIXEL) {
     display_pixel_on_PGraphics(pg_spot, c, force_field.get_spot_pos());
-    // force_field.get_spot_pos()
   } else {
     for(int i = 0 ; i < force_field.get_spot_num() ; i++) {
       if(type == POINT) {

@@ -1,18 +1,18 @@
 name,value
-movie position,0.056019813
-perlin,0
+movie position,0.055639666
+perlin,1
 chaos,0
 equation,0
 image,0
 gravity,0
 magnetic,0
-fluid,1
+fluid,0
 background,1
 vehicle,0
 warp,1
-field,0
+field,1
 spot,0
 pause,0
 warp effect,1
 type spot,0
-type vehicle,5
+type vehicle,0

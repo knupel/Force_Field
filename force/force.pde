@@ -25,7 +25,9 @@ boolean use_leapmotion = false;
 
 boolean pause_is = false;
 
-boolean full_screen_is = true;
+boolean full_screen_is = false;
+
+iVec2 size = iVec2(950,500);
 
 
 
@@ -47,7 +49,7 @@ void settings() {
     fullScreen(P2D,2);
     //fullScreen(P2D);      
   } else {
-    size(950,500,P2D); // taille pour VP Lovetimers
+    size(size.x,size.y,P2D); // taille pour VP Lovetimers
   }
   set_cell_grid_ff(10);
   // type_field = r.FLUID;
@@ -75,7 +77,7 @@ SETUP
 */
 void setup() {
   info_system();
-  // set_window_on_other_display(1200,750);
+  // set_window_on_other_display(size.x,size.y);
 
   background(0);
 

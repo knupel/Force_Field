@@ -91,7 +91,7 @@ void gui_setup(Vec2 pos, Vec2 size) {
 
   // COL 2
   gui_misc(space_interface, max, slider_width, col_2_x, 3, TOP);
-  gui_vehicle(space_interface, max, slider_width, col_2_x, 32, TOP);
+  gui_vehicle(space_interface, max, slider_width, col_2_x, 33, TOP);
   gui_main_movie(space_interface, max, slider_width, col_2_x, 1, BOTTOM);
 
   gui_button(space_interface, slider_width, col_1_x, 3, TOP);
@@ -326,25 +326,25 @@ void gui_misc(int space, int max, int w, float pos_x, float pos_y, int from) {
   
   int max_spot = 100 ;
   if(use_leapmotion) max_spot = 10;
-	gui_main.addSlider("spot_num").setPosition(pos_x,pos_slider_y(space, pos_y +25, from)).setWidth(w).setRange(1,max_spot).setNumberOfTickMarks(max_spot).setColor(grey_0_gui);
+	gui_main.addSlider("spot_num").setPosition(pos_x,pos_slider_y(space, pos_y +26, from)).setWidth(w).setRange(1,max_spot).setNumberOfTickMarks(max_spot).setColor(grey_0_gui);
 
 	int range_spot = 10;
-	gui_main.addSlider("spot_range").setPosition(pos_x,pos_slider_y(space, pos_y +27, from)).setWidth(w).setRange(0,range_spot).setNumberOfTickMarks(range_spot +1).setColor(grey_0_gui);
+	gui_main.addSlider("spot_range").setPosition(pos_x,pos_slider_y(space, pos_y +28, from)).setWidth(w).setRange(0,range_spot).setNumberOfTickMarks(range_spot +1).setColor(grey_0_gui);
 }
 
 
 void slider_misc_alpha(int space, int max, int w, float pos_x, float pos_y, int from) {
-	gui_main.addSlider("alpha_background").setLabel("alpha background").setPosition(pos_x,pos_slider_y(space, pos_y +0, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
-  gui_spot.addSlider("alpha_spot").setLabel("alpha spot").setPosition(pos_x,pos_slider_y(space, pos_y +1, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
-  gui_vehicle.addSlider("alpha_vehicle").setLabel("alpha vehicle").setPosition(pos_x,pos_slider_y(space, pos_y +2, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
-  gui_warp.addSlider("alpha_warp").setLabel("alpha warp").setPosition(pos_x,pos_slider_y(space, pos_y +3, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
+	gui_main.addSlider("alpha_background").setLabel("alpha background").setPosition(pos_x,pos_slider_y(space, pos_y +0, from)).setWidth(w).setRange(0,max).setColor(red_gui);
+  gui_spot.addSlider("alpha_spot").setLabel("alpha spot").setPosition(pos_x,pos_slider_y(space, pos_y +1, from)).setWidth(w).setRange(0,max).setColor(red_gui);
+  gui_vehicle.addSlider("alpha_vehicle").setLabel("alpha vehicle").setPosition(pos_x,pos_slider_y(space, pos_y +2, from)).setWidth(w).setRange(0,max).setColor(red_gui);
+  gui_warp.addSlider("alpha_warp").setLabel("alpha warp").setPosition(pos_x,pos_slider_y(space, pos_y +3, from)).setWidth(w).setRange(0,max).setColor(red_gui);
 }
 
 void slider_misc_spot(int space, int max, int w, float pos_x, float pos_y, int from) {
-	gui_spot.addSlider("size_spot").setLabel("size spot").setPosition(pos_x,pos_slider_y(space, pos_y +0, from)).setWidth(w).setRange(0,max).setColor(red_gui);
-	gui_spot.addSlider("red_spot").setLabel("red spot").setPosition(pos_x,pos_slider_y(space, pos_y +1, from)).setWidth(w).setRange(0,max).setColor(red_gui);
-	gui_spot.addSlider("green_spot").setLabel("green spot").setPosition(pos_x,pos_slider_y(space, pos_y +2, from)).setWidth(w).setRange(0,max).setColor(red_gui);
-	gui_spot.addSlider("blue_spot").setLabel("blue spot").setPosition(col_2_x,pos_slider_y(space, pos_y +3, from)).setWidth(w).setRange(0,max).setColor(red_gui);	
+	gui_spot.addSlider("size_spot").setLabel("size spot").setPosition(pos_x,pos_slider_y(space, pos_y +0, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
+	gui_spot.addSlider("red_spot").setLabel("red spot").setPosition(pos_x,pos_slider_y(space, pos_y +1, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
+	gui_spot.addSlider("green_spot").setLabel("green spot").setPosition(pos_x,pos_slider_y(space, pos_y +2, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
+	gui_spot.addSlider("blue_spot").setLabel("blue spot").setPosition(col_2_x,pos_slider_y(space, pos_y +3, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);	
 
 }
 
@@ -386,8 +386,10 @@ void gui_vehicle(int space, int max, int w, float pos_x, float pos_y, int from) 
 
 void gui_main_movie(int space, int max, int w, float pos_x, float pos_y, int from) {
 	int max_speed = 6 ;
-	gui_main_movie.addSlider("header_movie").setPosition(pos_x,pos_slider_y(space, pos_y, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
-	gui_main_movie.addSlider("speed_movie").setPosition(pos_x,pos_slider_y(space, pos_y +2, from)).setWidth(w).setRange(-max_speed,max_speed).setNumberOfTickMarks((max_speed *8) +1).setColor(grey_0_gui);
+	gui_main_movie.addSlider("speed_movie").setLabel("speed movie").setPosition(pos_x,pos_slider_y(space, pos_y +1, from)).setWidth(w).setRange(-max_speed,max_speed).setNumberOfTickMarks((max_speed *8) +1).setColor(grey_0_gui);
+	gui_main_movie.addSlider("header_movie").setLabel("reader").setPosition(pos_x,pos_slider_y(space, pos_y +3, from)).setWidth(w).setRange(0,max).setColor(grey_0_gui);
+	gui_main_movie.addSlider("target_movie").setLabel("go to").setPosition(pos_x,pos_slider_y(space, pos_y +4, from)).setWidth(w).setRange(0,max).setColor(red_gui);
+	
 }
 
 

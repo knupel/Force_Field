@@ -36,7 +36,7 @@ float sum_slider() {
 	sum += blue_cycling;
 	sum += power_cycling;
 	// MOVIE
-	sum += header_movie;
+	sum += target_movie;
 	sum += speed_movie;
 	// FLUID
 	sum += frequence ;
@@ -125,7 +125,7 @@ void send() {
 	message.add(blue_cycling);
 	message.add(power_cycling);
 	// MOVIE
-	message.add(header_movie);
+	message.add(target_movie);
 	message.add(speed_movie);
 	// FLUID
 	message.add(frequence);

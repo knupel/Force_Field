@@ -720,7 +720,10 @@ void keyPressed() {
   if(key == 'z') display_warp();
   if(key == 'e') display_background();
 
-  if(key == 'l') change_cursor_controller();
+  if(key == 'l') {
+    display_cursor();
+    // change_cursor_controller();
+  }
 
   if(key == 'm') set_mask();
 
@@ -952,6 +955,25 @@ boolean set_mask_is() {
 }
 
 
+/**
+cursor
+*/
+boolean display_cursor_is() {
+  return display_cursor;
+}
+
+void display_cursor(boolean is) {
+  display_cursor = is;
+}
+
+// method to set the gui back
+void display_cursor() {
+  display_cursor = !!((display_cursor == false));
+  //if(display_field_is() && !external_gui_is) set_check_gui_main_display(display_field_is());
+  // if(!display_cursor) display_info = false ;
+}
+
+
 
 
 
@@ -972,13 +994,7 @@ void display_grid() {
 }
 
 /**
-display field
-*/
-/*
-void display_spot(){
-  display_spot = !display_spot;
-  if(!display_spot) display_info = false ;
-}
+display spot
 */
 boolean display_spot_is() {
   return display_spot;
@@ -997,12 +1013,6 @@ void display_spot() {
 
 /**
 display field
-*/
-/*
-void display_field(){
-  display_field = !display_field;
-  if(!display_field) display_info = false ;
-}
 */
 boolean display_field_is() {
   return display_field;
@@ -1088,20 +1098,6 @@ void show_must_go_on() {
   show_must_go_on = !!((show_must_go_on == false));
   if(!external_gui_is) set_check_gui_main_display(display_background_is());
 }
-
-/**
-choice vehicle shape or pixel
-*/
-/*
-void set_vehicle_pixel_is(boolean is) {
-  vehicle_pixel_is = is ;
-}
-
-boolean vehicle_pixel_is() {
-  return vehicle_pixel_is;
-}
-*/
-
 
 /**
 movie setting
@@ -1227,7 +1223,7 @@ cursor manager
 */
 void cursor_manager() {
   boolean display = false;
-  if(set_mask_is() || interface_is()) display = true;
+  if(set_mask_is() || interface_is() || display_cursor_is()) display = true;
   if(display) {
     cursor(CROSS);
   } else {

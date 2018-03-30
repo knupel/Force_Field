@@ -1,6 +1,6 @@
 /**
 WARP media manager
-v 0.3.1
+v 0.3.2
 */
 
 /**
@@ -31,7 +31,7 @@ void warp_media_loaded(boolean state) {
 
 /**
 movie
-v 0.1.0
+v 0.2.0
 */
 import processing.video.*;
 ArrayList<Movie> movie_warp_list;
@@ -112,11 +112,13 @@ void display_movie(PGraphics pg, int target) {
 }
 
 
-float speed_movie_warp_ref = 1 ;
+float speed_movie_warp_ref = 1;
+float target_movie_ref ;
 void update_movie_warp_interface() { 
   if(gui_news_ext_is() || !external_gui_is) {
-    if(get_movie_warp(which_movie) != null && header_movie != get_movie_pos_norm()) {
-      float header = get_movie_warp().duration() *header_movie;
+    if(get_movie_warp(which_movie) != null && target_movie != target_movie_ref) {
+      float header = get_movie_warp().duration() *target_movie;
+      target_movie_ref = target_movie;
       get_movie_warp().jump(header);
     }
   }

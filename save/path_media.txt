@@ -1,8 +1,8 @@
 null
-Movie/Users/stanislasmarcais/Desktop/CODE/PROJET/2018/Young Timer/source/EXPORT H264/00 INTRO.mov
-Movie/Users/stanislasmarcais/Desktop/CODE/PROJET/2018/Young Timer/source/EXPORT H264/01 AMERICA.mov
-Movie/Users/stanislasmarcais/Desktop/CODE/PROJET/2018/Young Timer/source/EXPORT H264/02 LE CHEMIN.mov
-Movie/Users/stanislasmarcais/Desktop/CODE/PROJET/2018/Young Timer/source/EXPORT H264/04 GRACE.mov
-Movie/Users/stanislasmarcais/Desktop/CODE/PROJET/2018/Young Timer/source/EXPORT H264/05 NOUVEL HOMME.mov
-Movie/Users/stanislasmarcais/Desktop/CODE/PROJET/2018/Young Timer/source/EXPORT H264/06 GLORIA.mov
-Movie/Users/stanislasmarcais/Desktop/CODE/PROJET/2018/Young Timer/source/EXPORT H264/07 J ATTENDRAIS.mov
+Movie/Users/stanislasmarcais/Desktop/CODE/PROJET/2018/Young Timer/source/vidéo SD/01 INTRO.mov
+Movie/Users/stanislasmarcais/Desktop/CODE/PROJET/2018/Young Timer/source/vidéo SD/02 America.mov
+Movie/Users/stanislasmarcais/Desktop/CODE/PROJET/2018/Young Timer/source/vidéo SD/03 LE CHEMIN.mov
+Movie/Users/stanislasmarcais/Desktop/CODE/PROJET/2018/Young Timer/source/vidéo SD/05 GRACE.mov
+Movie/Users/stanislasmarcais/Desktop/CODE/PROJET/2018/Young Timer/source/vidéo SD/06 Nouvel homme.mov
+Movie/Users/stanislasmarcais/Desktop/CODE/PROJET/2018/Young Timer/source/vidéo SD/09 Gloria.mov
+Movie/Users/stanislasmarcais/Desktop/CODE/PROJET/2018/Young Timer/source/vidéo SD/10 J ATTENDRAIS.mov

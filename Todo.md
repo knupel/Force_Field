@@ -1,24 +1,54 @@
 TODO
 --
-Write the date from App Force only necessary : Movie reading, gui interaction.
+GUI :Améliorer le navigateur vidéo
 --
-Eloigner la réglette de cellule de celle du nombre de spot
+APP :Renvoyer le fps vers l'interface ?
 --
-Changer la couleur des groupes de réglette spot et véhicule
+*petit logiciel pour positioner la fenêtre, et valider pour eviter de la repositionner en permance.
+
+
+APP :Write the data from App Force only necessary : Movie reading, gui interaction.
 --
-Reset uniquement des champs de vecteur clavier et interface
---
-Faire apparaitre le curseur via une touche du clavier
---
-Les spots doivent pouvoir apparaitre dans tous les modes, sauf ceux liés à l'information.
---
-améliorer le navigateur vidéo.
+GUI et APP
+*Reset uniquement des champs de vecteur clavier et interface
 
 
 --
-continue to private void convert_field_to_texture()
+GUI ; bouton pour afficher le curseur.
 
 --
-Add mess, wind by target field cell
+APP :continue to private void convert_field_to_texture()
 --
+APP : Add mess, wind by target field cell
+--
+GUI : finaliser les boutons misc divers
+
+
+
+VIDEO
+--
+*ralentissement quand on passe d'une vidéo à une autre, sans doute vider la mémoire ?
+
+
+FIELD
+-- 
+GUI & APP
+> réglage du champs de vecteur, longueur et couleur
+
+
+
+SPOT
+--
+APP Les spots doivent pouvoir apparaitre dans tous les modes, sauf ceux liés à l'information.
+> Ce n'est pas possible pour l'instant car ils dépendent directement du champs de force, il faudrait dissocier les deux, cela peut-être long.
+
+
+MIDI
+--
+Ajoujter un controleur MIDI
+
+
+SON
+--
+Ajouter de la réactivité au son
 

@@ -1,6 +1,6 @@
 /**
 variable global share with the main sketch
-v 0.0.10
+v 0.0.13
 
 In the future those values must be write in an external file to be read by the main and gui sketche
 */
@@ -17,23 +17,30 @@ the variable is in the order send or receive OSC data
 */
 int num_mode = 7;
 boolean [] mode = new boolean[num_mode];
-boolean mode_perlin, mode_chaos, mode_equation, mode_image, mode_gravity, mode_magnetic, mode_fluid;
+boolean mode_perlin, mode_chaos, mode_equation, mode_image, mode_gravity, mode_magnetic, mode_fluid ;
 
+int num_display = 5;
+boolean [] display = new boolean[num_display];
 boolean display_background = true;
 boolean display_vehicle = false;
 boolean display_warp = false;
 boolean display_field = false;
 boolean display_spot = false;
+boolean display_cursor = false;
 
+
+int num_misc = 5;
+boolean [] misc = new boolean[num_misc];
 boolean change_size_window_is = false;
 boolean fullfit_image_is = true;
 boolean show_must_go_on = true; 
 boolean warp_is = true; 
 boolean full_reset_field_is = false;
 
+// dropdown
 int which_media;
-
-int type_vehicle, type_spot;
+int type_vehicle;
+int type_spot;
 
 
 
@@ -85,6 +92,7 @@ float blue_cycling = 0;
 float power_cycling = .35;
 
 // MOVIE
+float target_movie = 0;
 float header_movie = 0 ;
 float speed_movie = 1;
 
