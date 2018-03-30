@@ -1,5 +1,5 @@
 name,value
-movie position,0.055639666
+movie position,0.0
 perlin,1
 chaos,0
 equation,0
@@ -9,8 +9,8 @@ magnetic,0
 fluid,0
 background,1
 vehicle,0
-warp,1
-field,1
+warp,0
+field,0
 spot,0
 pause,0
 warp effect,1

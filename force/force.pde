@@ -18,21 +18,24 @@ Via Reynolds: http://www.red3d.com/cwr/steer/FlowFollow.html
 
 Stable fluids from Jos Stam's work on the Navier-Stokes equation
 */
-String force_version = "0.3.6";
+String force_version = "0.3.7";
 boolean external_gui_is = true;
 
 boolean use_leapmotion = false;
 
 boolean pause_is = false;
 
-boolean full_screen_is = false;
+boolean full_screen_is = true;
 
-iVec2 size = iVec2(950,500);
+// iVec2 size = iVec2(950,500);
+iVec2 size = iVec2(1280,750); // love_timer
+iVec2 pos_window_1 = iVec2(0,0);
+iVec2 pos_window_2 = iVec2(0,100);
 
 
 
 boolean interface_is = true;
-boolean hide_menu_bar = false;
+boolean hide_menu_bar = true;
 boolean inside_gui = false;
 
 int time_count_ff;
@@ -77,7 +80,7 @@ SETUP
 */
 void setup() {
   info_system();
-  // set_window_on_other_display(size.x,size.y);
+  set_window_on_other_display(size);
 
   background(0);
 
@@ -106,12 +109,21 @@ void setup() {
 /**
 DRAW
 */
-boolean first_draw_round;
+boolean init_force;
+boolean pos_window_down;
 void draw() {
-  if(first_draw_round) {
-    super_draw();
+  if(init_force) {
+    if(use_leapmotion) leap_update();
+    if(hide_menu_bar) PApplet.hideMenuBar();
+    force();
   } else {
-    first_draw_round = true;
+    if(pos_window_down) {
+      set_window_on_other_display(size,pos_window_1,CENTER);
+    } else {
+      // set_window_on_other_display(size,pos_window_2);
+      set_window_on_other_display(size,pos_window_2,CENTER);
+    }
+    init_force = true;
   }
 }
 
@@ -119,10 +131,10 @@ void draw() {
 /**
 SUPER DRAW
 */
-void super_draw() {
+void force() {
   if(!pause_is || show_must_go_on_is()) time_count_ff++;
-  if(hide_menu_bar) PApplet.hideMenuBar();
-  if(use_leapmotion) leap_update();
+  
+  
 
   if(interface_is() && !external_gui_is) {
     inside_gui = inside(get_pos_interface(), get_size_interface(), Vec2(mouseX,mouseY));

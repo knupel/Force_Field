@@ -5,10 +5,26 @@ v 0.4.0
 /**
 set window display
 */
-void set_window_on_other_display(int x, int y) {
-  iVec2 size = iVec2(x,y);
+void set_window_on_other_display(iVec2 size) {
   iVec2 pos_screen = iVec2(get_display_size(1).x, 0);
   iVec2 pos_display = iVec2(get_display_size(1)).sub(size).div(2);
+  set_window_on_other_display(size,pos_screen,pos_display);
+}
+
+void set_window_on_other_display(iVec2 size, iVec2 pos) {
+  iVec2 pos_screen = iVec2(get_display_size(1).x, 0);
+  iVec2 pos_display = pos.copy();
+  set_window_on_other_display(size,pos_screen,pos_display);
+}
+
+void set_window_on_other_display(iVec2 size, iVec2 pos, int type) {
+  iVec2 pos_screen = iVec2(get_display_size(1).x, 0);
+  iVec2 pos_display = iVec2();
+  if(type == CENTER) {  
+    pos_display = iVec2(get_display_size(1)).sub(size).div(2).add(pos);
+  } else {
+    pos_display.set(pos);
+  }
   set_window_on_other_display(size,pos_screen,pos_display);
 }
 
@@ -685,13 +701,19 @@ void reset_mode() {
 
 /**
 KEYPRESSED
-v 0.2.0
+v 0.3.0
 */
 void keyPressed() {
   news_from_gui = true;
   keys[keyCode] = true;
   
   key_pressed_add_media() ;
+
+  if(key == '0') {
+    init_force = !!((init_force == false));
+    pos_window_down = !!((pos_window_down == false));
+    println("Force window change position");
+  }
 
   /**
   if(key == 'a')
@@ -774,7 +796,8 @@ void key_pressed_change_mode() {
   if(key == 'w') next_mode_ff(-1);
   if(key == 'x') next_mode_ff(+1);
 
-  char [] key_num = {'1','2','3','4','5','6','7','8','9','0'};
+  char [] key_num = {'1','2','3','4','5','6','7','8','9'};
+  // '0' is reserved for change window position
   
   for(int i = 0 ; i < num_mode ; i++) {
     if(key == key_num[i]) {

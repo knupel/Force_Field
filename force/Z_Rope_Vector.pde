@@ -3,7 +3,7 @@ ROPE - Romanesco processing environment –
 * Copyleft (c) 2014-2018 
 * Stan le Punk > http://stanlepunk.xyz/
 ROPE vector
-v 2.6.6
+v 2.6.7
 Rope – Romanesco Processing Environment: 2015–2017
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Rope
@@ -327,7 +327,7 @@ class bVec6 extends bVec {
 
 /**
 iVec class
-v 0.9
+v 0.10
 2017-2018
 vector with int precision
 */
@@ -553,6 +553,19 @@ class iVec2 extends iVec {
 
 
 
+  /**
+  Copy
+  */
+  /**
+  * return all the component of Vec
+  * @return iVec2
+  */
+  iVec2 copy() {
+    return new iVec2(x,y) ;
+  }
+
+
+
   @Override String toString() {
     return "[ " + x + ", " + y + " ]" ;
   }
@@ -741,6 +754,17 @@ class iVec3 extends iVec {
     if((x == tx) && (y == ty) && (z == tz)) 
     return true; 
     else return false;
+  }
+
+  /**
+  Copy
+  */
+  /**
+  * return all the component of Vec
+  * @return iVec3
+  */
+  iVec3 copy() {
+    return new iVec3(x,y,z) ;
   }
 
 
@@ -933,6 +957,17 @@ class iVec4 extends iVec {
     else return false;
   }
 
+  /**
+  Copy
+  */
+  /**
+  * return all the component of Vec
+  * @return iVec4
+  */
+  iVec4 copy() {
+    return new iVec4(x,y,z,w) ;
+  }
+
 
 
   @Override String toString() {
@@ -996,6 +1031,18 @@ class iVec5 extends iVec {
     return array ;
   }
 
+
+  /**
+  Copy
+  */
+  /**
+  * return all the component of Vec
+  * @return iVec5
+  */
+  iVec5 copy() {
+    return new iVec5(a,b,c,d,e) ;
+  }
+
   @Override String toString() {
     return "[ " + a + ", " + b + ", " + c + ", " + d + ", " + e + " ]" ;
   }
@@ -1045,6 +1092,18 @@ class iVec6 extends iVec {
     this.e = e;
     this.f = f;
     return this;
+  }
+
+
+    /**
+  Copy
+  */
+  /**
+  * return all the component of Vec
+  * @return iVec6
+  */
+  iVec6 copy() {
+    return new iVec6(a,b,c,d,e,f) ;
   }
 
   @Override String toString() {

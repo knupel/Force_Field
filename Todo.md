@@ -1,11 +1,26 @@
 TODO
 --
+*Young timer
+
+Recalculer la vidéo "J'attendrais" afin que la fille soit plus visible, elle est trop basse par rapport à la scene
+
+*MASQUE
+
+masque évolutif, afin de pouvoir arroser le haut de la scène si besoin.
+
+*DIRTY WAY
+
+l'idée faire une route en champs de vecteur ?
+
+*RIDEAU
+
+ajouter un bouton rideau
+
 GUI :Améliorer le navigateur vidéo
 --
 APP :Renvoyer le fps vers l'interface ?
 --
-*petit logiciel pour positioner la fenêtre, et valider pour eviter de la repositionner en permance.
-
+petit logiciel pour positioner la fenêtre, et valider pour eviter de la repositionner en permance.
 
 APP :Write the data from App Force only necessary : Movie reading, gui interaction.
 --
@@ -30,8 +45,17 @@ VIDEO
 *ralentissement quand on passe d'une vidéo à une autre, sans doute vider la mémoire ?
 
 
+*MONTAGE
+
+isoler le titre young timer pour en faire une vidéo à part
+
+
+
 FIELD
 -- 
+*couleur field
+
+Mettre les vecteur en noir et blanc
 GUI & APP
 > réglage du champs de vecteur, longueur et couleur
 
