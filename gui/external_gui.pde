@@ -374,7 +374,7 @@ void gui_main_movie(int space, int max, int w, float pos_x, float pos_y, int fro
 	int max_speed = 6 ;
 	gui_main_movie.addSlider("speed_movie").setLabel("speed movie").setPosition(pos_x,pos_slider_y(space, pos_y +1, from)).setWidth(w).setRange(-max_speed,max_speed).setNumberOfTickMarks((max_speed *8) +1).setColor(c);
 	gui_main_movie.addSlider("header_movie").setLabel("reader").setPosition(pos_x,pos_slider_y(space, pos_y +3, from)).setWidth(w).setRange(0,max).setColor(c);
-	gui_main_movie.addSlider("target_movie").setLabel("go to").setPosition(pos_x,pos_slider_y(space, pos_y +4, from)).setWidth(w).setRange(0,max).setColor(c);
+	gui_main_movie.addSlider("header_target_movie").setLabel("go to").setPosition(pos_x,pos_slider_y(space, pos_y +4, from)).setWidth(w).setRange(0,max).setColor(c);
 	
 }
 

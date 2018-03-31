@@ -109,13 +109,12 @@ void display_movie(PGraphics pg, int target) {
     }
     warp_video_window_ratio(pg, target);
     ref_movie = target ;  
-    
+
     if(!movie_warp_reading_is()) {
       get_movie_warp(target).read();
       get_movie_warp(target).loop();
       movie_warp_reading(true);
     }
-
 
     if(ratio_display_video != 1.) {
       int w = ceil(get_movie_warp(target).width *ratio_display_video);
@@ -171,7 +170,6 @@ Movie get_movie_warp(int target) {
 Movie get_movie_warp() {
   return get_movie_warp(which_movie);
 }
-
 
 void select_media_to_display() {
   Info_int i = media_info.get(which_media);

@@ -480,8 +480,10 @@ void catch_osc_data(Object [] data) {
 
   type_vehicle = (int)data[63];
   type_spot = (int)data[64];
-  which_media = (int)data[65];
-  select_media_to_display(); 
+  if(which_media != (int)data[65]) {
+    which_media = (int)data[65];
+    select_media_to_display(); 
+  } 
 }
 
 
