@@ -25,10 +25,10 @@ boolean use_leapmotion = false;
 
 boolean pause_is = false;
 
-boolean full_screen_is = true;
+boolean full_screen_is = false;
 
-// iVec2 size = iVec2(950,500);
-iVec2 size = iVec2(1280,750); // love_timer
+iVec2 size = iVec2(950,500);
+// iVec2 size = iVec2(1280,750); // love_timer
 iVec2 pos_window_1 = iVec2(0,0);
 iVec2 pos_window_2 = iVec2(0,100);
 
@@ -80,7 +80,10 @@ SETUP
 */
 void setup() {
   info_system();
-  set_window_on_other_display(size);
+  println("display connected:",get_display_num());
+  if(get_display_num() > 1) {
+    set_window_on_other_display(size);
+  }
 
   background(0);
 
@@ -117,12 +120,21 @@ void draw() {
     if(hide_menu_bar) PApplet.hideMenuBar();
     force();
   } else {
+    // that's a bullshit organisation, it's just for a specific show
     if(pos_window_down) {
-      set_window_on_other_display(size,pos_window_1,CENTER);
+      if(get_display_num() > 1) {
+        set_window_on_other_display(size,pos_window_2,CENTER);
+      } else {
+        set_window_on_main_display(size,pos_window_2,CENTER);
+      }
     } else {
-      // set_window_on_other_display(size,pos_window_2);
-      set_window_on_other_display(size,pos_window_2,CENTER);
+      if(get_display_num() > 1) {
+        set_window_on_other_display(size,pos_window_1,CENTER);
+      } else {
+        set_window_on_main_display(size,pos_window_1,CENTER);
+      }
     }
+    // end of n'importe quoi  
     init_force = true;
   }
 }

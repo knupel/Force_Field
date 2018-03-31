@@ -5,16 +5,45 @@ v 0.4.0
 /**
 set window display
 */
+
+void set_window_on_main_display(iVec2 size) {
+  iVec2 pos_screen = iVec2(0,0);
+  iVec2 pos_display = iVec2(get_display_size()).sub(size).div(2);
+  set_window_on_display(size,pos_screen,pos_display);
+}
+
+void set_window_on_main_display(iVec2 size, iVec2 pos) {
+  iVec2 pos_screen = iVec2(0,0);
+  iVec2 pos_display = pos.copy();
+  set_window_on_display(size,pos_screen,pos_display);
+}
+
+void set_window_on_main_display(iVec2 size, iVec2 pos, int type) {
+  iVec2 pos_screen = iVec2(0,0);
+  iVec2 pos_display = iVec2();
+  if(type == CENTER) {  
+    pos_display = iVec2(get_display_size()).sub(size).div(2).add(pos);
+  } else {
+    pos_display.set(pos);
+  }
+  set_window_on_display(size,pos_screen,pos_display);
+}
+
+
+
+
+
+
 void set_window_on_other_display(iVec2 size) {
   iVec2 pos_screen = iVec2(get_display_size(1).x, 0);
   iVec2 pos_display = iVec2(get_display_size(1)).sub(size).div(2);
-  set_window_on_other_display(size,pos_screen,pos_display);
+  set_window_on_display(size,pos_screen,pos_display);
 }
 
 void set_window_on_other_display(iVec2 size, iVec2 pos) {
   iVec2 pos_screen = iVec2(get_display_size(1).x, 0);
   iVec2 pos_display = pos.copy();
-  set_window_on_other_display(size,pos_screen,pos_display);
+  set_window_on_display(size,pos_screen,pos_display);
 }
 
 void set_window_on_other_display(iVec2 size, iVec2 pos, int type) {
@@ -25,7 +54,7 @@ void set_window_on_other_display(iVec2 size, iVec2 pos, int type) {
   } else {
     pos_display.set(pos);
   }
-  set_window_on_other_display(size,pos_screen,pos_display);
+  set_window_on_display(size,pos_screen,pos_display);
 }
 
 

@@ -2,7 +2,7 @@
 external GUI Force
 2017-2018
 http://stanlepunk.xyz/
-v 0.0.1
+v 0.1.0
 */
 import oscP5.*;
 import netP5.*;

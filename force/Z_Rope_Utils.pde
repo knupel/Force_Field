@@ -3,7 +3,7 @@ ROPE - Romanesco processing environment –
 * Copyleft (c) 2014-2018 
 * Stan le Punk > http://stanlepunk.xyz/
 Rope UTILS  2015 – 2018
-v 1.39.0
+v 1.39.1
 Rope – Romanesco Processing Environment – 
 Processing 3.3.7
 * @author Stan le Punk
@@ -1644,9 +1644,9 @@ void level(PGraphics p, PImage tex, float... ratio) {
 
 /**
 DISPLAY
-v 0.1.0
+v 0.2.1
 */
-void set_window_on_other_display(iVec2 size, iVec2 pos_screen, iVec2 pos_display) {
+void set_window_on_display(iVec2 size, iVec2 pos_screen, iVec2 pos_display) {
   int new_w = size.x;
   int new_h = size.y;
   int temp_w = get_display_size(1).x;
@@ -1683,6 +1683,13 @@ iVec2 get_display_size(int which_display) {
   Rectangle display = awtDisplayDevice.getDefaultConfiguration().getBounds();
   return iVec2((int)display.getWidth(), (int)display.getHeight());
 }
+
+int get_display_num() {
+  GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+  return environment.getScreenDevices().length;
+}
+
+
 
 
 

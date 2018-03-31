@@ -1,6 +1,6 @@
 /**
 variable global share with the main sketch
-v 0.0.13
+v 0.0.14
 
 In the future those values must be write in an external file to be read by the main and gui sketche
 */
@@ -92,7 +92,7 @@ float blue_cycling = 0;
 float power_cycling = .35;
 
 // MOVIE
-float target_movie = 0;
+float header_target_movie = 0;
 float header_movie = 0 ;
 float speed_movie = 1;
 

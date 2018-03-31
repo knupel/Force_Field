@@ -433,7 +433,7 @@ void catch_osc_data(Object [] data) {
   blue_cycling = (Float)data[22];
   power_cycling = (Float)data[23];
   // MOVIE
-  target_movie = (Float)data[24];
+  header_target_movie = (Float)data[24];
   speed_movie = (Float)data[25];
   // FLUID
   frequence = (Float)data[26];

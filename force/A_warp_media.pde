@@ -6,6 +6,7 @@ v 0.3.2
 /**
 common method media, video and camera
 */
+// media loaded state
 boolean warp_media_loaded_is ;
 boolean warp_media_is() {
   return warp_media_loaded_is ;
@@ -14,6 +15,17 @@ boolean warp_media_is() {
 void warp_media_loaded(boolean state) {
   warp_media_loaded_is = state ;
 }
+// movie reading state
+boolean movie_warp_reading_is ;
+boolean movie_warp_reading_is() {
+  return movie_warp_reading_is;
+}
+
+void movie_warp_reading(boolean state) {
+  movie_warp_reading_is = state;
+}
+
+
 
 
 
@@ -88,6 +100,7 @@ void warp_video_window_ratio(PGraphics pg, int target) {
 }
 
 int ref_movie = -1;
+
 void display_movie(PGraphics pg, int target) {
   if(movie_warp_list != null && get_movie_warp(target) != null) {
     if(ref_movie != target) {
@@ -95,9 +108,14 @@ void display_movie(PGraphics pg, int target) {
       get_movie_warp(target).stop();
     }
     warp_video_window_ratio(pg, target);
-    ref_movie = target ;
-    get_movie_warp(target).read();
-    get_movie_warp(target).loop();
+    ref_movie = target ;  
+    
+    if(!movie_warp_reading_is()) {
+      get_movie_warp(target).read();
+      get_movie_warp(target).loop();
+      movie_warp_reading(true);
+    }
+
 
     if(ratio_display_video != 1.) {
       int w = ceil(get_movie_warp(target).width *ratio_display_video);
@@ -113,12 +131,12 @@ void display_movie(PGraphics pg, int target) {
 
 
 float speed_movie_warp_ref = 1;
-float target_movie_ref ;
+float header_target_movie_ref ;
 void update_movie_warp_interface() { 
   if(gui_news_ext_is() || !external_gui_is) {
-    if(get_movie_warp(which_movie) != null && target_movie != target_movie_ref) {
-      float header = get_movie_warp().duration() *target_movie;
-      target_movie_ref = target_movie;
+    if(get_movie_warp(which_movie) != null && header_target_movie != header_target_movie_ref) {
+      float header = get_movie_warp().duration() *header_target_movie;
+      header_target_movie_ref = header_target_movie;
       get_movie_warp().jump(header);
     }
   }
@@ -139,10 +157,6 @@ void update_movie_warp_interface() {
 }
 
 
-
-
-
-
 // Called every time a new frame is available to read
 void movieEvent(Movie m) {
   if(play_movie_warp_is) m.read();
@@ -158,10 +172,13 @@ Movie get_movie_warp() {
   return get_movie_warp(which_movie);
 }
 
+
 void select_media_to_display() {
   Info_int i = media_info.get(which_media);
   if(i !=null) {
     if(i.get_name().equals("Movie")) {
+      get_movie_warp().stop();
+      movie_warp_reading(false);
       movie_warp_is(true);
       which_movie = i.get(1);
     }
