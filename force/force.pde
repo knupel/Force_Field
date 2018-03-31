@@ -252,8 +252,7 @@ void force() {
   GUI
   interface gui
   */
-  boolean border_mask = true;
-  mask_mapping(set_mask_is(),border_mask);
+  mask_mapping(set_mask_is());
 
   if(!external_gui_is) get_controller_gui();
   update_value(time_count_ff);

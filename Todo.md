@@ -16,9 +16,7 @@ l'idée faire une route en champs de vecteur ?
 
 ajouter un bouton rideau
 
-GUI :Améliorer le navigateur vidéo
---
-APP :Renvoyer le fps vers l'interface ?
+
 --
 petit logiciel pour positioner la fenêtre, et valider pour eviter de la repositionner en permance.
 
@@ -42,8 +40,6 @@ GUI : finaliser les boutons misc divers
 
 VIDEO
 --
-*ralentissement quand on passe d'une vidéo à une autre, sans doute vider la mémoire ?
-
 
 *MONTAGE
 

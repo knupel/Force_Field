@@ -1,13 +1,2 @@
 null
-Movie/Users/stanislasmarcais/Desktop/CODE/PROJET/2018/Young Timer/source/vidéo SD/00 eau.mov
-Movie/Users/stanislasmarcais/Desktop/CODE/PROJET/2018/Young Timer/source/vidéo SD/00 piscine gros plan.mov
-Movie/Users/stanislasmarcais/Desktop/CODE/PROJET/2018/Young Timer/source/vidéo SD/00 piscine.mov
-Movie/Users/stanislasmarcais/Desktop/CODE/PROJET/2018/Young Timer/source/vidéo SD/00 Young Timer Typo.mov
-Movie/Users/stanislasmarcais/Desktop/CODE/PROJET/2018/Young Timer/source/vidéo SD/01 INTRO.mov
-Movie/Users/stanislasmarcais/Desktop/CODE/PROJET/2018/Young Timer/source/vidéo SD/02 America.mov
-Movie/Users/stanislasmarcais/Desktop/CODE/PROJET/2018/Young Timer/source/vidéo SD/03 LE CHEMIN.mov
-Movie/Users/stanislasmarcais/Desktop/CODE/PROJET/2018/Young Timer/source/vidéo SD/05 GRACE.mov
-Movie/Users/stanislasmarcais/Desktop/CODE/PROJET/2018/Young Timer/source/vidéo SD/06 Nouvel homme.mov
-Movie/Users/stanislasmarcais/Desktop/CODE/PROJET/2018/Young Timer/source/vidéo SD/10 J ATTENDRAIS.mov
 Movie/Users/stanislasmarcais/Desktop/CODE/PROJET/2018/Young Timer/source/vidéo SD/10_1 fille J ATTENDRAIS.mov
-Movie/Users/stanislasmarcais/Desktop/CODE/PROJET/2018/Young Timer/source/vidéo SD/10_2_champs J ATTENDRAIS.mov
