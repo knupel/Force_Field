@@ -582,8 +582,7 @@ v 0.0.3
 */
 void save_force() {
   write_file_mask_mapping();
-  selectOutput("Select a file to write to:", "selected_file_to_save");
-  
+  selectOutput("Select a file to write to:", "selected_file_to_save"); 
 }
 
 
@@ -1086,17 +1085,26 @@ void keyPressed() {
     global_reset();
   }
 
+
   if(key == 'v') {
     println("the code line video is disable for this time");
-    // play_video_switch();
+    // 
+    vehicle_reset_gui_is = false;
+    warp_reset_gui_is = true;
+    field_reset_gui_is = true;
+    global_reset();
   }
 
   if(key == 's') {
     save_force();
   }
 
-  if(key == 't') {
+  if(key == 'y') {
     if(shader_filter_is) shader_filter_is = false ; else shader_filter_is = true ;
+  }
+
+  if(key == 'u') {
+    play_video_switch();
   }
 
   key_pressed_change_mode();

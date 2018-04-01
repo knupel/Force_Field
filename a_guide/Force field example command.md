@@ -43,12 +43,21 @@ key p
 > APPLICATION: save jpeg frame of the sketch
 
 key r 
->FORCE: new vehicles distribution
+
 >FORCE: refresh force field, use to refresh PERLIN and CHAOS mode
-> WARP: reset the backgroung fluid image
+>WARP: reset the backgroung fluid image
 
 key s
+> FORCE: save force
+
+key y
 > WARP: switch filter
+
+key v
+>FORCE: reset field only
+
+key u
+>APP: switch video camera media
 
 key space 
 >FORCE: stop the force field process
