@@ -29,11 +29,6 @@ void set_window_on_main_display(iVec2 size, iVec2 pos, int type) {
   set_window_on_display(size,pos_screen,pos_display);
 }
 
-
-
-
-
-
 void set_window_on_other_display(iVec2 size) {
   iVec2 pos_screen = iVec2(get_display_size(1).x, 0);
   iVec2 pos_display = iVec2(get_display_size(1)).sub(size).div(2);
@@ -95,148 +90,110 @@ void info_system() {
 
 
 
+
+
+
+
+
+
+
 /**
 MASK MAPPING
 v 0.0.2
 */
 boolean border_is;
+boolean default_mask_is = true;
 void mask_mapping(boolean change_is) {
   border_is = true ;
   if(border_is) {
-    mask_mapping_border(change_is);    
+    mask_mapping_border(change_is, default_mask_is);    
   } else {
     mask_mapping_2_blocks(change_is);
   } 
 }
 
-
-
 /**
 load data save
 */
-Table save_msk ;
+
 boolean mask_loaded_is ;
 void load_save_mask(File selection) {
   if (selection == null) {
     println("No file has been selected for data mask");
   } else {
-    save_msk = loadTable(selection.getAbsolutePath(),"header");
+    Table t = loadTable(selection.getAbsolutePath(),"header");
+    set_file_mask_mapping(t);
     // mask border part
-    if(save_msk.getRowCount() > 7) {
+    if(get_file_mask_mapping().getRowCount() > 7) {
       int target = 0;
-      for (TableRow row : save_msk.findRows("coord_connected", "name")) {
+      for (TableRow row : get_file_mask_mapping().findRows("coord_connected", "name")) {
         int x = row.getInt("x");
         int y = row.getInt("y");
         coord_connected[target].set(x,y);
         target++;
       }
       target = 0;
-      for (TableRow row : save_msk.findRows("coord_block_1", "name")) {
+      for (TableRow row : get_file_mask_mapping().findRows("coord_block_1", "name")) {
         int x = row.getInt("x");
         int y = row.getInt("y");
         coord_block_1[target].set(x,y);
         target++ ;
       }
       target = 0;
-      for (TableRow row : save_msk.findRows("coord_block_2", "name")) {
+      for (TableRow row : get_file_mask_mapping().findRows("coord_block_2", "name")) {
         int x = row.getInt("x");
         int y = row.getInt("y");
         coord_block_2[target].set(x,y);
         target++ ;
       }
       target = 0;
-      for (TableRow row : save_msk.findRows("coord_block_3", "name")) {
+      for (TableRow row : get_file_mask_mapping().findRows("coord_block_3", "name")) {
         int x = row.getInt("x");
         int y = row.getInt("y");
         coord_block_3[target].set(x,y);
         target++ ;
       }
       target = 0;
-      for (TableRow row : save_msk.findRows("coord_block_4", "name")) {
+      for (TableRow row : get_file_mask_mapping().findRows("coord_block_4", "name")) {
         int x = row.getInt("x");
         int y = row.getInt("y");
         coord_block_4[target].set(x,y);
         target++ ;
       }
     }
+    init_mask_is = false;
+    default_mask_is = false;
     mask_loaded_is = true;
-    mask_mapping(true);
+    mask_mapping(false);
   }  
 }
 
-void save_mask_border() {
-  save_msk = new Table();
-  save_msk.addColumn("name");
-  save_msk.addColumn("is");
-  save_msk.addColumn("x");
-  save_msk.addColumn("y");
 
-  TableRow newRow;
-  if(coord_connected != null) {
-    for(int i = 0 ; i < coord_connected.length ;i++) {
-      newRow = save_msk.addRow();
-      newRow.setString("name", "coord_connected");
-      newRow.setString("is", "true");
-      newRow.setInt("x", coord_connected[i].x);
-      newRow.setInt("y", coord_connected[i].y);
-    }
-  }
-  
-  if(coord_block_1 != null) {
-    for(int i = 0 ; i < coord_block_1.length ;i++) {
-      newRow = save_msk.addRow();
-      newRow.setString("name", "coord_block_1");
-      newRow.setString("is", "true");
-      newRow.setInt("x", coord_block_1[i].x);
-      newRow.setInt("y", coord_block_1[i].y);
-    }
-  }
 
-  if(coord_block_2 != null) {
-    for(int i = 0 ; i < coord_block_2.length ;i++) {
-      newRow = save_msk.addRow();
-      newRow.setString("name", "coord_block_2");
-      newRow.setString("is", "true");
-      newRow.setInt("x", coord_block_2[i].x);
-      newRow.setInt("y", coord_block_2[i].y);
-    }
-  }
-
-  if(coord_block_3 != null) {
-    for(int i = 0 ; i < coord_block_3.length ;i++) {
-      newRow = save_msk.addRow();
-      newRow.setString("name", "coord_block_3");
-      newRow.setString("is", "true");
-      newRow.setInt("x", coord_block_3[i].x);
-      newRow.setInt("y", coord_block_3[i].y);
-    }
-  }
-
-  if(coord_block_4 != null) {
-    for(int i = 0 ; i < coord_block_4.length ;i++) {
-      newRow = save_msk.addRow();
-      newRow.setString("name", "coord_block_4");
-      newRow.setString("is", "true");
-      newRow.setInt("x", coord_block_4[i].x);
-      newRow.setInt("y", coord_block_4[i].y);
-    }
-  }
-  saveTable(save_msk, sketchPath(1)+ "/save/last_border_mask.csv");
-}
 
 
 
 
 
 Mask_mapping mask_border;
-void mask_mapping_border(boolean change_is) {
-  if(mask_border == null) {
-    mask_mapping_border_default();
-    mask_border = new Mask_mapping(coord_connected,coord_block_1,coord_block_2,coord_block_3,coord_block_4);
-  } else if(mask_loaded_is) {
-    mask_border = new Mask_mapping(coord_connected,coord_block_1,coord_block_2,coord_block_3,coord_block_4);
-    mask_loaded_is = false ;
-  } else {
+boolean init_mask_is;
+void mask_mapping_border(boolean change_is, boolean default_mask_is) {
+  // build mask
+  if(!init_mask_is) {
+    if(mask_border == null || default_mask_is) {
+      mask_mapping_border_default();
+      mask_border = new Mask_mapping(coord_connected,coord_block_1,coord_block_2,coord_block_3,coord_block_4);
+      init_mask_is = true;
+    } else if(mask_loaded_is) {
+      mask_border = new Mask_mapping(coord_connected,coord_block_1,coord_block_2,coord_block_3,coord_block_4);
+      mask_loaded_is = false;
+      init_mask_is = true;
+    }
+  }
+   
+  
+  // draw mask
+  if(mask_border != null && init_mask_is) {
     mask_border.draw(change_is);
     if(change_is) {
       coord_connected = mask_border.get_coord();
@@ -244,7 +201,9 @@ void mask_mapping_border(boolean change_is) {
       coord_block_2 = mask_border.get_coord_block_2();
       coord_block_3 = mask_border.get_coord_block_3();
       coord_block_4 = mask_border.get_coord_block_4();
-      save_mask_border();
+      //write_file_mask_mapping(get_file_mask_mapping());
+      write_file_mask_mapping();
+      save_file_mask_mapping(get_file_mask_mapping(),sketchPath(1)+ "/save/last_border_mask.csv");
     }
   }  
 }
@@ -396,35 +355,33 @@ public class Mask_mapping {
         coord[i] = iVec3(list[i].x,list[i].y,0);
       }
       // block 1
-      if(list_block_1.length > 0) {
+      if(list_block_1 != null && list_block_1.length > 0) {
         coord_block_1 = new iVec3[list_block_1.length];
         for(int i = 0 ; i < coord_block_1.length ;i++) {
           coord_block_1[i] = iVec3(list_block_1[i].x,list_block_1[i].y,0);
         }
       }
-
       // block 2
-      if(list_block_2.length > 0) {
+      if(list_block_2 != null && list_block_2.length > 0) {
         coord_block_2 = new iVec3[list_block_2.length];
         for(int i = 0 ; i < coord_block_2.length ;i++) {
           coord_block_2[i] = iVec3(list_block_2[i].x,list_block_2[i].y,0);
         }
       }
       // block 3
-      if(list_block_3.length > 0) {
+      if(list_block_3 != null && list_block_3.length > 0) {
         coord_block_3 = new iVec3[list_block_3.length];
         for(int i = 0 ; i < coord_block_3.length ;i++) {
           coord_block_3[i] = iVec3(list_block_3[i].x,list_block_3[i].y,0);
         }
       }
       // block 4
-      if(list_block_3.length > 0) {
+      if(list_block_4 != null && list_block_3.length > 0) {
         coord_block_4 = new iVec3[list_block_4.length];
         for(int i = 0 ; i < coord_block_4.length ;i++) {
           coord_block_4[i] = iVec3(list_block_3[i].x,list_block_4[i].y,0);
         }
       }
-
     }
     init = true;
   }
@@ -621,8 +578,105 @@ public class Mask_mapping {
 
 /**
 SAVE / LOAD
-v 0.0.2
+v 0.0.3
 */
+void save_force() {
+  write_file_mask_mapping();
+  selectOutput("Select a file to write to:", "selected_file_to_save");
+  
+}
+
+
+void selected_file_to_save(File selection) {
+  if (selection == null) {
+    println("Window was closed or the user hit cancel.");
+  } else {
+    println("User selected",selection.getAbsolutePath(),"for save force file");
+    save_file_mask_mapping(get_file_mask_mapping(),selection.getAbsolutePath()+".csv");
+  }
+}
+
+
+
+
+// mask file
+Table file_msk;
+Table get_file_mask_mapping() {
+  return file_msk;
+}
+
+void set_file_mask_mapping(Table t) {
+  file_msk = t ;
+}
+
+void save_file_mask_mapping(Table s_msk, String path) {
+  if(s_msk != null) {
+    saveTable(s_msk, path);
+  }
+} 
+
+void write_file_mask_mapping() {
+  file_msk = new Table();
+  file_msk.addColumn("name");
+  file_msk.addColumn("is");
+  file_msk.addColumn("x");
+  file_msk.addColumn("y");
+
+  TableRow newRow;
+  if(coord_connected != null) {
+    for(int i = 0 ; i < coord_connected.length ;i++) {
+      newRow = file_msk.addRow();
+      newRow.setString("name", "coord_connected");
+      newRow.setString("is", "true");
+      newRow.setInt("x", coord_connected[i].x);
+      newRow.setInt("y", coord_connected[i].y);
+    }
+  }
+  
+  if(coord_block_1 != null) {
+    for(int i = 0 ; i < coord_block_1.length ;i++) {
+      newRow = file_msk.addRow();
+      newRow.setString("name", "coord_block_1");
+      newRow.setString("is", "true");
+      newRow.setInt("x", coord_block_1[i].x);
+      newRow.setInt("y", coord_block_1[i].y);
+    }
+  }
+
+  if(coord_block_2 != null) {
+    for(int i = 0 ; i < coord_block_2.length ;i++) {
+      newRow = file_msk.addRow();
+      newRow.setString("name", "coord_block_2");
+      newRow.setString("is", "true");
+      newRow.setInt("x", coord_block_2[i].x);
+      newRow.setInt("y", coord_block_2[i].y);
+    }
+  }
+
+  if(coord_block_3 != null) {
+    for(int i = 0 ; i < coord_block_3.length ;i++) {
+      newRow = file_msk.addRow();
+      newRow.setString("name", "coord_block_3");
+      newRow.setString("is", "true");
+      newRow.setInt("x", coord_block_3[i].x);
+      newRow.setInt("y", coord_block_3[i].y);
+    }
+  }
+
+  if(coord_block_4 != null) {
+    for(int i = 0 ; i < coord_block_4.length ;i++) {
+      newRow = file_msk.addRow();
+      newRow.setString("name", "coord_block_4");
+      newRow.setString("is", "true");
+      newRow.setInt("x", coord_block_4[i].x);
+      newRow.setInt("y", coord_block_4[i].y);
+    }
+  }
+}
+
+
+
+
 
 /**
 save data dialogue with controller
@@ -1032,9 +1086,16 @@ void keyPressed() {
     global_reset();
   }
 
-  if(key == 'v') play_video_switch();
+  if(key == 'v') {
+    println("the code line video is disable for this time");
+    // play_video_switch();
+  }
 
   if(key == 's') {
+    save_force();
+  }
+
+  if(key == 't') {
     if(shader_filter_is) shader_filter_is = false ; else shader_filter_is = true ;
   }
 
