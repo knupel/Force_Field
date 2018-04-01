@@ -126,14 +126,17 @@ void gui_mode() {
 }
 
 void mode(int n) {
-	state_button(true);
-	for (int i = 0 ; i < mode.length ; i++) {
-		if(n == i) {
-			mode[i] = true; 
-		} else {
-			mode[i] = false;
+  if(n != -1) {
+  	state_button(true);
+  	for (int i = 0 ; i < mode.length ; i++) {
+			if(n == i) {
+				mode[i] = true; 
+			} else {
+				mode[i] = false;
+			}
 		}
-	}
+  }
+
 	if(mode[0]) perlin_true();
 	else if (mode[1]) chaos_true();
 	else if (mode[2]) equation_true();
@@ -311,10 +314,10 @@ void gui_misc_G(int space, int max, int w, float pos_x, float pos_y, int from) {
   
   int max_spot = 100 ;
   if(use_leapmotion) max_spot = 10;
-	gui_main.addSlider("spot_num").setPosition(pos_x,pos_slider_y(space, pos_y +26, from)).setWidth(w).setRange(1,max_spot).setNumberOfTickMarks(max_spot).setColor(grey_0_gui);
+	gui_main.addSlider("spot_num").setPosition(pos_x,pos_slider_y(space, pos_y +26, from)).setWidth(w).setRange(1,max_spot).setNumberOfTickMarks(max_spot).setColor(red_gui);
 
 	int range_spot = 10;
-	gui_main.addSlider("spot_range").setPosition(pos_x,pos_slider_y(space, pos_y +28, from)).setWidth(w).setRange(0,range_spot).setNumberOfTickMarks(range_spot +1).setColor(grey_0_gui);
+	gui_main.addSlider("spot_range").setPosition(pos_x,pos_slider_y(space, pos_y +28, from)).setWidth(w).setRange(0,range_spot).setNumberOfTickMarks(range_spot +1).setColor(red_gui);
 }
 
 
@@ -598,8 +601,10 @@ void show_gui() {
 	if(movie_warp_is()) gui_main_movie.show(); else gui_main_movie.hide();	
 
 	if(!use_leapmotion && spot_num > 2 && (mode_gravity_is() || mode_magnetic_is() || mode_fluid_is())) {
+		// println(!use_leapmotion,spot_num, mode_gravity_is(),mode_magnetic_is(),mode_fluid_is(),frameCount);
 		gui_dynamic_spot.show(); 
 	} else {
+		//println(!use_leapmotion,spot_num, mode_gravity_is(),mode_magnetic_is(),mode_fluid_is(),frameCount);
 		gui_dynamic_spot.hide();
 	}
 }
