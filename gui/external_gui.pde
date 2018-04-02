@@ -149,16 +149,13 @@ void mode(int n) {
 
 
 void gui_button_G(int space, int w, float pos_x, float pos_y, int from) {
-	String [] method_name = {"bool_background", "bool_vehicle", "bool_warp", "bool_field", "bool_spot"};
-	String [] label = {"background", "vehicle", "warp", "force field", "spot"};
-  String name = "display";
+  //String name = "display";
   iVec2 pos = iVec2(0,16);
-  int num_by_line = label.length;
+  int num_by_line = display_label.length;
   iVec2 size = iVec2 (int(width/(num_by_line *1.5)),15); 
   iVec2 spacing = iVec2(0,0);
 
-  set_buttons(pos, size, num_by_line, spacing, gui_button, method_name, label, red_gui);
-
+  set_button(pos, size, num_by_line, gui_button, display_method_name, display_label, red_gui);
 
 	// dropdown
 	int h_dropdown = 150 ;
@@ -190,10 +187,50 @@ void gui_button_G(int space, int w, float pos_x, float pos_y, int from) {
 }
 
 
+/**
+method call by CP5
+*/
+/*
+String [] misc_method_name = {"bool_size_window","bool_fit_image","bool_show","bool_warp_fx","bool_full_reset"};
+String [] misc_label = {"size window","fit image","show must go on","warp fx","full reset field"};
+// maybe change name of variable below, like the variable display_...
+boolean change_size_window_is = false;
+boolean fullfit_image_is = true;
+boolean show_must_go_on = true; 
+boolean warp_is = true; 
+boolean full_reset_field_is = false;
+*/
 
+// misc
+void bool_size_window(boolean state) {
+	state_button(true);
+	change_size_window_is = state;
+}
+
+void bool_fit_image(boolean state) {
+	state_button(true);
+	fullfit_image_is = state;
+}
+
+void bool_show(boolean state) {
+	state_button(true);
+	show_must_go_on = state;
+}
+
+void bool_warp_fx(boolean state) {
+	state_button(true);
+	misc_warp_fx = state;
+}
+
+void bool_full_reset(boolean state) {
+	state_button(true);
+	full_reset_field_is = state;
+}
+
+// display
 void bool_background(boolean state) {
 	state_button(true);
-	display_background = state ;
+	display_background = state;
 }
 
 void bool_vehicle(boolean state) {
@@ -465,7 +502,7 @@ public void controlEvent(ControlEvent theEvent) {
 
 	  if(theEvent.isFrom(checkbox_channel)) {
 	  	state_button(true);
-			if(checkbox_channel.getArrayValue(0) == 1) warp_is = true; else warp_is = false;
+			if(checkbox_channel.getArrayValue(0) == 1) misc_warp_fx = true; else misc_warp_fx = false;
 	  }
 
 	  if(theEvent.isFrom(checkbox_mag_grav)) {
@@ -531,7 +568,7 @@ void set_controller_from_outside() {
 float ref_power_cycling;
 boolean switch_off_power_cycling;
 void set_controller_main() {
-	if(!warp_is) {
+	if(!misc_warp_fx) {
 		if(!switch_off_power_cycling) ref_power_cycling = power_cycling;
 		switch_off_power_cycling = true;
 		gui_warp.getController("power_cycling").setValue(0);
@@ -560,7 +597,7 @@ void set_internal_boolean() {
   if(change_size_window_is) gui_change_size_window_is = true ; else gui_change_size_window_is = false;
 	if(fullfit_image_is) gui_fullfit_image_is = true ; else gui_fullfit_image_is = false;
 	if(show_must_go_on) gui_show_must_go_on = true ; else gui_show_must_go_on = false ;
-	if(warp_is) gui_warp_is = true; else gui_warp_is = false;
+	if(misc_warp_fx) gui_warp_is = true; else gui_warp_is = false;
 	if(full_reset_field_is) gui_full_reset_field_is = true ; else  gui_full_reset_field_is = false;
 	//if(vehicle_pixel_is) gui_vehicle_pixel_is = true ; else gui_vehicle_pixel_is = false;
 }
@@ -643,14 +680,19 @@ RadioButton set_radio(String name, iVec2 pos, iVec2 size, int num, iVec2 spacing
   return rb ;  
 }
 
-void set_buttons(iVec2 pos, iVec2 size, int num, iVec2 spacing, ControlP5 cp5, String [] method_name, String [] label, CColor c) {
-  cp5 = new ControlP5(this);
-  for(int i = 0 ; i < method_name.length ;i++) {
-
-  	cp5.addToggle(method_name[i]).setLabel(label[i])
+void set_button(iVec2 pos, iVec2 size, int num, ControlP5 cp5, String [] name, String [] label, CColor c) {
+  // cp5 = new ControlP5(this);
+  for(int i = 0 ; i < display_method_name.length ;i++) {
+  	// cp5.addButton(method_name[i]).setLabel(label[i])
+  	cp5.addToggle(name[i]).setLabel(label[i])
   			.setPosition(pos.x+(size.x *i),pos.y).setSize(size.x,size.y)
   			//.setItemsPerRow(num).setSpacingColumn(spacing.x).setSpacingRow(spacing.y)
   			.setColor(c).getCaptionLabel().align(CENTER,CENTER);
+  }
+  
+  if(cp5.getController(name[0]) instanceof Toggle) {
+  	Toggle t = (Toggle) cp5.getController(name[0]);
+  	t.setState(true);
   }
 }
 

@@ -35,6 +35,14 @@ void set_window_on_other_display(iVec2 size) {
   set_window_on_display(size,pos_screen,pos_display);
 }
 
+
+void set_window_on_other_display(iVec2 size, int target_display) {
+  println("display",target_display,get_display_size(target_display));
+  iVec2 pos_screen = iVec2(get_display_size(target_display).x, 0);
+  iVec2 pos_display = iVec2(get_display_size(target_display)).sub(size).div(2);
+  set_window_on_display(size,pos_screen,pos_display);
+}
+
 void set_window_on_other_display(iVec2 size, iVec2 pos) {
   iVec2 pos_screen = iVec2(get_display_size(1).x, 0);
   iVec2 pos_display = pos.copy();
@@ -111,11 +119,9 @@ void mask_mapping(boolean change_is) {
     mask_mapping_2_blocks(change_is);
   } 
 }
-
 /**
 load data save
 */
-
 boolean mask_loaded_is ;
 void load_save_mask(File selection) {
   if (selection == null) {
@@ -169,12 +175,6 @@ void load_save_mask(File selection) {
 }
 
 
-
-
-
-
-
-
 Mask_mapping mask_border;
 boolean init_mask_is;
 void mask_mapping_border(boolean change_is, boolean default_mask_is) {
@@ -191,7 +191,6 @@ void mask_mapping_border(boolean change_is, boolean default_mask_is) {
     }
   }
    
-  
   // draw mask
   if(mask_border != null && init_mask_is) {
     mask_border.draw(change_is);
@@ -276,22 +275,6 @@ void data_mask_mapping_blocks() {
 
   num_mask_mapping = 2;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -719,25 +702,27 @@ void media_add(boolean state) {
   media_add_is = state;
 }
 
-
-Table value_app_force;
+/**
+save dial file
+*/
+Table table_dial_force;
 TableRow [] row;
-void save_value_app_too_controller(int tempo) {
+void save_dial_force(int tempo) {
   if(frameCount%tempo == 0) {
-    if(value_app_force == null) {
-      value_app_force = new Table();
-      value_app_force.addColumn("name");
-      value_app_force.addColumn("value");
-      int num_row = 17 ;
+    if(table_dial_force == null) {
+      table_dial_force = new Table();
+      table_dial_force.addColumn("name");
+      table_dial_force.addColumn("value");
+      int num_row = 30;
       row = new TableRow[num_row] ;
       for(int i = 0 ; i < row.length ; i++) {
-        row[i] = value_app_force.addRow();
+        row[i] = table_dial_force.addRow();
       }    
     }
     
     row[0].setString("name", "movie position");
     row[0].setFloat("value", get_movie_pos_norm());
-
+    // mode
     row[1].setString("name", "perlin");
     if(mode_perlin) row[1].setInt("value",1); else row[1].setInt("value",0);
     row[2].setString("name", "chaos");
@@ -753,6 +738,7 @@ void save_value_app_too_controller(int tempo) {
     row[7].setString("name", "fluid");
     if(mode_fluid) row[7].setInt("value",1); else row[7].setInt("value",0);
 
+    // display
     row[8].setString("name", "background");
     if(display_background) row[8].setInt("value",1); else row[8].setInt("value",0);
     row[9].setString("name", "vehicle");
@@ -763,21 +749,64 @@ void save_value_app_too_controller(int tempo) {
     if(display_field) row[11].setInt("value",1); else row[11].setInt("value",0);
     row[12].setString("name", "spot");
     if(display_spot) row[12].setInt("value",1); else row[12].setInt("value",0);
+    
+    // dropdown
+    row[19].setString("name", "type spot");
+    row[19].setInt("value",get_type_spot());
 
-    row[13].setString("name", "pause");
-    if(pause_is) row[13].setInt("value",1); else row[13].setInt("value",0);
-    row[14].setString("name", "warp effect");
-    if(warp_is) row[14].setInt("value",1); else row[14].setInt("value",0);
-    row[15].setString("name", "full reset");
-    if(full_reset_field_is) row[15].setInt("value",1); else row[15].setInt("value",0);
-    row[16].setString("name", "type vehicle");
-    row[16].setInt("value",get_type_vehicle());
-    row[15].setString("name", "type spot");
-    row[16].setInt("value",get_type_spot());
+    row[20].setString("name", "type vehicle");
+    row[20].setInt("value",get_type_vehicle());
 
-    saveTable(value_app_force,sketchPath(1)+"/save/value_app_force.csv");
+    row[21].setString("name", "media");
+    row[21].setInt("value",get_which_media());
+
+    // misc
+    row[22].setString("name", "resize widow");
+    row[22].setInt("value",1); // not used at this time
+    
+    row[23].setString("name", "full fit image");
+    row[23].setInt("value",1); // not used at this time
+    // 
+    row[24].setString("name", "show must go on");
+    row[24].setInt("value",1); // not used at this time
+    
+    row[25].setString("name", "warp fx");
+    if(warp_fx_is()) row[25].setInt("value",1); else row[25].setInt("value",0);
+
+    row[26].setString("name", "shader fx");
+    if(shader_fx_is()) row[26].setInt("value",1); else row[26].setInt("value",0);
+
+    row[27].setString("name", "full reset field");
+    if(full_reset_field_is) row[27].setInt("value",1); else row[27].setInt("value",0);
+
+    row[28].setString("name", "pause"); // not used at this time
+    if(pause_is) row[28].setInt("value",1); else row[28].setInt("value",0);
+
+    saveTable(table_dial_force,sketchPath(1)+"/save/dialogue_force.csv");
   }  
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1087,8 +1116,6 @@ void keyPressed() {
 
 
   if(key == 'v') {
-    println("the code line video is disable for this time");
-    // 
     vehicle_reset_gui_is = false;
     warp_reset_gui_is = true;
     field_reset_gui_is = true;
@@ -1100,7 +1127,8 @@ void keyPressed() {
   }
 
   if(key == 'y') {
-    if(shader_filter_is) shader_filter_is = false ; else shader_filter_is = true ;
+    misc_shader_fx = !!((misc_shader_fx == false));
+    //if(shader_filter_is) shader_filter_is = false ; else shader_filter_is = true ;
   }
 
   if(key == 'u') {
@@ -1111,7 +1139,8 @@ void keyPressed() {
 
 
   if(key == ' ') {
-    if(pause_is) pause_is = false ; else pause_is = true ;
+    pause_is = !!((pause_is == false));
+    //if(pause_is) pause_is = false ; else pause_is = true ;
   }
   
   // navigation in the media movie or picture
@@ -1316,8 +1345,6 @@ void set_mask() {
 boolean set_mask_is() {
   return set_mask_is;
 }
-
-
 /**
 cursor
 */
@@ -1335,12 +1362,6 @@ void display_cursor() {
   //if(display_field_is() && !external_gui_is) set_check_gui_main_display(display_field_is());
   // if(!display_cursor) display_info = false ;
 }
-
-
-
-
-
-
 
 /**
 display
@@ -1427,6 +1448,21 @@ void display_warp() {
   if(display_warp_is() && !external_gui_is) set_check_gui_main_display(display_background_is());
 }
 
+/** 
+warp fx
+*/
+boolean warp_fx_is() {
+  return misc_warp_fx;
+}
+
+/**
+shader fx
+*/
+boolean shader_fx_is() {
+  return misc_shader_fx;
+}
+
+
 
 /**
 display background
@@ -1486,6 +1522,13 @@ int get_type_vehicle() {
 
 int get_type_spot() {
   return type_spot;
+}
+
+/**
+get media
+*/
+int get_which_media() {
+  return which_media;
 }
 
 
@@ -1563,19 +1606,16 @@ void diaporama_is() {
   diaporama_is = (true)? !diaporama_is : diaporama_is ;
 }
 
-
 void set_fit_image(boolean state) {
   fullfit_image_is = state;
 }
-
 
 void set_full_reset_field(boolean state) {
   full_reset_field_is = state;
 }
 
-
-void set_warp_is(boolean state) {
-  warp_is = state;
+void set_warp_fx_is(boolean state) {
+  misc_warp_fx = state;
 }
 
 

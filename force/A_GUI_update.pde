@@ -475,7 +475,7 @@ void catch_osc_data(Object [] data) {
   if((int)data[58] == 0) set_resize_window(false); else set_resize_window(true);
   if((int)data[59] == 0) set_fit_image(false); else set_fit_image(true);
   if((int)data[60] == 0) show_must_go_on(false); else show_must_go_on(true);
-  if((int)data[61] == 0) set_warp_is(false); else set_warp_is(true);
+  if((int)data[61] == 0) set_warp_fx_is(false); else set_warp_fx_is(true);
   if((int)data[62] == 0) set_full_reset_field(false); else set_full_reset_field(true);
 
   type_vehicle = (int)data[63];

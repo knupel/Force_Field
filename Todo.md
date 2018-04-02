@@ -4,9 +4,9 @@ TODO
 
 Recalculer la vidéo "J'attendrais" afin que la fille soit plus visible, elle est trop basse par rapport à la scene
 
-*MASQUE
+*Background
 
-masque évolutif, afin de pouvoir arroser le haut de la scène si besoin.
+Probleme avec les vidéos
 
 *DIRTY WAY
 
@@ -22,9 +22,6 @@ petit logiciel pour positioner la fenêtre, et valider pour eviter de la reposit
 
 APP :Write the data from App Force only necessary : Movie reading, gui interaction.
 --
-GUI et APP
-*Reset uniquement des champs de vecteur clavier et interface
-
 
 --
 GUI ; bouton pour afficher le curseur.

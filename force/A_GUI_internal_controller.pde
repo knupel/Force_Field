@@ -59,7 +59,8 @@ void gui_setup() {
 	if(display_vehicle);
 	*/
   
-  if(warp_is) gui_warp_is = true; else gui_warp_is = false;
+  if(misc_warp_fx) gui_warp_is = true; else gui_warp_is = false;
+  
 	if(full_reset_field_is) gui_full_reset_field_is = true ; else  gui_full_reset_field_is = false;
 	if(change_size_window_is) gui_change_size_window_is = true ; else gui_change_size_window_is = false;
 	if(fullfit_image_is) gui_fullfit_image_is = true ; else gui_fullfit_image_is = false;

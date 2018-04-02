@@ -3,7 +3,7 @@ APP WARP
 v 0.1.2
 */
 Warp warp = new Warp();
-boolean shader_filter_is = false;
+// boolean shader_filter_is = false;
 boolean init_warp_is = false;
 String surface_g = "";
 int ref_warp_w, ref_warp_h ;
@@ -247,7 +247,7 @@ void warp_show(Vec4 channel_warp_rgb_mapped, float intensity_warp, boolean keep)
   if(!keep || new_channel_values) {
     warp.refresh(channel_warp_rgb_mapped);
     warp.shader_init();
-    warp.shader_filter(shader_filter_is);
+    warp.shader_filter(shader_fx_is());
     warp.shader_mode(0);
   }
   /**

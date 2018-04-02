@@ -18,14 +18,14 @@ Via Reynolds: http://www.red3d.com/cwr/steer/FlowFollow.html
 
 Stable fluids from Jos Stam's work on the Navier-Stokes equation
 */
-String force_version = "0.3.7";
+String force_version = "0.3.8";
 boolean external_gui_is = true;
 
 boolean use_leapmotion = false;
 
 boolean pause_is = false;
 
-boolean full_screen_is = false;
+boolean full_screen_is = true;
 
 iVec2 size = iVec2(950,500);
 // iVec2 size = iVec2(1280,750); // love_timer
@@ -82,7 +82,9 @@ void setup() {
   info_system();
   println("display connected:",get_display_num());
   if(get_display_num() > 1) {
-    set_window_on_other_display(size);
+    size.set(width,height);
+    //set_window_on_other_display(size,0);
+    //set_window_on_other_display(size,iVec2(1920,0));
   }
 
   background(0);
@@ -121,6 +123,7 @@ void draw() {
     force();
   } else {
     // that's a bullshit organisation, it's just for a specific show
+    /*
     if(pos_window_down) {
       if(get_display_num() > 1) {
         set_window_on_other_display(size,pos_window_2,CENTER);
@@ -134,6 +137,7 @@ void draw() {
         set_window_on_main_display(size,pos_window_1,CENTER);
       }
     }
+    */
     // end of n'importe quoi  
     init_force = true;
   }
@@ -270,7 +274,7 @@ void force() {
   cursor_manager();
   diaporama(240);  
   media_end();
-  save_value_app_too_controller(30);
+  save_dial_force(30);
   global_reset();
 }
 

@@ -165,7 +165,7 @@ void send() {
 	if(change_size_window_is) message.add(1); else message.add(0);
 	if(fullfit_image_is) message.add(1); else message.add(0);
 	if(show_must_go_on) message.add(1); else message.add(0);
-	if(warp_is) message.add(1); else message.add(0);
+	if(misc_warp_fx) message.add(1); else message.add(0);
 	if(full_reset_field_is) message.add(1); else message.add(0);
 	// DROPDOWN MENU
 	message.add(type_vehicle);
