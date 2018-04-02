@@ -1371,13 +1371,15 @@ void display_cursor() {
 display
 */
 void display_info() {
-  display_info = !display_info ;
+  // display_info = !display_info ;
+  display_info = !!((display_info == false));
   set_info(display_info) ;
 }
 
 
 void display_grid() {
-  display_grid = !display_grid;
+  // display_grid = !display_grid;
+  display_grid = !!((display_grid == false));
   if(!display_grid) display_info = false ;
 }
 
@@ -1414,7 +1416,7 @@ void display_field(boolean is) {
 void display_field() {
   display_field = !!((display_field == false));
   //if(display_field_is() && !external_gui_is) set_check_gui_main_display(display_field_is());
-  if(!display_field) display_info = false ;
+  // if(!display_field) display_info = false ;
 }
 
 /**
@@ -1745,6 +1747,7 @@ void change_cursor_controller() {
 
 
 
+
 /**
 info
 v 0.2.0
@@ -1754,16 +1757,15 @@ void info() {
   stroke(g.colorModeA *.6f);
   strokeWeight(.5);
 
-  // FIELD
-  if (display_field) {
-    float scale = 5 ;
-    int c = r.HUE;
-    float min_c = .0; // red
-    float max_c = .7; // blue
-    boolean reverse_c = false;
-    set_show_field(scale,c,min_c,max_c,reverse_c);
-    show_field(get_ff());
-  }
+  // INFO FIELD
+  float scale = 5 ;
+  int c = r.HUE;
+  float min_c = .0; // red
+  float max_c = .7; // blue
+  boolean reverse_c = false;
+  set_show_field(scale,c,min_c,max_c,reverse_c);
+  show_field(get_ff());
+
 
   // GRID
   if(display_grid) {
@@ -1816,10 +1818,10 @@ boolean display_info = false ;
 void set_info(boolean display_info) {
   this.display_info = display_info;
   if(display_info) {
-    display_field = true ;
+    // display_field = true ;
     display_grid = true ;
   } else {
-    display_field = false;
+    //display_field = false;
     display_grid = false;
   }
 }
@@ -1874,16 +1876,41 @@ void save_frame_jpg(float compression) {
 
 /**
 show vector field
-v 0.1.0
+v 0.2.0
 */
-float scale_show_field = 5;
-int colour_field;
-boolean reverse_value_colour_field;
-float min_range_colour_field = 0.;
-float max_range_colour_field = .7;
+void show_custom_field() {
+  float scale = 1 +(height *length_field);
+  int c = r.HUE;
+  if(colour_field == 0) c = r.HUE;
+  else if (colour_field == 1) c = r.RED;
+  else if (colour_field == 2) c = r.ORANGE;
+  else if (colour_field == 3) c = r.YELLOW;
+  else if (colour_field == 4) c = r.GREEN;
+  else if (colour_field == 5) c = r.CYAN;
+  else if (colour_field == 6) c = r.BLUE;
+  else if (colour_field == 7) c = r.PURPLE;
+  else if (colour_field == 8) c = r.MAGENTA;
+  else if (colour_field == 9) c = r.WHITE;
+  else if (colour_field == 10) c = r.BLACK;
+  
+  float min_c = colour_field_min; 
+  float max_c = colour_field_max; 
+  boolean reverse_c = false;
+  strokeWeight(1);
+  set_show_field(scale,c,min_c,max_c,reverse_c);
+  show_field(get_ff());
+}
+
+
+
+float scale_show_vff = 5;
+int colour_vff;
+boolean reverse_value_colour_vff;
+float min_range_colour_vff = 0.;
+float max_range_colour_vff = .7;
 
 void set_show_field(float scale, int colour_constant, float min, float max, boolean reverse_colour) {
-  scale_show_field = scale;
+  scale_show_vff = scale;
   set_range_colour_field(min,max);
   colour_field(colour_constant);
   reverse_color_field(reverse_colour);
@@ -1891,22 +1918,21 @@ void set_show_field(float scale, int colour_constant, float min, float max, bool
 
 
 void colour_field(int c) {
-  colour_field = c;
+  colour_vff = c;
 }
 
 void set_range_colour_field(float min, float max) {
-  min_range_colour_field = min;
-  max_range_colour_field = max;
+  min_range_colour_vff = min;
+  max_range_colour_vff = max;
 }
 
 
 void reverse_color_field(boolean state) {
-  reverse_value_colour_field = state;
+  reverse_value_colour_vff = state;
 }
 
 void show_field(Force_field ff) {
-  float scale = scale_show_field ;
-
+  float scale = scale_show_vff;
   if(ff != null) {
     Vec2 offset = Vec2(ff.get_canvas_pos()) ;
     offset.sub(ff.get_resolution()/2);
@@ -1940,31 +1966,37 @@ void pattern_field(Vec2 dir, float mag, Vec2 pos, float scale) {
   rotate(dir.angle());
   // Calculate length of vector & scale it to be dir_vector or smaller if dir_vector
   float len = mag *scale;
-  float min = min_range_colour_field;
-  float max = max_range_colour_field;
+  float min = min_range_colour_vff;
+  float max = max_range_colour_vff;
 
   float value = map(abs(len), 0, scale,max,min);
-  if(reverse_value_colour_field) {
+  if(reverse_value_colour_vff) {
     value = 1-value ;
   }
 
-  if(colour_field == r.HUE) {
+  if(colour_vff == r.HUE) {
     stroke(value,1,1,1);
-  } else if(colour_field == r.RED) {
+
+  } else if(colour_vff == r.RED) {
     stroke(0,1,value,1);
-  } else if(colour_field == r.ORANGE) {
+  } else if(colour_vff == r.ORANGE) {
     stroke(0.08,1,value,1);
-  } else if(colour_field == r.YELLOW) {
-    stroke(0.2,1,value,1);
-  } else if(colour_field == r.GREEN) {
-    stroke(0.4,1,value,1);
-  } else if(colour_field == r.BLUE) {
+  } else if(colour_vff == r.YELLOW) {
+    stroke(0.166,1,value,1);
+  } else if(colour_vff == r.GREEN) {
+    stroke(0.333,1,value,1);
+  } else if(colour_vff == r.CYAN) {
+    stroke(0.5,1,value,1);
+  } else if(colour_vff == r.BLUE) {
     stroke(0.65,1,value,1);
-  } else if(colour_field == r.PURPLE) {
-    stroke(0.75,1,value,1);
-  } else if(colour_field == r.WHITE) {
+  } else if(colour_vff == r.PURPLE) {
+    stroke(0.749,1,value,1);
+  } else if(colour_vff == r.MAGENTA) {
+    stroke(0.833,1,value,1);
+
+  } else if(colour_vff == r.WHITE) {
     stroke(0,0,value,1);
-  } else if(colour_field == r.BLACK) {
+  } else if(colour_vff == r.BLACK) {
     stroke(0,value,0,1);
   } else {
     stroke(value,1,1,1);

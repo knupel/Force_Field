@@ -71,7 +71,7 @@ void update_media_list() {
 float ref_value_slider ;
 void send_value_controller() {
 	float current_value_slider = sum_slider();
-	if(current_value_slider != ref_value_slider || state_button_is()) {
+	if(!misc_curtain_is() && (current_value_slider != ref_value_slider || state_button_is()) ) {
 		state_button(false);
 		send();
 		ref_value_slider = current_value_slider ;

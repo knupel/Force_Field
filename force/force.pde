@@ -136,8 +136,7 @@ void draw() {
       } else {
         set_window_on_main_display(size,pos_window_1,CENTER);
       }
-    }
-    
+    }  
     // end of n'importe quoi  
     init_force = true;
   }
@@ -150,8 +149,6 @@ SUPER DRAW
 void force() {
   if(!pause_is || show_must_go_on_is()) time_count_ff++;
   
-  
-
   if(interface_is() && !external_gui_is) {
     inside_gui = inside(get_pos_interface(), get_size_interface(), Vec2(mouseX,mouseY));
   } else {
@@ -231,6 +228,11 @@ void force() {
       warp_draw(get_tempo_refresh_gui(), get_rgba_warp_mapped_gui(), get_power_cycling_gui(), false);
     }
   }
+
+  // FIELD
+  if(display_field_is() && !display_info) {
+    show_custom_field();
+  }
   
   // VEHICLE
   if(display_vehicle_is()) {
@@ -240,8 +242,9 @@ void force() {
     show_vehicle(get_rgb_vehicle(), get_alpha_vehicle());
   }
   
-  // INFO
-  info();
+
+
+  // info();
 
   // SPOT
   if(display_spot_is()) {

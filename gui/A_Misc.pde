@@ -107,6 +107,10 @@ boolean display_warp_is() {
   return display_warp;
 }
 
+boolean display_field_is() {
+  return display_field;
+}
+
 boolean movie_warp_is = true ;
 boolean movie_warp_is() {
   return movie_warp_is;

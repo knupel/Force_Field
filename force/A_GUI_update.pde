@@ -396,6 +396,10 @@ void oscEvent(OscMessage theOscMessage) {
   news_from_gui = true;
   news_from_gui_ext = true ;
   if(external_gui_is) {
+    println("reception",theOscMessage.arguments().length, frameCount);
+    for(int i = 0 ; i < theOscMessage.arguments().length ; i++) {
+      println(i, theOscMessage.arguments()[i]);
+    }
     catch_osc_data(theOscMessage.arguments());
   }
 }
@@ -460,32 +464,39 @@ void catch_osc_data(Object [] data) {
   beat_spot = (Float)data[44];
   motion_spot = (Float)data[45];
 
+  // FIELD
+  colour_field = (int)data[46];
+  colour_field_min = (Float)data[47];
+  colour_field_max = (Float)data[48];
+  length_field = (Float)data[49];
+
 
   // button
   for(int i = 0 ; i < mode.length ; i++) {
-    if((int)data[46 +i] == 0) mode[i] = false ; else mode[i] = true;
+    if((int)data[50+i] == 0) mode[i] = false ; else mode[i] = true;
+    println(50+i,i,mode[i]);
   }
+  
+  if((int)data[57] == 0) display_background(false); else display_background(true);
+  if((int)data[58] == 0) display_vehicle(false); else display_vehicle(true);
+  if((int)data[59] == 0) display_warp(false); else display_warp(true);
+  if((int)data[60] == 0) display_field(false); else display_field(true);
+  if((int)data[61] == 0) display_spot(false); else display_spot(true);
 
-  if((int)data[53] == 0) display_background(false); else display_background(true);
-  if((int)data[54] == 0) display_vehicle(false); else display_vehicle(true);
-  if((int)data[55] == 0) display_warp(false); else display_warp(true);
-  if((int)data[56] == 0) display_field(false); else display_field(true);
-  if((int)data[57] == 0) display_spot(false); else display_spot(true);
+  if((int)data[62] == 0) set_resize_window(false); else set_resize_window(true);
+  if((int)data[63] == 0) set_fit_image(false); else set_fit_image(true);
+  if((int)data[64] == 0) show_must_go_on(false); else show_must_go_on(true);
+  if((int)data[65] == 0) set_warp_fx_is(false); else set_warp_fx_is(true);
+  if((int)data[66] == 0) set_shader_fx_is(false); else set_shader_fx_is(true);
+  if((int)data[67] == 0) set_full_reset_field(false); else set_full_reset_field(true);
 
-  if((int)data[58] == 0) set_resize_window(false); else set_resize_window(true);
-  if((int)data[59] == 0) set_fit_image(false); else set_fit_image(true);
-  if((int)data[60] == 0) show_must_go_on(false); else show_must_go_on(true);
-  if((int)data[61] == 0) set_warp_fx_is(false); else set_warp_fx_is(true);
-  if((int)data[62] == 0) set_shader_fx_is(false); else set_shader_fx_is(true);
-  if((int)data[63] == 0) set_full_reset_field(false); else set_full_reset_field(true);
-
-  type_vehicle = (int)data[64];
-  type_spot = (int)data[65];
-  int data_target = 66 ;
+  type_vehicle = (int)data[68];
+  type_spot = (int)data[69];
+  int data_target = 70 ;
   if(which_media != (int)data[data_target]) {
     which_media = (int)data[data_target];
     select_media_to_display(); 
-  } 
+  }
 }
 
 

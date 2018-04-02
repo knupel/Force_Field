@@ -38,6 +38,11 @@ float sum_slider() {
 	// MOVIE
 	sum += header_target_movie;
 	sum += speed_movie;
+	// FIELD
+	sum += colour_field;
+	sum += colour_field_min;
+	sum += colour_field_max;
+	sum += length_field;
 	// FLUID
 	sum += frequence ;
 	sum += viscosity;
@@ -62,9 +67,8 @@ float sum_slider() {
 	sum += spiral_spot;
 	sum += beat_spot;
 	sum += motion_spot;
-	
-	return sum;
 
+	return sum;
 }
 
 
@@ -151,6 +155,13 @@ void send() {
 	message.add(spiral_spot);
 	message.add(beat_spot);
 	message.add(motion_spot);
+	// FIELD
+	
+	message.add((int)colour_field);
+	message.add(colour_field_min);
+	message.add(colour_field_max);
+	message.add(length_field);
+	
 
 	for(int i = 0 ; i < mode.length ; i++) {
   	if(mode[i]) message.add(1); else message.add(0);

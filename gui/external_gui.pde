@@ -33,6 +33,7 @@ ControlP5 gui_dynamic_spot;
 ControlP5 gui_main_movie;
 ControlP5 gui_vehicle;
 ControlP5 gui_spot;
+ControlP5 gui_field;
 
 
 // global slider
@@ -89,6 +90,9 @@ void gui_setup(Vec2 pos, Vec2 size) {
   // COL 2
   gui_misc_G(space_interface, max, slider_width, col_2_x, 3, TOP);
   gui_vehicle(space_interface, max, slider_width, col_2_x, 33, TOP,grey_0_gui);
+
+  gui_field(gui_field, space_interface, max, slider_width, col_2_x, 36, TOP,red_gui);
+
   gui_main_movie(space_interface, max, slider_width, col_2_x, 1, BOTTOM,grey_0_gui);
 
   gui_button_G(bar_height);
@@ -96,6 +100,8 @@ void gui_setup(Vec2 pos, Vec2 size) {
   // boolean to give authorization to update controller
   gui_init_controller = true;
 }
+
+
 
 
 void build_gui() {
@@ -112,6 +118,7 @@ void build_gui() {
 	gui_dynamic_spot = new ControlP5(this);
 	gui_static_img_2D = new ControlP5(this);
 	gui_static_img_3D = new ControlP5(this);
+	gui_field = new ControlP5(this);
 }
 
 
@@ -433,14 +440,11 @@ void gui_misc_G(int space, int max, int w, float pos_x, float pos_y, int from) {
 
   int max_tempo = 10 ;
 	gui_warp.addSlider("tempo_refresh").setPosition(pos_x,pos_slider_y(space, pos_y +22, from)).setWidth(w).setRange(1,max_tempo).setNumberOfTickMarks(max_tempo).setColor(grey_0_gui);
-  
   int max_cell = 50;
-	gui_main.addSlider("cell_force_field").setPosition(pos_x,pos_slider_y(space, pos_y +24, from)).setWidth(w).setRange(1,max_cell).setNumberOfTickMarks(max_cell).setColor(grey_0_gui);
-  
+	gui_main.addSlider("cell_force_field").setPosition(pos_x,pos_slider_y(space, pos_y +24, from)).setWidth(w).setRange(1,max_cell).setNumberOfTickMarks(max_cell).setColor(grey_0_gui); 
   int max_spot = 100 ;
   if(use_leapmotion) max_spot = 10;
 	gui_main.addSlider("spot_num").setPosition(pos_x,pos_slider_y(space, pos_y +26, from)).setWidth(w).setRange(1,max_spot).setNumberOfTickMarks(max_spot).setColor(red_gui);
-
 	int range_spot = 10;
 	gui_main.addSlider("spot_range").setPosition(pos_x,pos_slider_y(space, pos_y +28, from)).setWidth(w).setRange(0,range_spot).setNumberOfTickMarks(range_spot +1).setColor(red_gui);
 }
@@ -498,11 +502,24 @@ void gui_vehicle(int space, int max, int w, float pos_x, float pos_y, int from, 
 }
 
 
+
+void gui_field(ControlP5 cp5, int space, int max, int w, float pos_x, float pos_y, int from, CColor c) {	
+  int num_colour_field = 11;
+	cp5.addSlider("colour_field").setPosition(pos_x,pos_slider_y(space, pos_y +0, from)).setWidth(w).setRange(0,num_colour_field-1).setNumberOfTickMarks(num_colour_field).setColor(c);
+	cp5.addSlider("colour_field_min").setLabel("minimum").setPosition(pos_x,pos_slider_y(space, pos_y +2, from)).setWidth(w).setRange(0,1).setColor(c);
+	cp5.addSlider("colour_field_max").setLabel("maximum").setPosition(pos_x,pos_slider_y(space, pos_y +3, from)).setWidth(w).setRange(0,1).setColor(c);
+	cp5.addSlider("length_field").setLabel("vector size").setPosition(pos_x,pos_slider_y(space, pos_y +4, from)).setWidth(w).setRange(0,1).setColor(c);
+}
+
+
+
+
+
 void gui_main_movie(int space, int max, int w, float pos_x, float pos_y, int from, CColor c) {
 	int max_speed = 6 ;
 	gui_main_movie.addSlider("speed_movie").setLabel("speed movie").setPosition(pos_x,pos_slider_y(space, pos_y +1, from)).setWidth(w).setRange(-max_speed,max_speed).setNumberOfTickMarks((max_speed *8) +1).setColor(c);
-	gui_main_movie.addSlider("header_movie").setLabel("reader").setPosition(pos_x,pos_slider_y(space, pos_y +3, from)).setWidth(w).setRange(0,max).setColor(c);
-	gui_main_movie.addSlider("header_target_movie").setLabel("go to").setPosition(pos_x,pos_slider_y(space, pos_y +4, from)).setWidth(w).setRange(0,max).setColor(c);
+	gui_main_movie.addSlider("header_movie").setLabel("reader").setPosition(pos_x,pos_slider_y(space, pos_y +2.5, from)).setWidth(w).setRange(0,max).setColor(c);
+	gui_main_movie.addSlider("header_target_movie").setLabel("go to").setPosition(pos_x,pos_slider_y(space, pos_y +3.5, from)).setWidth(w).setRange(0,max).setColor(c);
 	
 }
 
@@ -553,6 +570,10 @@ void gui_dynamic_spot(int space, int max, int w, float pos_x, float pos_y, int f
   gui_dynamic_spot.addSlider("speed_spot").setPosition(pos_x,pos_slider_y(space, pos_y +6.5, from)).setWidth(w).setRange(-max,max).setColor(red_gui);
   gui_dynamic_spot.addSlider("motion_spot").setPosition(pos_x,pos_slider_y(space, pos_y +7.5, from)).setWidth(w).setRange(0,max).setColor(red_gui);
 }
+
+
+
+
 
 
 
@@ -674,6 +695,8 @@ void show_gui() {
 	if(display_vehicle_is()) gui_vehicle.show() ; else gui_vehicle.hide();
 
 	if(display_warp_is()) gui_warp.show(); else gui_warp.hide();
+
+	if(display_field_is()) gui_field.show(); else gui_field.hide();
 
 	if(movie_warp_is()) gui_main_movie.show(); else gui_main_movie.hide();	
 

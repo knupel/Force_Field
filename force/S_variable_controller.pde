@@ -1,6 +1,6 @@
 /**
 variable global share with the main sketch
-v 0.0.20
+v 0.0.21
 
 In the future those values must be write in an external file to be read by the main and gui sketche
 */
@@ -33,9 +33,9 @@ boolean display_cursor = false;
 
 
 int num_misc = 8;
-boolean [] misc_ref = {false,false,true,true,false,false,false,false};
-String [] misc_method_name = {"bool_size_window","bool_fit_image","bool_show","bool_warp_fx","bool_shader_fx","bool_full_reset","bool_pause","bool_curtain"};
-String [] misc_label = {"size window","fit image","show must go on","warp fx","shader fx","full reset field","pause","curtain"};
+boolean [] misc_ref = {false,false,true,true,false,false,false};
+String [] misc_method_name = {"bool_size_window","bool_fit_image","bool_warp_fx","bool_shader_fx","bool_full_reset","bool_show","bool_curtain"};
+String [] misc_label = {"size window","fit image","warp fx","shader fx","full reset field","show must go on","curtain"};
 // maybe change name of variable below, like the variable display_...
 // maybe change name of variable below, like the variable display_...
 boolean change_size_window_is = false;
@@ -44,7 +44,6 @@ boolean show_must_go_on = true;
 boolean misc_warp_fx = true; 
 boolean misc_shader_fx = true;
 boolean full_reset_field_is = false;
-boolean misc_pause = false;
 boolean misc_curtain =false;
 
 // dropdown
@@ -134,6 +133,13 @@ float distribution_spot= 0.;
 float spiral_spot = 0.;
 float beat_spot = 0.;
 float motion_spot = 0.;
+
+
+//FIELD
+float colour_field = 0;
+float colour_field_min = 0.;
+float colour_field_max = .7;
+float length_field = .1;
 
 
 
