@@ -32,6 +32,13 @@ void draw() {
 	set_controller_from_outside();
 	if(mousePressed) update_media_list();
 	load_data_from_app_force(240, !mousePressed);
+
+	if(misc_curtain_is()) {
+		set_state_button(gui_button, display_method_name[0], true);
+		for(int i = 1 ; i < display_method_name.length ; i++) {
+			set_state_button(gui_button, display_method_name[i], false);
+		} 		
+	}
 }
 
 

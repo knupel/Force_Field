@@ -1,6 +1,6 @@
 /**
 variable global share with the main sketch
-v 0.0.18
+v 0.0.20
 
 In the future those values must be write in an external file to be read by the main and gui sketche
 */
@@ -16,11 +16,11 @@ the variable is in the order send or receive OSC data
 * gravity, magnetic, fluid;
 */
 int num_mode = 7;
-boolean [] mode = new boolean[num_mode];
+boolean [] mode = {true,false,false,false,false,false,false};
 boolean mode_perlin, mode_chaos, mode_equation, mode_image, mode_gravity, mode_magnetic, mode_fluid ;
 
 int num_display = 5;
-boolean [] display_ref = new boolean[num_display];
+boolean [] display_ref = {true,false,false,false,false};
 String [] display_method_name = {"bool_background","bool_vehicle","bool_warp","bool_field","bool_spot"};
 String [] display_label = {"background","vehicle","warp","force field","spot"};
 boolean display_background = true;
@@ -32,20 +32,20 @@ boolean display_spot = false;
 boolean display_cursor = false;
 
 
-int num_misc = 5;
-boolean [] misc_ref = new boolean[num_misc];
-String [] misc_method_name = {"bool_size_window","bool_fit_image","bool_show","bool_warp_fx","bool_full_reset"};
-String [] misc_label = {"size window","fit image","show must go on","warp fx","full reset field"};
+int num_misc = 8;
+boolean [] misc_ref = {false,false,true,true,false,false,false,false};
+String [] misc_method_name = {"bool_size_window","bool_fit_image","bool_show","bool_warp_fx","bool_shader_fx","bool_full_reset","bool_pause","bool_curtain"};
+String [] misc_label = {"size window","fit image","show must go on","warp fx","shader fx","full reset field","pause","curtain"};
+// maybe change name of variable below, like the variable display_...
 // maybe change name of variable below, like the variable display_...
 boolean change_size_window_is = false;
 boolean fullfit_image_is = true;
 boolean show_must_go_on = true; 
 boolean misc_warp_fx = true; 
+boolean misc_shader_fx = true;
 boolean full_reset_field_is = false;
-// add for the future
-boolean misc_shader_fx = true; 
-boolean misc_pause = true;
-boolean misc_curtain = false; 
+boolean misc_pause = false;
+boolean misc_curtain =false;
 
 // dropdown
 int which_media;

@@ -25,7 +25,7 @@ boolean use_leapmotion = false;
 
 boolean pause_is = false;
 
-boolean full_screen_is = true;
+boolean full_screen_is = false;
 
 iVec2 size = iVec2(950,500);
 // iVec2 size = iVec2(1280,750); // love_timer
@@ -83,7 +83,7 @@ void setup() {
   println("display connected:",get_display_num());
   if(get_display_num() > 1) {
     size.set(width,height);
-    //set_window_on_other_display(size,0);
+    set_window_on_other_display(size,0);
     //set_window_on_other_display(size,iVec2(1920,0));
   }
 
@@ -123,21 +123,21 @@ void draw() {
     force();
   } else {
     // that's a bullshit organisation, it's just for a specific show
-    /*
+    
     if(pos_window_down) {
       if(get_display_num() > 1) {
-        set_window_on_other_display(size,pos_window_2,CENTER);
+        set_window_on_other_display(size,pos_window_2,0,CENTER);
       } else {
         set_window_on_main_display(size,pos_window_2,CENTER);
       }
     } else {
       if(get_display_num() > 1) {
-        set_window_on_other_display(size,pos_window_1,CENTER);
+        set_window_on_other_display(size,pos_window_1,0,CENTER);
       } else {
         set_window_on_main_display(size,pos_window_1,CENTER);
       }
     }
-    */
+    
     // end of n'importe quoi  
     init_force = true;
   }

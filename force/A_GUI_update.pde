@@ -476,12 +476,14 @@ void catch_osc_data(Object [] data) {
   if((int)data[59] == 0) set_fit_image(false); else set_fit_image(true);
   if((int)data[60] == 0) show_must_go_on(false); else show_must_go_on(true);
   if((int)data[61] == 0) set_warp_fx_is(false); else set_warp_fx_is(true);
-  if((int)data[62] == 0) set_full_reset_field(false); else set_full_reset_field(true);
+  if((int)data[62] == 0) set_shader_fx_is(false); else set_shader_fx_is(true);
+  if((int)data[63] == 0) set_full_reset_field(false); else set_full_reset_field(true);
 
-  type_vehicle = (int)data[63];
-  type_spot = (int)data[64];
-  if(which_media != (int)data[65]) {
-    which_media = (int)data[65];
+  type_vehicle = (int)data[64];
+  type_spot = (int)data[65];
+  int data_target = 66 ;
+  if(which_media != (int)data[data_target]) {
+    which_media = (int)data[data_target];
     select_media_to_display(); 
   } 
 }

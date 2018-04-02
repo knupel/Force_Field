@@ -38,7 +38,8 @@ void load_data_from_app_force(int tempo, boolean authorization) {
       // dropdown
       rank += 3;
 
-      // misc mode         
+      // misc mode   
+            
       for(int i = 0 ; i < misc_ref.length ; i++) {
         if(gui_button.getController(misc_method_name[i]) instanceof Toggle) {
           Toggle t = (Toggle) gui_button.getController(misc_method_name[i]);
@@ -52,7 +53,7 @@ void load_data_from_app_force(int tempo, boolean authorization) {
           rank++; 
         }
       }
-        
+            
 		} 		
 	}
 }
@@ -63,7 +64,37 @@ void load_data_from_app_force(int tempo, boolean authorization) {
 
 
 
+// button is
+boolean mode_perlin_is() {
+  return mode_perlin;
+}
 
+boolean mode_chaos_is() {
+  return mode_chaos;
+}
+
+boolean mode_equation_is() {
+  return mode_equation;
+}
+
+boolean mode_image_is() {
+  return mode_image;
+}
+
+boolean mode_gravity_is() {
+  return mode_gravity;
+}
+
+boolean mode_magnetic_is() {
+  return mode_magnetic;
+}
+
+boolean mode_fluid_is() {
+  return mode_fluid;
+}
+
+
+// display
 boolean display_spot_is() {
   return display_spot;
 }
@@ -82,31 +113,9 @@ boolean movie_warp_is() {
 }
 
 
-// button is
-boolean mode_perlin_is() {
-	return mode_perlin;
+// misc
+boolean misc_curtain_is() {
+  return misc_curtain;
 }
 
-boolean mode_chaos_is() {
-	return mode_chaos;
-}
 
-boolean mode_equation_is() {
-	return mode_equation;
-}
-
-boolean mode_image_is() {
-	return mode_image;
-}
-
-boolean mode_gravity_is() {
-	return mode_gravity;
-}
-
-boolean mode_magnetic_is() {
-	return mode_magnetic;
-}
-
-boolean mode_fluid_is() {
-	return mode_fluid;
-}

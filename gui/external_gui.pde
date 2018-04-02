@@ -39,13 +39,14 @@ ControlP5 gui_spot;
 boolean gui_display_background;
 boolean gui_display_vehicle;
 boolean gui_display_warp;
-
+/*
 boolean gui_change_size_window_is ;
 boolean gui_fullfit_image_is ;
 boolean gui_show_must_go_on;
 boolean gui_warp_is;
 boolean gui_full_reset_field_is;
 boolean gui_vehicle_pixel_is;
+*/
 
 
 Vec2 pos_gui ;
@@ -63,8 +64,6 @@ int col_2_x = 200 ;
 setup
 */
 void gui_setup(Vec2 pos, Vec2 size) {
-	// this variable is used in internal GUI
-	set_internal_boolean();
 	build_gui();
 
 	red_gui = new CColor(r.BLOOD,r.CARMINE,r.RED,r.WHITE,r.WHITE);
@@ -73,6 +72,7 @@ void gui_setup(Vec2 pos, Vec2 size) {
 	pos_gui = pos.copy();
 	size_gui = size.copy();
 	int slider_width = 100 ;
+	int bar_height = 15 ;
 	space_interface = 12;
 	int max = 1;
   
@@ -91,7 +91,7 @@ void gui_setup(Vec2 pos, Vec2 size) {
   gui_vehicle(space_interface, max, slider_width, col_2_x, 33, TOP,grey_0_gui);
   gui_main_movie(space_interface, max, slider_width, col_2_x, 1, BOTTOM,grey_0_gui);
 
-  gui_button_G(space_interface, slider_width, col_1_x, 3, TOP);
+  gui_button_G(bar_height);
  
   // boolean to give authorization to update controller
   gui_init_controller = true;
@@ -148,29 +148,34 @@ void mode(int n) {
 }
 
 
-void gui_button_G(int space, int w, float pos_x, float pos_y, int from) {
+void gui_button_G(int bar_h) {
   //String name = "display";
-  iVec2 pos = iVec2(0,16);
+  iVec2 pos = iVec2(0,bar_h +1);
   int num_by_line = display_label.length;
-  iVec2 size = iVec2 (int(width/(num_by_line *1.5)),15); 
-  iVec2 spacing = iVec2(0,0);
-
+  iVec2 size = iVec2 (int(width/(num_by_line *1.5)),bar_h); 
+  // iVec2 spacing = iVec2(0,0);
+  // display
   set_button(pos, size, num_by_line, gui_button, display_method_name, display_label, red_gui);
+  // misc
+  pos.set(0,(bar_h +1)*3);
+  size.set(90,bar_h); 
+  num_by_line = 1;
+  set_button(pos, size, num_by_line, gui_button, misc_method_name, misc_label, misc_ref, grey_0_gui);
 
 	// dropdown
+	pos.set(0,16);
 	int h_dropdown = 150 ;
 	int w_dropdown = int(size.x *1.5);
 	String [] shape_menu = {"pixel","point","triangle","shape"} ;
 	String [] media_menu = {"List empty","load items","from the","main sketch"} ;
+	media = gui_button.addDropdownList("media_list").setPosition(width -w_dropdown,pos.y*12).setSize(w_dropdown,h_dropdown*2).setBarHeight(bar_h).setColor(red_gui).addItems(media_menu);
+	vehicle = gui_button.addDropdownList("vehicle_list").setPosition(width -w_dropdown,pos.y*6.9).setSize(w_dropdown,h_dropdown).setBarHeight(bar_h).setColor(grey_0_gui).addItems(shape_menu);
+	spot = gui_button.addDropdownList("spot_list").setPosition(width -w_dropdown,pos.y*3.2).setSize(w_dropdown,h_dropdown).setBarHeight(bar_h).setColor(red_gui).addItems(shape_menu);
 
-	// reverse order for the supperposition when the menu list is open
-	media = gui_button.addDropdownList("media_list").setPosition(width -w_dropdown,pos.y*12).setSize(w_dropdown,h_dropdown*2).setBarHeight(15).setColor(red_gui).addItems(media_menu);
-	vehicle = gui_button.addDropdownList("vehicle_list").setPosition(width -w_dropdown,pos.y*6.9).setSize(w_dropdown,h_dropdown).setBarHeight(15).setColor(grey_0_gui).addItems(shape_menu);
-	spot = gui_button.addDropdownList("spot_list").setPosition(width -w_dropdown,pos.y*3.2).setSize(w_dropdown,h_dropdown).setBarHeight(15).setColor(red_gui).addItems(shape_menu);
-	// media = gui_button.addDropdownList("media_list").setPosition(width -w_dropdown,pos.y*1).setSize(w_dropdown,h_dropdown*2).setBarHeight(15).setColor(red_gui).addItems(media_menu);
 	
 	
 	// column
+	/*
 	checkbox_main = gui_button.addCheckBox("main_setting").setPosition(pos_x,pos_slider_y(space, pos_y +0, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2)
 														.addItem("resize window",1).addItem("fit image",1).addItem("show must go on",1).setColor(grey_0_gui);
   if(gui_change_size_window_is) checkbox_main.activate(0);
@@ -184,48 +189,77 @@ void gui_button_G(int space, int w, float pos_x, float pos_y, int from) {
 	checkbox_mag_grav = gui_button.addCheckBox("spot_setting").setPosition(pos_x,pos_slider_y(space, pos_y +5, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2)
 																.addItem("full_reset_field",1).setColor(grey_0_gui);
 	if(gui_full_reset_field_is) checkbox_mag_grav.activate(0);
+	*/
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 /**
 method call by CP5
 */
-/*
-String [] misc_method_name = {"bool_size_window","bool_fit_image","bool_show","bool_warp_fx","bool_full_reset"};
-String [] misc_label = {"size window","fit image","show must go on","warp fx","full reset field"};
-// maybe change name of variable below, like the variable display_...
-boolean change_size_window_is = false;
-boolean fullfit_image_is = true;
-boolean show_must_go_on = true; 
-boolean warp_is = true; 
-boolean full_reset_field_is = false;
+/**
+control event
+v 0.0.3
 */
+public void controlEvent(ControlEvent theEvent) {
+	if(gui_init_controller) {
+		/*
+		if(theEvent.isFrom(checkbox_main)) {
+			state_button(true);
+			if(checkbox_main.getArrayValue(0) == 1) change_size_window_is = true; else change_size_window_is = false;
+			if(checkbox_main.getArrayValue(1) == 1) fullfit_image_is = true; else fullfit_image_is = false;
+			if(checkbox_main.getArrayValue(2) == 1) show_must_go_on = true; else show_must_go_on = false;
+	  }
 
-// misc
-void bool_size_window(boolean state) {
-	state_button(true);
-	change_size_window_is = state;
+	  if(theEvent.isFrom(checkbox_channel)) {
+	  	state_button(true);
+			if(checkbox_channel.getArrayValue(0) == 1) misc_warp_fx = true; else misc_warp_fx = false;
+	  }
+
+	  if(theEvent.isFrom(checkbox_mag_grav)) {
+	  	state_button(true);
+			if(checkbox_mag_grav.getArrayValue(0) == 1) full_reset_field_is = true; else full_reset_field_is = false;
+	  }
+	  */
+    
+    if (theEvent.isFrom(media)) {
+    	state_button(true);
+	    which_media = (int)theEvent.getController().getValue();
+	  }
+
+	  if (theEvent.isFrom(vehicle)) {
+    	state_button(true);
+    	type_vehicle = get_shape_type(theEvent.getController().getValue());
+	  }
+
+	  if (theEvent.isFrom(spot)) {
+    	state_button(true);
+	    type_spot = get_shape_type(theEvent.getController().getValue());
+	  }
+	}	 
 }
 
-void bool_fit_image(boolean state) {
-	state_button(true);
-	fullfit_image_is = state;
+// see menu dropdwon "pixel","point","triangle","shape"
+int get_shape_type(float value_controller) {
+	int v = (int)value_controller;
+	if(v==0) return r.PIXEL;
+	else if(v==1) return POINT;
+	else if(v==2) return TRIANGLE;
+	else if(v==3) return SHAPE;
+	else return r.PIXEL;
 }
 
-void bool_show(boolean state) {
-	state_button(true);
-	show_must_go_on = state;
-}
 
-void bool_warp_fx(boolean state) {
-	state_button(true);
-	misc_warp_fx = state;
-}
-
-void bool_full_reset(boolean state) {
-	state_button(true);
-	full_reset_field_is = state;
-}
 
 // display
 void bool_background(boolean state) {
@@ -252,6 +286,60 @@ void bool_spot(boolean state) {
 	state_button(true);
 	display_spot = state ;
 }
+
+
+
+
+// misc
+void bool_size_window(boolean state) {
+	state_button(true);
+	change_size_window_is = state;
+}
+
+void bool_fit_image(boolean state) {
+	state_button(true);
+	fullfit_image_is = state;
+}
+
+void bool_show(boolean state) {
+	state_button(true);
+	show_must_go_on = state;
+}
+
+void bool_warp_fx(boolean state) {
+	state_button(true);
+	misc_warp_fx = state;
+}
+
+void bool_shader_fx(boolean state) {
+	state_button(true);
+	misc_shader_fx = state;
+}
+
+void bool_curtain(boolean state) {
+	state_button(true);
+	misc_curtain = state;
+}
+
+void bool_full_reset(boolean state) {
+	state_button(true);
+	full_reset_field_is = state;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -487,55 +575,7 @@ void gui_dynamic_spot(int space, int max, int w, float pos_x, float pos_y, int f
 
 
 
-/**
-control event
-v 0.0.3
-*/
-public void controlEvent(ControlEvent theEvent) {
-	if(gui_init_controller) {
-		if(theEvent.isFrom(checkbox_main)) {
-			state_button(true);
-			if(checkbox_main.getArrayValue(0) == 1) change_size_window_is = true; else change_size_window_is = false;
-			if(checkbox_main.getArrayValue(1) == 1) fullfit_image_is = true; else fullfit_image_is = false;
-			if(checkbox_main.getArrayValue(2) == 1) show_must_go_on = true; else show_must_go_on = false;
-	  }
 
-	  if(theEvent.isFrom(checkbox_channel)) {
-	  	state_button(true);
-			if(checkbox_channel.getArrayValue(0) == 1) misc_warp_fx = true; else misc_warp_fx = false;
-	  }
-
-	  if(theEvent.isFrom(checkbox_mag_grav)) {
-	  	state_button(true);
-			if(checkbox_mag_grav.getArrayValue(0) == 1) full_reset_field_is = true; else full_reset_field_is = false;
-	  }
-    
-    if (theEvent.isFrom(media)) {
-    	state_button(true);
-	    which_media = (int)theEvent.getController().getValue();
-	  }
-
-	  if (theEvent.isFrom(vehicle)) {
-    	state_button(true);
-    	type_vehicle = get_shape_type(theEvent.getController().getValue());
-	  }
-
-	  if (theEvent.isFrom(spot)) {
-    	state_button(true);
-	    type_spot = get_shape_type(theEvent.getController().getValue());
-	  }
-	}	 
-}
-
-// see menu dropdwon "pixel","point","triangle","shape"
-int get_shape_type(float value_controller) {
-	int v = (int)value_controller;
-	if(v==0) return r.PIXEL;
-	else if(v==1) return POINT;
-	else if(v==2) return TRIANGLE;
-	else if(v==3) return SHAPE;
-	else return r.PIXEL;
-}
 
 
 
@@ -591,7 +631,7 @@ void set_controller_main() {
 
 
 
-
+/*
 void set_internal_boolean() {
 	if(display_background) gui_display_background = true ; else gui_display_background = false;
   if(change_size_window_is) gui_change_size_window_is = true ; else gui_change_size_window_is = false;
@@ -599,8 +639,8 @@ void set_internal_boolean() {
 	if(show_must_go_on) gui_show_must_go_on = true ; else gui_show_must_go_on = false ;
 	if(misc_warp_fx) gui_warp_is = true; else gui_warp_is = false;
 	if(full_reset_field_is) gui_full_reset_field_is = true ; else  gui_full_reset_field_is = false;
-	//if(vehicle_pixel_is) gui_vehicle_pixel_is = true ; else gui_vehicle_pixel_is = false;
 }
+*/
 
 
 void show_gui() {
@@ -662,7 +702,7 @@ void show_gui() {
 
 /**
 global method CP5
-v 0.0.1
+v 0.0.2
 */
 RadioButton set_radio(String name, iVec2 pos, iVec2 size, int num, iVec2 spacing, ControlP5 cp5, RadioButton rb, String [] station, CColor c) {
   cp5 = new ControlP5(this);
@@ -680,19 +720,47 @@ RadioButton set_radio(String name, iVec2 pos, iVec2 size, int num, iVec2 spacing
   return rb ;  
 }
 
-void set_button(iVec2 pos, iVec2 size, int num, ControlP5 cp5, String [] name, String [] label, CColor c) {
-  // cp5 = new ControlP5(this);
-  for(int i = 0 ; i < display_method_name.length ;i++) {
-  	// cp5.addButton(method_name[i]).setLabel(label[i])
-  	cp5.addToggle(name[i]).setLabel(label[i])
-  			.setPosition(pos.x+(size.x *i),pos.y).setSize(size.x,size.y)
-  			//.setItemsPerRow(num).setSpacingColumn(spacing.x).setSpacingRow(spacing.y)
+
+
+
+void set_button(iVec2 pos, iVec2 size, int num, ControlP5 cp5, String [] method_name, String [] label, CColor c) {
+	boolean [] state = new boolean[method_name.length];
+	set_button(pos,size,num,cp5,method_name,label,state,c);
+}
+
+void set_button(iVec2 pos, iVec2 size, int num, ControlP5 cp5, String [] method_name, String [] label, boolean [] state, CColor c) {
+	iVec2 p = iVec2();
+	int rx = 0;
+	int ry = 0;
+  for(int i = 0 ; i < method_name.length ;i++) { 
+  	p.set(pos.x +(size.x *rx), pos.y +(size.y *ry));
+  	cp5.addToggle(method_name[i]).setLabel(label[i])
+  			.setPosition(p.x,p.y).setSize(size.x,size.y)
   			.setColor(c).getCaptionLabel().align(CENTER,CENTER);
+  	set_state_button(cp5,method_name[i],state[i]);
+  	// compute position in pseudo grid
+  	if((i+1)%num == 0) {
+  		ry++;
+  		rx = 0 ;
+  	} else {
+  		rx++ ;
+  	}
   }
-  
+
+  /*
   if(cp5.getController(name[0]) instanceof Toggle) {
   	Toggle t = (Toggle) cp5.getController(name[0]);
   	t.setState(true);
+  }
+  */
+}
+
+
+
+void set_state_button(ControlP5 cp5, String method_name, boolean state) {
+  if(gui_button.getController(method_name) instanceof Toggle) {
+    Toggle t = (Toggle) cp5.getController(method_name);
+    t.setState(state);
   }
 }
 

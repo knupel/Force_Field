@@ -50,7 +50,11 @@ void set_window_on_other_display(iVec2 size, iVec2 pos) {
 }
 
 void set_window_on_other_display(iVec2 size, iVec2 pos, int type) {
-  iVec2 pos_screen = iVec2(get_display_size(1).x, 0);
+  set_window_on_other_display(size, pos, 1, type);
+}
+
+void set_window_on_other_display(iVec2 size, iVec2 pos, int target_display, int type) {
+  iVec2 pos_screen = iVec2(get_display_size(target_display).x, 0);
   iVec2 pos_display = iVec2();
   if(type == CENTER) {  
     pos_display = iVec2(get_display_size(1)).sub(size).div(2).add(pos);
@@ -1616,6 +1620,10 @@ void set_full_reset_field(boolean state) {
 
 void set_warp_fx_is(boolean state) {
   misc_warp_fx = state;
+}
+
+void set_shader_fx_is(boolean state) {
+  misc_shader_fx = state;
 }
 
 
