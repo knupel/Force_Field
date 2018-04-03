@@ -1,20 +1,23 @@
 TODO
 --
-*Young timer
+*problème de dialogue avec les boutons misc
 
-Recalculer la vidéo "J'attendrais" afin que la fille soit plus visible, elle est trop basse par rapport à la scene
 
-*Background
 
-Probleme avec les vidéos
+*bouton reset vehicle sur le controleur
 
-*DIRTY WAY
 
-l'idée faire une route en champs de vecteur ?
 
-*RIDEAU
+*recalculer la video avec l'eau en rajoutant du bleu
 
-ajouter un bouton rideau
+
+*Curseur logo
+
+
+*Fond d'écran de plantage
+
+
+
 
 
 --
@@ -30,8 +33,6 @@ GUI ; bouton pour afficher le curseur.
 APP :continue to private void convert_field_to_texture()
 --
 APP : Add mess, wind by target field cell
---
-GUI : finaliser les boutons misc divers
 
 
 
@@ -41,16 +42,6 @@ VIDEO
 *MONTAGE
 
 isoler le titre young timer pour en faire une vidéo à part
-
-
-
-FIELD
--- 
-*couleur field
-
-Mettre les vecteur en noir et blanc
-GUI & APP
-> réglage du champs de vecteur, longueur et couleur
 
 
 

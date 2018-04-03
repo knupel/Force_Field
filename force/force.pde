@@ -21,16 +21,19 @@ Stable fluids from Jos Stam's work on the Navier-Stokes equation
 String force_version = "0.3.8";
 boolean external_gui_is = true;
 
+boolean use_video_cam = false;
+
 boolean use_leapmotion = false;
 
 boolean pause_is = false;
 
 boolean full_screen_is = false;
 
-iVec2 size = iVec2(950,500);
-// iVec2 size = iVec2(1280,750); // love_timer
-iVec2 pos_window_1 = iVec2(0,0);
-iVec2 pos_window_2 = iVec2(0,100);
+// iVec2 size = iVec2(950,500);
+iVec2 size = iVec2(1280,650); // love_timer > my VP at 720p
+
+iVec2 pos_window = iVec2(0,0);
+
 
 
 
@@ -83,7 +86,7 @@ void setup() {
   println("display connected:",get_display_num());
   if(get_display_num() > 1) {
     size.set(width,height);
-    set_window_on_other_display(size,0);
+    // set_window_on_other_display(size,0);
     //set_window_on_other_display(size,iVec2(1920,0));
   }
 
@@ -115,7 +118,6 @@ void setup() {
 DRAW
 */
 boolean init_force;
-boolean pos_window_down;
 void draw() {
   if(init_force) {
     if(use_leapmotion) leap_update();
@@ -123,20 +125,18 @@ void draw() {
     force();
   } else {
     // that's a bullshit organisation, it's just for a specific show
-    
-    if(pos_window_down) {
-      if(get_display_num() > 1) {
-        set_window_on_other_display(size,pos_window_2,0,CENTER);
-      } else {
-        set_window_on_main_display(size,pos_window_2,CENTER);
-      }
+    // iVec2 offset_display = iVec2(get_display_size(target_display).x, get_display_size(target_display).y);
+    int target_display = 0 ;
+    iVec2 offset_display = iVec2(0, -get_display_size(target_display).y);
+
+    if(get_display_num() > 1) {
+      // other
+      set_window_on_other_display(size,pos_window,offset_display,CENTER);
     } else {
-      if(get_display_num() > 1) {
-        set_window_on_other_display(size,pos_window_1,0,CENTER);
-      } else {
-        set_window_on_main_display(size,pos_window_1,CENTER);
-      }
-    }  
+      // main
+      set_window_on_main_display(size,pos_window,CENTER);
+    }
+
     // end of n'importe quoi  
     init_force = true;
   }

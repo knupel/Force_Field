@@ -40,14 +40,6 @@ ControlP5 gui_field;
 boolean gui_display_background;
 boolean gui_display_vehicle;
 boolean gui_display_warp;
-/*
-boolean gui_change_size_window_is ;
-boolean gui_fullfit_image_is ;
-boolean gui_show_must_go_on;
-boolean gui_warp_is;
-boolean gui_full_reset_field_is;
-boolean gui_vehicle_pixel_is;
-*/
 
 
 Vec2 pos_gui ;
@@ -55,8 +47,7 @@ Vec2 size_gui ;
 
 int space_interface ;
 
-CColor red_gui ;
-CColor grey_0_gui ;
+CColor yellow_gui, red_gui, grey_0_gui;
 
 int col_1_x = 10 ;
 int col_2_x = 200 ;
@@ -67,6 +58,7 @@ setup
 void gui_setup(Vec2 pos, Vec2 size) {
 	build_gui();
 
+  yellow_gui = new CColor(r.OR,r.ORANGE,r.CARMIN,r.WHITE,r.WHITE);
 	red_gui = new CColor(r.BLOOD,r.CARMINE,r.RED,r.WHITE,r.WHITE);
 	grey_0_gui = new CColor(r.GRAY_3,r.GRAY_2,r.GRAY_4,r.WHITE,r.WHITE);
 
@@ -178,25 +170,6 @@ void gui_button_G(int bar_h) {
 	media = gui_button.addDropdownList("media_list").setPosition(width -w_dropdown,pos.y*12).setSize(w_dropdown,h_dropdown*2).setBarHeight(bar_h).setColor(red_gui).addItems(media_menu);
 	vehicle = gui_button.addDropdownList("vehicle_list").setPosition(width -w_dropdown,pos.y*6.9).setSize(w_dropdown,h_dropdown).setBarHeight(bar_h).setColor(grey_0_gui).addItems(shape_menu);
 	spot = gui_button.addDropdownList("spot_list").setPosition(width -w_dropdown,pos.y*3.2).setSize(w_dropdown,h_dropdown).setBarHeight(bar_h).setColor(red_gui).addItems(shape_menu);
-
-	
-	
-	// column
-	/*
-	checkbox_main = gui_button.addCheckBox("main_setting").setPosition(pos_x,pos_slider_y(space, pos_y +0, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2)
-														.addItem("resize window",1).addItem("fit image",1).addItem("show must go on",1).setColor(grey_0_gui);
-  if(gui_change_size_window_is) checkbox_main.activate(0);
-  if(gui_fullfit_image_is) checkbox_main.activate(1);
-  if(gui_show_must_go_on) checkbox_main.activate(2);
-
-	checkbox_channel = gui_button.addCheckBox("channel_setting").setPosition(pos_x,pos_slider_y(space, pos_y +4, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2)
-																.addItem("WARP",1).setColor(red_gui);
-	if(gui_warp_is) checkbox_channel.activate(0);
-
-	checkbox_mag_grav = gui_button.addCheckBox("spot_setting").setPosition(pos_x,pos_slider_y(space, pos_y +5, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2)
-																.addItem("full_reset_field",1).setColor(grey_0_gui);
-	if(gui_full_reset_field_is) checkbox_mag_grav.activate(0);
-	*/
 }
 
 
@@ -220,25 +193,6 @@ v 0.0.3
 */
 public void controlEvent(ControlEvent theEvent) {
 	if(gui_init_controller) {
-		/*
-		if(theEvent.isFrom(checkbox_main)) {
-			state_button(true);
-			if(checkbox_main.getArrayValue(0) == 1) change_size_window_is = true; else change_size_window_is = false;
-			if(checkbox_main.getArrayValue(1) == 1) fullfit_image_is = true; else fullfit_image_is = false;
-			if(checkbox_main.getArrayValue(2) == 1) show_must_go_on = true; else show_must_go_on = false;
-	  }
-
-	  if(theEvent.isFrom(checkbox_channel)) {
-	  	state_button(true);
-			if(checkbox_channel.getArrayValue(0) == 1) misc_warp_fx = true; else misc_warp_fx = false;
-	  }
-
-	  if(theEvent.isFrom(checkbox_mag_grav)) {
-	  	state_button(true);
-			if(checkbox_mag_grav.getArrayValue(0) == 1) full_reset_field_is = true; else full_reset_field_is = false;
-	  }
-	  */
-    
     if (theEvent.isFrom(media)) {
     	state_button(true);
 	    which_media = (int)theEvent.getController().getValue();
@@ -459,7 +413,7 @@ void slider_misc_spot(int space, int max, int w, float pos_x, float pos_y, int f
 	gui_spot.addSlider("red_spot").setLabel("red").setPosition(pos_x,pos_slider_y(space, pos_y +1, from)).setWidth(w).setRange(0,max).setColor(c);
 	gui_spot.addSlider("green_spot").setLabel("green").setPosition(pos_x,pos_slider_y(space, pos_y +2, from)).setWidth(w).setRange(0,max).setColor(c);
 	gui_spot.addSlider("blue_spot").setLabel("blue").setPosition(col_2_x,pos_slider_y(space, pos_y +3, from)).setWidth(w).setRange(0,max).setColor(c);	
-	gui_spot.addSlider("alpha_spot").setLabel("alpha").setPosition(pos_x,pos_slider_y(space, pos_y +4, from)).setWidth(w).setRange(0,max).setColor(c);
+	gui_spot.addSlider("alpha_spot").setLabel("alpha").setPosition(pos_x,pos_slider_y(space, pos_y +4, from)).setWidth(w).setRange(0,max).setColor(yellow_gui);
  
 }
 
@@ -468,7 +422,7 @@ void slider_misc_vehicle(int space, int max, int w, float pos_x, float pos_y, in
 	gui_vehicle.addSlider("red_vehicle").setLabel("red").setPosition(pos_x,pos_slider_y(space, pos_y +1, from)).setWidth(w).setRange(0,max).setColor(c);
 	gui_vehicle.addSlider("green_vehicle").setLabel("greene").setPosition(pos_x,pos_slider_y(space, pos_y +2, from)).setWidth(w).setRange(0,max).setColor(c);
 	gui_vehicle.addSlider("blue_vehicle").setLabel("green").setPosition(col_2_x,pos_slider_y(space, pos_y +3, from)).setWidth(w).setRange(0,max).setColor(c);	
-  gui_vehicle.addSlider("alpha_vehicle").setLabel("alpha").setPosition(pos_x,pos_slider_y(space, pos_y +4, from)).setWidth(w).setRange(0,max).setColor(c);
+  gui_vehicle.addSlider("alpha_vehicle").setLabel("alpha").setPosition(pos_x,pos_slider_y(space, pos_y +4, from)).setWidth(w).setRange(0,max).setColor(yellow_gui);
 }
 
 
@@ -483,7 +437,7 @@ void slider_misc_warp(int space, int max, int w, float pos_x, float pos_y, int f
 	gui_warp.addSlider("green_cycling").setLabel("green").setPosition(pos_x,pos_slider_y(space, pos_y +6.25, from)).setWidth(w).setRange(0,max).setColor(c);
 	gui_warp.addSlider("blue_cycling").setLabel("blue").setPosition(pos_x,pos_slider_y(space, pos_y +7.25, from)).setWidth(w).setRange(0,max).setColor(c);
 	
-	gui_warp.addSlider("alpha_warp").setLabel("alpha").setPosition(pos_x,pos_slider_y(space, pos_y +8.25, from)).setWidth(w).setRange(0,max).setColor(c);	
+	gui_warp.addSlider("alpha_warp").setLabel("alpha").setPosition(pos_x,pos_slider_y(space, pos_y +8.25, from)).setWidth(w).setRange(0,max).setColor(yellow_gui);	
 }
 
 
@@ -508,7 +462,9 @@ void gui_field(ControlP5 cp5, int space, int max, int w, float pos_x, float pos_
 	cp5.addSlider("colour_field").setPosition(pos_x,pos_slider_y(space, pos_y +0, from)).setWidth(w).setRange(0,num_colour_field-1).setNumberOfTickMarks(num_colour_field).setColor(c);
 	cp5.addSlider("colour_field_min").setLabel("minimum").setPosition(pos_x,pos_slider_y(space, pos_y +2, from)).setWidth(w).setRange(0,1).setColor(c);
 	cp5.addSlider("colour_field_max").setLabel("maximum").setPosition(pos_x,pos_slider_y(space, pos_y +3, from)).setWidth(w).setRange(0,1).setColor(c);
-	cp5.addSlider("length_field").setLabel("vector size").setPosition(pos_x,pos_slider_y(space, pos_y +4, from)).setWidth(w).setRange(0,1).setColor(c);
+	cp5.addSlider("length_field").setLabel("size").setPosition(pos_x,pos_slider_y(space, pos_y +4, from)).setWidth(w).setRange(0,1).setColor(c);
+	cp5.addSlider("thickness_field").setLabel("thickness").setPosition(pos_x,pos_slider_y(space, pos_y +5, from)).setWidth(w).setRange(0,1).setColor(c);
+	cp5.addSlider("alpha_field").setLabel("alpha").setPosition(pos_x,pos_slider_y(space, pos_y +6, from)).setWidth(w).setRange(0,1).setColor(yellow_gui);
 }
 
 
@@ -520,7 +476,6 @@ void gui_main_movie(int space, int max, int w, float pos_x, float pos_y, int fro
 	gui_main_movie.addSlider("speed_movie").setLabel("speed movie").setPosition(pos_x,pos_slider_y(space, pos_y +1, from)).setWidth(w).setRange(-max_speed,max_speed).setNumberOfTickMarks((max_speed *8) +1).setColor(c);
 	gui_main_movie.addSlider("header_movie").setLabel("reader").setPosition(pos_x,pos_slider_y(space, pos_y +2.5, from)).setWidth(w).setRange(0,max).setColor(c);
 	gui_main_movie.addSlider("header_target_movie").setLabel("go to").setPosition(pos_x,pos_slider_y(space, pos_y +3.5, from)).setWidth(w).setRange(0,max).setColor(c);
-	
 }
 
 
@@ -652,16 +607,7 @@ void set_controller_main() {
 
 
 
-/*
-void set_internal_boolean() {
-	if(display_background) gui_display_background = true ; else gui_display_background = false;
-  if(change_size_window_is) gui_change_size_window_is = true ; else gui_change_size_window_is = false;
-	if(fullfit_image_is) gui_fullfit_image_is = true ; else gui_fullfit_image_is = false;
-	if(show_must_go_on) gui_show_must_go_on = true ; else gui_show_must_go_on = false ;
-	if(misc_warp_fx) gui_warp_is = true; else gui_warp_is = false;
-	if(full_reset_field_is) gui_full_reset_field_is = true ; else  gui_full_reset_field_is = false;
-}
-*/
+
 
 
 void show_gui() {
@@ -769,13 +715,6 @@ void set_button(iVec2 pos, iVec2 size, int num, ControlP5 cp5, String [] method_
   		rx++ ;
   	}
   }
-
-  /*
-  if(cp5.getController(name[0]) instanceof Toggle) {
-  	Toggle t = (Toggle) cp5.getController(name[0]);
-  	t.setState(true);
-  }
-  */
 }
 
 

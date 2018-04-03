@@ -54,14 +54,19 @@ void set_window_on_other_display(iVec2 size, iVec2 pos, int type) {
 }
 
 void set_window_on_other_display(iVec2 size, iVec2 pos, int target_display, int type) {
-  iVec2 pos_screen = iVec2(get_display_size(target_display).x, 0);
+  iVec2 pos_display = iVec2(get_display_size(target_display).x, 0);
+  set_window_on_other_display(size, pos, pos_display, type);
+}
+
+void set_window_on_other_display(iVec2 size, iVec2 pos, iVec2 offset, int type) {
+  //iVec2 pos_screen = iVec2(get_display_size(target_display).x, 0);
   iVec2 pos_display = iVec2();
   if(type == CENTER) {  
     pos_display = iVec2(get_display_size(1)).sub(size).div(2).add(pos);
   } else {
     pos_display.set(pos);
   }
-  set_window_on_display(size,pos_screen,pos_display);
+  set_window_on_display(size,offset,pos_display);
 }
 
 
@@ -783,9 +788,6 @@ void save_dial_force(int tempo) {
     row[27].setString("name", "full reset field");
     if(full_reset_field_is) row[27].setInt("value",1); else row[27].setInt("value",0);
 
-    row[28].setString("name", "pause"); // not used at this time
-    if(pause_is) row[28].setInt("value",1); else row[28].setInt("value",0);
-
     saveTable(table_dial_force,sketchPath(1)+"/save/dialogue_force.csv");
   }  
 }
@@ -1056,13 +1058,7 @@ void keyPressed() {
   news_from_gui = true;
   keys[keyCode] = true;
   
-  key_pressed_add_media() ;
-
-  if(key == '0') {
-    init_force = !!((init_force == false));
-    pos_window_down = !!((pos_window_down == false));
-    println("Force window change position");
-  }
+  key_pressed_add_media();
 
   /**
   if(key == 'a')
@@ -1129,14 +1125,18 @@ void keyPressed() {
   if(key == 's') {
     save_force();
   }
+  
+
+  if(key == 't') {
+    misc_warp_fx = !!((misc_warp_fx == false));
+  }
 
   if(key == 'y') {
     misc_shader_fx = !!((misc_shader_fx == false));
-    //if(shader_filter_is) shader_filter_is = false ; else shader_filter_is = true ;
   }
 
   if(key == 'u') {
-    play_video_switch();
+    if(use_video_cam) play_video_switch();
   }
 
   key_pressed_change_mode();
@@ -1271,55 +1271,6 @@ void reset_key() {
 
 
 
-/**
-alpha
-*/
-/*
-float a_bg;
-float a_warp;
-float a_vehicle;
-float a_spot;
-
-void set_alpha_background(float norm_f){
-  a_bg = set_alpha(norm_f);
-}
-
-void set_alpha_spot(float norm_f){
-  a_spot = set_alpha(norm_f);
-}
-
-void set_alpha_warp(float norm_f){
-  a_warp = set_alpha(norm_f);
-}
-
-void set_alpha_vehicle(float norm_f){
-  a_vehicle = set_alpha(norm_f);
-}
-
-// main method
-float set_alpha(float norm_f) {
-  float mult_f = norm_f *norm_f ;
-  return map(mult_f,0,1,0.,g.colorModeA);
-}
-
-float get_alpha_spot() {
-  return a_spot;
-}
-
-float get_alpha_warp() {
-  return a_warp;
-}
-
-float get_alpha_vehicle() {
-  return a_vehicle;
-}
-
-float get_alpha_bg() {
-  return a_bg;
-}
-*/
-
-
 
 
 
@@ -1363,22 +1314,18 @@ void display_cursor(boolean is) {
 // method to set the gui back
 void display_cursor() {
   display_cursor = !!((display_cursor == false));
-  //if(display_field_is() && !external_gui_is) set_check_gui_main_display(display_field_is());
-  // if(!display_cursor) display_info = false ;
 }
 
 /**
 display
 */
 void display_info() {
-  // display_info = !display_info ;
   display_info = !!((display_info == false));
   set_info(display_info) ;
 }
 
 
 void display_grid() {
-  // display_grid = !display_grid;
   display_grid = !!((display_grid == false));
   if(!display_grid) display_info = false ;
 }
@@ -1397,7 +1344,6 @@ void display_spot(boolean is) {
 // method to set the gui back
 void display_spot() {
   display_spot = !!((display_spot == false));
-  //if(display_field_is() && !external_gui_is) set_check_gui_main_display(display_field_is());
   if(!display_spot) display_info = false ;
 }
 
@@ -1415,8 +1361,6 @@ void display_field(boolean is) {
 // method to set the gui back
 void display_field() {
   display_field = !!((display_field == false));
-  //if(display_field_is() && !external_gui_is) set_check_gui_main_display(display_field_is());
-  // if(!display_field) display_info = false ;
 }
 
 /**
@@ -1763,7 +1707,8 @@ void info() {
   float min_c = .0; // red
   float max_c = .7; // blue
   boolean reverse_c = false;
-  set_show_field(scale,c,min_c,max_c,reverse_c);
+  float alpha = 1;
+  set_show_field(scale,c,alpha,min_c,max_c,reverse_c);
   show_field(get_ff());
 
 
@@ -1879,7 +1824,7 @@ show vector field
 v 0.2.0
 */
 void show_custom_field() {
-  float scale = 1 +(height *length_field);
+  float scale = (height/10) *get_length_field();
   int c = r.HUE;
   if(colour_field == 0) c = r.HUE;
   else if (colour_field == 1) c = r.RED;
@@ -1896,8 +1841,8 @@ void show_custom_field() {
   float min_c = colour_field_min; 
   float max_c = colour_field_max; 
   boolean reverse_c = false;
-  strokeWeight(1);
-  set_show_field(scale,c,min_c,max_c,reverse_c);
+  strokeWeight(get_thickness_field());
+  set_show_field(scale,c,get_alpha_field(),min_c,max_c,reverse_c);
   show_field(get_ff());
 }
 
@@ -1905,20 +1850,22 @@ void show_custom_field() {
 
 float scale_show_vff = 5;
 int colour_vff;
+float alpha_vff;
 boolean reverse_value_colour_vff;
 float min_range_colour_vff = 0.;
 float max_range_colour_vff = .7;
 
-void set_show_field(float scale, int colour_constant, float min, float max, boolean reverse_colour) {
+void set_show_field(float scale, int colour_constant, float alpha,float min, float max, boolean reverse_colour) {
   scale_show_vff = scale;
   set_range_colour_field(min,max);
-  colour_field(colour_constant);
+  colour_field(colour_constant,alpha);
   reverse_color_field(reverse_colour);
 }
 
 
-void colour_field(int c) {
+void colour_field(int c, float a) {
   colour_vff = c;
+  alpha_vff = a;
 }
 
 void set_range_colour_field(float min, float max) {
@@ -1975,31 +1922,31 @@ void pattern_field(Vec2 dir, float mag, Vec2 pos, float scale) {
   }
 
   if(colour_vff == r.HUE) {
-    stroke(value,1,1,1);
+    stroke(value,1,1,alpha_vff);
 
   } else if(colour_vff == r.RED) {
-    stroke(0,1,value,1);
+    stroke(0,1,value,alpha_vff);
   } else if(colour_vff == r.ORANGE) {
-    stroke(0.08,1,value,1);
+    stroke(0.08,1,value,alpha_vff);
   } else if(colour_vff == r.YELLOW) {
-    stroke(0.166,1,value,1);
+    stroke(0.166,1,value,alpha_vff);
   } else if(colour_vff == r.GREEN) {
-    stroke(0.333,1,value,1);
+    stroke(0.333,1,value,alpha_vff);
   } else if(colour_vff == r.CYAN) {
-    stroke(0.5,1,value,1);
+    stroke(0.5,1,value,alpha_vff);
   } else if(colour_vff == r.BLUE) {
-    stroke(0.65,1,value,1);
+    stroke(0.65,1,value,alpha_vff);
   } else if(colour_vff == r.PURPLE) {
-    stroke(0.749,1,value,1);
+    stroke(0.749,1,value,alpha_vff);
   } else if(colour_vff == r.MAGENTA) {
-    stroke(0.833,1,value,1);
+    stroke(0.833,1,value,alpha_vff);
 
   } else if(colour_vff == r.WHITE) {
-    stroke(0,0,value,1);
+    stroke(0,0,value,alpha_vff);
   } else if(colour_vff == r.BLACK) {
-    stroke(0,value,0,1);
+    stroke(0,value,0,alpha_vff);
   } else {
-    stroke(value,1,1,1);
+    stroke(value,1,1,alpha_vff);
   }
   if(len > scale) len = scale ;
   line(0,0,len,0);

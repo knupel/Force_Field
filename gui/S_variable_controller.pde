@@ -1,6 +1,6 @@
 /**
 variable global share with the main sketch
-v 0.0.21
+v 0.0.27
 
 In the future those values must be write in an external file to be read by the main and gui sketche
 */
@@ -62,33 +62,33 @@ int type_spot;
 SLIDER variable
 */
 // BACKGROUND
-float alpha_background = 1.;
+float alpha_background = 0.7;
 
 // VECTOR FIELD
-float cell_force_field = 25.;
+float cell_force_field = 15.;
 
 // MISC
 float tempo_refresh = 1.;
 
 // SPOT
-float size_spot = .05;
-float alpha_spot = 1.;
+float size_spot = .4;
+float alpha_spot = 0.5;
 float red_spot = .9;
 float green_spot = 0;
 float blue_spot = 0;
 
 // VEHICLE
-float size_vehicle = .05;
-float alpha_vehicle = 1.;
+float size_vehicle = .15;
+float alpha_vehicle = .15;
 float red_vehicle = .9;
-float green_vehicle = 0;
-float blue_vehicle = 0;
-float num_vehicle = .1;
-float velocity_vehicle = 5;
+float green_vehicle = .9;
+float blue_vehicle = .9;
+float num_vehicle = .4;
+float velocity_vehicle = 1;
 int max_vehicle_ff = 100_000;
 
 // WARP IMAGE
-float alpha_warp = 1.;
+float alpha_warp = 0.;
 float red_warp = .9;
 float green_warp = .9;
 float blue_warp = .9;
@@ -122,24 +122,28 @@ float y_sort = 1.;
 float z_sort = 1.;
 
 // SPOT
-float spot_num = 1.;
+float spot_num = 11.;
 float spot_range = 3.;
 
 float radius_spot = .3;
-float min_radius_spot= .0;
-float max_radius_spot = 1.; 
-float speed_spot = 0.;
-float distribution_spot= 0.;
-float spiral_spot = 0.;
-float beat_spot = 0.;
-float motion_spot = 0.;
+float min_radius_spot= .25;
+float max_radius_spot = 1.75; 
+
+float distribution_spot= 0.75;
+float spiral_spot = 2.;
+float beat_spot = 50.;
+float speed_spot = 0.22;
+float motion_spot = 0.22;
 
 
 //FIELD
-float colour_field = 0;
+float colour_field = 1;
 float colour_field_min = 0.;
 float colour_field_max = .7;
-float length_field = .1;
+float length_field = .25;
+float thickness_field = .05;
+float alpha_field = .5;
+
 
 
 

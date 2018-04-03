@@ -1,6 +1,6 @@
 /**
 GUI UPDATE
-v 0.0.1
+v 0.2.0
 */
 
 boolean news_from_gui;
@@ -14,11 +14,6 @@ boolean gui_news_ext_is() {
 }
 
 
-
-/**
-GUI update
-v 0.1.0
-*/
 boolean vehicle_reset_gui_is;
 boolean field_reset_gui_is;
 boolean warp_reset_gui_is;
@@ -63,12 +58,6 @@ void must_update_from_gui(int t_count) {
   update_value_ff_fluid(frequence,viscosity,diffusion,update_is);
   update_value_ff_generative(range_min_gen,range_max_gen,power_gen,update_is);
 
-/*
-  set_alpha_background(alpha_bg);
-  set_alpha_spot(alpha_spot);
-  set_alpha_vehicle(alpha_vehicle);
-  set_alpha_warp(alpha_warp);
-  */
 
   float sum_warp_value = red_cycling +green_cycling +blue_cycling +power_cycling 
                         +red_warp +green_warp +blue_warp          +power_warp;
@@ -76,9 +65,7 @@ void must_update_from_gui(int t_count) {
     update_rgba_warp(t_count);
     ref_warp_value = sum_warp_value;
   }
-  
-  // update_rgb_vehicle();
-  
+
   
   
   set_sorting_channel_ff_2D(floor(x_sort), floor(y_sort), floor(vel_sort));
@@ -214,6 +201,28 @@ float get_alpha_background() {
 
 
 
+
+
+
+// field
+
+float get_length_field() {
+  return .1 + length_field;
+}
+
+float get_alpha_field() {
+  return alpha_field;
+  // don't mapped on the scale colorMode because the colour is normalized
+  // return map_colour(alpha_field, g.colorModeA);
+}
+
+float get_thickness_field() {
+  return .1 +((thickness_field *thickness_field *thickness_field) *height *.05);
+}
+
+
+
+
 // sprite
 float get_size_vehicle() {
   float size = 1 +(size_vehicle *height *.1);
@@ -265,7 +274,6 @@ Vec3 get_rgb_vehicle() {
 
 
 // warp
-
 float get_alpha_warp() {
   return map_colour(alpha_warp, g.colorModeA);
 }
@@ -273,7 +281,6 @@ float get_alpha_warp() {
 Vec4 get_rgba_warp_mapped_gui() {
   return rgba_warp;
 }
-
 
 float get_power_cycling_gui() {
   return power_cycling;
@@ -469,30 +476,30 @@ void catch_osc_data(Object [] data) {
   colour_field_min = (Float)data[47];
   colour_field_max = (Float)data[48];
   length_field = (Float)data[49];
-
+  thickness_field = (Float)data[50];
+  alpha_field = (Float)data[51];
 
   // button
   for(int i = 0 ; i < mode.length ; i++) {
-    if((int)data[50+i] == 0) mode[i] = false ; else mode[i] = true;
-    println(50+i,i,mode[i]);
+    if((int)data[52+i] == 0) mode[i] = false ; else mode[i] = true;
   }
   
-  if((int)data[57] == 0) display_background(false); else display_background(true);
-  if((int)data[58] == 0) display_vehicle(false); else display_vehicle(true);
-  if((int)data[59] == 0) display_warp(false); else display_warp(true);
-  if((int)data[60] == 0) display_field(false); else display_field(true);
-  if((int)data[61] == 0) display_spot(false); else display_spot(true);
+  if((int)data[59] == 0) display_background(false); else display_background(true);
+  if((int)data[60] == 0) display_vehicle(false); else display_vehicle(true);
+  if((int)data[61] == 0) display_warp(false); else display_warp(true);
+  if((int)data[62] == 0) display_field(false); else display_field(true);
+  if((int)data[63] == 0) display_spot(false); else display_spot(true);
 
-  if((int)data[62] == 0) set_resize_window(false); else set_resize_window(true);
-  if((int)data[63] == 0) set_fit_image(false); else set_fit_image(true);
-  if((int)data[64] == 0) show_must_go_on(false); else show_must_go_on(true);
-  if((int)data[65] == 0) set_warp_fx_is(false); else set_warp_fx_is(true);
-  if((int)data[66] == 0) set_shader_fx_is(false); else set_shader_fx_is(true);
-  if((int)data[67] == 0) set_full_reset_field(false); else set_full_reset_field(true);
+  if((int)data[64] == 0) set_resize_window(false); else set_resize_window(true);
+  if((int)data[65] == 0) set_fit_image(false); else set_fit_image(true);
+  if((int)data[66] == 0) show_must_go_on(false); else show_must_go_on(true);
+  if((int)data[67] == 0) set_warp_fx_is(false); else set_warp_fx_is(true);
+  if((int)data[68] == 0) set_shader_fx_is(false); else set_shader_fx_is(true);
+  if((int)data[69] == 0) set_full_reset_field(false); else set_full_reset_field(true);
 
-  type_vehicle = (int)data[68];
-  type_spot = (int)data[69];
-  int data_target = 70 ;
+  type_vehicle = (int)data[70];
+  type_spot = (int)data[71];
+  int data_target = 72 ;
   if(which_media != (int)data[data_target]) {
     which_media = (int)data[data_target];
     select_media_to_display(); 

@@ -10,7 +10,7 @@ void load_data_from_app_force(int tempo, boolean authorization) {
 		if(data_from_app.getRowCount() > 0) {
 			TableRow row = data_from_app.getRow(rank);
 			gui_main_movie.getController("header_movie").setValue(row.getFloat("value"));
-			rank++;
+			rank = 1;
       // radio mode
       for(int i = 0 ; i < mode.length ; i++) {
       //for(int i = 0 ; i < radio_mode.getItems().size() ; i++) {
@@ -34,26 +34,32 @@ void load_data_from_app_force(int tempo, boolean authorization) {
       		rank++;	
       	}
       }
+      // 
 
       // dropdown
-      rank += 3;
+      rank = 19;
 
-      // misc mode   
-            
+      // misc mode 
+      rank = 22;
+      /*              
       for(int i = 0 ; i < misc_ref.length ; i++) {
         if(gui_button.getController(misc_method_name[i]) instanceof Toggle) {
           Toggle t = (Toggle) gui_button.getController(misc_method_name[i]);
           row = data_from_app.getRow(rank);
           boolean state = false;
-          if(row.getFloat("value") == 1) state = true ;
+          if(row.getFloat("value") == 1) {
+            println(i, row.getString("name"), row.getFloat("value"));
+            state = true ;
+          }
           if(state != misc_ref[i]) {
             misc_ref[i] = state;
             if(state) t.setState(true); else t.setState(false);
           }
           rank++; 
         }
+
       }
-            
+      */     
 		} 		
 	}
 }
@@ -115,7 +121,6 @@ boolean movie_warp_is = true ;
 boolean movie_warp_is() {
   return movie_warp_is;
 }
-
 
 // misc
 boolean misc_curtain_is() {

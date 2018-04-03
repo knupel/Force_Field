@@ -43,6 +43,8 @@ float sum_slider() {
 	sum += colour_field_min;
 	sum += colour_field_max;
 	sum += length_field;
+	sum += thickness_field;
+	sum += alpha_field;
 	// FLUID
 	sum += frequence ;
 	sum += viscosity;
@@ -161,6 +163,8 @@ void send() {
 	message.add(colour_field_min);
 	message.add(colour_field_max);
 	message.add(length_field);
+	message.add(thickness_field);
+	message.add(alpha_field);
 	
 
 	for(int i = 0 ; i < mode.length ; i++) {

@@ -15,7 +15,7 @@ boolean use_leapmotion = false;
 
 
 void setup() {
-	size(500,550,P2D);
+	size(500,600,P2D);
 	surface.setLocation(30,30);
 	osc = new OscP5(this,port);
 	destination = new NetAddress("127.0.0.1",port);
@@ -55,7 +55,6 @@ void update_media_list() {
 		for(int i = 1 ; i < medias.length ;i++) {
 			media.addItem(medias[i],i-1);
 		}
-		// media.addItems(medias);
 	} else {
 		printErr("method update_media_list() don't find a file to update");
 	}
