@@ -165,7 +165,8 @@ void gui_button_G(int bar_h) {
 	pos.set(0,16);
 	int h_dropdown = 150 ;
 	int w_dropdown = int(size.x *1.5);
-	String [] shape_menu = {"pixel","point","triangle","shape"} ;
+	String [] shape_menu = {"pixel","point","triangle","typo","picto","logo"} ;
+	// String [] shape_menu = {"pixel","point","triangle","youngtimer"} ;
 	String [] media_menu = {"List empty","load items","from the","main sketch"} ;
 	media = gui_button.addDropdownList("media_list").setPosition(width -w_dropdown,pos.y*12).setSize(w_dropdown,h_dropdown*2).setBarHeight(bar_h).setColor(red_gui).addItems(media_menu);
 	vehicle = gui_button.addDropdownList("vehicle_list").setPosition(width -w_dropdown,pos.y*6.9).setSize(w_dropdown,h_dropdown).setBarHeight(bar_h).setColor(grey_0_gui).addItems(shape_menu);
@@ -213,11 +214,11 @@ public void controlEvent(ControlEvent theEvent) {
 // see menu dropdwon "pixel","point","triangle","shape"
 int get_shape_type(float value_controller) {
 	int v = (int)value_controller;
+	int max = 2 ;
 	if(v==0) return r.PIXEL;
 	else if(v==1) return POINT;
-	else if(v==2) return TRIANGLE;
-	else if(v==3) return SHAPE;
-	else return r.PIXEL;
+	else if(v== max) return TRIANGLE;
+	else return (v -max -1) +100000;
 }
 
 

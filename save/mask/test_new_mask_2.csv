@@ -1,0 +1,16 @@
+name,num,is,x,y
+coord_mask_0,4,,,
+coord_mask_0,,true,468,268
+coord_mask_0,,true,507,270
+coord_mask_0,,true,540,245
+coord_mask_0,,true,522,237
+coord_mask_1,4,,,
+coord_mask_1,,true,715,343
+coord_mask_1,,true,790,341
+coord_mask_1,,true,725,344
+coord_mask_1,,true,709,267
+coord_mask_2,4,,,
+coord_mask_2,,true,250,328
+coord_mask_2,,true,262,331
+coord_mask_2,,true,212,375
+coord_mask_2,,true,235,356

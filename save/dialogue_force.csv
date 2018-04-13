@@ -7,7 +7,7 @@ image,0
 gravity,0
 magnetic,0
 fluid,0
-background,0
+background,1
 vehicle,0
 warp,0
 field,0
@@ -24,8 +24,8 @@ media,0
 resize widow,1
 full fit image,1
 show must go on,1
-warp fx,0
-shader fx,0
+warp fx,1
+shader fx,1
 full reset field,0
 ,
 ,

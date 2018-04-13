@@ -53,10 +53,8 @@ int mode_ff = 0 ;
 int ref_mode_ff ;
 void next_mode_ff(int step) {
   mode_ff += step;
-  println("après",mode_ff, step, num_mode);
   if(mode_ff >= num_mode) mode_ff = 0 ;
   if(mode_ff < 0) mode_ff = num_mode; 
-  println("mode after compute", mode_ff);
   mode_ff();
 }
 

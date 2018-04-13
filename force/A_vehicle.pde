@@ -119,8 +119,9 @@ void display_vehicle_with_shape(int c, int size, int type) {
   for (Vehicle v : vehicles) {
     if(type == POINT) display_vehicle_point(v,c,c,thickness,size);
     else if(type == TRIANGLE) display_vehicle_triangle(v,c,size);
-    else if(type == SHAPE) {
-      display_vehicle_custom_shape(v,c,size);
+    else if(type >= 100000) {
+      int target = type -100000;
+      display_vehicle_custom_shape(v,c,size,target);
     }
   }  
 }
@@ -153,6 +154,7 @@ void display_vehicle_point(Vehicle v, int fill, int stroke, float thickness, flo
 }
 
 // custom shape
+/*
 void display_vehicle_custom_shape(Vehicle v, int c, float size) {
   shape_vehicle.fill(c);
   shape_vehicle.noStroke();
@@ -161,11 +163,37 @@ void display_vehicle_custom_shape(Vehicle v, int c, float size) {
   shape_vehicle.pos(v.get_position());
   shape_vehicle.draw() ; 
 }
+*/
 
 
+// spot shape
+ROPE_svg [] shape_vehicle; 
+void set_vehicle_shape(String... path) {
+  shape_vehicle = new ROPE_svg[path.length];
+  //println("nombre de de picto", path.length);
+  //if(shape_spot == null) {
+    for(int i = 0 ; i < shape_vehicle.length ; i++) {
+      if(shape_vehicle[i] == null) {
+        shape_vehicle[i] = new ROPE_svg(this,path[i]);
+        shape_vehicle[i].build();
+      }
+    }
+  // }
+}
 
+void display_vehicle_custom_shape(Vehicle v,  int c, float size) {
+  display_vehicle_custom_shape(v, c, size, 0);
+}
 
-
+void display_vehicle_custom_shape(Vehicle v,  int c, float size, int target) {
+  shape_vehicle[target].fill(c);
+  shape_vehicle[target].noStroke();
+  shape_vehicle[target].scaling(size);
+  shape_vehicle[target].mode(CENTER);
+  shape_vehicle[target].pos(v.get_position());
+  shape_vehicle[target].draw() ; 
+}
+/*
 ROPE_svg shape_vehicle; 
 void set_vehicle_shape(String path) {
   if(shape_vehicle == null) {
@@ -173,6 +201,7 @@ void set_vehicle_shape(String path) {
     shape_vehicle.build();
   }
 }
+*/
 
 
 

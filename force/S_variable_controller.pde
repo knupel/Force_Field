@@ -1,6 +1,6 @@
 /**
 variable global share with the main sketch
-v 0.0.27
+v 0.0.28
 
 In the future those values must be write in an external file to be read by the main and gui sketche
 */
@@ -30,6 +30,8 @@ boolean display_field = false;
 boolean display_spot = false;
 // not an interface button
 boolean display_cursor = false;
+
+boolean [] display_mask = {true,true,true,true,true,true,true,true,true,true};
 
 
 int num_misc = 8;

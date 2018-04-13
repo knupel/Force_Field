@@ -1,10 +1,10 @@
 /**
 SPOT
-v 0.0.1
+v 0.1.0
 */
 /**
 Spot display
-v 0.0.2
+v 0.1.0
 */
 void show_spot() {
   show_spot(get_type_spot());
@@ -22,8 +22,9 @@ void show_spot(int type) {
         point(force_field.get_spot_pos(i));
       } else if(type == TRIANGLE) {
         display_spot_triangle(force_field.get_spot_pos(i), c, get_size_spot());
-      } else if(type == SHAPE) {
-        display_spot_shape(force_field.get_spot_pos(i), get_rgb_spot(),get_alpha_spot());  
+      } else if(type >= 100000) {
+        int target = type -100000;
+        display_spot_shape(force_field.get_spot_pos(i), get_rgb_spot(),get_alpha_spot(), target);  
       }   
     }
   }  
@@ -79,22 +80,44 @@ void display_spot_triangle(Vec2 pos, int c, float size) {
 
 
 // spot shape
-ROPE_svg shape_spot; 
-void set_spot_shape(String path) {
-  if(shape_spot == null) {
-    shape_spot = new ROPE_svg(this,path);
-    shape_spot.build();
-  }
+ROPE_svg [] shape_spot; 
+void set_spot_shape(String... path) {
+  shape_spot = new ROPE_svg[path.length];
+  //println("nombre de de picto", path.length);
+  //if(shape_spot == null) {
+    for(int i = 0 ; i < shape_spot.length ; i++) {
+      if(shape_spot[i] == null) {
+        shape_spot[i] = new ROPE_svg(this,path[i]);
+        shape_spot[i].build();
+      }
+    }
+  // }
 }
 
 void display_spot_shape(Vec2 pos, Vec3 fill, float alpha) {
-  shape_spot.fill(fill.x,fill.y,fill.z,alpha);
-  shape_spot.noStroke();
-  shape_spot.scaling(get_size_spot());
-  shape_spot.mode(CENTER);
-  shape_spot.pos(pos);
-  shape_spot.draw() ; 
+  display_spot_shape(pos, fill, alpha, 0);
 }
+
+void display_spot_shape(Vec2 pos, Vec3 fill, float alpha, int target) {
+  shape_spot[target].fill(fill.x,fill.y,fill.z,alpha);
+  shape_spot[target].noStroke();
+  shape_spot[target].scaling(get_size_spot());
+  shape_spot[target].mode(CENTER);
+  shape_spot[target].pos(pos);
+  shape_spot[target].draw() ; 
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

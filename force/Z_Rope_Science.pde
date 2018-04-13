@@ -1,9 +1,8 @@
 /**
-ROPE - Romanesco processing environment – 
+ROPE SCIENCE
+v 0.2.2
 * Copyleft (c) 2014-2017 
 * Stan le Punk > http://stanlepunk.xyz/
-Rope SCIENCE 2016 – 2018
-v 0.2.0
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Rope
 *
@@ -54,7 +53,7 @@ float decimale (float var, int n) {
 
 /**
 geometry util
-v. 0.0.5
+v. 0.0.6
 */
 float perimeter_disc(int r) {
   return 2 *r *PI ;
@@ -65,18 +64,18 @@ float radius_from_circle_surface(int surface) {
 }
 
 
-boolean inside(iVec2 pos, iVec2 size, iVec2 target_pos) {
-  return inside(Vec2(pos), Vec2(size), Vec2(target_pos), ELLIPSE);
+boolean inside(iVec pos, iVec size, iVec2 target_pos) {
+  return inside(Vec2(pos.x,pos.y), Vec2(size.x,size.y), Vec2(target_pos), ELLIPSE);
 }
 
-boolean inside(Vec2 pos, Vec2 size, Vec2 target_pos) {
+boolean inside(Vec pos, Vec size, Vec2 target_pos) {
   return inside(pos, size, target_pos, ELLIPSE);
 }
 
-boolean inside(Vec2 pos, Vec2 size, Vec2 target_pos, int type) {
+boolean inside(Vec pos, Vec size, Vec2 target_pos, int type) {
   if(type == ELLIPSE) {
     // this part can be improve to check the 'x' and the 'y'
-    if (dist(pos, target_pos) < size.x *.5) return true ; 
+    if (dist(Vec2(pos.x,pos.y), target_pos) < size.x *.5) return true ; 
     else return false ;
   } else {
     if(target_pos.x > pos.x && target_pos.x < pos.x +size.x && 
@@ -84,6 +83,9 @@ boolean inside(Vec2 pos, Vec2 size, Vec2 target_pos, int type) {
       else return false ;
   } 
 }
+
+
+
 
 
 

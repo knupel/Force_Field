@@ -404,9 +404,11 @@ void oscEvent(OscMessage theOscMessage) {
   news_from_gui_ext = true ;
   if(external_gui_is) {
     println("reception",theOscMessage.arguments().length, frameCount);
+    /*
     for(int i = 0 ; i < theOscMessage.arguments().length ; i++) {
       println(i, theOscMessage.arguments()[i]);
     }
+    */
     catch_osc_data(theOscMessage.arguments());
   }
 }

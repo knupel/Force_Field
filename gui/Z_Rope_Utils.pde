@@ -1,9 +1,8 @@
 /**
-ROPE - Romanesco processing environment – 
+Rope UTILS 
+v 1.41.0
 * Copyleft (c) 2014-2018 
 * Stan le Punk > http://stanlepunk.xyz/
-Rope UTILS  2015 – 2018
-v 1.38.3
 Rope – Romanesco Processing Environment – 
 Processing 3.3.7
 * @author Stan le Punk
@@ -697,7 +696,7 @@ v 0.0.2
 * resize your picture proportionaly to the window sketch of the a specificic PGraphics
 */
 void image_resize(PImage src) {
-  image_resize(src,g, true);
+  image_resize(src,g,true);
 }
 
 void image_resize(PImage src, boolean fullfit) {
@@ -1643,6 +1642,39 @@ void level(PGraphics p, PImage tex, float... ratio) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
 CANVAS
 v 0.1.2.1
@@ -1758,9 +1790,9 @@ void alpha_canvas(int target, float change) {
 
 /**
 show canvas
-v 0.0.3
+v 0.0.4
 */
-boolean fullscreen_is = false ;
+boolean fullscreen_canvas_is = false ;
 iVec2 show_pos ;
 /**
 Add to set the center of the canvas in relation with the window
@@ -1768,7 +1800,7 @@ Add to set the center of the canvas in relation with the window
 int offset_canvas_x = 0 ;
 int offset_canvas_y = 0 ;
 void set_show() {
-  if(!fullscreen_is) {
+  if(!fullscreen_canvas_is) {
     surface.setSize(get_canvas().width, get_canvas().height);
   } else {
     offset_canvas_x = width/2 - (get_canvas().width/2);
@@ -1790,7 +1822,7 @@ int get_offset_canvas_y() {
 }
 
 void show_canvas(int num) {
-  if(fullscreen_is) {
+  if(fullscreen_canvas_is) {
     image(get_canvas(num), show_pos);
   } else {
     image(get_canvas(num));
@@ -2721,6 +2753,25 @@ void background_rope(Vec2 c) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
 TABLE METHOD 
 v 0.0.3.1
@@ -2807,6 +2858,19 @@ void write_row(TableRow row, String col_name, Object o) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
 print
 v 0.1.2
@@ -2880,6 +2944,31 @@ void printArrayTempo(int tempo, String[] var) {
     printArray(var);
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3464,7 +3553,7 @@ public class Info_Vec_dict extends Info_dict {
 
 
 /**
-Info 0.1.0.1
+Info 0.1.0.2
 
 */
 interface Info {
@@ -3524,7 +3613,7 @@ class Info_int extends Info_method {
 
 
   // get
-  int [] get_all() {
+  int [] get() {
     int [] list = new int[]{a,b,c,d,e,f,g} ;
     return list ;
   }
@@ -3632,7 +3721,7 @@ class Info_String extends Info_method {
 
 
   // get
-  String [] get_all() {
+  String [] get() {
     String [] list = new String[]{a,b,c,d,e,f,g} ;
     return list ;
   }
@@ -3740,7 +3829,7 @@ class Info_float extends Info_method {
   }
 
   // get
-  float [] get_all() {
+  float [] get() {
     float [] list = new float[]{a,b,c,d,e,f,g} ;
     return list ;
   }
@@ -3852,7 +3941,7 @@ class Info_Vec extends Info_method {
 
 
   // get
-  Vec [] get_all() {
+  Vec [] get() {
     Vec [] list = new Vec[]{a,b,c,d,e,f,g} ;
     return list ;
   }
@@ -3966,7 +4055,7 @@ class Info_Object extends Info_method {
 
 
   // get
-  Object [] get_all() {
+  Object [] get() {
     Object [] list = new Object []{a,b,c,d,e,f,g} ;
     return list ;
   }
@@ -4301,36 +4390,104 @@ int [][] loadPixels_array_2D() {
 
 
 
-
 /**
-CHECK
-v 0.2.2
+GRAPHICS METHOD
+v 0.3.0
+*/
+/**
+SCREEN
+v 0.3.0
 */
 
+void set_window(int px, int py, int sx, int sy) {
+  set_window(iVec2(px,py), iVec2(sx,sy), get_screen_location(0));
+}
+
+void set_window(int px, int py, int sx, int sy, int target) {
+  set_window(iVec2(px,py), iVec2(sx,sy), get_screen_location(target));
+}
+
+void set_window(iVec2 pos, iVec2 size) {
+  set_window(pos, size, get_screen_location(0));
+}
+
+void set_window(iVec2 pos, iVec2 size, int target) {
+  set_window(pos, size, get_screen_location(target));
+}
+
+void set_window(iVec2 pos, iVec2 size, iVec2 pos_screen) { 
+  int offset_x = pos.x;
+  int offset_y = pos.y;
+  int dx = pos_screen.x;
+  int dy = pos_screen.y;
+  surface.setSize(size.x,size.y);
+  surface.setLocation(offset_x +dx, offset_y +dy);
+}
 
 /**
-check display
+check screen
+v 0.1.0
 */
+/**
+screen size
+*/
+iVec2 get_screen_size() {
+  return get_display_size(sketchDisplay() -1);
+}
+
+iVec2 get_screen_size(int target) {
+  return get_display_size(target);
+}
+
+@Deprecated
 iVec2 get_display_size() {
   return get_display_size(sketchDisplay() -1);
 }
 
 
-iVec2 get_display_size(int which_display) {
+iVec2 get_display_size(int which_display) {  
+  Rectangle display = get_screen(which_display);
+  return iVec2((int)display.getWidth(), (int)display.getHeight()); 
+}
+
+/**
+screen location
+*/
+
+iVec2 get_screen_location(int which_display) {
+  Rectangle display = get_screen(which_display);
+  return iVec2((int)display.getX(), (int)display.getY());
+}
+
+
+/**
+screen
+*/
+Rectangle get_screen(int target_screen) {
   GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
   GraphicsDevice[] awtDevices = environment.getScreenDevices();
   int target = 0 ;
-  if(which_display < awtDevices.length) {
-    target = which_display ; 
+  if(target_screen < awtDevices.length) {
+    target = target_screen ; 
   } else {
     printErr("No display match with your request, instead we use the current display");
     target = sketchDisplay() -1;
+    if(target >= awtDevices.length) target = awtDevices.length -1;
   }
   GraphicsDevice awtDisplayDevice = awtDevices[target];
   Rectangle display = awtDisplayDevice.getDefaultConfiguration().getBounds();
-  return iVec2((int)display.getWidth(), (int)display.getHeight());
+  return display;
 }
 
+
+int get_screen_num() {
+  return get_display_num();
+}
+
+int get_display_num() {
+  GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+  return environment.getScreenDevices().length;
+}
 
 /**
 Check renderer
@@ -4366,6 +4523,30 @@ String get_renderer_name(final PGraphics graph) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+CHECK
+v 0.2.3
+*/
 /**
 Check Type
 v 0.0.2

@@ -1,6 +1,7 @@
 /**
-Rope Costume  2016-2018
-v 1.0.2
+Rope Costume
+* Copyleft (c) 2014-2018
+v 1.0.4
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Costume_rope
 */
@@ -281,8 +282,8 @@ int costumes_size() {
 
 
 /**
-ASPECT ROPE 2016-2017
-v 0.1.1
+ASPECT ROPE 2016-2018
+v 0.1.2
 */
 boolean fill_rope_is = true ;
 boolean stroke_rope_is = true ;
@@ -315,7 +316,7 @@ void aspect_rope(int fill, int stroke, float strokeWeight) {
 }
 
 void aspect_rope(int fill, int stroke, float strokeWeight, int costume) {
-  if(costume != POINT_ROPE) {
+  if(costume != POINT_ROPE || costume != POINT) {
     if(alpha(fill) <= 0 || !fill_rope_is) {
     	noFill() ; 
     } else {
@@ -363,7 +364,7 @@ void aspect_rope(Vec fill, Vec stroke, float strokeWeight) {
 
 void aspect_rope(Vec fill, Vec stroke, float strokeWeight, int costume) {
 	//println("aspect_rope()", fill_rope_is, stroke_rope_is) ;
-  if(costume != POINT_ROPE) {
+  if(costume != POINT_ROPE || costume != POINT) {
     if(fill.w <= 0 || !fill_rope_is) {
     	noFill() ; 
     } else {

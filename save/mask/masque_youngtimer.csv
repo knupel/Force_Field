@@ -1,0 +1,13 @@
+name,is,x,y
+coord_connected,true,0,0
+coord_connected,true,1280,0
+coord_connected,true,1280,800
+coord_connected,true,0,800
+coord_connected,true,19,76
+coord_connected,true,1280,69
+coord_connected,true,1234,777
+coord_connected,true,49,777
+coord_block_1,true,983,50
+coord_block_1,true,295,52
+coord_block_3,true,426,777
+coord_block_3,true,854,777

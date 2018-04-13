@@ -1,21 +1,8 @@
 TODO
 --
-*problème de dialogue avec les boutons misc
+*SET WINDOW
 
-
-
-*bouton reset vehicle sur le controleur
-
-
-
-*recalculer la video avec l'eau en rajoutant du bleu
-
-
-*Curseur logo
-
-
-*Fond d'écran de plantage
-
+Must rewrite all the Misc method to set the force window
 
 
 
@@ -35,13 +22,6 @@ APP :continue to private void convert_field_to_texture()
 APP : Add mess, wind by target field cell
 
 
-
-VIDEO
---
-
-*MONTAGE
-
-isoler le titre young timer pour en faire une vidéo à part
 
 
 

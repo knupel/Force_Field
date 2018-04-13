@@ -19,36 +19,38 @@ Via Reynolds: http://www.red3d.com/cwr/steer/FlowFollow.html
 Stable fluids from Jos Stam's work on the Navier-Stokes equation
 */
 String force_version = "0.3.8";
-boolean external_gui_is = true;
 
 boolean use_video_cam = false;
+int which_cam = 0 ; // 0 is the camera fullsize / max frameRate by default if there is camera plug is the external cam is catch
 
 boolean use_leapmotion = false;
 
 boolean pause_is = false;
 
-boolean full_screen_is = false;
-
-// iVec2 size = iVec2(950,500);
-iVec2 size = iVec2(1280,650); // love_timer > my VP at 720p
-
-iVec2 pos_window = iVec2(0,0);
-
-
-
-
+boolean external_gui_is = true;
 boolean interface_is = true;
 boolean hide_menu_bar = true;
 boolean inside_gui = false;
 
 int time_count_ff;
 
-PGraphics pg;
-
 int type_field;
 int pattern_field;
 
-int which_cam = 0 ; // 0 is the camera fullsize / max frameRate by default if there is camera plug is the external cam is catch
+int num_mask = 4;
+
+PGraphics pg;
+
+
+/**
+SALENGRISTE
+*/
+boolean full_screen_is = false;
+iVec2 size = iVec2(900,500); // Yougtimer CFPTS
+iVec2 pos_window = iVec2(0,0); // Yougtimer CFPTS
+
+
+
 
 void settings() {
   if(full_screen_is) {
@@ -58,15 +60,12 @@ void settings() {
     size(size.x,size.y,P2D); // taille pour VP Lovetimers
   }
   set_cell_grid_ff(10);
-  // type_field = r.FLUID;
-  // type_field = r.GRAVITY; /* you can also use HOLE constant */
-  // type_field = r.MAGNETIC;
+  
+  // r.FLUID / r.GRAVITY / r.MAGNATIC 
   type_field = r.STATIC;
 
-  // pattern_field = r.BLANK;
+  // r.BLANK / r.CHAOS / IMAGE / r.EQUATION
   pattern_field = r.PERLIN;
-  // pattern_field = r.CHAOS;
-  // pattern_field = IMAGE;
 
   if(hide_menu_bar) PApplet.hideMenuBar();
 }
@@ -85,16 +84,32 @@ void setup() {
   info_system();
   println("display connected:",get_display_num());
   if(get_display_num() > 1) {
-    size.set(width,height);
+    // size.set(width,height);
     // set_window_on_other_display(size,0);
-    //set_window_on_other_display(size,iVec2(1920,0));
+    //set_window_on_other_display(iVec2(1920,0),size);
   }
 
   background(0);
 
   if(use_leapmotion) leap_setup();
-  set_spot_shape(sketchPath(1)+"/import/corbeau.svg");
-  set_vehicle_shape(sketchPath(1)+"/import/corbeau.svg");
+
+    String s = sketchPath(1);
+  // YOUNGTIMER
+  /*
+  String [] path = new String[1];
+  path[0] = (s+"/import/corbeau.svg");
+  */
+  // ALGORAVE
+  String [] path = new String[3];
+
+  path[0] = (s+"/import/algorave_typo.svg");
+  path[1] = (s+"/import/algorave_picto.svg");
+  path[2] = (s+"/import/algorave_logo.svg");
+
+
+
+  set_spot_shape(path);
+  set_vehicle_shape(path);
 
   set_vehicle(get_num_vehicle());
 
@@ -128,19 +143,33 @@ void draw() {
     // iVec2 offset_display = iVec2(get_display_size(target_display).x, get_display_size(target_display).y);
     int target_display = 0 ;
     iVec2 offset_display = iVec2(0, -get_display_size(target_display).y);
+    //iVec2 offset_display = iVec2(0, -get_display_size(target_display).y);
 
     if(get_display_num() > 1) {
       // other
-      set_window_on_other_display(size,pos_window,offset_display,CENTER);
+      set_window_on_other_display(pos_window,size,offset_display,CENTER);
     } else {
       // main
-      set_window_on_main_display(size,pos_window,CENTER);
+      set_window_on_main_display(pos_window,size,CENTER);
     }
 
     // end of n'importe quoi  
     init_force = true;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /**
@@ -254,13 +283,10 @@ void force() {
   // REVERSE
   if(force_field != null) force_field.reverse_flow(false);
 
+  // MAPPING
+  mask_mapping(set_mask_is(),num_mask);
 
-  /**
-  GUI
-  interface gui
-  */
-  mask_mapping(set_mask_is());
-
+  // GUI
   if(!external_gui_is) get_controller_gui();
   update_value(time_count_ff);
 

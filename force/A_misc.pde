@@ -4,61 +4,72 @@ v 0.4.0
 */
 /**
 set window display
-*/
 
+
+
+
+BIG MESS REWORK ALL THE METHOD
+
+
+
+
+
+
+
+
+*/
+// MAIN
 void set_window_on_main_display(iVec2 size) {
   iVec2 pos_screen = iVec2(0,0);
   iVec2 pos_display = iVec2(get_display_size()).sub(size).div(2);
-  set_window_on_display(size,pos_screen,pos_display);
+  set_window(pos_screen,size,pos_display);
 }
 
-void set_window_on_main_display(iVec2 size, iVec2 pos) {
-  iVec2 pos_screen = iVec2(0,0);
-  iVec2 pos_display = pos.copy();
-  set_window_on_display(size,pos_screen,pos_display);
+void set_window_on_main_display(iVec2 pos, iVec2 size) {
+  set_window(pos,size);
 }
 
-void set_window_on_main_display(iVec2 size, iVec2 pos, int type) {
-  iVec2 pos_screen = iVec2(0,0);
+void set_window_on_main_display(iVec2 pos, iVec2 size, int type) {
   iVec2 pos_display = iVec2();
   if(type == CENTER) {  
     pos_display = iVec2(get_display_size()).sub(size).div(2).add(pos);
   } else {
     pos_display.set(pos);
   }
-  set_window_on_display(size,pos_screen,pos_display);
+  set_window(pos,size,pos_display);
 }
 
+// OTHER
 void set_window_on_other_display(iVec2 size) {
-  iVec2 pos_screen = iVec2(get_display_size(1).x, 0);
+  iVec2 pos = iVec2(get_display_size(1).x, 0);
   iVec2 pos_display = iVec2(get_display_size(1)).sub(size).div(2);
-  set_window_on_display(size,pos_screen,pos_display);
-}
+  set_window(pos,size,pos_display);
 
+}
 
 void set_window_on_other_display(iVec2 size, int target_display) {
   println("display",target_display,get_display_size(target_display));
-  iVec2 pos_screen = iVec2(get_display_size(target_display).x, 0);
+  iVec2 pos = iVec2(get_display_size(target_display).x, 0);
   iVec2 pos_display = iVec2(get_display_size(target_display)).sub(size).div(2);
-  set_window_on_display(size,pos_screen,pos_display);
+  set_window(pos,size,pos_display);
 }
 
-void set_window_on_other_display(iVec2 size, iVec2 pos) {
-  iVec2 pos_screen = iVec2(get_display_size(1).x, 0);
-  iVec2 pos_display = pos.copy();
-  set_window_on_display(size,pos_screen,pos_display);
+
+void set_window_on_other_display(iVec2 pos, iVec2 size) {
+  iVec2 pos_display = iVec2(get_display_size(1).x, 0);
+  set_window(pos,size,pos_display);
 }
 
-void set_window_on_other_display(iVec2 size, iVec2 pos, int type) {
-  set_window_on_other_display(size, pos, 1, type);
+void set_window_on_other_display(iVec2 pos, iVec2 size, int type) {
+  set_window_on_other_display(pos,size, 1, type);
 }
 
-void set_window_on_other_display(iVec2 size, iVec2 pos, int target_display, int type) {
+void set_window_on_other_display(iVec2 pos, iVec2 size, int target_display, int type) {
   iVec2 pos_display = iVec2(get_display_size(target_display).x, 0);
-  set_window_on_other_display(size, pos, pos_display, type);
+  set_window_on_other_display(pos, size, pos_display, type);
 }
 
-void set_window_on_other_display(iVec2 size, iVec2 pos, iVec2 offset, int type) {
+void set_window_on_other_display(iVec2 pos, iVec2 size, iVec2 offset, int type) {
   //iVec2 pos_screen = iVec2(get_display_size(target_display).x, 0);
   iVec2 pos_display = iVec2();
   if(type == CENTER) {  
@@ -66,31 +77,7 @@ void set_window_on_other_display(iVec2 size, iVec2 pos, iVec2 offset, int type) 
   } else {
     pos_display.set(pos);
   }
-  set_window_on_display(size,offset,pos_display);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
-info system
-*/
-String os_system ;
-void info_system() {
-  println("java Version Name:",javaVersionName);
-  os_system = System.getProperty("os.name");
-  println("os.name:",os_system);
-  println("os.version:",System.getProperty("os.version"));
-  println("force.version:",force_version);
+  set_window(offset,size,pos_display);
 }
 
 
@@ -114,420 +101,17 @@ void info_system() {
 
 
 
-/**
-MASK MAPPING
-v 0.0.2
-*/
-boolean border_is;
-boolean default_mask_is = true;
-void mask_mapping(boolean change_is) {
-  border_is = true ;
-  if(border_is) {
-    mask_mapping_border(change_is, default_mask_is);    
-  } else {
-    mask_mapping_2_blocks(change_is);
-  } 
-}
-/**
-load data save
-*/
-boolean mask_loaded_is ;
-void load_save_mask(File selection) {
-  if (selection == null) {
-    println("No file has been selected for data mask");
-  } else {
-    Table t = loadTable(selection.getAbsolutePath(),"header");
-    set_file_mask_mapping(t);
-    // mask border part
-    if(get_file_mask_mapping().getRowCount() > 7) {
-      int target = 0;
-      for (TableRow row : get_file_mask_mapping().findRows("coord_connected", "name")) {
-        int x = row.getInt("x");
-        int y = row.getInt("y");
-        coord_connected[target].set(x,y);
-        target++;
-      }
-      target = 0;
-      for (TableRow row : get_file_mask_mapping().findRows("coord_block_1", "name")) {
-        int x = row.getInt("x");
-        int y = row.getInt("y");
-        coord_block_1[target].set(x,y);
-        target++ ;
-      }
-      target = 0;
-      for (TableRow row : get_file_mask_mapping().findRows("coord_block_2", "name")) {
-        int x = row.getInt("x");
-        int y = row.getInt("y");
-        coord_block_2[target].set(x,y);
-        target++ ;
-      }
-      target = 0;
-      for (TableRow row : get_file_mask_mapping().findRows("coord_block_3", "name")) {
-        int x = row.getInt("x");
-        int y = row.getInt("y");
-        coord_block_3[target].set(x,y);
-        target++ ;
-      }
-      target = 0;
-      for (TableRow row : get_file_mask_mapping().findRows("coord_block_4", "name")) {
-        int x = row.getInt("x");
-        int y = row.getInt("y");
-        coord_block_4[target].set(x,y);
-        target++ ;
-      }
-    }
-    init_mask_is = false;
-    default_mask_is = false;
-    mask_loaded_is = true;
-    mask_mapping(false);
-  }  
-}
-
-
-Mask_mapping mask_border;
-boolean init_mask_is;
-void mask_mapping_border(boolean change_is, boolean default_mask_is) {
-  // build mask
-  if(!init_mask_is) {
-    if(mask_border == null || default_mask_is) {
-      mask_mapping_border_default();
-      mask_border = new Mask_mapping(coord_connected,coord_block_1,coord_block_2,coord_block_3,coord_block_4);
-      init_mask_is = true;
-    } else if(mask_loaded_is) {
-      mask_border = new Mask_mapping(coord_connected,coord_block_1,coord_block_2,coord_block_3,coord_block_4);
-      mask_loaded_is = false;
-      init_mask_is = true;
-    }
-  }
-   
-  // draw mask
-  if(mask_border != null && init_mask_is) {
-    mask_border.draw(change_is);
-    if(change_is) {
-      coord_connected = mask_border.get_coord();
-      coord_block_1 = mask_border.get_coord_block_1();
-      coord_block_2 = mask_border.get_coord_block_2();
-      coord_block_3 = mask_border.get_coord_block_3();
-      coord_block_4 = mask_border.get_coord_block_4();
-      //write_file_mask_mapping(get_file_mask_mapping());
-      write_file_mask_mapping();
-      save_file_mask_mapping(get_file_mask_mapping(),sketchPath(1)+ "/save/last_border_mask.csv");
-    }
-  }  
-}
-
-iVec2 [] coord_connected;
-iVec2 [] coord_block_1,coord_block_2,coord_block_3,coord_block_4;
-void mask_mapping_border_default() {
-  int marge = 40;
-  coord_connected = new iVec2 [8];
-  // outside
-  coord_connected[0] = iVec2(0,0);
-  coord_connected[1] = iVec2(width,0);
-  coord_connected[2] = iVec2(width,height);
-  coord_connected[3] = iVec2(0,height);
-  // inside
-  coord_connected[4] = iVec2(marge,marge);
-  coord_connected[5] = iVec2(width-marge,marge);
-  coord_connected[6] = iVec2(width-marge,height-marge);
-  coord_connected[7] = iVec2(marge,height-marge);
-  
-  // coord_block_1
-  coord_block_1 = new iVec2 [2];
-  coord_block_1[0] = iVec2(width -width/3,marge);
-  coord_block_1[1] = iVec2(width/3,marge);
-
-  // coord_block_2
-  coord_block_2 = new iVec2 [0];
-
-  // coord_block_3
-  coord_block_3 = new iVec2 [2];
-  coord_block_3[0] = iVec2(width/3,height-marge);
-  coord_block_3[1] = iVec2(width-width/3,height-marge);
-
-  // coord_block_4
-  coord_block_4 = new iVec2 [0];
-}
 
 
 
 
-Mask_mapping [] masks;
-void mask_mapping_2_blocks(boolean change_is) {
-  if(masks == null) {
-    data_mask_mapping_blocks();
-    masks = new Mask_mapping[num_mask_mapping];
-    masks[0] = new Mask_mapping(coord_mask_0);
-    masks[1] = new Mask_mapping(coord_mask_1);
-  } else {
-    masks[0].draw(change_is);
-    masks[1].draw(change_is);
-  }
-}
-
-// blocks
-iVec2 [] coord_mask_0, coord_mask_1;
-int num_mask_mapping;
-void data_mask_mapping_blocks() {
-  int marge = 40;
-  coord_mask_0 = new iVec2[4];
-  coord_mask_0[0] = iVec2(0,0);
-  coord_mask_0[1] = iVec2(width,0);
-  coord_mask_0[2] = iVec2(width,marge);
-  coord_mask_0[3] = iVec2(0,marge);
-
-  coord_mask_1 = new iVec2[4];
-  coord_mask_1[0] = iVec2(0,height-marge);
-  coord_mask_1[1] = iVec2(width,height-marge);
-  coord_mask_1[2] = iVec2(width,height);
-  coord_mask_1[3] = iVec2(0,height);
-
-  num_mask_mapping = 2;
-}
 
 
 
-/**
-class Mask_mapping
-v 0.0.2
-*/
-public class Mask_mapping {
-  private iVec3 [] coord;
-  private iVec3 [] coord_block_1, coord_block_2, coord_block_3, coord_block_4;
-  private boolean init;
-  private boolean block_is;
-  private int c = r.BLACK;
-  private int range = 10;
-
-  public Mask_mapping(iVec2 [] list) {
-    coord = new iVec3[list.length];
-    for(int i = 0 ; i < coord.length ;i++) {
-      coord[i] = iVec3(list[i].x,list[i].y,0);
-    }
-    init = true;
-  }
-  
-  public iVec2 [] get_coord() {
-    return iVec3_coord_to_iVec2_coord(coord) ;
-  }
-
-  public iVec2 [] get_coord_block_1() {
-    return iVec3_coord_to_iVec2_coord(coord_block_1) ;
-  }
-
-  public iVec2 [] get_coord_block_2() {
-    return iVec3_coord_to_iVec2_coord(coord_block_2) ;
-  }
-
-  public iVec2 [] get_coord_block_3() {
-    return iVec3_coord_to_iVec2_coord(coord_block_3) ;
-  }
-
-  public iVec2 [] get_coord_block_4() {
-    return iVec3_coord_to_iVec2_coord(coord_block_4) ;
-  }
-
-  private iVec2 [] iVec3_coord_to_iVec2_coord(iVec3 [] target) {
-    if(target != null) {
-      iVec2 [] list = new iVec2[target.length];
-      for(int i = 0 ; i < list.length ; i++) {
-        list[i] = iVec2(target[i].x,target[i].y);
-      }
-      return list;
-    } else return null;
-  }
-
-  public Mask_mapping(iVec2 [] list, iVec2 [] list_block_1, iVec2 [] list_block_2, iVec2 [] list_block_3, iVec2 [] list_block_4) {
-    if(list.length != 8) {
-      printErr("class Mask_mapping need exactly 8 points to create a block, no more no less, there is",list.length,"in the list, no mask can be create");
-    } else {
-      block_is = true ;
-      coord = new iVec3[list.length];
-      for(int i = 0 ; i < coord.length ;i++) {
-        coord[i] = iVec3(list[i].x,list[i].y,0);
-      }
-      // block 1
-      if(list_block_1 != null && list_block_1.length > 0) {
-        coord_block_1 = new iVec3[list_block_1.length];
-        for(int i = 0 ; i < coord_block_1.length ;i++) {
-          coord_block_1[i] = iVec3(list_block_1[i].x,list_block_1[i].y,0);
-        }
-      }
-      // block 2
-      if(list_block_2 != null && list_block_2.length > 0) {
-        coord_block_2 = new iVec3[list_block_2.length];
-        for(int i = 0 ; i < coord_block_2.length ;i++) {
-          coord_block_2[i] = iVec3(list_block_2[i].x,list_block_2[i].y,0);
-        }
-      }
-      // block 3
-      if(list_block_3 != null && list_block_3.length > 0) {
-        coord_block_3 = new iVec3[list_block_3.length];
-        for(int i = 0 ; i < coord_block_3.length ;i++) {
-          coord_block_3[i] = iVec3(list_block_3[i].x,list_block_3[i].y,0);
-        }
-      }
-      // block 4
-      if(list_block_4 != null && list_block_3.length > 0) {
-        coord_block_4 = new iVec3[list_block_4.length];
-        for(int i = 0 ; i < coord_block_4.length ;i++) {
-          coord_block_4[i] = iVec3(list_block_3[i].x,list_block_4[i].y,0);
-        }
-      }
-    }
-    init = true;
-  }
-
-  public void set_fill(int c) {
-    this.c = c;
-  }
 
 
 
-  public void draw(boolean modify_is) {
-    if(init) {
-      if(modify_is) {
-        fill(r.RED);
-      } else {
-        fill(c);
-      }
-      noStroke();
-      if(block_is) {
-        draw_shape(coord, coord_block_1, coord_block_2, coord_block_3, coord_block_4);
-        if(modify_is) {
-          show_point(coord);
-          move_point(coord);
-          if(coord_block_1 != null) {
-            show_point(coord_block_1);
-            move_point(coord_block_1);
-          }
-          if(coord_block_2 != null) {
-            show_point(coord_block_2);
-            move_point(coord_block_2);
-          }
-          if(coord_block_3 != null) {
-            show_point(coord_block_3);
-            move_point(coord_block_3);
-          }
-          if(coord_block_4 != null) {
-            show_point(coord_block_4);
-            move_point(coord_block_4);
-          }
-        }
-      } else {
-        draw_shape(coord);
-        if(modify_is) {
-          show_point(coord);
-          move_point(coord);
-        }
-      }
-      
-    } else {
-      printErr("class Mask_mapping(), must be iniatilized with an array list iVec2 [] coord)");
-    }
-  }
-  private void show_point(iVec3 [] list) {
-    for(iVec3 iv : list) {
-      stroke(r.WHITE);
-      strokeWeight(range);
-      point(iv);
-    }
-  }
-  private boolean drag_is = false ;
-  private void move_point(iVec3 [] list) {
-    if(!drag_is) {
-      for(iVec3 iv : list) {
-        iVec2 drag = iVec2(mouseX,mouseY);
-        iVec2 area = iVec2(range);
-        if(inside(drag,area,iVec2(iv.x,iv.y)) && iv.z == 0) {
-          if(mousePressed) {
-            iv.set(iv.x,iv.y,1);
-            drag_is = true ;
-          } else {
-            // border magnetism
-            if(iv.x < 0 + range) iv.x = 0 ;
-            if(iv.x > width -range) iv.x = width;
-            if(iv.y < 0 + range) iv.y = 0 ;
-            if(iv.y > height -range) iv.y = height;
-          }
-        }
-      }
-    }
-    
-    for(iVec3 iv : list) {
-      if(iv.z == 1) iv.set(mouseX,mouseY,1);
-    }
 
-    if(!mousePressed) {
-      drag_is = false;
-      for(iVec3 iv : list) {
-        iv.set(iv.x,iv.y,0);
-      }
-    }
-  }
-
-  private void draw_shape(iVec3 [] list) {
-    beginShape();
-    for(int i = 0 ; i < list.length ; i++) {
-      vertex(list[i]);
-    }
-    endShape(CLOSE);
-  }
-
-  private void draw_shape(iVec3 [] list, iVec3 [] list_b_1, iVec3 [] list_b_2, iVec3 [] list_b_3, iVec3 [] list_b_4) {
-    // block 1
-    beginShape();
-    vertex(list[0]);
-    vertex(list[1]);
-    vertex(list[5]);
-    if(list_b_1 != null) {
-      for(int i = 0 ; i < list_b_1.length ; i++) {
-        vertex(list_b_1[i]);
-      }
-    }
-    vertex(list[4]);
-    endShape(CLOSE);
-
-    // block 2
-    beginShape();
-    vertex(list[1]);
-    vertex(list[2]);
-    vertex(list[6]);
-    if(list_b_2 != null) {
-      for(int i = 0 ; i < list_b_2.length ; i++) {
-        vertex(list_b_2[i]);
-      }
-    }
-    vertex(list[5]);
-    endShape(CLOSE);
-
-    // block 3
-    beginShape();
-    vertex(list[2]);
-    vertex(list[3]);
-    vertex(list[7]);
-    if(list_b_3 != null) {
-      for(int i = 0 ; i < list_b_3.length ; i++) {
-        vertex(list_b_3[i]);
-      }
-    }
-    vertex(list[6]);
-    endShape(CLOSE);
-
-    // block 4
-    beginShape();
-    vertex(list[3]);
-    vertex(list[0]);
-    vertex(list[4]);
-    if(list_b_4 != null) {
-      for(int i = 0 ; i < list_b_4.length ; i++) {
-        vertex(list_b_4[i]);
-      }
-    }
-    vertex(list[7]);
-    endShape(CLOSE);
-  }
-}
 
 
 
@@ -587,9 +171,6 @@ void selected_file_to_save(File selection) {
   }
 }
 
-
-
-
 // mask file
 Table file_msk;
 Table get_file_mask_mapping() {
@@ -609,11 +190,17 @@ void save_file_mask_mapping(Table s_msk, String path) {
 void write_file_mask_mapping() {
   file_msk = new Table();
   file_msk.addColumn("name");
+  file_msk.addColumn("num");
   file_msk.addColumn("is");
   file_msk.addColumn("x");
   file_msk.addColumn("y");
 
   TableRow newRow;
+  newRow = file_msk.addRow();
+  newRow = file_msk.addRow();
+  newRow.setString("name", "Total_mask");
+   newRow.setInt("num", num_mask);
+
   if(coord_connected != null) {
     for(int i = 0 ; i < coord_connected.length ;i++) {
       newRow = file_msk.addRow();
@@ -661,6 +248,22 @@ void write_file_mask_mapping() {
       newRow.setString("is", "true");
       newRow.setInt("x", coord_block_4[i].x);
       newRow.setInt("y", coord_block_4[i].y);
+    }
+  }
+
+  // save block indépendant
+  if(coord_mask != null && coord_mask.length > 0) {
+    for(int i = 0 ; i < coord_mask.length ;i++) {
+      newRow = file_msk.addRow();
+      newRow.setString("name", "coord_mask_" +i);
+      newRow.setInt("num", coord_mask[i].get().length);
+      for(int k = 0 ; k < coord_mask[i].get().length ; k++) {
+        newRow = file_msk.addRow();
+        newRow.setString("name", "coord_mask_" +i);
+        newRow.setString("is", "true");
+        newRow.setInt("x", masks[i].get_coord()[k].x);
+        newRow.setInt("y", masks[i].get_coord()[k].x);
+      }
     }
   }
 }
@@ -842,7 +445,6 @@ void save_dial_force(int tempo) {
 UPDATE VALUE
 v 0.0.1
 */
-
 Vec4 rgba_warp = Vec4(1);
 float power_warp_max;
 void update_rgba_warp(int t_count) {
@@ -935,12 +537,6 @@ void reset(bVec3 reset, int type, int pattern, int super_type, int resolution) {
   if(reset.x)reset_vehicle(get_num_vehicle(),get_ff());
   if(reset.y)warp.reset();
   if(reset.z)reset_field(type, pattern, super_type, resolution);
-  /*
-  the method line cause a bug with dynamic mode when this one is refresh from selected mode by target, keyboard or external GUI
-  if(super_type == r.DYNAMIC){
-    update_gui_value(true,time_count_ff);
-  }
-  */
 }
 
 void reset_field(int type, int pattern, int super_type, int resolution) {
@@ -1052,17 +648,101 @@ void reset_mode() {
 
 /**
 KEYPRESSED
-v 0.3.0
+v 0.4.0
 */
+
 void keyPressed() {
   news_from_gui = true;
   keys[keyCode] = true;
   
-  key_pressed_add_media();
+  // Mask all the keypressed is in majuscule
+  mask_keyPressed();
 
+  force_keyPressed();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+the method is not with her family for bug reason...Java or Processing that's create an exception due of key_num_under_num[3] = '"';
+problem to manage double quote assignation in char.
+the char assignation must be write before the key and keyCode interrogation ?
+*/
+void display_mask_is_on_top_for_bug_reason() {
+  char [] key_num_under_num = new char[10];
+  key_num_under_num[0] = 'à'; 
+  key_num_under_num[1] = '&';
+  key_num_under_num[2] = 'é';
+  key_num_under_num[3] = '"';
+  key_num_under_num[4] = '\'';
+  key_num_under_num[5] = '(';
+  key_num_under_num[6] = '§';
+  key_num_under_num[7] = 'è';
+  key_num_under_num[8] = '!';
+  key_num_under_num[9] = 'ç';
+  for(int i = 0 ; i < display_mask.length && i < key_num_under_num.length ; i++) {
+    if(key == key_num_under_num[i]) {
+      display_mask[i] = !!((display_mask[i] == false));
+      if(display_mask[i])  display_mask[0] = true;
+      break;
+    }
+  } 
+}
+
+
+
+void mask_keyPressed() {
+  // MAJUSCULE
+  if(key == 'M') {
+    set_mask();
+  }
+  // hide mask
+
+
+  
+  /*
+  char single_quote = '\'';
+  char double_quote = '"';
+  char [] key_num_under_num = {,'é',double_quote,single_quote,'(','§','è','!','ç',};
+  */
+  
+  display_mask();
+  
+
+  
+  
+  // MAJUSCULE
+  if(key == 'S') {
+    save_force();
+  }
+  
+  // MAJUSCULE
+  if(key == 'L') {
+    selectInput("Select a file to load data mask:", "load_save_mask");
+  }
+}
+
+
+
+
+
+
+void force_keyPressed() {
+  key_pressed_add_media();
   /**
   if(key == 'a')
-  that control with advenced method see below
+  that control with advanced method see below, 
+  because the azerty keymap is not recognized with multikey
   */
 
   if(key == 'b') manage_border();
@@ -1093,15 +773,6 @@ void keyPressed() {
   }
   
 
-  if(key == 'm') {
-    set_mask();
-  }
-
-  if(key == 'l') {
-    selectInput("Select a file to load data mask:", "load_save_mask");
-  }
-
-
   if(key == 'p') {
     println("export jpg");
     saveFrame();   
@@ -1122,9 +793,7 @@ void keyPressed() {
     global_reset();
   }
 
-  if(key == 's') {
-    save_force();
-  }
+
   
 
   if(key == 't') {
@@ -1144,7 +813,6 @@ void keyPressed() {
 
   if(key == ' ') {
     pause_is = !!((pause_is == false));
-    //if(pause_is) pause_is = false ; else pause_is = true ;
   }
   
   // navigation in the media movie or picture
@@ -1160,17 +828,11 @@ void keyPressed() {
     select_media_to_display(); 
   }
 }
-
-
-
-
-
 void key_pressed_change_mode() {
   if(key == 'w') next_mode_ff(-1);
   if(key == 'x') next_mode_ff(+1);
 
   char [] key_num = {'1','2','3','4','5','6','7','8','9'};
-  // '0' is reserved for change window position
   
   for(int i = 0 ; i < num_mode ; i++) {
     if(key == key_num[i]) {
@@ -1180,25 +842,14 @@ void key_pressed_change_mode() {
   }
 }
 
-
-
-
-
-
 void key_pressed_add_media() {
   if(os_system.equals("Mac OS X")) {
     add_media_folder(157, SHIFT, KeyEvent.VK_Q); // Q for A I don't how map AZERTY layout keyboard
     add_media_file(157, SHIFT, KeyEvent.VK_Q); // Q for A I don't how map AZERTY layout keyboard
     replace_media_file(157, SHIFT, KeyEvent.VK_O);
     replace_media_folder(157, SHIFT, KeyEvent.VK_O);
-  } else {
-    add_media_folder(CONTROL, SHIFT, KeyEvent.VK_Q); // Q for A I don't how map AZERTY layout keyboard
-    add_media_file(CONTROL, SHIFT, KeyEvent.VK_Q); // Q for A I don't how map AZERTY layout keyboard
-    replace_media_file(CONTROL, SHIFT, KeyEvent.VK_O);
-    replace_media_folder(CONTROL, SHIFT, KeyEvent.VK_O);
-  }
+  } 
 }
-
 
 void add_media_folder(int a, int b, int c) {
   // true-true-true
@@ -1209,7 +860,6 @@ void add_media_folder(int a, int b, int c) {
   }
 }
 
-
 void add_media_file(int a, int b, int c) {
   // true-false-true
   if(checkKey(a) && !checkKey(b) && checkKey(c)) {
@@ -1218,7 +868,6 @@ void add_media_file(int a, int b, int c) {
     play_video(false);
   }
 }
-
 
 void replace_media_folder(int a, int b, int c) {
   // true-true-true
@@ -1229,7 +878,6 @@ void replace_media_folder(int a, int b, int c) {
   }
 }
 
-
 void replace_media_file(int a, int b, int c) {
   // true-false-true
   if(checkKey(a) && !checkKey(b) && checkKey(c)) {
@@ -1239,9 +887,6 @@ void replace_media_file(int a, int b, int c) {
   }
 }
 
-
-
-
 // key event
 import java.awt.event.KeyEvent;
 boolean[] keys = new boolean[526];
@@ -1249,7 +894,6 @@ boolean[] keys = new boolean[526];
 boolean checkKey(int k) {
   if (keys.length >= k) return keys[k]; return false;
 }
-
 
 void reset_key() { 
   for(int i = 0 ; i < keys.length ; i++) {
@@ -1283,13 +927,20 @@ void reset_key() {
 
 
 
+
+
+
+
+
+
 /**
 DATA CONTROL
+v 0.0.3
+SET and RETURN / boolean, int...
+
 use to dial between the keyboard, the controller and the user
 
-
 the mess
-
 
 */
 boolean set_mask_is;
@@ -1300,6 +951,43 @@ void set_mask() {
 boolean set_mask_is() {
   return set_mask_is;
 }
+
+boolean display_mask_is(int target) {
+  if(target < display_mask.length && target >= 0) {
+    return display_mask[target];
+  } else return false;
+}
+
+void display_mask() {
+  display_mask_is_on_top_for_bug_reason();
+
+/**
+the method is not with her family for bug reason...Java or Processing that's create an exception due of key_num_under_num[3] = '"';
+problem to manage double quote assignation in char.
+the char assignation must be write before the key and keyCode interrogation ?
+*/
+  /*
+  char [] key_num_under_num = new char[10];
+  key_num_under_num[0] = 'à'; 
+  key_num_under_num[1] = '&';
+  key_num_under_num[2] = 'é';
+  key_num_under_num[3] = '"';
+  key_num_under_num[4] = '\'';
+  key_num_under_num[5] = '(';
+  key_num_under_num[6] = '§';
+  key_num_under_num[7] = 'è';
+  key_num_under_num[8] = '!';
+  key_num_under_num[9] = 'ç';
+  for(int i = 0 ; i < display_mask.length && i < key_num_under_num.length ; i++) {
+    if(key == key_num_under_num[i]) {
+      display_mask[i] = !!((display_mask[i] == false)); 
+      break;
+    }
+  } 
+  */
+}
+
+
 /**
 cursor
 */
@@ -1405,6 +1093,10 @@ boolean warp_fx_is() {
   return misc_warp_fx;
 }
 
+void set_warp_fx_is(boolean state) {
+  misc_warp_fx = state;
+}
+
 /**
 shader fx
 */
@@ -1412,7 +1104,9 @@ boolean shader_fx_is() {
   return misc_shader_fx;
 }
 
-
+void set_shader_fx_is(boolean state) {
+  misc_shader_fx = state;
+}
 
 /**
 display background
@@ -1481,6 +1175,28 @@ int get_which_media() {
   return which_media;
 }
 
+
+/**
+diaporama control
+*/
+boolean diaporama_is ;
+void diaporama_is() {
+  diaporama_is = (true)? !diaporama_is : diaporama_is ;
+}
+
+/**
+fit image control
+*/
+void set_fit_image(boolean state) {
+  fullfit_image_is = state;
+}
+
+/**
+reset field control
+*/
+void set_full_reset_field(boolean state) {
+  full_reset_field_is = state;
+}
 
 
 
@@ -1551,42 +1267,12 @@ void diaporama(int type, int tempo_diaporama) {
   }  
 }
 
-boolean diaporama_is ;
-void diaporama_is() {
-  diaporama_is = (true)? !diaporama_is : diaporama_is ;
-}
-
-void set_fit_image(boolean state) {
-  fullfit_image_is = state;
-}
-
-void set_full_reset_field(boolean state) {
-  full_reset_field_is = state;
-}
-
-void set_warp_fx_is(boolean state) {
-  misc_warp_fx = state;
-}
-
-void set_shader_fx_is(boolean state) {
-  misc_shader_fx = state;
-}
 
 
 
 
-/**
-cursor manager
-*/
-void cursor_manager() {
-  boolean display = false;
-  if(set_mask_is() || interface_is() || display_cursor_is()) display = true;
-  if(display) {
-    cursor(CROSS);
-  } else {
-    noCursor();
-  }
-}
+
+
 
 
 /**
@@ -1666,23 +1352,7 @@ int pos_y_window_alway_on_top() {
 
 
 
-/**
-leap motion
-*/
-FingerLeap finger ;
 
-void leap_setup() {
-  finger = new FingerLeap() ;
-}
-
-void leap_update() {
-  if(finger == null) leap_setup() ;
-  finger.update();
-}
-
-void change_cursor_controller() {
-  if(use_leapmotion) use_leapmotion = false ; else use_leapmotion = true ;
-}
 
 
 
@@ -1710,7 +1380,6 @@ void info() {
   float alpha = 1;
   set_show_field(scale,c,alpha,min_c,max_c,reverse_c);
   show_field(get_ff());
-
 
   // GRID
   if(display_grid) {
@@ -1742,23 +1411,10 @@ void info() {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
 /**
 info
 */
-// boolean display_field = false;
 boolean display_grid = false;
-//boolean display_spot = false;
 boolean display_info = false ;
 void set_info(boolean display_info) {
   this.display_info = display_info;
@@ -1777,24 +1433,31 @@ void set_info(boolean display_info) {
 
 
 
-/**
-save frame
-*/
-void saveFrame() {
-  float compression = 0.9 ;
-  save_frame_jpg(compression);
-}
 
-/**
-save jpg
-*/
-void save_frame_jpg(float compression) {
-  String filename = "image_" +year()+"_"+month()+"_"+day()+"_"+hour() + "_" +minute() + "_" + second() + ".jpg" ; 
- // String path = sketchPath()+"/bmp/";
-  String path = sketchPath(1) +"/screenshot";
-  // saveFrame(path, filename, compression, get_canvas());
-  saveFrame(path, filename, compression);
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1969,6 +1632,123 @@ void pattern_field(Vec2 dir, float mag, Vec2 pos, float scale) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+leap motion
+*/
+FingerLeap finger ;
+
+void leap_setup() {
+  finger = new FingerLeap() ;
+}
+
+void leap_update() {
+  if(finger == null) leap_setup() ;
+  finger.update();
+}
+
+void change_cursor_controller() {
+  if(use_leapmotion) use_leapmotion = false ; else use_leapmotion = true ;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+save frame
+*/
+void saveFrame() {
+  float compression = 0.9 ;
+  save_frame_jpg(compression);
+}
+/**
+save jpg
+*/
+void save_frame_jpg(float compression) {
+  String filename = "image_" +year()+"_"+month()+"_"+day()+"_"+hour() + "_" +minute() + "_" + second() + ".jpg" ; 
+ // String path = sketchPath()+"/bmp/";
+  String path = sketchPath(1) +"/screenshot";
+  // saveFrame(path, filename, compression, get_canvas());
+  saveFrame(path, filename, compression);
+}
+
+
+
+
+
+
+
+
+
+
+/**
+cursor manager
+*/
+void cursor_manager() {
+  boolean display = false;
+  if(set_mask_is() || interface_is() || display_cursor_is()) display = true;
+  if(display) {
+    cursor(CROSS);
+  } else {
+    noCursor();
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+info system
+*/
+String os_system ;
+void info_system() {
+  println("java Version Name:",javaVersionName);
+  os_system = System.getProperty("os.name");
+  println("os.name:",os_system);
+  println("os.version:",System.getProperty("os.version"));
+  println("force.version:",force_version);
+}
 
 
 
