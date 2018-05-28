@@ -105,6 +105,10 @@ boolean display_spot_is() {
   return display_spot;
 }
 
+boolean display_other_is() {
+  return display_other;
+}
+
 boolean display_vehicle_is() {
   return display_vehicle ;
 }

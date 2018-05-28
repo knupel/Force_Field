@@ -361,6 +361,8 @@ void save_dial_force(int tempo) {
     if(display_field) row[11].setInt("value",1); else row[11].setInt("value",0);
     row[12].setString("name", "spot");
     if(display_spot) row[12].setInt("value",1); else row[12].setInt("value",0);
+    row[13].setString("name", "other");
+    if(display_other) row[13].setInt("value",1); else row[13].setInt("value",0);
     
     // dropdown
     row[19].setString("name", "type spot");
@@ -582,14 +584,6 @@ void reset_field(int type, int pattern, int super_type, int resolution) {
 
   if(type == r.FLUID) {
     set_full_reset_field(false);
-    if(!external_gui_is) {
-      /**
-      Why check something for gravity or magnetic field in Fluid system ?????
-      */
-      set_check_gui_dynamic_mag_grav(get_full_reset_field_is_gui());
-    } else {
-
-    }
   }
 }
 
@@ -754,6 +748,8 @@ void force_keyPressed() {
   if(key == 'g') display_grid();
 
   if(key == 'h') display_spot();
+
+  if(key == 'n') display_other();
 
   if(key == 'i') display_info();
   
@@ -1016,6 +1012,24 @@ void display_grid() {
   if(!display_grid) display_info = false ;
 }
 
+
+/**
+display other
+*/
+boolean display_other_is() {
+  return display_other;
+}
+
+void display_other(boolean is) {
+  display_other = is;
+}
+
+// method to set the gui back
+void display_other() {
+  display_other = !!((display_other == false));
+  // if(!display_other) display_info = false ;
+}
+
 /**
 display spot
 */
@@ -1063,7 +1077,7 @@ void display_vehicle(boolean is) {
 // method to set the gui back
 void display_vehicle() {
   display_vehicle = !!((display_vehicle == false));
-  if(display_vehicle_is() && !external_gui_is) set_check_gui_main_display(display_background_is());
+  // if(display_vehicle_is() && !external_gui_is) set_check_gui_main_display(display_background_is());
 }
 
 
@@ -1081,7 +1095,7 @@ void display_warp(boolean is) {
 // method to set the gui back
 void display_warp() {
   display_warp = !!((display_warp == false));
-  if(display_warp_is() && !external_gui_is) set_check_gui_main_display(display_background_is());
+  // if(display_warp_is() && !external_gui_is) set_check_gui_main_display(display_background_is());
 }
 
 /** 
@@ -1120,7 +1134,7 @@ boolean display_background_is() {
 // method to set the gui back
 void display_background() {
   display_background = !!((display_background == false));
-  if(!external_gui_is) set_check_gui_main_display(display_background_is());
+  // if(!external_gui_is) set_check_gui_main_display(display_background_is());
 }
 
 /**
@@ -1137,12 +1151,13 @@ boolean show_must_go_on_is() {
 // method to set the gui back
 void show_must_go_on() {
   show_must_go_on = !!((show_must_go_on == false));
-  if(!external_gui_is) set_check_gui_main_display(display_background_is());
+  //if(!external_gui_is) set_check_gui_main_display(display_background_is());
 }
 
 /**
 movie setting
 */
+float movie_pos_normal;
 float get_movie_pos_norm() {
   return movie_pos_normal ;
 }
@@ -1150,6 +1165,7 @@ float get_movie_pos_norm() {
 void set_movie_pos_norm(float normal_f) {
   movie_pos_normal = normal_f;
 }
+
 
 float get_movie_speed() {
   return speed_movie ;

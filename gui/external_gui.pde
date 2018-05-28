@@ -151,7 +151,7 @@ void gui_button_G(int bar_h) {
   //String name = "display";
   iVec2 pos = iVec2(0,bar_h +1);
   int num_by_line = display_label.length;
-  iVec2 size = iVec2 (int(width/(num_by_line *1.5)),bar_h); 
+  iVec2 size = iVec2 (width/num_by_line,bar_h); 
   // iVec2 spacing = iVec2(0,0);
   // display
   set_button(pos, size, num_by_line, gui_button, display_method_name, display_label, red_gui);
@@ -247,6 +247,11 @@ void bool_field(boolean state) {
 void bool_spot(boolean state) {
 	state_button(true);
 	display_spot = state ;
+}
+
+void bool_other(boolean state) {
+	state_button(true);
+	display_other = state ;
 }
 
 

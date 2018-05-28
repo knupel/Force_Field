@@ -19,15 +19,16 @@ int num_mode = 7;
 boolean [] mode = {true,false,false,false,false,false,false};
 boolean mode_perlin, mode_chaos, mode_equation, mode_image, mode_gravity, mode_magnetic, mode_fluid ;
 
-int num_display = 5;
-boolean [] display_ref = {true,false,false,false,false};
-String [] display_method_name = {"bool_background","bool_vehicle","bool_warp","bool_field","bool_spot"};
-String [] display_label = {"background","vehicle","warp","force field","spot"};
+// int num_display = 5;
+boolean [] display_ref = {true,false,false,false,false,false};
+String [] display_method_name = {"bool_background","bool_vehicle","bool_warp","bool_field","bool_spot","bool_other"};
+String [] display_label = {"background","vehicle","warp","force field","spot","other"};
 boolean display_background = true;
 boolean display_vehicle = false;
 boolean display_warp = false;
 boolean display_field = false;
 boolean display_spot = false;
+boolean display_other = false;
 // not an interface button
 boolean display_cursor = false;
 

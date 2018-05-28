@@ -21,13 +21,16 @@ boolean mode_perlin, mode_chaos, mode_equation, mode_image, mode_gravity, mode_m
 
 int num_display = 5;
 boolean [] display_ref = {true,false,false,false,false};
+/*
 String [] display_method_name = {"bool_background","bool_vehicle","bool_warp","bool_field","bool_spot"};
 String [] display_label = {"background","vehicle","warp","force field","spot"};
+*/
 boolean display_background = true;
 boolean display_vehicle = false;
 boolean display_warp = false;
 boolean display_field = false;
 boolean display_spot = false;
+boolean display_other = false;
 // not an interface button
 boolean display_cursor = false;
 
@@ -36,8 +39,10 @@ boolean [] display_mask = {true,true,true,true,true,true,true,true,true,true};
 
 int num_misc = 8;
 boolean [] misc_ref = {false,false,true,true,false,false,false};
+/*
 String [] misc_method_name = {"bool_size_window","bool_fit_image","bool_warp_fx","bool_shader_fx","bool_full_reset","bool_show","bool_curtain"};
 String [] misc_label = {"size window","fit image","warp fx","shader fx","full reset field","show must go on","curtain"};
+*/
 // maybe change name of variable below, like the variable display_...
 // maybe change name of variable below, like the variable display_...
 boolean change_size_window_is = false;

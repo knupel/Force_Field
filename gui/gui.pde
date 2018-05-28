@@ -26,6 +26,7 @@ void setup() {
 }
 
 void draw() {
+	println(display_other);
 	background(0);
 	send_value_controller();
 	show_gui();

@@ -77,6 +77,7 @@ void instruction() {
   text("Press 'CMD' + 'SHIFT' + 'O' to select media folder", x, y +(font_size *1.5));
   text("Press 'V' to select computer camera", x, y +(font_size *3));
   text("Press 'C' show or hide interface", x, y +(font_size *4.5));
+  text("LEARN MORE about GUI see guide file", x, y +(font_size *6));
 }
 
 

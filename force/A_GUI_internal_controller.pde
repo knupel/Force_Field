@@ -79,13 +79,13 @@ void gui_setup() {
 	
 	space_interface = ceil(font_gui.getSize() *1.5) ;
 	
-	if(!external_gui_is) gui_int_controller(space_interface);
+	//if(!external_gui_is) gui_int_controller(space_interface);
 
   // main
   
 }
 
-
+/*
 void gui_int_controller(int space) {
 	int slider_width = 100 ;
 	int max = 1;
@@ -109,6 +109,7 @@ void gui_int_controller(int space) {
   // boolean to give authorization to update controller
   gui_init_controller = true;
 }
+
 
 
 
@@ -183,11 +184,11 @@ void gui_vehicle(int space, int max, int w, float start_pos, int from, PFont fon
   int max_velocity_vehicle = max_speed ;
 	gui_vehicle.addSlider("num_vehicle").setPosition(10,pos_slider_y(space, start_pos +0, from)).setWidth(w).setRange(min_num_vehicle,max_num_vehicle).setFont(font).setColor(grey_0_gui);
   gui_vehicle.addSlider("velocity_vehicle").setPosition(10,pos_slider_y(space, start_pos +1, from)).setWidth(w).setRange(0,max_velocity_vehicle).setFont(font).setColor(grey_0_gui);
-  /*
-  check_gui_vehicle = gui_vehicle.addCheckBox("vehicle_setting").setPosition(10,pos_slider_y(space, start_pos +2, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2)
-																		.addItem("PIXEL / SHAPE",1).setColor(grey_0_gui);
-	if(gui_vehicle_pixel_is) check_gui_vehicle.activate(0);
-	*/
+
+  // check_gui_vehicle = gui_vehicle.addCheckBox("vehicle_setting").setPosition(10,pos_slider_y(space, start_pos +2, from)).setSize(w/3,10).setItemsPerRow(1).setSpacingRow(space/2)
+	//																	.addItem("PIXEL / SHAPE",1).setColor(grey_0_gui);
+	//if(gui_vehicle_pixel_is) check_gui_vehicle.activate(0);
+
 }
 
 
@@ -300,10 +301,10 @@ void gui_dynamic_spot(int space, int max, int w, float start_pos, int from, PFon
 
 
 
-/**
-control event
-v 0.0.3
-*/
+
+// control event
+// v 0.0.3
+
 public void controlEvent(ControlEvent theEvent) {
 	if(gui_init_controller && !external_gui_is) {
 		if(theEvent.isFrom(check_gui_main)) {
@@ -316,11 +317,11 @@ public void controlEvent(ControlEvent theEvent) {
 	  if(theEvent.isFrom(check_gui_main_channel)) {
 			if(check_gui_main_channel.getArrayValue(0) == 1) gui_warp_is = true; else gui_warp_is = false;
 	  }
-/*
-	  if(theEvent.isFrom(check_gui_vehicle)) {
-			if(check_gui_vehicle.getArrayValue(0) == 1) gui_vehicle_pixel_is = true; else gui_vehicle_pixel_is = false;
-	  } 
-	  */
+
+	  // if(theEvent.isFrom(check_gui_vehicle)) {
+		//	if(check_gui_vehicle.getArrayValue(0) == 1) gui_vehicle_pixel_is = true; else gui_vehicle_pixel_is = false;
+	  //} 
+
 
 	  if(theEvent.isFrom(check_gui_dynamic_mag_grav_reset)) {
 			if(check_gui_dynamic_mag_grav_reset.getArrayValue(0) == 1) gui_fullreset_field_is = true; else gui_fullreset_field_is = false;
@@ -330,9 +331,9 @@ public void controlEvent(ControlEvent theEvent) {
 
 
 
-/**
-set controller
-*/
+
+// set controller
+
 void set_check_gui_main_display(boolean state) {
 	if(state) {
 		check_gui_main.activate(2);
@@ -363,9 +364,9 @@ void set_check_gui_dynamic_mag_grav(boolean state) {
 
 
 
-/**
-get controller
-*/
+
+// get controller
+
 void get_controller_gui() {
 	get_controller_movie();
 	get_controller_main();
@@ -391,23 +392,9 @@ void get_controller_movie() {
 	gui_main_movie.getController("header_movie").setValue(get_movie_pos_norm());
 	gui_main_movie.getController("speed_movie");
 }
-
-
-/*
-void get_controller_fluid() {
-	gui_dynamic_fluid.getController("frequence");
-  gui_dynamic_fluid.getController("viscosity");
-  gui_dynamic_fluid.getController("diffusion");
-}
-
-
-// mouse device
-void get_controller_mouse() {
-	gui_dynamic_mouse.getController("radius_mouse");
-  gui_dynamic_mouse.getController("speed_mouse");
-  gui_dynamic_mouse.getController("angle_mouse");
-}
 */
+
+
 
 
 

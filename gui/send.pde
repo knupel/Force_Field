@@ -176,6 +176,7 @@ void send() {
 	if(display_warp) message.add(1); else message.add(0);
 	if(display_field) message.add(1); else message.add(0);
 	if(display_spot) message.add(1); else message.add(0);
+	if(display_other) message.add(1); else message.add(0);
   // MISC BUTTON
 	if(change_size_window_is) message.add(1); else message.add(0);
 	if(fullfit_image_is) message.add(1); else message.add(0);

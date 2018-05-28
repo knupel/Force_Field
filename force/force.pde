@@ -271,6 +271,12 @@ void force() {
     }
     show_vehicle(get_rgb_vehicle(), get_alpha_vehicle());
   }
+
+
+  // OTHER
+  if(display_other_is()) {
+    show_other();
+  }
   
 
 
@@ -288,7 +294,7 @@ void force() {
   mask_mapping(set_mask_is(),num_mask);
 
   // GUI
-  if(!external_gui_is) get_controller_gui();
+  // if(!external_gui_is) get_controller_gui();
   update_value(time_count_ff);
 
   interface_display(use_leapmotion,force_field);

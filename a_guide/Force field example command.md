@@ -32,7 +32,9 @@ key l
 
 key m 
 >FORCE: switch on/off the mask mapping
-key "SHIFT" + m set the mask
+
+key SHIFT + m 
+>set the mask
 
 
 Manage library media
