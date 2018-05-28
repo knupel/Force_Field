@@ -152,7 +152,7 @@ class Warp {
 
   /**
   misc
-  v 0.0.2
+  v 0.0.3
   */
   public void reset() {
     reset_img = true ;
@@ -203,9 +203,9 @@ class Warp {
   Follower method
   */
   private void set(PImage target) {
-    if(get_renderer_name(getGraphics()).equals(P3D) || get_renderer_name(getGraphics()).equals(P2D)) {
+    if(get_renderer(getGraphics()).equals(P3D) || get_renderer(getGraphics()).equals(P2D)) {
       buffer_img = createImage(target.width, target.height, ARGB);
-      pg = createGraphics(target.width, target.height, get_renderer_name(getGraphics()));
+      pg = createGraphics(target.width, target.height, get_renderer(getGraphics()));
       pg.beginDraw();
       pg.image(target,0,0);
       pg.endDraw();

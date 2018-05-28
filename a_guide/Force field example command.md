@@ -1,8 +1,7 @@
   
 Command to manage the force exmaple
 --
-key a 
-> WARP : Add media to library warp
+
 
 key b 
 >FORCE: manage the vehicle rebirth on the canvas border
@@ -33,9 +32,23 @@ key l
 
 key m 
 >FORCE: switch on/off the mask mapping
+key "SHIFT" + m set the mask
 
-key n 
->WARP : load a new media library
+
+Manage library media
+--
+key a 
+> WARP : Add media folder
+
+key CMD + a 
+> WARP : Add media file
+
+
+key o 
+>WARP : load media folder
+
+key CMD + o 
+>WARP : load media file
 
 
   

@@ -18,9 +18,17 @@ void interface_display(boolean mouse_is, Force_field ff) {
 		if(!external_gui_is) hide_all_gui();
 	} else {
 		background_interface();
+    // check for P3D position
+		if(get_renderer() == P3D) {
+			start_matrix();
+			translateZ(1);
+		}
+
 		instruction();
 		if(!external_gui_is) show_gui(mouse_is, ff);
 		show_info(ff);
+    // check for P3D position
+		if(get_renderer() == P3D) stop_matrix();
 	}
 }
 
@@ -105,7 +113,7 @@ void show_info(Force_field ff) {
 
 
 	// library
-	int items = warp.library_size() ;
+	int items = warp.library_size();
 	if(items < 0) items = 0 ;
 	info_line("Media library" + " " +items + " items", pos_x, space_interface, 3 +step_y, TOP);
   
@@ -131,7 +139,7 @@ void show_info(Force_field ff) {
 	info_line("Cell size: "  +get_resolution_ff(), pos_x, space_interface, 12 +step_y, TOP);
 	// device
 	String device_cursor = "mouse";
-	if(use_leapmotion)  device_cursor = "leapmotion";
+	if(use_leapmotion) device_cursor = "leapmotion";
 	info_line("Device cursor: "+device_cursor, pos_x, space_interface, 13 +step_y, TOP);
 
   info_line("DISPLAY", pos_x, space_interface, 													15 +step_y, TOP);

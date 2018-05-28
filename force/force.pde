@@ -53,11 +53,12 @@ iVec2 pos_window = iVec2(0,0); // Yougtimer CFPTS
 
 
 void settings() {
+  String renderer = P3D ;
   if(full_screen_is) {
-    fullScreen(P2D,2);
+    fullScreen(renderer,2);
     //fullScreen(P2D);      
   } else {
-    size(size.x,size.y,P2D); // taille pour VP Lovetimers
+    size(size.x,size.y,renderer); // taille pour VP Lovetimers
   }
   set_cell_grid_ff(10);
   
@@ -93,7 +94,7 @@ void setup() {
 
   if(use_leapmotion) leap_setup();
 
-    String s = sketchPath(1);
+  String s = sketchPath(1);
   // YOUNGTIMER
   /*
   String [] path = new String[1];
@@ -290,10 +291,10 @@ void force() {
   if(!external_gui_is) get_controller_gui();
   update_value(time_count_ff);
 
-  interface_display(use_leapmotion, force_field);
+  interface_display(use_leapmotion,force_field);
 
   if(!ff_is()) {
-    println("new force field grid, with cell size:", get_size_cell_ff());
+    println("new force field grid, with cell size:",get_size_cell_ff());
     init_ff(get_type_ff(),get_pattern_ff(),get_size_cell_ff(),g);
   }
 

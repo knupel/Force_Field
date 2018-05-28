@@ -1,6 +1,6 @@
 /**
 Vehicule example
-v 0.2.0
+v 0.2.1
 */
 ArrayList<Vehicle> vehicles;
 int n_ve ;
@@ -87,7 +87,7 @@ void show_vehicle(Vec3 colour, float alpha) {
 PGraphics pg_vehicles;
 void display_vehicle_pixel_on_PGraphics(int c) {
   if(pg_vehicles == null || pg_vehicles.width != width || pg_vehicles.height != height) {
-    pg_vehicles = createGraphics(width,height,P2D);
+    pg_vehicles = createGraphics(width,height,get_renderer());
   } 
   if(pg_vehicles != null) {
     pg_vehicles.beginDraw();

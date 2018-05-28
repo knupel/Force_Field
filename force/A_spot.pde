@@ -1,10 +1,10 @@
 /**
 SPOT
-v 0.1.0
+v 0.1.1
 */
 /**
 Spot display
-v 0.1.0
+v 0.1.1
 */
 void show_spot() {
   show_spot(get_type_spot());
@@ -34,7 +34,7 @@ void show_spot(int type) {
 PGraphics pg_spot;
 void display_pixel_on_PGraphics(PGraphics pg, int c, Vec2 [] coord) {
   if(pg == null || pg.width != width || pg.height != height) {
-    pg = createGraphics(width,height,P2D);
+    pg = createGraphics(width,height,get_renderer());
   } 
   if(pg != null) {
     pg.beginDraw();
