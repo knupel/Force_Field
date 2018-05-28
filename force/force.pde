@@ -18,7 +18,7 @@ Via Reynolds: http://www.red3d.com/cwr/steer/FlowFollow.html
 
 Stable fluids from Jos Stam's work on the Navier-Stokes equation
 */
-String force_version = "0.3.8";
+String force_version = "0.3.9";
 
 boolean use_video_cam = false;
 int which_cam = 0 ; // 0 is the camera fullsize / max frameRate by default if there is camera plug is the external cam is catch

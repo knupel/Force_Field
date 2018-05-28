@@ -1,17 +1,21 @@
 /**
 ROPE VECTOR
-v 2.6.8
+v 2.7.0
 * Copyleft (c) 2014-2018 
 * Stan le Punk > http://stanlepunk.xyz/
-Rope – Romanesco Processing Environment: 2015–2017
+Rope – Romanesco Processing Environment: 2015–2018
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Rope
 */
 /**
 inspireted by GLSL code and PVector from Daniel Shiffman
-ROPE is not add before Vec, because is too long, and little too much to have something like
-that RopeVec(), ROVec(), RPEVec() or RVec(), plus there is no confusion with PVector, so stay simple !
 */
+
+
+
+
+
+
 
 /**
 bVec class
@@ -408,6 +412,33 @@ class iVec2 extends iVec {
     }
   }
 
+  // xy
+  public iVec2 set_x(int x) {
+    return set(x,this.y);
+  }
+
+  public iVec2 set_y(int y) {
+    return set(this.x,y);
+  }
+
+  // st
+  public iVec2 set_s(int x) {
+    return set(x,this.y);
+  }
+
+  public iVec2 set_t(int y) {
+    return set(this.x,y);
+  }
+
+  // uv
+  public iVec2 set_u(int x) {
+    return set(x,this.y);
+  }
+
+  public iVec2 set_v(int y) {
+    return set(this.x,y);
+  }
+
   /**
   * set method master
   * here we cannot set the arg a,b, c,d,e,f cause r,g,b,a
@@ -606,6 +637,47 @@ class iVec3 extends iVec {
       return this;
     }
   }
+
+  // xyz
+  public iVec3 set_x(int x) {
+    return set(x,this.y,this.z);
+  }
+
+  public iVec3 set_y(int y) {
+    return set(this.x,y,this.z);
+  }
+
+  public iVec3 set_z(int z) {
+    return set(this.x,this.y,z);
+  }
+
+  // rgb
+  public iVec3 set_r(int x) {
+    return set(x,this.y,this.z);
+  }
+
+  public iVec3 set_g(int y) {
+    return set(this.x,y,this.z);
+  }
+
+  public iVec3 set_b(int z) {
+    return set(this.x,this.y,z);
+  }
+
+  // stp
+  public iVec3 set_s(int x) {
+    return set(x,this.y,this.z);
+  }
+
+  public iVec3 set_t(int y) {
+    return set(this.x,y,this.z);
+  }
+
+  public iVec3 set_p(int z) {
+    return set(this.x,this.y,z);
+  }
+
+
 
   /**
   * set method master
@@ -810,6 +882,57 @@ class iVec4 extends iVec {
     }
   }
 
+  // xyzw
+  public iVec4 set_x(int x) {
+    return set(x,this.y,this.z,this.w);
+  }
+
+  public iVec4 set_y(int y) {
+    return set(this.x,y,this.z,this.w);
+  }
+
+  public iVec4 set_z(int z) {
+    return set(this.x,this.y,z,this.w);
+  }
+
+  public iVec4 set_w(int w) {
+    return set(this.x,this.y,this.z,w);
+  }
+
+  // rgba
+  public iVec4 set_r(int x) {
+    return set(x,this.y,this.z,this.w);
+  }
+
+  public iVec4 set_g(int y) {
+    return set(this.x,y,this.z,this.w);
+  }
+
+  public iVec4 set_b(int z) {
+    return set(this.x,this.y,z,this.w);
+  }
+
+  public iVec4 set_a(int w) {
+    return set(this.x,this.y,this.z,w);
+  }
+
+  // stpq
+  public iVec4 set_s(int x) {
+    return set(x,this.y,this.z,this.w);
+  }
+
+  public iVec4 set_t(int y) {
+    return set(this.x,y,this.z,this.w);
+  }
+
+  public iVec4 set_p(int z) {
+    return set(this.x,this.y,z,this.w);
+  }
+
+  public iVec4 set_q(int w) {
+    return set(this.x,this.y,this.z,w);
+  }
+
   /**
   * set method master
   * here we cannot set the arg a,b, c,d,e,f cause r,g,b,a
@@ -1006,6 +1129,28 @@ class iVec5 extends iVec {
     }
   }
 
+
+  // abcde
+  public iVec5 set_a(int a) {
+    return set(a,this.b,this.c,this.d,this.e);
+  }
+
+  public iVec5 set_b(int b) {
+    return set(this.a,b,this.c,this.d,this.e);
+  }
+
+  public iVec5 set_c(int c) {
+    return set(this.a,this.b,c,this.d,this.e);
+  }
+
+  public iVec5 set_d(int d) {
+    return set(this.a,this.b,this.c,d,this.e);
+  }
+
+  public iVec5 set_e(int e) {
+    return set(this.a,this.b,this.c,this.d,e);
+  }
+
   /**
   * set main
   */
@@ -1078,6 +1223,31 @@ class iVec6 extends iVec {
     }
   }
 
+  // abcdef
+  public iVec6 set_a(int a) {
+    return set(a,this.b,this.c,this.d,this.e,this.f);
+  }
+
+  public iVec6 set_b(int b) {
+    return set(this.a,b,this.c,this.d,this.e,this.f);
+  }
+
+  public iVec6 set_c(int c) {
+    return set(this.a,this.b,c,this.d,this.e,this.f);
+  }
+
+  public iVec6 set_d(int d) {
+    return set(this.a,this.b,this.c,d,this.e,this.f);
+  }
+
+  public iVec6 set_e(int e) {
+    return set(this.a,this.b,this.c,this.d,e,this.f);
+  }
+
+  public iVec6 set_f(int f) {
+    return set(this.a,this.b,this.c,this.d,this.e,f);
+  }
+
 
   /**
   * set method master
@@ -1094,7 +1264,7 @@ class iVec6 extends iVec {
   }
 
 
-    /**
+  /**
   Copy
   */
   /**
@@ -1298,6 +1468,33 @@ public class Vec2 extends Vec {
   public Vec2 set(float[] source) {
     set(source[0],source[1]);
     return this;
+  }
+
+  // xy
+  public Vec2 set_x(float x) {
+    return set(x,this.y);
+  }
+
+  public Vec2 set_y(float y) {
+    return set(this.x,y);
+  }
+
+  // st
+  public Vec2 set_s(float x) {
+    return set(x,this.y);
+  }
+
+  public Vec2 set_t(float y) {
+    return set(this.x,y);
+  }
+
+  // uv
+  public Vec2 set_u(float x) {
+    return set(x,this.y);
+  }
+
+  public Vec2 set_v(float y) {
+    return set(this.x,y);
   }
 
 
@@ -1932,6 +2129,46 @@ class Vec3 extends Vec {
   }
 
 
+  // xyz
+  public Vec3 set_x(float x) {
+    return set(x,this.y,this.z);
+  }
+
+  public Vec3 set_y(float y) {
+    return set(this.x,y,this.z);
+  }
+
+  public Vec3 set_z(float z) {
+    return set(this.x,this.y,z);
+  }
+
+  // rgb
+  public Vec3 set_r(float x) {
+    return set(x,this.y,this.z);
+  }
+
+  public Vec3 set_g(float y) {
+    return set(this.x,y,this.z);
+  }
+
+  public Vec3 set_b(float z) {
+    return set(this.x,this.y,z);
+  }
+
+  // stp
+  public Vec3 set_s(float x) {
+    return set(x,this.y,this.z);
+  }
+
+  public Vec3 set_t(float y) {
+    return set(this.x,y,this.z);
+  }
+
+  public Vec3 set_p(float z) {
+    return set(this.x,this.y,z);
+  }
+
+
   /**
   * set method master
   * here we cannot set the arg a,b, c,d,e,f cause r,g,b,a
@@ -2524,11 +2761,8 @@ class Vec3 extends Vec {
   @Override String toString() {
     return "[ " + x + ", " + y + ", " + z + " ]";
   }
-  
-  
 }
-// END VEC 3
-////////////
+
 
 
 
@@ -2641,6 +2875,57 @@ class Vec4 extends Vec {
   public Vec4 set(float[] source) {
     set(source[0],source[1],source[2],source[3]);
     return this ;
+  }
+
+  // xyzw
+  public Vec4 set_x(float x) {
+    return set(x,this.y,this.z,this.w);
+  }
+
+  public Vec4 set_y(float y) {
+    return set(this.x,y,this.z,this.w);
+  }
+
+  public Vec4 set_z(float z) {
+    return set(this.x,this.y,z,this.w);
+  }
+
+  public Vec4 set_w(float w) {
+    return set(this.x,this.y,this.z,w);
+  }
+
+  // rgba
+  public Vec4 set_r(float x) {
+    return set(x,this.y,this.z,this.w);
+  }
+
+  public Vec4 set_g(float y) {
+    return set(this.x,y,this.z,this.w);
+  }
+
+  public Vec4 set_b(float z) {
+    return set(this.x,this.y,z,this.w);
+  }
+
+  public Vec4 set_a(float w) {
+    return set(this.x,this.y,this.z,w);
+  }
+
+  // stpq
+  public Vec4 set_s(float x) {
+    return set(x,this.y,this.z,this.w);
+  }
+
+  public Vec4 set_t(float y) {
+    return set(this.x,y,this.z,this.w);
+  }
+
+  public Vec4 set_p(float z) {
+    return set(this.x,this.y,z,this.w);
+  }
+
+  public Vec4 set_q(float w) {
+    return set(this.x,this.y,this.z,w);
   }
 
 
@@ -2894,10 +3179,9 @@ class Vec4 extends Vec {
 
 
 
-    /**
+  /**
   Normalize
   */
-
   public Vec4 normalize(Vec4 target) {
     if (target == null) {
       target = Vec4();
@@ -3028,7 +3312,7 @@ class Vec4 extends Vec {
   }
 
 
-    /**
+  /**
   Equals
   */
   boolean equals(Vec4 target) {
@@ -3089,13 +3373,16 @@ class Vec4 extends Vec {
     return "[ " + x + ", " + y + ", " + z + ", " + w + " ]";
   }
 }
-// END VEC 4
-////////////
+
+
+
+
+
+
 
 
 /**
 CLASS Vec5
-v 0.0.2
 */
 class Vec5 extends Vec{
 
@@ -3185,6 +3472,27 @@ class Vec5 extends Vec{
     return this ;
   }
 
+  // abcde
+  public Vec5 set_a(float a) {
+    return set(a,this.b,this.c,this.d,this.e);
+  }
+
+  public Vec5 set_b(float b) {
+    return set(this.a,b,this.c,this.d,this.e);
+  }
+
+  public Vec5 set_c(float c) {
+    return set(this.a,this.b,c,this.d,this.e);
+  }
+
+  public Vec5 set_d(float d) {
+    return set(this.a,this.b,this.c,d,this.e);
+  }
+
+  public Vec5 set_e(float e) {
+    return set(this.a,this.b,this.c,this.d,e);
+  }
+
   /**
   * master method set
   */
@@ -3230,8 +3538,6 @@ class Vec5 extends Vec{
   }
 }
 
-// END VEC 5
-////////////
 
 
 
@@ -3328,6 +3634,33 @@ class Vec6 extends Vec {
     return this ;
   }
 
+
+    // abcdef
+  public Vec6 set_a(float a) {
+    return set(a,this.b,this.c,this.d,this.e,this.f);
+  }
+
+  public Vec6 set_b(float b) {
+    return set(this.a,b,this.c,this.d,this.e,this.f);
+  }
+
+  public Vec6 set_c(float c) {
+    return set(this.a,this.b,c,this.d,this.e,this.f);
+  }
+
+  public Vec6 set_d(float d) {
+    return set(this.a,this.b,this.c,d,this.e,this.f);
+  }
+
+  public Vec6 set_e(float e) {
+    return set(this.a,this.b,this.c,this.d,e,this.f);
+  }
+
+  public Vec6 set_f(float f) {
+    return set(this.a,this.b,this.c,this.d,this.e,f);
+  }
+
+
   /**
   * set main
   */
@@ -3372,1846 +3705,6 @@ class Vec6 extends Vec {
     return "[ " + a + ", " + b + ", " + c + ", " + d + ", " + e + ", " + f + " ]" ;
   }
 }
-
-/**
-END VEC 6
-*/
-
-/**
-
-
-END CLASS Vec and iVec
-
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
-
-METHOD
-Vec and iVec
-v 0.5.0
-
-*/
-/**
-Addition
-v 0.0.4
-*/
-/**
-* return the resultat of vector addition
-*/
-Vec2 add(Vec2 a, Vec2 b) {
-  if(a == null || b == null) {
-    return null ;
-  } else {
-    float x = a.x + b.x ;
-    float y = a.y + b.y ;
-    return new Vec2(x,y) ;
-  }
-}
-
-Vec3 add(Vec3 a, Vec3 b) {
-  if(a == null || b == null) {
-    return null ;
-  } else {
-    float x = a.x + b.x ;
-    float y = a.y + b.y ;
-    float z = a.z + b.z ;
-    return new Vec3(x,y,z)  ;
-  }
-}
-
-Vec4 add(Vec4 a, Vec4 b) {  
-  if(a == null || b == null) {
-    return null ;
-  } else {
-    float x = a.x + b.x ;
-    float y = a.y + b.y ;
-    float z = a.z + b.z ;
-    float w = a.w + b.w ;
-    return new Vec4(x,y,z,w)  ;
-  }
-}
-/**
-* iVec arg
-*/
-Vec2 add(iVec2 a, iVec2 b) {
-  return add(Vec2(a),Vec2(b));
-}
-
-Vec3 add(iVec3 a, iVec3 b) {
-  return add(Vec3(a),Vec3(b));
-}
-
-Vec4 add(iVec4 a, iVec4 b) {  
-  return add(Vec4(a),Vec4(b));
-}
-/**
-* float arg
-*/
-Vec2 add(Vec2 a, float arg) {
-  return add(a,Vec2(arg,arg));
-}
-
-Vec3 add(Vec3 a, float arg) {
-  return add(a,Vec3(arg,arg,arg));
-}
-
-Vec4 add(Vec4 a, float arg) {  
-  return add(a,Vec4(arg,arg,arg,arg));
-}
-/**
-* iVec + float
-*/
-Vec2 add(iVec2 a, float arg) {
-  return add(Vec2(a),Vec2(arg,arg));
-}
-
-Vec3 add(iVec3 a, float arg) {
-  return add(Vec3(a),Vec3(arg,arg,arg));
-}
-
-Vec4 add(iVec4 a, float arg) {  
-  return add(Vec4(a),Vec4(arg,arg,arg,arg));
-}
-
-
-
-/**
-Multiplication
-v 0.0.3
-*/
-/**
-* return the resultat of vector multiplication
-*/
-Vec2 mult(Vec2 a, Vec2 b) {
-  if(a == null || b == null) {
-    return null ;
-  } else {
-    float x = a.x * b.x;
-    float y = a.y * b.y;
-    return new Vec2(x,y);
-  }
-}
-
-Vec3 mult(Vec3 a, Vec3 b) {
-  if(a == null || b == null) {
-    return null ;
-  } else {
-    float x = a.x * b.x;
-    float y = a.y * b.y;
-    float z = a.z * b.z;
-    return new Vec3(x,y,z);
-  }
-}
-
-Vec4 mult(Vec4 a, Vec4 b) {
-  if(a == null || b == null) {
-    return null ;
-  } else {
-    float x = a.x * b.x;
-    float y = a.y * b.y;
-    float z = a.z * b.z;
-    float w = a.w * b.w;
-    return new Vec4(x,y,z,w);
-  }
-}
-/**
-* iVec arg
-*/
-Vec2 mult(iVec2 a, iVec2 b) {
-  return mult(Vec2(a),Vec2(b));
-}
-
-Vec3 mult(iVec3 a, iVec3 b) {
-  return mult(Vec3(a),Vec3(b));
-}
-
-Vec4 mult(iVec4 a, iVec4 b) {  
-  return mult(Vec4(a),Vec4(b));
-}
-/**
-* float arg
-*/
-Vec2 mult(Vec2 a, float arg) {
-  return mult(a,Vec2(arg,arg));
-}
-
-Vec3 mult(Vec3 a, float arg) {
-  return mult(a,Vec3(arg,arg,arg));
-}
-
-Vec4 mult(Vec4 a, float arg) {  
-  return mult(a,Vec4(arg,arg,arg,arg));
-}
-/**
-* iVec + float
-*/
-Vec2 mult(iVec2 a, float arg) {
-  return mult(Vec2(a),Vec2(arg,arg));
-}
-
-Vec3 mult(iVec3 a, float arg) {
-  return mult(Vec3(a),Vec3(arg,arg,arg));
-}
-
-Vec4 mult(iVec4 a, float arg) {  
-  return mult(Vec4(a),Vec4(arg,arg,arg,arg));
-}
-
-
-
-
-/**
-Division
-v 0.0.3
-*/
-/**
-* return the resultat of vector division
-*/
-Vec2 div(Vec2 a, Vec2 b) {
-  if(a == null || b == null) {
-    return null;
-  } else {
-    float x = a.x /b.x;
-    float y = a.y /b.y;
-    return new Vec2(x,y);
-  }
-}
-
-Vec3 div(Vec3 a, Vec3 b) {
-  if(a == null || b == null) {
-    return null;
-  } else {
-    float x = a.x /b.x;
-    float y = a.y /b.y;
-    float z = a.z /b.z;
-    return new Vec3(x,y,z);
-  }
-}
-
-Vec4 div(Vec4 a, Vec4 b) {
-  if(a == null || b == null) {
-    return null ;
-  } else {
-    float x = a.x /b.x;
-    float y = a.y /b.y;
-    float z = a.z /b.z;
-    float w = a.w /b.w;
-    return new Vec4(x,y,z,w);
-  }
-}
-/**
-* iVec arg
-*/
-Vec2 div(iVec2 a, iVec2 b) {
-  return div(Vec2(a),Vec2(b));
-}
-
-Vec3 div(iVec3 a, iVec3 b) {
-  return div(Vec3(a),Vec3(b));
-}
-
-Vec4 div(iVec4 a, iVec4 b) {  
-  return div(Vec4(a),Vec4(b));
-}
-/**
-* float arg
-*/
-Vec2 div(Vec2 a, float arg) {
-  return div(a,Vec2(arg,arg));
-}
-
-Vec3 div(Vec3 a, float arg) {
-  return div(a,Vec3(arg,arg,arg));
-}
-
-Vec4 div(Vec4 a, float arg) {  
-  return div(a,Vec4(arg,arg,arg,arg));
-}
-/**
-* iVec + float
-*/
-Vec2 div(iVec2 a, float arg) {
-  return div(Vec2(a),Vec2(arg,arg));
-}
-
-Vec3 div(iVec3 a, float arg) {
-  return div(Vec3(a),Vec3(arg,arg,arg));
-}
-
-Vec4 div(iVec4 a, float arg) {  
-  return div(Vec4(a),Vec4(arg,arg,arg,arg));
-}
-
-
-/**
-Substraction
-v 0.0.4
-*/
-/**
-* return the resultat of vector substraction
-*/
-Vec2 sub(Vec2 a, Vec2 v_b) {
-  if(a == null || v_b == null) {
-    return null ;
-  } else {
-    float x = a.x - v_b.x;
-    float y = a.y - v_b.y;
-    return new Vec2(x,y);
-  }
-}
-
-Vec3 sub(Vec3 a, Vec3 v_b) {
-  if(a == null || v_b == null) {
-    return null ;
-  } else {
-    float x = a.x - v_b.x;
-    float y = a.y - v_b.y;
-    float z = a.z - v_b.z;
-    return new Vec3(x,y,z);
-  }
-}
-
-Vec4 sub(Vec4 a, Vec4 v_b) {
-  if(a == null || v_b == null) {
-    return null ;
-  } else {
-    float x = a.x - v_b.x;
-    float y = a.y - v_b.y;
-    float z = a.z - v_b.z;
-    float w = a.w - v_b.w;
-    return new Vec4(x,y,z,w);
-  }
-}
-/**
-* iVec arg
-*/
-Vec2 sub(iVec2 a, iVec2 b) {
-  return sub(Vec2(a),Vec2(b));
-}
-
-Vec3 sub(iVec3 a, iVec3 b) {
-  return sub(Vec3(a),Vec3(b));
-}
-
-Vec4 sub(iVec4 a, iVec4 b) {  
-  return sub(Vec4(a),Vec4(b));
-}
-/**
-* float arg
-*/
-Vec2 sub(Vec2 a, float arg) {
-  return sub(a,Vec2(arg,arg));
-}
-
-Vec3 sub(Vec3 a, float arg) {
-  return sub(a,Vec3(arg,arg,arg));
-}
-
-Vec4 sub(Vec4 a, float arg) {  
-  return sub(a,Vec4(arg,arg,arg,arg));
-}
-/**
-* iVec + float
-*/
-Vec2 sub(iVec2 a, float arg) {
-  return sub(Vec2(a),Vec2(arg,arg));
-}
-
-Vec3 sub(iVec3 a, float arg) {
-  return sub(Vec3(a),Vec3(arg,arg,arg));
-}
-
-Vec4 sub(iVec4 a, float arg) {  
-  return sub(Vec4(a),Vec4(arg,arg,arg,arg));
-}
-
-
-
-/**
-Cross
-v 0.0.2
-*/
-Vec3 cross(Vec3 v1, Vec3 v2) {
-  if(v1 == null ||  v2 == null) {
-    return null;
-  } else {
-    float crossX = v1.y * v2.z - v2.y * v1.z;
-    float crossY = v1.z * v2.x - v2.z * v1.x;
-    float crossZ = v1.x * v2.y - v2.x * v1.y;
-    return Vec3(crossX, crossY, crossZ);
-  }
-}
-/**
-* @deprecated "cross(Vec3 v1, Vec3 v2, Vec3 target), can be deprecated in the future, need to be test"
-*/
-@Deprecated
-Vec3 cross(Vec3 v1, Vec3 v2, Vec3 target) {
-  println("cross(Vec3 v1, Vec3 v2, Vec3 target), can be deprecated in the future, need to be test");
-  if(v1 == null ||  v2 == null || target == null) {
-    return null ;
-  } else {
-    float crossX = v1.y * v2.z - v2.y * v1.z;
-    float crossY = v1.z * v2.x - v2.z * v1.x;
-    float crossZ = v1.x * v2.y - v2.x * v1.y;
-
-    if (target == null) {
-      target = Vec3(crossX, crossY, crossZ);
-    } else {
-      target.set(crossX, crossY, crossZ);
-    }
-    return target ;
-  }  
-}
-
-
-
-/**
-Equals
-v 0.0.2
-*/
-/**
-* Compare Vector with or without area
-* we must add a compare method for the case when we need to compare in vector in the a class
-*
-* @return boolean
-*/
-// Vec2 equals
-
-/**
-* @deprecated instead use compare()
-*/
-@Deprecated
-boolean equals(Vec2 v_a, Vec2 v_b) {
-  return compare(v_a,v_b);
-}
-/**
-* @deprecated instead use compare()
-*/
-@Deprecated
-boolean equals(Vec3 v_a, Vec3 v_b) {
-  return compare(v_a,v_b);
-}
-/**
-* @deprecated instead use compare()
-*/
-@Deprecated
-boolean equals(Vec4 v_a, Vec4 v_b) {
-  return compare(v_a,v_b);
-}
-/**
-* @deprecated instead use compare()
-*/
-@Deprecated
-boolean equals(Vec2 v_a, Vec2 v_b, Vec2 area) {
-  return compare(v_a,v_b, area);
-}
-/**
-* @deprecated instead use compare()
-*/
-@Deprecated
-boolean equals(Vec3 v_a, Vec3 v_b, Vec3 area) {
-   return compare(v_a,v_b, area);
-}
-/**
-* @deprecated instead use compare()
-*/
-@Deprecated
-boolean equals(Vec4 v_a, Vec4 v_b, Vec4 area) {
-  return compare(v_a,v_b, area);
-}
-
-
-
-
-
-boolean compare(Vec2 v_a, Vec2 v_b) {
-  if(v_a == null || v_b == null) {
-    println("Is not possible to compare", v_a, "to", v_b) ;
-    return false ;
-  } else {
-    return equals(Vec4(v_a.x,v_a.y,0,0),Vec4(v_b.x,v_b.y,0,0)) ;
-  }
-}
-
-// Vec3 compare
-boolean compare(Vec3 v_a, Vec3 v_b) {
-    if(v_a == null || v_b == null) {
-    println("Is not possible to compare", v_a, "to", v_b) ;
-    return false ;
-  } else {
-    return equals(Vec4(v_a.x, v_a.y, v_a.z, 0),Vec4(v_b.x, v_b.y, v_b.z, 0)) ;
-  }
-}
-// Vec4 compare
-boolean compare(Vec4 v_a, Vec4 v_b) {
-  if(v_a != null && v_b != null ) {
-    if((v_a.x == v_b.x) && (v_a.y == v_b.y) && (v_a.z == v_b.z) && (v_a.w == v_b.w)) {
-            return true ; 
-    } else {
-      return false ;
-    }
-  } else {
-    return false ;
-  } 
-}
-
-
-/** 
-* compare if the first vector is in the area of the second vector, 
-* the area of the second vector is define by a Vec area, 
-* that give the possibility of different size for each component
-* @return boolean
-*/
-// Vec method
-/**
-* compare with area
-*/
-boolean compare(Vec2 v_a, Vec2 v_b, Vec2 area) {
-  if(v_a == null || v_b == null || area == null) {
-    println("Is not possible to compare", v_a, "with", v_b, "with", area) ;
-    return false ;
-  } else {
-    return equals(Vec4(v_a.x, v_a.y, 0, 0),Vec4(v_b.x, v_b.y, 0, 0),Vec4(area.x, area.y, 0, 0)) ;
-  }
-}
-
-boolean compare(Vec3 v_a, Vec3 v_b, Vec3 area) {
-    if(v_a == null || v_b == null || area == null) {
-    println("Is not possible to compare", v_a, "with", v_b, "with", area) ;
-    return false ;
-  } else {
-    return equals(Vec4(v_a.x, v_a.y, v_a.z, 0),Vec4(v_b.x, v_b.y, v_b.z, 0),Vec4(area.x, area.y, area.z, 0)) ;
-  }
-}
-
-boolean compare(Vec4 v_a, Vec4 v_b, Vec4 area) {
-  if(v_a != null && v_b != null && area != null ) {
-    if(    (v_a.x >= v_b.x -area.x && v_a.x <= v_b.x +area.x) 
-        && (v_a.y >= v_b.y -area.y && v_a.y <= v_b.y +area.y) 
-        && (v_a.z >= v_b.z -area.z && v_a.z <= v_b.z +area.z) 
-        && (v_a.w >= v_b.w -area.w && v_a.w <= v_b.w +area.w)) {
-            return true ; 
-    } else {
-      return false ;
-    }
-  } else {
-    return false ;
-  }
-}
-
-
-
-
-
-
-
-
-
-/**
-Map
-*/
-/**
-* return mapping vector
-* @return Vec
-*/
-Vec2 map_vec(Vec2 v,float minIn, float maxIn, float minOut, float maxOut) {
-  if(v != null) {
-    float x = map(v.x, minIn, maxIn, minOut, maxOut) ;
-    float y = map(v.y, minIn, maxIn, minOut, maxOut) ;
-    return new Vec2(x,y) ;
-  } else return null ;
-}
-Vec3 map_vec(Vec3 v,float minIn, float maxIn, float minOut, float maxOut) {
-  if(v != null) {
-    float x = map(v.x, minIn, maxIn, minOut, maxOut) ;
-    float y = map(v.y, minIn, maxIn, minOut, maxOut) ;
-    float z = map(v.z, minIn, maxIn, minOut, maxOut) ;
-    return new Vec3(x,y,z) ;
-  } else return null ;
-}
-Vec4 map_vec(Vec4 v,float minIn, float maxIn, float minOut, float maxOut) {
-  if(v != null) {
-    float x = map(v.x, minIn, maxIn, minOut, maxOut) ;
-    float y = map(v.y, minIn, maxIn, minOut, maxOut) ;
-    float z = map(v.z, minIn, maxIn, minOut, maxOut) ;
-    float w = map(v.w, minIn, maxIn, minOut, maxOut) ;
-    return new Vec4(x,y,z,w) ;
-  } else return null ;
-}
-
-/**
-Magnitude or length
-*/
-/**
-* @return float
-*/
-// mag Vec2
-float mag(Vec2 v_a) {
-  float x = v_a.x*v_a.x ;
-  float y = v_a.y *v_a.y ;
-  return sqrt(x+y) ;
-}
-
-float mag(Vec2 v_a, Vec2 v_b) {
-  // same result than dist
-  float x = (v_b.x -v_a.x)*(v_b.x -v_a.x) ;
-  float y = (v_b.y -v_a.y)*(v_b.y -v_a.y) ;
-  return sqrt(x+y) ;
-}
-// mag Vec3
-float mag(Vec3 v_a) {
-  float x = v_a.x*v_a.x ;
-  float y = v_a.y *v_a.y ;
-  float z = v_a.z *v_a.z ;
-  return sqrt(x+y+z) ;
-}
-
-float mag(Vec3 v_a, Vec3 v_b) {
-  // same result than dist
-  float x = (v_b.x -v_a.x)*(v_b.x -v_a.x) ;
-  float y = (v_b.y -v_a.y)*(v_b.y -v_a.y) ;
-  float z = (v_b.z -v_a.z)*(v_b.z -v_a.z) ;
-  return sqrt(x+y+z) ;
-}
-// mag Vec4
-float mag(Vec4 v_a) {
-  float x = v_a.x*v_a.x ;
-  float y = v_a.y *v_a.y ;
-  float z = v_a.z *v_a.z ;
-  float w = v_a.w *v_a.w ;
-  return sqrt(x+y+z+w) ;
-}
-
-float mag(Vec4 v_a, Vec4 v_b) {
-  // same result than dist
-  float x = (v_b.x -v_a.x)*(v_b.x -v_a.x) ;
-  float y = (v_b.y -v_a.y)*(v_b.y -v_a.y) ;
-  float z = (v_b.z -v_a.z)*(v_b.z -v_a.z) ;
-  float w = (v_b.w -v_a.w)*(v_b.w -v_a.w) ;
-  return sqrt(x+y+z+w) ;
-}
-
-
-
-/**
-Distance
-v 0.0.2
-*/
-/**
-* return the distance beatwen two vectors
-* @return float
-*/
-float dist(Vec2 v_a, Vec2 v_b) {
-  if(v_a != null && v_b != null) {
-    float dx = v_a.x - v_b.x;
-    float dy = v_a.y - v_b.y;
-    return (float) Math.sqrt(dx*dx + dy*dy);
-  } else return Float.NaN ;
-    
-}
-float dist(Vec3 v_a, Vec3 v_b) {
-  if(v_a != null && v_b != null) {
-    float dx = v_a.x - v_b.x;
-    float dy = v_a.y - v_b.y;
-    float dz = v_a.z - v_b.z;
-    return (float) Math.sqrt(dx*dx + dy*dy + dz*dz);
-  } else return Float.NaN ;
-}
-
-float dist(Vec4 v_a, Vec4 v_b) {
-  if(v_a != null && v_b != null) {
-    float dx = v_a.x - v_b.x;
-    float dy = v_a.y - v_b.y;
-    float dz = v_a.z - v_b.z;
-    float dw = v_a.w - v_b.w;
-    return (float) Math.sqrt(dx*dx + dy*dy + dz*dz + dw*dw);
-  } else return Float.NaN ;
-}
-
-
-/**
-Deprecated Middle
-*/
-/**
-* return the middle between two Vector
-* @return Vec
-*/
-Vec2 middle(Vec2 p1, Vec2 p2)  {
-  Vec2 middle ;
-  middle = add(p1, p2);
-  middle.div(2) ;
-  println("The method middle is deprecated instead use barycenter(Vec... arg)") ;
-  return middle ;
-}
-
-Vec2 middle(Vec2 [] list)  {
-  Vec2 middle = Vec2() ;
-  for (int i = 0 ; i < list.length ; i++) {
-    middle.add(list[i]);
-  }
-  middle.div(list.length) ;
-  println("The method middle is deprecated instead use barycenter(Vec... arg)") ;
-  return middle ;
-}
-
-Vec3 middle(Vec3 p1, Vec3 p2) {
-  Vec3 middle ;
-  middle = add(p1, p2);
-  middle.div(2) ;
-  return middle ;
-}
-
-Vec3 middle(Vec3 [] list)  {
-  Vec3 middle = Vec3() ;
-  for (int i = 0 ; i < list.length ; i++) {
-    middle.add(list[i]);
-  }
-  middle.div(list.length) ;
-  println("The method middle is deprecated instead use barycenter(Vec... arg)") ;
-  return middle ;
-}
-
-Vec4 middle(Vec4 p1, Vec4 p2)  {
-  Vec4 middle ;
-  middle = add(p1, p2);
-  middle.div(2) ;
-  println("The method middle is deprecated instead use barycenter(Vec... arg)") ;
-  return middle ;
-}
-
-Vec4 middle(Vec4 [] list)  {
-  Vec4 middle = Vec4() ;
-  for (int i = 0 ; i < list.length ; i++) {
-    middle.add(list[i]);
-  }
-  middle.div(list.length) ;
-  println("The method middle is deprecated instead use barycenter(Vec... arg)") ;
-  return middle ;
-}
-
-
-/**
-barycenter
-*/
-Vec2 barycenter(Vec2... v) {
-  int div_num = v.length ;
-  Vec2 sum = Vec2() ;
-  for(int i = 0 ; i < div_num ; i++) {
-    sum.add(v[i]) ;
-  }
-  return sum.div(div_num) ;
-}
-
- 
-Vec3 barycenter(Vec3... v) {
-  int div_num = v.length ;
-  Vec3 sum = Vec3() ;
-  for(int i = 0 ; i < div_num ; i++) {
-    sum.add(v[i]) ;
-  }
-  return sum.div(div_num) ;
-}
-
-Vec4 barycenter(Vec4... v) {
-  int div_num = v.length ;
-  Vec4 sum = Vec4() ;
-  for(int i = 0 ; i < div_num ; i++) {
-    sum.add(v[i]) ;
-  }
-  return sum.div(div_num) ;
-}
-
-
-
-
-
-/**
-Jitter
-v 0.0.2
-*/
-// Vec2
-Vec2 jitter_2D(int range) {
-  return jitter_2D(range, range) ;
-}
-Vec2 jitter_2D(Vec2 range) {
-  return jitter_2D((int)range.x, (int)range.y) ;
-}
-Vec2 jitter_2D(int range_x, int range_y) {
-  Vec2 jitter = Vec2() ;
-  jitter.x = random_next_gaussian(range_x, 2);
-  jitter.y = random_next_gaussian(range_y, 2);
-  return jitter ;
-}
-// Vec3
-Vec3 jitter_3D(int range) {
-  return jitter_3D(range, range, range) ;
-}
-Vec3 jitter_3D(Vec3 range) {
-  return jitter_3D((int)range.x, (int)range.y, (int)range.z) ;
-}
-Vec3 jitter_3D(int range_x, int range_y, int range_z) {
-  Vec3 jitter = Vec3() ;
-  jitter.x = random_next_gaussian(range_x, 2);
-  jitter.y = random_next_gaussian(range_y, 2);
-  jitter.z = random_next_gaussian(range_z, 2);
-  return jitter ;
-}
-// Vec4
-Vec4 jitter_4D(int range) {
-  return jitter_4D(range, range, range, range) ;
-}
-Vec4 jitter_4D(Vec4 range) {
-  return jitter_4D((int)range.x, (int)range.y, (int)range.z, (int)range.w) ;
-}
-Vec4 jitter_4D(int range_x, int range_y, int range_z, int range_w) {
-  Vec4 jitter = Vec4() ;
-  jitter.x = random_next_gaussian(range_x, 2);
-  jitter.y = random_next_gaussian(range_y, 2);
-  jitter.z = random_next_gaussian(range_z, 2);
-  jitter.w = random_next_gaussian(range_w, 2);
-  return jitter ;
-}
-// END JITTER
-/////////////
-
-
-/**
-Normalize
-*/
-// VEC 2 from angle
-///////////////////
-Vec2 norm_rad(float angle) {
-  float x = (float)Math.cos(angle) ;
-  float y = (float)Math.sin(angle) ;
-  return Vec2(x,y) ;
-}
-
-Vec2 norm_deg(float angle) {
-  angle = radians(angle) ;
-  float x = (float)Math.cos(angle) ;
-  float y = (float)Math.sin(angle) ;
-  return Vec2(x,y) ;
-}
-
-
-// normalize direction
-Vec2 norm_dir(String type, float direction) {
-  float x, y = 0 ;
-  if(type.equals("DEG")) {
-    float angle = TWO_PI/360.;
-    direction = 360-direction;
-    direction += 180;
-    x = sin(angle *direction) ;
-    y = cos(angle *direction);
-  } else if (type.equals("RAD")) {
-    x = sin(direction) ;
-    y = cos(direction);
-  } else {
-    println("the type must be 'RAD' for radians or 'DEG' for degrees") ;
-    x = 0 ;
-    y = 0 ;
-  }
-  return new Vec2(x,y) ;
-}
-// END VEC FROM ANGLE
-/////////////////////
-
-
-
-/**
-translate int color to Vec4 color
-*/
-Vec4 color_HSB_a(int c) {
-  return Vec4(hue(c), saturation(c), brightness(c), alpha(c)) ;
-}
-
-Vec4 color_RGB_a(int c) {
-  return Vec4(red(c), green(c), blue(c), alpha(c)) ;
-}
-
-Vec3 color_HSB(int c) {
-  return Vec3(hue(c), saturation(c), brightness(c)) ;
-}
-
-Vec3 color_RGB(int c) {
-  return Vec3(red(c), green(c), blue(c)) ;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
-New Vec, iVec and bVec
-v 0.0.2
-*/
-
-
-
-/**
-Return a new bVec
-*/
-/**
-* @return bVec
-*/
-/**
-bVec2
-*/
-bVec2 bVec2() {
-  return new bVec2(false,false) ;
-}
-
-bVec2 bVec2(boolean b) {
-  return new bVec2(b,b);
-}
-
-bVec2 bVec2(boolean x, boolean y) { 
-  return new bVec2(x,y) ;
-}
-
-bVec2 bVec2(boolean [] array) {
-  if(array.length == 1) {
-    return new bVec2(array[0],array[0]);
-  } else if (array.length > 1) {
-    return new bVec2(array[0],array[1]);
-  } else {
-    return null;
-  }
-}
-
-bVec2 bVec2(bVec b) {
-  if(b == null) {
-    println("bVec null, instead 'false' is used to build bVec") ;
-    return new bVec2(false,false) ;
-  } else if(b instanceof bVec5 || b instanceof bVec6) {
-    return new bVec2(b.a,b.b) ;
-  } else {
-    return new bVec2(b.x,b.y) ;
-  }
-}
-
-/**
-iVec3
-*/
-bVec3 bVec3() {
-  return new bVec3(false,false,false) ;
-}
-
-bVec3 bVec3(boolean b) {
-  return new bVec3(b,b,b);
-}
-
-bVec3 bVec3(boolean x, boolean y, boolean z) { 
-  return new bVec3(x,y,z) ;
-}
-
-bVec3 bVec3(boolean [] array) {
-  if(array.length == 1) {
-    return new bVec3(array[0],array[0],array[0]);
-  } else if (array.length == 2) {
-    return new bVec3(array[0],array[1],false);
-  } else if (array.length > 2) {
-    return new bVec3(array[0],array[1],array[2]);
-  } else {
-    return null;
-  }
-}
-
-bVec3 bVec3(bVec b) {
-  if(b == null) {
-    println("bVec null, instead 'false' is used to build bVec") ;
-    return new bVec3(false,false,false) ;
-  } else if(b instanceof bVec5 || b instanceof bVec6) {
-    return new bVec3(b.a,b.b,b.c) ;
-  } else {
-    return new bVec3(b.x,b.y,b.z) ;
-  }
-}
-
-/**
-iVec4
-*/
-bVec4 bVec4() {
-  return new bVec4(false,false,false,false) ;
-}
-
-bVec4 bVec4(boolean b) {
-  return new bVec4(b,b,b,b);
-}
-
-bVec4 bVec4(boolean x, boolean y, boolean z, boolean w) { 
-  return new bVec4(x,y,z,w) ;
-}
-
-bVec4 bVec4(boolean [] array) {
-  if(array.length == 1) {
-    return new bVec4(array[0],array[0],array[0],array[0]);
-  } else if (array.length == 2) {
-    return new bVec4(array[0],array[1],false,false);
-  } else if (array.length == 3) {
-    return new bVec4(array[0],array[1],array[2],false);
-  } else if (array.length > 3) {
-    return new bVec4(array[0],array[1],array[2],array[3]);
-  } else {
-    return null;
-  }
-}
-
-bVec4 bVec4(bVec b) {
-  if(b == null) {
-    println("bVec null, instead 'false' is used to build bVec") ;
-    return new bVec4(false,false,false,false) ;
-  } else if(b instanceof bVec5 || b instanceof bVec6) {
-    return new bVec4(b.a,b.b,b.c,b.d) ;
-  } else {
-    return new bVec4(b.x,b.y,b.z,b.w) ;
-  }
-}
-
-/**
-iVec5
-*/
-bVec5 bVec5() {
-  return new bVec5(false,false,false,false,false) ;
-}
-
-bVec5 bVec5(boolean b) {
-  return new bVec5(b,b,b,b,b);
-}
-
-bVec5 bVec5(boolean a, boolean b, boolean c, boolean d, boolean e) { 
-  return new bVec5(a,b,c,d,e) ;
-}
-
-bVec5 bVec5(boolean [] array) {
-  if(array.length == 1) {
-    return new bVec5(array[0],array[0],array[0],array[0],array[0]);
-  } else if (array.length == 2) {
-    return new bVec5(array[0],array[1],false,false,false);
-  } else if (array.length == 3) {
-    return new bVec5(array[0],array[1],array[2],false,false);
-  } else if (array.length == 4) {
-    return new bVec5(array[0],array[1],array[2],array[3],false);
-  } else if (array.length >4) {
-    return new bVec5(array[0],array[1],array[2],array[3],array[4]);
-  } else {
-    return null;
-  }
-}
-
-bVec5 bVec5(bVec b) {
-  if(b == null) {
-    println("bVec null, instead 'false' is used to build bVec") ;
-    return new bVec5(false,false,false,false,false) ;
-  } else if(b instanceof bVec5 || b instanceof bVec6) {
-    return new bVec5(b.a,b.b,b.c,b.d,b.e) ;
-  } else {
-    return new bVec5(b.x,b.y,b.z,b.w,false) ;
-  }
-}
-
-/**
-bVec6
-*/
-bVec6 bVec6() {
-  return new bVec6(false,false,false,false,false,false) ;
-}
-
-bVec6 bVec6(boolean b) {
-  return new bVec6(b,b,b,b,b,b);
-}
-
-bVec6 bVec6(boolean a, boolean b, boolean c, boolean d, boolean e, boolean f) { 
-  return new bVec6(a,b,c,d,e,f) ;
-}
-
-bVec6 bVec6(boolean [] array) {
-  if(array.length == 1) {
-    return new bVec6(array[0],array[0],array[0],array[0],array[0],array[0]);
-  } else if (array.length == 2) {
-    return new bVec6(array[0],array[1],false,false,false,false);
-  } else if (array.length == 3) {
-    return new bVec6(array[0],array[1],array[2],false,false,false);
-  } else if (array.length == 4) {
-    return new bVec6(array[0],array[1],array[2],array[3],false,false);
-  } else if (array.length == 5) {
-    return new bVec6(array[0],array[1],array[2],array[3],array[4],false);
-  }  else if (array.length > 5) {
-    return new bVec6(array[0],array[1],array[2],array[3],array[4],array[5]);
-  } else {
-    return null;
-  }
-}
-
-bVec6 bVec6(bVec b) {
-  if(b== null) {
-    println("bVec null, instead 'false' is used to build bVec") ;
-    return new bVec6(false,false,false,false,false,false) ;
-  } else if(b instanceof bVec5 || b instanceof bVec6) {
-    return new bVec6(b.a,b.b,b.c,b.d,b.e,b.f) ;
-  } else {
-    return new bVec6(b.x,b.y,b.z,b.w,false,false) ;
-  }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
-Return a new iVec
-*/
-/**
-iVec2
-*/
-iVec2 iVec2() {
-  return iVec2(0) ;
-}
-
-iVec2 iVec2(int v) {
-  return new iVec2(v,v);
-}
-
-iVec2 iVec2(int x, int y) { 
-  return new iVec2(x,y) ;
-}
-
-iVec2 iVec2(int [] array) {
-  if(array.length == 1) {
-    return new iVec2(array[0],array[0]);
-  } else if (array.length > 1) {
-    return new iVec2(array[0],array[1]);
-  } else {
-    return null;
-  }
-}
-
-iVec2 iVec2(iVec p) {
-  if(p == null) {
-    println("iVec null, instead '0' is used to build iVec") ;
-    return new iVec2(0,0) ;
-  } else if(p instanceof iVec5 || p instanceof iVec6) {
-    return new iVec2(p.a,p.b) ;
-  } else {
-    return new iVec2(p.x,p.y) ;
-  }
-}
-
-/**
-iVec3
-*/
-iVec3 iVec3() {
-  return iVec3(0) ;
-}
-
-iVec3 iVec3(int v) {
-  return new iVec3(v,v,v);
-}
-
-iVec3 iVec3(int x, int y, int z) { 
-  return new iVec3(x,y,z) ;
-}
-
-iVec3 iVec3(int [] array) {
-  if(array.length == 1) {
-    return new iVec3(array[0],array[0],array[0]);
-  } else if (array.length == 2) {
-    return new iVec3(array[0],array[1],0);
-  } else if (array.length > 2) {
-    return new iVec3(array[0],array[1],array[2]);
-  } else {
-    return null;
-  }
-}
-
-iVec3 iVec3(iVec p) {
-  if(p == null) {
-    println("iVec null, instead '0' is used to build iVec") ;
-    return new iVec3(0,0,0) ;
-  } else if(p instanceof iVec5 || p instanceof iVec6) {
-    return new iVec3(p.a,p.b,p.c) ;
-  } else {
-    return new iVec3(p.x,p.y,p.z) ;
-  }
-}
-
-/**
-iVec4
-*/
-iVec4 iVec4() {
-  return iVec4(0) ;
-}
-
-iVec4 iVec4(int v) {
-  return new iVec4(v,v,v,v);
-}
-
-iVec4 iVec4(int x, int y, int z, int w) { 
-  return new iVec4(x,y,z,w) ;
-}
-
-iVec4 iVec4(int [] array) {
-  if(array.length == 1) {
-    return new iVec4(array[0],array[0],array[0],array[0]);
-  } else if (array.length == 2) {
-    return new iVec4(array[0],array[1],0,0);
-  } else if (array.length == 3) {
-    return new iVec4(array[0],array[1],array[2],0);
-  } else if (array.length > 3) {
-    return new iVec4(array[0],array[1],array[2],array[3]);
-  } else {
-    return null;
-  }
-}
-
-iVec4 iVec4(iVec p) {
-  if(p == null) {
-    println("iVec null, instead '0' is used to build iVec") ;
-    return new iVec4(0,0,0,0) ;
-  } else if(p instanceof iVec5 || p instanceof iVec6) {
-    return new iVec4(p.a,p.b,p.c,p.d) ;
-  } else {
-    return new iVec4(p.x,p.y,p.z,p.w) ;
-  }
-}
-
-/**
-iVec5
-*/
-iVec5 iVec5() {
-  return iVec5(0) ;
-}
-
-iVec5 iVec5(int v) {
-  return new iVec5(v,v,v,v,v);
-}
-
-iVec5 iVec5(int a, int b, int c, int d, int e) { 
-  return new iVec5(a,b,c,d,e) ;
-}
-
-iVec5 iVec5(int [] array) {
-  if(array.length == 1) {
-    return new iVec5(array[0],array[0],array[0],array[0],array[0]);
-  } else if (array.length == 2) {
-    return new iVec5(array[0],array[1],0,0,0);
-  } else if (array.length == 3) {
-    return new iVec5(array[0],array[1],array[2],0,0);
-  } else if (array.length == 4) {
-    return new iVec5(array[0],array[1],array[2],array[3],0);
-  } else if (array.length > 4) {
-    return new iVec5(array[0],array[1],array[2],array[3],array[4]);
-  } else {
-    return null;
-  }
-}
-
-iVec5 iVec5(iVec p) {
-  if(p == null) {
-    println("iVec null, instead '0' is used to build iVec") ;
-    return new iVec5(0,0,0,0,0) ;
-  } else if(p instanceof iVec5 || p instanceof iVec6) {
-    return new iVec5(p.a,p.b,p.c,p.d,p.e) ;
-  } else {
-    return new iVec5(p.x,p.y,p.z,p.w,0) ;
-  }
-}
-
-/**
-iVec6
-*/
-iVec6 iVec6() {
-  return iVec6(0) ;
-}
-
-iVec6 iVec6(int v) {
-  return new iVec6(v,v,v,v,v,v);
-}
-
-iVec6 iVec6(int a, int b, int c, int d, int e, int f) { 
-  return new iVec6(a,b,c,d,e,f) ;
-}
-
-iVec6 iVec6(int [] array) {
-  if(array.length == 1) {
-    return new iVec6(array[0],array[0],array[0],array[0],array[0],array[0]);
-  } else if (array.length == 2) {
-    return new iVec6(array[0],array[1],0,0,0,0);
-  } else if (array.length == 3) {
-    return new iVec6(array[0],array[1],array[2],0,0,0);
-  } else if (array.length == 4) {
-    return new iVec6(array[0],array[1],array[2],array[3],0,0);
-  } else if (array.length == 5) {
-    return new iVec6(array[0],array[1],array[2],array[3],array[4],0);
-  }  else if (array.length > 5) {
-    return new iVec6(array[0],array[1],array[2],array[3],array[4],array[5]);
-  } else {
-    return null;
-  }
-}
-
-iVec6 iVec6(iVec p) {
-  if(p == null) {
-    println("iVec null, instead '0' is used to build iVec") ;
-    return new iVec6(0,0,0,0,0,0) ;
-  } else if(p instanceof iVec5 || p instanceof iVec6) {
-    return new iVec6(p.a,p.b,p.c,p.d,p.e,p.f) ;
-  } else {
-    return new iVec6(p.x,p.y,p.z,p.w,0,0) ;
-  }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
-Return a new Vec
-v 0.0.4
-*/
-/**
-Vec 2
-*/
-Vec2 Vec2() {
-  return new Vec2(0,0) ;
-}
-
-Vec2 Vec2(float x, float y) { 
-  return new Vec2(x,y) ;
-}
-
-Vec2 Vec2(float [] array) {
-  if(array.length == 1) {
-    return new Vec2(array[0],array[0]);
-  } else if (array.length > 1) {
-    return new Vec2(array[0],array[1]);
-  } else {
-    return null;
-  }
-}
-
-Vec2 Vec2(int [] array) {
-  if(array.length == 1) {
-    return new Vec2(array[0],array[0]);
-  } else if (array.length > 1) {
-    return new Vec2(array[0],array[1]);
-  } else {
-    return null;
-  }
-}
-
-Vec2 Vec2(float v) {
-  return new Vec2(v,v) ;
-}
-
-Vec2 Vec2(PVector p) {
-  if(p == null) {
-    return new Vec2(0,0);
-  } else {
-    return new Vec2(p.x, p.y);
-  }
-}
-
-Vec2 Vec2(Vec p) {
-  if(p == null) {
-    return new Vec2(0,0);
-  } else if(p instanceof Vec5 || p instanceof Vec6) {
-    return new Vec2(p.a,p.b);
-  } else {
-    return new Vec2(p.x,p.y);
-  }
-}
-
-
-Vec2 Vec2(iVec p) {
-  if(p == null) {
-    return new Vec2(0,0);
-  } else if(p instanceof iVec5 || p instanceof iVec6) {
-    return new Vec2(p.a,p.b);
-  } else {
-    return new Vec2(p.x,p.y);
-  }
-}
-
-
-Vec2 Vec2(String s, int x, int y) { 
-  return new Vec2(s,x,y);
-}
-
-Vec2 Vec2(String s, int a, int b, int c, int d) { 
-  return new Vec2(s,a,b,c,d);
-}
-
-Vec2 Vec2(String s, int v) {
-  return new Vec2(s,v);
-}
-/**
-Vec 3
-*/
-Vec3 Vec3() {
-  return new Vec3(0,0,0) ;
-}
-
-Vec3 Vec3(float x, float y, float z) {
-  return new Vec3(x,y,z);
-}
-
-Vec3 Vec3(float [] array) {
-  if(array.length == 1) {
-    return new Vec3(array[0],array[0],array[0]);
-  } else if (array.length == 2) {
-    return new Vec3(array[0],array[1],0);
-  } else if (array.length > 2) {
-    return new Vec3(array[0],array[1],array[2]);
-  } else {
-    return null;
-  }
-}
-
-Vec3 Vec3(int [] array) {
-  if(array.length == 1) {
-    return new Vec3(array[0],array[0],array[0]);
-  } else if (array.length == 2) {
-    return new Vec3(array[0],array[1],0);
-  } else if (array.length > 2) {
-    return new Vec3(array[0],array[1],array[2]);
-  } else {
-    return null;
-  }
-}
-
-Vec3 Vec3(float v) {
-  return new Vec3(v,v,v);
-}
-
-Vec3 Vec3(PVector p) {
-  if(p == null) {
-    return new Vec3(0,0,0);
-  } else {
-    return new Vec3(p.x, p.y, p.z);
-  }
-}
-
-Vec3 Vec3(Vec p) {
-  if(p == null) {
-    return new Vec3(0,0,0);
-  } else if(p instanceof Vec5 || p instanceof Vec6) {
-    return new Vec3(p.a,p.b,p.c);
-  } else {
-    return new Vec3(p.x,p.y,p.z);
-  }
-}
-
-Vec3 Vec3(iVec p) {
-  if(p == null) {
-    return new Vec3(0,0,0);
-  } else if(p instanceof iVec5 || p instanceof iVec6) {
-    return new Vec3(p.a,p.b,p.c);
-  } else {
-    return new Vec3(p.x,p.y,p.z);
-  }
-}
-
-
-
-Vec3 Vec3(String s, int x, int y, int z) { 
-  return new Vec3(s,x,y,z);
-}
-
-Vec3 Vec3(String s, int a, int b, int c, int d, int e, int f) { 
-  return new Vec3(s,a,b,c,d,e,f);
-}
-
-Vec3 Vec3(String s, int v) {
-  return new Vec3(s,v);
-}
-/**
-Vec 4
-*/
-Vec4 Vec4() {
-  return new Vec4(0,0,0,0);
-}
-
-Vec4 Vec4(float x, float y, float z, float w) {
-  return new Vec4(x,y,z,w);
-}
-
-Vec4 Vec4(float [] array) {
-  if(array.length == 1) {
-    return new Vec4(array[0],array[0],array[0],array[0]);
-  } else if (array.length == 2) {
-    return new Vec4(array[0],array[1],0,0);
-  } else if (array.length == 3) {
-    return new Vec4(array[0],array[1],array[2],0);
-  } else if (array.length > 3) {
-    return new Vec4(array[0],array[1],array[2],array[3]);
-  } else {
-    return null;
-  }
-}
-
-Vec4 Vec4(int [] array) {
-  if(array.length == 1) {
-    return new Vec4(array[0],array[0],array[0],array[0]);
-  } else if (array.length == 2) {
-    return new Vec4(array[0],array[1],0,0);
-  } else if (array.length == 3) {
-    return new Vec4(array[0],array[1],array[2],0);
-  } else if (array.length > 3) {
-    return new Vec4(array[0],array[1],array[2],array[3]);
-  } else {
-    return null;
-  }
-}
-
-Vec4 Vec4(float v) {
-  return new Vec4(v,v,v,v);
-}
-
-Vec4 Vec4(PVector p) {
-  if(p == null) {
-    return new Vec4(0,0,0,0);
-  } else {
-    return new Vec4(p.x, p.y, p.z, 0);
-  }
-}
-// build with Vec
-Vec4 Vec4(Vec p) {
-  if(p == null) {
-    return new Vec4(0,0,0,0);
-  } else if(p instanceof Vec5 || p instanceof Vec6) {
-    return new Vec4(p.a,p.b,p.c,p.d);
-  } else {
-    return new Vec4(p.x,p.y,p.z,p.w);
-  }
-}
-
-Vec4 Vec4(iVec p) {
-  if(p == null) {
-    return new Vec4(0,0,0,0);
-  } else if(p instanceof iVec5 || p instanceof iVec6) {
-    return new Vec4(p.a,p.b,p.c,p.d);
-  } else {
-    return new Vec4(p.x,p.y,p.z,p.w);
-  }
-}
-
-
-
-Vec4 Vec4(String s, int x, int y, int z, int w) { 
-  return new Vec4(s,x,y,z,w);
-}
-
-Vec4 Vec4(String s, int a, int b, int c, int d, int e, int f, int g, int h) { 
-  return new Vec4(s,a,b,c,d,e,f,g,h);
-}
-
-Vec4 Vec4(String s, int v) {
-  return new Vec4(s,v);
-}
-/**
-Vec 5
-*/
-Vec5 Vec5() {
-  return new Vec5(0,0,0,0,0);
-}
-
-Vec5 Vec5(float a, float b, float c, float d, float e) {
-  return new Vec5(a,b,c,d,e);
-}
-
-Vec5 Vec5(float [] array) {
-  if(array.length == 1) {
-    return new Vec5(array[0],array[0],array[0],array[0],array[0]);
-  } else if (array.length == 2){
-    return new Vec5(array[0],array[1],0,0,0) ;
-  } else if (array.length == 3){
-    return new Vec5(array[0],array[1],array[2],0,0) ;
-  } else if (array.length == 4){
-    return new Vec5(array[0],array[1],array[2],array[3],0) ;
-  }  else if (array.length > 4){
-    return new Vec5(array[0],array[1],array[2],array[3],array[4]) ;
-  } else {
-    return null;
-  }
-}
-
-Vec5 Vec5(int [] array) {
-  if(array.length == 1) {
-    return new Vec5(array[0],array[0],array[0],array[0],array[0]);
-  } else if (array.length == 2){
-    return new Vec5(array[0],array[1],0,0,0) ;
-  } else if (array.length == 3){
-    return new Vec5(array[0],array[1],array[2],0,0) ;
-  } else if (array.length == 4){
-    return new Vec5(array[0],array[1],array[2],array[3],0) ;
-  }  else if (array.length > 4){
-    return new Vec5(array[0],array[1],array[2],array[3],array[4]) ;
-  } else {
-    return null;
-  }
-}
-
-Vec5 Vec5(float v) {
-  return new Vec5(v,v,v,v,v);
-}
-
-Vec5 Vec5(PVector p) {
-  if(p == null) {
-    return new Vec5(0,0,0,0,0);
-  } else {
-    return new Vec5(p.x, p.y, p.z, 0,0);
-  }
-}
-// build with Vec
-Vec5 Vec5(Vec p) {
-  if(p == null) {
-    return new Vec5(0,0,0,0,0);
-  } else if(p instanceof Vec5 || p instanceof Vec6) {
-    return new Vec5(p.a,p.b,p.c,p.d,p.e);
-  } else {
-    return new Vec5(p.x,p.y,p.z,p.w,p.e);
-  }
-}
-
-Vec5 Vec5(iVec p) {
-  if(p == null) {
-    return new Vec5(0,0,0,0,0);
-  }  else if(p instanceof iVec5 || p instanceof iVec6) {
-    return new Vec5(p.a,p.b,p.c,p.d,p.e);
-  } else {
-    return new Vec5(p.x,p.y,p.z,p.w,p.e);
-  }
-}
-
-
-Vec5 Vec5(String s, int a, int b, int c, int d, int e) { 
-  return new Vec5(s,a,b,c,d,e);
-}
-
-Vec5 Vec5(String s, int a, int b, int c, int d, int e, int f, int g, int h, int i, int j) { 
-  return new Vec5(s,a,b,c,d,e,f,g,h,i,j);
-}
-
-Vec5 Vec5(String s, int v) {
-  return new Vec5(s,v);
-}
-/**
-Vec 6
-*/
-Vec6 Vec6() {
-  return new Vec6(0,0,0,0,0,0) ;
-}
-
-Vec6 Vec6(float a, float b, float c, float d, float e, float f) {
-  return new Vec6(a,b,c,d,e,f);
-}
-
-Vec6 Vec6(float [] array) {
-  if(array.length == 1) {
-    return new Vec6(array[0],array[0],array[0],array[0],array[0],array[0]);
-  } else if (array.length == 2){
-    return new Vec6(array[0],array[1],0,0,0,0) ;
-  } else if (array.length == 3){
-    return new Vec6(array[0],array[1],array[2],0,0,0) ;
-  } else if (array.length == 4){
-    return new Vec6(array[0],array[1],array[2],array[3],0,0) ;
-  } else if (array.length == 5){
-    return new Vec6(array[0],array[1],array[2],array[3],array[4],0) ;
-  }  else if (array.length > 5){
-    return new Vec6(array[0],array[1],array[2],array[3],array[4],array[5]) ;
-  } else {
-    return null;
-  }
-}
-
-Vec6 Vec6(int [] array) {
-  if(array.length == 1) {
-    return new Vec6(array[0],array[0],array[0],array[0],array[0],array[0]);
-  } else if (array.length == 2){
-    return new Vec6(array[0],array[1],0,0,0,0) ;
-  } else if (array.length == 3){
-    return new Vec6(array[0],array[1],array[2],0,0,0) ;
-  } else if (array.length == 4){
-    return new Vec6(array[0],array[1],array[2],array[3],0,0) ;
-  } else if (array.length == 5){
-    return new Vec6(array[0],array[1],array[2],array[3],array[4],0) ;
-  }  else if (array.length > 5){
-    return new Vec6(array[0],array[1],array[2],array[3],array[4],array[5]) ;
-  } else {
-    return null;
-  }
-}
-
-Vec6 Vec6(float v) {
-  return new Vec6(v,v,v,v,v,v);
-}
-Vec6 Vec6(PVector p) {
-  if(p == null) {
-    return new Vec6(0,0,0,0,0,0);
-  } else {
-    return new Vec6(p.x, p.y, p.z, 0,0,0);
-  }
-}
-
-// build with vec
-Vec6 Vec6(Vec p) {
-  if(p == null) {
-    return new Vec6(0,0,0,0,0,0);
-  } else if(p instanceof Vec5 || p instanceof Vec6) {
-    return new Vec6(p.a,p.b,p.c,p.d,p.e,p.f);
-  } else {
-    return new Vec6(p.x,p.y,p.z,p.w,p.e,p.f);
-  }
-}
-
-Vec6 Vec6(iVec p) {
-  if(p == null) {
-    return new Vec6(0,0,0,0,0,0) ;
-  } else if(p instanceof iVec5 || p instanceof iVec6) {
-    return new Vec6(p.a,p.b,p.c,p.d,p.e,p.f);
-  } else {
-    return new Vec6(p.x,p.y,p.z,p.w,p.e,p.f);
-  }
-}
-
-
-
-
-
-Vec6 Vec6(String s, int a, int b, int c, int d, int e, int f) { 
-  return new Vec6(s,a,b,c,d,e,f);
-}
-
-Vec6 Vec6(String s, int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k, int l) { 
-  return new Vec6(s,a,b,c,d,e,f,g,h,i,j,k,l);
-}
-
-Vec6 Vec6(String s, int v) {
-  return new Vec6(s,v);
-}
-
-
 
 
 
