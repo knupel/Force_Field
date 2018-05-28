@@ -231,8 +231,8 @@ void multi_coord_cloud(Vec2 [] pos, iVec2 lead_pos, boolean is, boolean keep_str
   if(keep_structure){
     cloud_2D.growth_size(ref_growth_spot);
   }
-
-	cloud_2D.update(ref_pos);
+  cloud_2D.pos(ref_pos);
+	cloud_2D.update();
 
 	Vec3 [] temp = cloud_2D.list();
 	for(int i = 0 ; i <pos.length ; i++) {

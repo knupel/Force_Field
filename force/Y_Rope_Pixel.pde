@@ -1,7 +1,7 @@
 
 /**
 CLASS PIX 
-v 0.5.2
+v 0.6.0
 2016-2018
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Pixel
@@ -97,65 +97,152 @@ abstract class Pix implements Rope_Constants {
     }
     this.costume_angle = costume_angle ;
   }
-  
 
-  // size
-  public void size(float size_pix) {
-    size = Vec3(size_pix) ;
-  }
-  public void size(float size_x, float size_y) {
-    size = Vec3(size_x, size_y, 1) ;
-  }
-  public void size(float size_x, float size_y, float size_z) {
-    size = Vec3(size_x, size_y, size_z) ;
-  }
-
-  public void size(Vec2 size_pix) {
-    size = Vec3(size_pix.x, size_pix.y, 1) ;
-  }
-  public void size(Vec3 size_pix) {
-    size = Vec3(size_pix.x, size_pix.y, size_pix.z) ;
-  }
-
- 
-  // normal direction
-  public void direction(Vec3 dir) {
-    this.dir = dir ;
-  }
-
-  public void direction(float x, float y, float z) {
-    this.dir = Vec3(x,y,z) ;
-  }
-
-  public void direction_x(float x) {
-    dir.x = x ;
-  }
-
-  public void direction_y(float y) {
-    dir.y = y ;
-  }
-  public void direction_z(float z) {
-    dir.z = z ;
-  }
 
   // set costume
   public void costume(int costume_ID) {
     this.costume_ID = costume_ID ;
   }
+  
 
 
 
+  // size
+  public void size(float x) {
+    size(x,x,1) ;
+  }
+  public void size(float x, float y) {
+    size(x,y,1) ;
+  }
+
+  public void size(Vec size) {
+    if(size.z == 0) {
+      size(size.x, size.y, 1);
+    } else {
+      size(size.x,size.y,size.z);
+    }
+  }
+
+  public void size(iVec size) {
+    if(size.z == 0) {
+      size(size.x, size.y, 1);
+    } else {
+      size(size.x,size.y,size.z);
+    }
+  }
+
+  public void size(float x, float y, float z) {
+    if(size == null) {
+      size = Vec3(x,y,z) ;
+    } else {
+      size.set(x,y,z);
+    }
+  }
+
+ 
+  // normal direction
+  @Deprecated
+  public void direction(Vec3 d) {
+    dir(d.x,d.y,d.z);
+  }
+  @Deprecated
+  public void direction(float x, float y, float z) {
+    dir(x,y,z);
+  }
+  
+  @Deprecated
+  public void direction_x(float x) {
+    dir.x = x ;
+  }
+  
+  @Deprecated
+  public void direction_y(float y) {
+    dir.y = y ;
+  }
+
+  @Deprecated
+  public void direction_z(float z) {
+    dir.z = z ;
+  }
+  
+
+  public void dir_x(float x) {
+    if(this.dir != null) {
+      dir.x = x ;
+    } else {
+      this.dir = Vec3(x,0,0);
+    }
+  }
+  
+  public void dir_y(float y) {
+    if(this.dir != null) {
+      dir.y = y ;
+    } else {
+      this.dir = Vec3(0,y,0);
+    }
+  }
+
+  public void dir_z(float z) {
+    if(this.dir != null) {
+      dir.z = z;
+    } else {
+      this.dir = Vec3(0,0,z);
+    }
+  }
+
+  public void dir(Vec d) {
+    dir(d.x,d.y,d.z);
+  }
+
+  public void dir(float x, float y, float z) {
+    if(this.dir == null) {
+      this.dir = Vec3(x,y,z);
+    } else {
+      this.dir.set(x,y,z);
+    }
+  }
+
+
+
+  // position
+  @Deprecated
   public void position(Vec pos) {
     this.pos.set(pos);
   }
-
+  
+  @Deprecated
   public void position(int x, int y){
     this.pos.set(x,y,0);
   }
   
+  @Deprecated
   public void position(int x, int y, int z){
     this.pos.set(x,y,z);
   }
+  
+  public void pos(iVec pos) {
+    pos(pos.x,pos.y,pos.z);
+  }
+
+  public void pos(Vec pos) {
+    pos(pos.x,pos.y,pos.z);
+  }
+
+  public void pos(float x, float y){
+    pos(x,y,0);
+  }
+  
+  public void pos(float x, float y, float z){
+    this.pos.set(x,y,z);
+  }
+
+
+
+
+
+
+
+
 
 
 
@@ -232,10 +319,7 @@ abstract class Pix implements Rope_Constants {
     strokeWeight(diam) ;
     stroke(new_colour.r, effectColor.x *new_colour.g, effectColor.y *new_colour.b, effectColor.z *new_colour.a) ;
   }
-  */
-  // END ASPECT
-  /////////////
-  
+  */  
   
   
   
@@ -381,7 +465,7 @@ abstract class Pix implements Rope_Constants {
 
 /**
 CLOUD
-v 0.2.2
+v 0.3.0
 */
 class Cloud extends Pix implements Rope_Constants {
   int num ;
@@ -720,7 +804,6 @@ class Cloud extends Pix implements Rope_Constants {
 
 /**
 CLOUD 2D
-v 0.1.0
 */
 class Cloud_2D extends Cloud {
  
@@ -751,11 +834,7 @@ class Cloud_2D extends Cloud {
     cartesian_pos_2D(dist);
     distribution_surface_cartesian();
   }
-
-  public void update(Vec pos) {
-    position(pos);
-    update();
-  }
+  
 
 
   public void show() {
@@ -949,11 +1028,7 @@ class Cloud_3D extends Cloud {
       distribution_surface_cartesian() ;
     }
   }
-
-  public void update(Vec3 pos) {
-    this.pos.set(pos);
-    update();
-  }
+  
 
 
   /**
@@ -1217,10 +1292,7 @@ class Pixel extends Pix  {
     }
   }
 }
-/**
-END CLASS PIXEL
 
-*/
 
 
 

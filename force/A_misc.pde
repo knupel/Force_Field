@@ -678,7 +678,7 @@ the method is not with her family for bug reason...Java or Processing that's cre
 problem to manage double quote assignation in char.
 the char assignation must be write before the key and keyCode interrogation ?
 */
-void display_mask_is_on_top_for_bug_reason() {
+void enable_mask_is_on_top_for_bug_reason() {
   char [] key_num_under_num = new char[10];
   key_num_under_num[0] = 'à'; 
   key_num_under_num[1] = '&';
@@ -715,10 +715,8 @@ void mask_keyPressed() {
   char double_quote = '"';
   char [] key_num_under_num = {,'é',double_quote,single_quote,'(','§','è','!','ç',};
   */
-  
-  display_mask();
-  
 
+  enable_mask();
   
   
   // MAJUSCULE
@@ -958,8 +956,8 @@ boolean display_mask_is(int target) {
   } else return false;
 }
 
-void display_mask() {
-  display_mask_is_on_top_for_bug_reason();
+void enable_mask() {
+  enable_mask_is_on_top_for_bug_reason();
 
 /**
 the method is not with her family for bug reason...Java or Processing that's create an exception due of key_num_under_num[3] = '"';

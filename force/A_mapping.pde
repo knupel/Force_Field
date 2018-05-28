@@ -5,21 +5,33 @@ v 0.1.0
 boolean border_is;
 boolean default_mask_is = true;
 void mask_mapping(boolean change_is, int num) {
+
+   
+  if(get_renderer() == P3D) {
+    start_matrix();
+    translateZ(1);
+  }
   /*
   border_is = true ;
   if(border_is) {
-    if(display_mask_is(9)) mask_mapping_border(change_is, default_mask_is);    
+    if(display_mask_is(0)) {
+      mask_mapping_border(change_is, default_mask_is);
+    }
+    
     if(num > 1) {
-      for(int i = 1 ; i < num i++) {
-        if(display_mask_is(i))
-
+      for(int i = 1 ; i < num ; i++) {
+        if(display_mask_is(i));
       }
     }
   }
   */
-  int num_point_mask = 7;
+  int num_point_mask = 7; 
   mask_mapping_blocks(change_is, num, num_point_mask);
-  // mask_mapping_2_blocks(change_is, int num);
+  // mask_mapping_2_blocks(change_is,num);
+  if(get_renderer() == P3D) {
+    stop_matrix();
+  }
+  
 
 }
 
@@ -40,9 +52,11 @@ void mask_mapping_blocks(boolean change_is, int num, int num_point_mask) {
       masks[i] = new Mapping(coord_mask[i].get());
     }
   } else {
-    for(int i = 0 ; i < num ;i++) {
-      if(display_mask[i]) masks[i].draw(change_is);
-    }
+    if(display_mask[0]) {
+      for(int i = 0 ; i < num ;i++) {
+        if(display_mask[i +1]) masks[i].draw(change_is);
+      }
+    }    
   }
 }
 
