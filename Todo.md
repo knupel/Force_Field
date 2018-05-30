@@ -1,5 +1,9 @@
 TODO
 --
+*augmenter la taille maximum du dropdown pour avoir tous les fichiers
+
+Car l'ascenceur de CP5 fonctionne pas ou mal
+
 *movie pos
 
 variable perdue...il faut s'en servir

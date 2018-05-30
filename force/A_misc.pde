@@ -149,6 +149,63 @@ void set_window_on_other_display(iVec2 pos, iVec2 size, iVec2 offset, int type) 
 
 
 
+/**
+import file
+v 0.0.1
+*/
+/**
+ add file : media – movie & image – in the future shape
+*/
+void force_import_update() {
+  if(import_refresh_is() || import_path_save_is()) {
+    if(import_refresh_is()) {
+      reset_key();
+      import_refresh(false);
+    }
+    if(import_path_save_is()) {
+      save_import_path();
+      import_path_save(false);
+    }   
+  }
+}
+
+// file part
+void force_import_input() {
+  select_input();
+  import_refresh(true);
+  println("add input");
+}
+
+
+
+// folder part
+void force_import_folder() {
+  select_folder();
+  import_refresh(true);
+  println("add folder");
+}
+
+
+void force_clear_import() {
+  reset_media_info();
+  if(get_files() != null) {
+    // part for img and movie
+    warp_media_loaded(false);
+    get_files().clear();
+    warp.image_library_clear();
+    movie_library_clear();
+
+    file_path_clear();
+  }
+}
+
+
+
+
+
+
+
+
 
 
 
@@ -287,10 +344,13 @@ void file_path(String type,String path) {
 }
 
 void save_import_path() {
+  println(ext_path_file);
   if(ext_path_file != null) {
     println("save import files");
     String [] s = split(ext_path_file, "///");
     saveStrings(sketchPath(1)+"/save/import_files.txt",s);
+  } else {
+    // println("save null import files");
   }
 }
 
@@ -305,13 +365,13 @@ void import_path_save(boolean state){
 }
 
 
-boolean import_add_is ;
-boolean import_add_is() {
-  return import_add_is ;
+boolean import_refresh_is ;
+boolean import_refresh_is() {
+  return import_refresh_is ;
 }
 
-void import_add(boolean state) {
-  import_add_is = state;
+void import_refresh(boolean state) {
+  import_refresh_is = state;
 }
 
 /**
@@ -836,27 +896,62 @@ void key_pressed_change_mode() {
   }
 }
 
+
+
+
+
+
+
+
+
 void key_pressed_import() {
   if(os_system.equals("Mac OS X")) {
     import_folder(157, SHIFT, KeyEvent.VK_O); 
-    import_file(157, SHIFT, KeyEvent.VK_O); 
+    import_file(157, SHIFT, KeyEvent.VK_O);
   } 
+  if(keyCode == DELETE || keyCode == BACKSPACE) {
+    manage_clear_import_list();
+  }
 }
+
+
+
+
+void manage_clear_import_list() {
+  int confirmation = popup_confirm("CLEAR IMPORT LIST", "Are you sure you wish clear the import file list?");
+  if(confirmation == 0) {
+    println("the import list is empty now");
+    force_clear_import();
+    project_import_shape();
+    save_import_path();
+  } else {
+    println("the import list is safe, you've cancel your action");
+  }
+}
+
+import javax.swing.JOptionPane;
+int popup_confirm(String message_1, String message_2) {    
+  JOptionPane jop = new JOptionPane();
+  return jop.showConfirmDialog(null, message_2, message_1, JOptionPane.YES_NO_OPTION);
+}
+
+
 
 void import_folder(int a, int b, int c) {
   // true-true-true
   if(checkKey(a) && checkKey(b) && checkKey(c)) {
     display_warp(true);
-    warp_import_folder();
+    force_import_folder();
     play_video(false);
   }
 }
+
 
 void import_file(int a, int b, int c) {
   // true-false-true
   if(checkKey(a) && !checkKey(b) && checkKey(c)) {
     display_warp(true);
-    warp_import_input();
+    force_import_input();
     play_video(false);
   }
 }

@@ -81,7 +81,6 @@ void update_import_list() {
 	} else {
 		printErr("method update_media_list() : String [] files import is null");
 	}
-	
 }
 
 

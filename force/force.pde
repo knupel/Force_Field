@@ -43,7 +43,7 @@ PGraphics pg;
 
 
 boolean full_screen_is = false;
-iVec2 size = iVec2(900,500); // Yougtimer CFPTS
+iVec2 size = iVec2(800,500); // Yougtimer CFPTS
 iVec2 pos_window = iVec2(0,0); // Yougtimer CFPTS
 
 
@@ -290,7 +290,7 @@ void force() {
   */
   cursor_manager();
   diaporama(240);  
-  import_end();
+  force_import_update();
   save_dial_force(30);
   global_reset();
 }

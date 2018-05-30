@@ -1,6 +1,16 @@
 null
 shape//Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/Force_field/import/shape/corbeau.svg
-image/Users/stanislasmarcais/Desktop/BOULOT/MEDIA/Media test/medium_classique/medium_radeau_de_la_méduse_géricault.jpg
-image/Users/stanislasmarcais/Desktop/BOULOT/MEDIA/Media test/medium_classique/medium_vinci_la_dame_à_l_hermine.jpg
-movie/Users/stanislasmarcais/Desktop/BOULOT/MEDIA/Media test/movie/extrait_film/alien_ripley_brute.mov
-image/Volumes/Nexus 7/ARCHIVE/Girls/Model 178K-1825/T 4600-67/Traci Lord 1968/TR 88178.jpg
+movie/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Vidéo SD selection/01_1_intro_eau_bleu.mov
+movie/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Vidéo SD selection/02_1_America.mov
+movie/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Vidéo SD selection/03_1_le_chemin.mov
+movie/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Vidéo SD selection/05_1_Grace.mov
+movie/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Vidéo SD selection/05_2_Grace.mov
+movie/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Vidéo SD selection/05_3_Grace.mov
+movie/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Vidéo SD selection/06_0_le_nouvel_homme.mov
+movie/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Vidéo SD selection/06_1_le_nouvel_homme.mov
+movie/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Vidéo SD selection/06_2_le_nouvel_homme.mov
+movie/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Vidéo SD selection/09_0_Gloria.mov
+movie/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Vidéo SD selection/10_1 fille J ATTENDRAIS.mov
+movie/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Vidéo SD selection/25 Young Timer Typo_4.mov
+image/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Image_selection/IMG_3637.jpg
+image/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Périphérique/Pte de Molitor.jpg

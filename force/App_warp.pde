@@ -16,71 +16,7 @@ void warp_setup() {
 
 
 
-/**
- Media add, change folder or file
-*/
-void import_end() {
-  if(import_add_is() || import_path_save_is()) {
-    if(import_add_is()) {
-      reset_key();
-      import_add(false);
-    }
-    if(import_path_save_is()) {
-      save_import_path();
-      import_path_save(false);
-    }   
-  }
-}
 
-// file part
-void warp_import_input() {
-  select_input();
-  import_add(true);
-  println("add input");
-}
-
-/*
-void warp_change_media_input() {
-  reset_media_info();
-  if(get_files() != null) {
-    println("change input");
-    warp_media_loaded(false);
-    get_files().clear();
-    warp.image_library_clear();
-    movie_library_clear();
-  } else {
-    println("load input");
-  }
-  file_path_clear();
-  select_input();
-  media_add(true);
-}
-*/
-
-// folder part
-void warp_import_folder() {
-  select_folder();
-  import_add(true);
-  println("add folder");
-}
-
-/*
-void warp_change_media_folder() { 
-  reset_media_info();
-  if(get_files() != null) {
-    println("change folder");
-    warp_media_loaded(false);
-    get_files().clear();
-    warp.image_library_clear();
-    movie_library_clear();
-  } else {
-    println("load folder");
-  }
-  file_path_clear();
-  select_folder();
-  media_add(true);
-}
-*/
 
 
 

@@ -1,8 +1,7 @@
 /**
 WARP media manager
-v 0.3.2
+v 0.3.3
 */
-
 /**
 common method media, video and camera
 */
@@ -239,12 +238,12 @@ void reset_media_info() {
 /**
 image
 */
+String [] ext_img = {"jpg", "JPG", "JPEG", "jpeg", "tif", "TIF", "tiff", "TIFF", "bmp", "BMP", "png", "PNG", "gif", "GIF"};
+String [] ext_movie = {"mov", "MOV", "avi", "AVI", "mp4", "MP4", "mkv", "MKV", "mpg", "MPG"};
+
 void load_media_folder(boolean sub_folder, String... type) {
   String path = selected_path_folder();
   explore_folder(path, sub_folder, type);
-  String [] ext_img = {"jpg", "JPG", "JPEG", "jpeg", "tif", "TIF", "tiff", "TIFF", "bmp", "BMP", "png", "PNG", "gif", "GIF"};
-  String [] ext_movie = {"mov", "MOV", "avi", "AVI", "mp4", "MP4", "mkv", "MKV", "mpg", "MPG"};
-
   if(get_files() != null && get_files().size() > 0) {
     for(File f : get_files()) {
       String ext = extension(f.getName());
@@ -282,8 +281,6 @@ void load_media_folder(boolean sub_folder, String... type) {
 void load_media_input(String... type) {
   String path = selected_path_input();
   explore_folder(path, false, type);
-  String [] ext_img = {"jpg", "JPG", "JPEG", "jpeg", "tif", "TIF", "tiff", "TIFF", "bmp", "BMP", "png", "PNG", "gif", "GIF"};
-  String [] ext_movie = {"mov", "MOV", "avi", "AVI", "mp4", "MP4", "mkv", "MKV", "mpg", "MPG"};
   if(get_files() != null && get_files().size() > 0) {
     for(File f : get_files()) {
       String ext = extension(f.getName());
