@@ -70,26 +70,29 @@ void must_update_from_gui(int t_count) {
   
   set_sorting_channel_ff_2D(floor(x_sort), floor(y_sort), floor(vel_sort));
   
-  if(!external_gui_is) {
+ // if(!external_gui_is) {
+    /*
     set_resize_window(gui_change_size_window_is);
     set_full_reset_field(gui_fullreset_field_is);
     set_fit_image(gui_fullfit_image_is);
     // set_vehicle_pixel_is(get_type_vehicle());
     display_background(gui_display_bg);
     show_must_go_on(gui_show_must_go_on);
-  } else {
+    */
+    
+//  } else {
     /**
     * When the change is from external GUI, the update is done in 
     void catch_osc_data(Object [] data)
     */
-    int temp_mode = -1; 
-    for(int i = 0 ; i < mode.length; i++) {
-      if(mode[i]) {
-        temp_mode = i;
-      }
+  int temp_mode = -1; 
+  for(int i = 0 ; i < mode.length; i++) {
+    if(mode[i]) {
+      temp_mode = i;
     }
-    if(temp_mode != -1) set_mode_ff(temp_mode);  
   }
+  if(temp_mode != -1) set_mode_ff(temp_mode);  
+ // }
   news_from_gui = false;
   news_from_gui_ext = false;
 }
@@ -402,15 +405,9 @@ void osc_setup() {
 void oscEvent(OscMessage theOscMessage) {
   news_from_gui = true;
   news_from_gui_ext = true ;
-  if(external_gui_is) {
-    println("reception",theOscMessage.arguments().length, frameCount);
-    /*
-    for(int i = 0 ; i < theOscMessage.arguments().length ; i++) {
-      println(i, theOscMessage.arguments()[i]);
-    }
-    */
-    catch_osc_data(theOscMessage.arguments());
-  }
+  println("reception",theOscMessage.arguments().length, frameCount);
+  catch_osc_data(theOscMessage.arguments());
+
 }
 
 

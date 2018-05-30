@@ -132,7 +132,7 @@ void display_movie(PGraphics pg, int target) {
 float speed_movie_warp_ref = 1;
 float header_target_movie_ref ;
 void update_movie_warp_interface() { 
-  if(gui_news_ext_is() || !external_gui_is) {
+  if(gui_news_ext_is()) {
     if(get_movie_warp(which_movie) != null && header_target_movie != header_target_movie_ref) {
       float header = get_movie_warp().duration() *header_target_movie;
       header_target_movie_ref = header_target_movie;
@@ -174,13 +174,13 @@ Movie get_movie_warp() {
 void select_media_to_display() {
   Info_int i = media_info.get(which_media);
   if(i !=null) {
-    if(i.get_name().equals("Movie")) {
+    if(i.get_name().equals("movie")) {
       get_movie_warp().stop();
       movie_warp_reading(false);
       movie_warp_is(true);
       which_movie = i.get(1);
     }
-    if(i.get_name().equals("Image")) {
+    if(i.get_name().equals("image")) {
       movie_warp_is(false);
       which_img = i.get(1) +1;
     }
@@ -251,12 +251,12 @@ void load_media_folder(boolean sub_folder, String... type) {
       // add image to library     
       for(String s : ext_img) {
         if(ext.equals(s)) {
-          media_info.add("Image",rank_media,rank_img);
+          media_info.add("image",rank_media,rank_img);
           rank_img++;
           rank_media++;
-          file_path("Image",f.getAbsolutePath());
+          file_path("image",f.getAbsolutePath());
           warp.load_image(f.getAbsolutePath());
-          media_path_save(true);
+          import_path_save(true);
           warp_media_loaded(true);
           break;
         }
@@ -264,12 +264,12 @@ void load_media_folder(boolean sub_folder, String... type) {
       // add video to library
       for(String s : ext_movie) {
         if(ext.equals(s)) {
-          media_info.add("Movie",rank_media,rank_movie);
+          media_info.add("movie",rank_media,rank_movie);
           rank_movie++;
           rank_media++;
-          file_path("Movie",f.getAbsolutePath());
+          file_path("movie",f.getAbsolutePath());
           load_movie(f.getAbsolutePath());
-          media_path_save(true);
+          import_path_save(true);
           warp_media_loaded(true);
           break;
         }
@@ -290,12 +290,12 @@ void load_media_input(String... type) {
       // add image to library
       for(String s : ext_img) {
         if(ext.equals(s)) {
-          media_info.add("Image",rank_media,rank_img);
+          media_info.add("image",rank_media,rank_img);
           rank_img++;
           rank_media++;
-          file_path("Image",f.getAbsolutePath());
+          file_path("image",f.getAbsolutePath());
           warp.load_image(f.getAbsolutePath());
-          media_path_save(true);
+          import_path_save(true);
           warp_media_loaded(true);
           break;
         }
@@ -303,12 +303,12 @@ void load_media_input(String... type) {
       // add video to library
       for(String s : ext_movie) {
         if(ext.equals(s)) {
-          media_info.add("Movie",rank_media,rank_movie);
+          media_info.add("movie",rank_media,rank_movie);
           rank_movie++;
           rank_media++;
-          file_path("Movie",f.getAbsolutePath());
+          file_path("movie",f.getAbsolutePath());
           load_movie(f.getAbsolutePath());
-          media_path_save(true);
+          import_path_save(true);
           warp_media_loaded(true);
           break;
         }

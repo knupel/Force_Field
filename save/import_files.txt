@@ -1,0 +1,6 @@
+null
+shape//Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/Force_field/import/shape/corbeau.svg
+image/Users/stanislasmarcais/Desktop/BOULOT/MEDIA/Media test/medium_classique/medium_radeau_de_la_méduse_géricault.jpg
+image/Users/stanislasmarcais/Desktop/BOULOT/MEDIA/Media test/medium_classique/medium_vinci_la_dame_à_l_hermine.jpg
+movie/Users/stanislasmarcais/Desktop/BOULOT/MEDIA/Media test/movie/extrait_film/alien_ripley_brute.mov
+image/Volumes/Nexus 7/ARCHIVE/Girls/Model 178K-1825/T 4600-67/Traci Lord 1968/TR 88178.jpg

@@ -286,32 +286,32 @@ void file_path(String type,String path) {
   }
 }
 
-void save_media_path() {
+void save_import_path() {
   if(ext_path_file != null) {
-    println("save file txt");
+    println("save import files");
     String [] s = split(ext_path_file, "///");
-    saveStrings(sketchPath(1)+"/save/path_media.txt",s);
+    saveStrings(sketchPath(1)+"/save/import_files.txt",s);
   }
 }
 
 
-boolean media_path_save_is;
-boolean media_path_save_is() {
-  return media_path_save_is;
+boolean import_path_save_is;
+boolean import_path_save_is() {
+  return import_path_save_is;
 }
 
-void media_path_save(boolean state){
-  media_path_save_is = state;
+void import_path_save(boolean state){
+  import_path_save_is = state;
 }
 
 
-boolean media_add_is ;
-boolean media_add_is() {
-  return media_add_is ;
+boolean import_add_is ;
+boolean import_add_is() {
+  return import_add_is ;
 }
 
-void media_add(boolean state) {
-  media_add_is = state;
+void import_add(boolean state) {
+  import_add_is = state;
 }
 
 /**
@@ -730,7 +730,10 @@ void mask_keyPressed() {
 
 
 void force_keyPressed() {
-  key_pressed_add_media();
+  // for information
+  // MAPPING KEYBOARD PROBLEM AZERTY >< QWERTY
+  // Q for A I don't how map AZERTY layout keyboard
+  key_pressed_import();
   /**
   if(key == 'a')
   that control with advanced method see below, 
@@ -787,9 +790,6 @@ void force_keyPressed() {
     global_reset();
   }
 
-
-  
-
   if(key == 't') {
     misc_warp_fx = !!((misc_warp_fx == false));
   }
@@ -836,50 +836,31 @@ void key_pressed_change_mode() {
   }
 }
 
-void key_pressed_add_media() {
+void key_pressed_import() {
   if(os_system.equals("Mac OS X")) {
-    add_media_folder(157, SHIFT, KeyEvent.VK_Q); // Q for A I don't how map AZERTY layout keyboard
-    add_media_file(157, SHIFT, KeyEvent.VK_Q); // Q for A I don't how map AZERTY layout keyboard
-    replace_media_file(157, SHIFT, KeyEvent.VK_O);
-    replace_media_folder(157, SHIFT, KeyEvent.VK_O);
+    import_folder(157, SHIFT, KeyEvent.VK_O); 
+    import_file(157, SHIFT, KeyEvent.VK_O); 
   } 
 }
 
-void add_media_folder(int a, int b, int c) {
+void import_folder(int a, int b, int c) {
   // true-true-true
   if(checkKey(a) && checkKey(b) && checkKey(c)) {
     display_warp(true);
-    warp_add_media_folder();
+    warp_import_folder();
     play_video(false);
   }
 }
 
-void add_media_file(int a, int b, int c) {
+void import_file(int a, int b, int c) {
   // true-false-true
   if(checkKey(a) && !checkKey(b) && checkKey(c)) {
     display_warp(true);
-    warp_add_media_input();
+    warp_import_input();
     play_video(false);
   }
 }
 
-void replace_media_folder(int a, int b, int c) {
-  // true-true-true
-  if(checkKey(a) && checkKey(b) && checkKey(c)) {
-    display_warp(true);
-    warp_change_media_folder();
-    play_video(false);
-  }
-}
-
-void replace_media_file(int a, int b, int c) {
-  // true-false-true
-  if(checkKey(a) && !checkKey(b) && checkKey(c)) {
-    display_warp(true);
-    warp_change_media_input();
-    play_video(false);
-  }
-}
 
 // key event
 import java.awt.event.KeyEvent;
@@ -1077,7 +1058,6 @@ void display_vehicle(boolean is) {
 // method to set the gui back
 void display_vehicle() {
   display_vehicle = !!((display_vehicle == false));
-  // if(display_vehicle_is() && !external_gui_is) set_check_gui_main_display(display_background_is());
 }
 
 
@@ -1095,7 +1075,6 @@ void display_warp(boolean is) {
 // method to set the gui back
 void display_warp() {
   display_warp = !!((display_warp == false));
-  // if(display_warp_is() && !external_gui_is) set_check_gui_main_display(display_background_is());
 }
 
 /** 
@@ -1134,7 +1113,6 @@ boolean display_background_is() {
 // method to set the gui back
 void display_background() {
   display_background = !!((display_background == false));
-  // if(!external_gui_is) set_check_gui_main_display(display_background_is());
 }
 
 /**
@@ -1151,7 +1129,6 @@ boolean show_must_go_on_is() {
 // method to set the gui back
 void show_must_go_on() {
   show_must_go_on = !!((show_must_go_on == false));
-  //if(!external_gui_is) set_check_gui_main_display(display_background_is());
 }
 
 /**

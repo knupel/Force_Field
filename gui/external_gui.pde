@@ -52,6 +52,9 @@ CColor yellow_gui, red_gui, grey_0_gui;
 int col_1_x = 10 ;
 int col_2_x = 200 ;
 
+
+String [] menu_basic_shape = {"pixel","point","triangle"};;
+
 /**
 setup
 */
@@ -165,12 +168,20 @@ void gui_button_G(int bar_h) {
 	pos.set(0,16);
 	int h_dropdown = 150 ;
 	int w_dropdown = int(size.x *1.5);
-	String [] shape_menu = {"pixel","point","triangle","typo","picto","logo"} ;
+	String [] vehicle_menu = menu_basic_shape;
+	String [] spot_menu = menu_basic_shape;
+	// String [] shape_menu = {"pixel","point","triangle","typo","picto","logo"} ;
 	// String [] shape_menu = {"pixel","point","triangle","youngtimer"} ;
 	String [] media_menu = {"List empty","load items","from the","main sketch"} ;
-	media = gui_button.addDropdownList("media_list").setPosition(width -w_dropdown,pos.y*12).setSize(w_dropdown,h_dropdown*2).setBarHeight(bar_h).setColor(red_gui).addItems(media_menu);
-	vehicle = gui_button.addDropdownList("vehicle_list").setPosition(width -w_dropdown,pos.y*6.9).setSize(w_dropdown,h_dropdown).setBarHeight(bar_h).setColor(grey_0_gui).addItems(shape_menu);
-	spot = gui_button.addDropdownList("spot_list").setPosition(width -w_dropdown,pos.y*3.2).setSize(w_dropdown,h_dropdown).setBarHeight(bar_h).setColor(red_gui).addItems(shape_menu);
+	media = gui_button.addDropdownList("media_list").setPosition(width -w_dropdown,pos.y*12)
+																									.setSize(w_dropdown,h_dropdown*2).setBarHeight(bar_h).setColor(red_gui)
+																									.addItems(media_menu);
+	vehicle = gui_button.addDropdownList("vehicle_list").setPosition(width -w_dropdown,pos.y*6.9)
+																											.setSize(w_dropdown,h_dropdown).setBarHeight(bar_h).setColor(grey_0_gui)
+																											.addItems(vehicle_menu);
+	spot = gui_button.addDropdownList("spot_list").setPosition(width -w_dropdown,pos.y*3.2)
+																								.setSize(w_dropdown,h_dropdown).setBarHeight(bar_h).setColor(red_gui)
+																								.addItems(spot_menu);
 }
 
 

@@ -1,9 +1,40 @@
 /**
 INTERFACE
-v 0.2.0
+v 0.3.0
 */
 Vec2 pos_gui ;
 Vec2 size_gui ;
+
+
+boolean gui_warp_is;
+boolean gui_fullreset_field_is;
+boolean gui_full_reset_field_is;
+boolean gui_change_size_window_is;
+boolean gui_fullfit_image_is;
+boolean gui_display_bg;
+boolean gui_show_must_go_on;
+int leading_interface = 10 ;
+
+int space_interface ;
+void gui_setup() {
+	// check boolean setting from top first tab sketch   
+  if(misc_warp_fx) gui_warp_is = true; else gui_warp_is = false;
+  
+	if(full_reset_field_is) gui_full_reset_field_is = true ; else  gui_full_reset_field_is = false;
+	if(change_size_window_is) gui_change_size_window_is = true ; else gui_change_size_window_is = false;
+	if(fullfit_image_is) gui_fullfit_image_is = true ; else gui_fullfit_image_is = false;
+	if(display_background) gui_display_bg = true ; else gui_display_bg = false;
+	// if(vehicle_pixel_is) gui_vehicle_pixel_is = true ; else gui_vehicle_pixel_is = false;
+	if(show_must_go_on) gui_show_must_go_on = true ; else gui_show_must_go_on = false ;
+
+	space_interface = ceil(leading_interface *1.5) ; 
+}
+
+
+
+
+
+
 
 void set_interface(Vec2 pos, Vec2 size) {
 	pos_gui = pos.copy();
@@ -14,22 +45,16 @@ void set_interface(Vec2 pos, Vec2 size) {
 
 void interface_display(boolean mouse_is, Force_field ff) {
 	size_gui.set(size_gui.x, height);
-	if(!interface_is()) { 
-		if(!external_gui_is) hide_all_gui();
-	} else {
-		background_interface();
-    // check for P3D position
-		if(get_renderer() == P3D) {
-			start_matrix();
-			translateZ(1);
-		}
-
-		instruction();
-		if(!external_gui_is) show_gui(mouse_is, ff);
-		show_info(ff);
-    // check for P3D position
-		if(get_renderer() == P3D) stop_matrix();
+	background_interface();
+	// check for P3D position
+	if(get_renderer() == P3D) {
+		start_matrix();
+		translateZ(1);
 	}
+	instruction();
+	show_info(ff);
+  // check for P3D position
+	if(get_renderer() == P3D) stop_matrix();
 }
 
 
@@ -52,8 +77,6 @@ background interface
 void background_interface() {
 	fill(0,125);
 	noStroke();
-	// left part
-	if(!external_gui_is) rect(pos_gui,size_gui);
 	// right part
 	rect(Vec2(width-size_gui.x,pos_gui.y),size_gui);
 	// down part
@@ -66,18 +89,15 @@ instruction
 int instruction_height = 100 ;
 void instruction() {
   textAlign(CENTER);
-  //background(255);
   fill(255) ;
-  // textFont(font_gui);
-  int font_size = 10 ;
 
   int x = width/2 ;
   int y = height -instruction_height +15;
   text("Press 'CMD' + 'O' to select media file", x, y);
-  text("Press 'CMD' + 'SHIFT' + 'O' to select media folder", x, y +(font_size *1.5));
-  text("Press 'V' to select computer camera", x, y +(font_size *3));
-  text("Press 'C' show or hide interface", x, y +(font_size *4.5));
-  text("LEARN MORE about GUI see guide file", x, y +(font_size *6));
+  text("Press 'CMD' + 'SHIFT' + 'O' to select media folder", x, y +(leading_interface *1.5));
+  text("Press 'V' to select computer camera", x, y +(leading_interface *3));
+  text("Press 'C' show or hide interface", x, y +(leading_interface *4.5));
+  text("LEARN MORE about GUI see guide file", x, y +(leading_interface *6));
 }
 
 
@@ -213,72 +233,9 @@ String [] sorting_channel_toString(int [] a) {
 
 void info_line(String s, int pos_x, int space, int rank, int from) {
 	float pos_y = pos_slider_y(space, rank, from);
-	// int pos_x = ceil(width-size_gui.x +10);
 	textAlign(LEFT);
 	text(s,pos_x,pos_y);
 }
-
-void hide_all_gui() {
-	gui_main.hide();
-
-	gui_static_img_2D.hide();
-	gui_static_img_3D.hide();
-	gui_static_generative.hide();
-
-	gui_dynamic_fluid.hide();
-	gui_dynamic_mag_grav.hide();
-
-	gui_dynamic_spot.hide();
-
-	gui_vehicle.hide();
-	gui_main_movie.hide();
-}
-
-void show_gui(boolean mouse_is, Force_field ff) {
-	gui_main.show();
-
-	// show menu depend of force field type
-  if(ff.get_super_type() == r.DYNAMIC) {
-  	if(ff.get_type() == r.FLUID) {
-  		gui_dynamic_fluid.show(); 
-  	} else gui_dynamic_fluid.hide();
-  	if(ff.get_type() == r.GRAVITY || ff.get_type() == r.MAGNETIC) {
-  		gui_dynamic_mag_grav.show(); 
-  	} else gui_dynamic_mag_grav.hide();
-  } else {
-  	gui_dynamic_fluid.hide();
-  	gui_dynamic_mag_grav.hide();
-  }
-  
-  if(ff.get_pattern() == IMAGE) {
-  	gui_static_img_2D.show(); 
-  } else {
-  	gui_static_img_2D.hide();
-  	gui_static_img_3D.hide();
-  }
-
-	if(ff.get_pattern() == r.CHAOS || ff.get_pattern() == r.PERLIN || ff.get_pattern() == IMAGE) {
-		gui_static_generative.show(); 
-	} else gui_static_generative.hide();
-
-	if(display_vehicle_is()) gui_vehicle.show() ; else gui_vehicle.hide();
-
-
-	if(movie_warp_is()) gui_main_movie.show(); else gui_main_movie.hide();	
-
-	if(!mouse_is && get_spot_num_ff() > 2) {
-		gui_dynamic_spot.show(); 
-	} else {
-		gui_dynamic_spot.hide();
-	}
-}
-
-
-
-
-
-
-
 
 
 

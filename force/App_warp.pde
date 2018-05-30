@@ -19,26 +19,27 @@ void warp_setup() {
 /**
  Media add, change folder or file
 */
-void media_end() {
-  if(media_add_is() || media_path_save_is()) {
-    if(media_add_is()) {
+void import_end() {
+  if(import_add_is() || import_path_save_is()) {
+    if(import_add_is()) {
       reset_key();
-      media_add(false);
+      import_add(false);
     }
-    if(media_path_save_is()) {
-      save_media_path();
-      media_path_save(false);
+    if(import_path_save_is()) {
+      save_import_path();
+      import_path_save(false);
     }   
   }
 }
 
 // file part
-void warp_add_media_input() {
+void warp_import_input() {
   select_input();
-  media_add(true);
+  import_add(true);
   println("add input");
 }
 
+/*
 void warp_change_media_input() {
   reset_media_info();
   if(get_files() != null) {
@@ -54,14 +55,16 @@ void warp_change_media_input() {
   select_input();
   media_add(true);
 }
+*/
 
 // folder part
-void warp_add_media_folder() {
+void warp_import_folder() {
   select_folder();
-  media_add(true);
+  import_add(true);
   println("add folder");
 }
 
+/*
 void warp_change_media_folder() { 
   reset_media_info();
   if(get_files() != null) {
@@ -77,6 +80,7 @@ void warp_change_media_folder() {
   select_folder();
   media_add(true);
 }
+*/
 
 
 

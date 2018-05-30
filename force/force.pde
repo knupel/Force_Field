@@ -27,9 +27,8 @@ boolean use_leapmotion = false;
 
 boolean pause_is = false;
 
-boolean external_gui_is = true;
 boolean interface_is = true;
-boolean hide_menu_bar = true;
+boolean hide_menu_bar = false;
 boolean inside_gui = false;
 
 int time_count_ff;
@@ -42,9 +41,7 @@ int num_mask = 4;
 PGraphics pg;
 
 
-/**
-SALENGRISTE
-*/
+
 boolean full_screen_is = false;
 iVec2 size = iVec2(900,500); // Yougtimer CFPTS
 iVec2 pos_window = iVec2(0,0); // Yougtimer CFPTS
@@ -56,6 +53,7 @@ void settings() {
   String renderer = P3D ;
   if(full_screen_is) {
     fullScreen(renderer,2);
+    hide_menu_bar = true;
     //fullScreen(P2D);      
   } else {
     size(size.x,size.y,renderer); // taille pour VP Lovetimers
@@ -84,33 +82,17 @@ SETUP
 void setup() {
   info_system();
   println("display connected:",get_display_num());
-  if(get_display_num() > 1) {
-    // size.set(width,height);
-    // set_window_on_other_display(size,0);
-    //set_window_on_other_display(iVec2(1920,0),size);
-  }
+
 
   background(0);
 
   if(use_leapmotion) leap_setup();
 
-  String s = sketchPath(1);
-  // YOUNGTIMER
-  /*
-  String [] path = new String[1];
-  path[0] = (s+"/import/corbeau.svg");
-  */
-  // ALGORAVE
-  String [] path = new String[3];
+  project_setup();
+  save_import_path();
 
-  path[0] = (s+"/import/algorave_typo.svg");
-  path[1] = (s+"/import/algorave_picto.svg");
-  path[2] = (s+"/import/algorave_logo.svg");
-
-
-
-  set_spot_shape(path);
-  set_vehicle_shape(path);
+  set_spot_shape(path_project_shape);
+  set_vehicle_shape(path_project_shape);
 
   set_vehicle(get_num_vehicle());
 
@@ -118,9 +100,8 @@ void setup() {
   set_info(false); 
   
   set_interface(Vec2(0), Vec2(250,height));
-  if(external_gui_is) {
-    osc_setup();
-  }
+  osc_setup();
+
   gui_setup(); 
  
   mode_ff();
@@ -179,7 +160,7 @@ SUPER DRAW
 void force() {
   if(!pause_is || show_must_go_on_is()) time_count_ff++;
   
-  if(interface_is() && !external_gui_is) {
+  if(interface_is()) {
     inside_gui = inside(get_pos_interface(), get_size_interface(), Vec2(mouseX,mouseY));
   } else {
     inside_gui = false;
@@ -294,10 +275,10 @@ void force() {
   mask_mapping(set_mask_is(),num_mask);
 
   // GUI
-  // if(!external_gui_is) get_controller_gui();
   update_value(time_count_ff);
-
-  interface_display(use_leapmotion,force_field);
+  if(interface_is()) {
+    interface_display(use_leapmotion,force_field);
+  }
 
   if(!ff_is()) {
     println("new force field grid, with cell size:",get_size_cell_ff());
@@ -309,7 +290,7 @@ void force() {
   */
   cursor_manager();
   diaporama(240);  
-  media_end();
+  import_end();
   save_dial_force(30);
   global_reset();
 }

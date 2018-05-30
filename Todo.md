@@ -1,5 +1,11 @@
 TODO
 --
+*movie pos
+
+variable perdue...il faut s'en servir
+float movie_pos_normal;
+
+
 *SET WINDOW
 
 Must rewrite all the Misc method to set the force window
