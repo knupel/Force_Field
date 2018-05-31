@@ -311,16 +311,18 @@ void write_file_mask_mapping() {
   // save block indépendant
   if(coord_mask != null && coord_mask.length > 0) {
     for(int i = 0 ; i < coord_mask.length ;i++) {
-      newRow = file_msk.addRow();
-      newRow.setString("name", "coord_mask_" +i);
-      newRow.setInt("num", coord_mask[i].get().length);
-      for(int k = 0 ; k < coord_mask[i].get().length ; k++) {
+      if(coord_mask[i] != null) {
         newRow = file_msk.addRow();
         newRow.setString("name", "coord_mask_" +i);
-        newRow.setString("is", "true");
-        newRow.setInt("x", masks[i].get_coord()[k].x);
-        newRow.setInt("y", masks[i].get_coord()[k].x);
-      }
+        newRow.setInt("num", coord_mask[i].get().length);
+        for(int k = 0 ; k < coord_mask[i].get().length ; k++) {
+          newRow = file_msk.addRow();
+          newRow.setString("name", "coord_mask_" +i);
+          newRow.setString("is", "true");
+          newRow.setInt("x", masks[i].get_coord()[k].x);
+          newRow.setInt("y", masks[i].get_coord()[k].x);
+        }
+      }     
     }
   }
 }
@@ -703,7 +705,7 @@ void reset_mode() {
 
 /**
 KEYPRESSED
-v 0.4.0
+v 0.5.0
 */
 
 void keyPressed() {
@@ -719,32 +721,27 @@ void keyPressed() {
 
 
 
-
-
-
-
-
-
-
-
-
 /**
 the method is not with her family for bug reason...Java or Processing that's create an exception due of key_num_under_num[3] = '"';
 problem to manage double quote assignation in char.
 the char assignation must be write before the key and keyCode interrogation ?
 */
 void enable_mask_is_on_top_for_bug_reason() {
+  char [] key_num_under_num = {'0','1','2','3','4','5','6','7','8','9'};
+  /*
   char [] key_num_under_num = new char[10];
-  key_num_under_num[0] = 'à'; 
-  key_num_under_num[1] = '&';
-  key_num_under_num[2] = 'é';
-  key_num_under_num[3] = '"';
-  key_num_under_num[4] = '\'';
-  key_num_under_num[5] = '(';
-  key_num_under_num[6] = '§';
-  key_num_under_num[7] = 'è';
-  key_num_under_num[8] = '!';
-  key_num_under_num[9] = 'ç';
+  key_num_under_num[0] = '0';
+  key_num_under_num[1] = '1';
+  key_num_under_num[2] = '2';
+  key_num_under_num[3] = '3';
+  key_num_under_num[4] = '4';
+  key_num_under_num[5] = '5';
+  key_num_under_num[6] = '6';
+  key_num_under_num[7] = '7';
+  key_num_under_num[8] = '8';
+  key_num_under_num[9] = '9'; 
+  */
+
   for(int i = 0 ; i < display_mask.length && i < key_num_under_num.length ; i++) {
     if(key == key_num_under_num[i]) {
       display_mask[i] = !!((display_mask[i] == false));
@@ -755,6 +752,41 @@ void enable_mask_is_on_top_for_bug_reason() {
 }
 
 
+void key_pressed_change_mode() {
+  /*
+  if(key == 'w') {
+    next_mode_ff(-1);
+  }
+  if(key == 'x') {
+    next_mode_ff(+1);
+  }
+  */
+  char [] key_num = {'à','&','é','"','\'','(','§','è','!','ç'};
+  /*
+  char [] key_num = new char[10];
+  key_num[0] = 'à';
+  key_num[1] = '&';
+  key_num[2] = 'é';
+  key_num[3] = '"';
+  key_num[4] = '\'';
+  key_num[5] = '(';
+  key_num[6] = '§';
+  key_num[7] = 'è';
+  key_num[8] = '!';
+  key_num[9] = 'ç'; 
+  */
+
+
+
+  for(int i = 0 ; i < num_mode ; i++) {
+    if(key == key_num[i+1]) {
+      reset_mode();
+      mode[i] = true;
+    }
+  }
+}
+
+
 
 void mask_keyPressed() {
   // MAJUSCULE
@@ -762,17 +794,7 @@ void mask_keyPressed() {
     set_mask();
   }
   // hide mask
-
-
-  
-  /*
-  char single_quote = '\'';
-  char double_quote = '"';
-  char [] key_num_under_num = {,'é',double_quote,single_quote,'(','§','è','!','ç',};
-  */
-
   enable_mask();
-  
   
   // MAJUSCULE
   if(key == 'S') {
@@ -800,31 +822,64 @@ void force_keyPressed() {
   that control with advanced method see below, 
   because the azerty keymap is not recognized with multikey
   */
+
+  // BACKGROUND REFRESH
+  if(key == 'q') display_background();
+    // CURTAIN 
+  if(key == 'Q') {
+    curtain();
+  }
+
   /**
   display 
   */
   if(key == 'a') display_vehicle();
 
-  if(key == 'h') display_spot();
-
-  if(key == 'f') display_field();
-
-  if(key == 'n') display_other();
-
   if(key == 'z') display_warp();
 
-  // CURTAIN 
-  if(key == 'Q') {
-    curtain();
+  if(key == 'e') display_field();
+
+  if(key == 'r') display_spot();
+
+  if(key == 't') display_other();
+
+  /**
+  effect
+  */
+
+  if(key == 'y') {
+    misc_warp_fx = !!((misc_warp_fx == false));
   }
 
-  // BACKGROUND REFRESH
-  if(key == 'e') display_background();
-
+  if(key == 'u') {
+    misc_shader_fx = !!((misc_shader_fx == false));
+  }
 
 
   /**
-  info
+  refresh
+  */
+  // total reset
+  if(key == 'N') {
+    vehicle_reset_gui_is = true;
+    warp_reset_gui_is = true;
+    field_reset_gui_is = true;
+    global_reset();
+  }
+
+  // partial reset
+  if(key == 'n') {
+    vehicle_reset_gui_is = false;
+    warp_reset_gui_is = true;
+    field_reset_gui_is = true;
+    global_reset();
+  }
+
+
+
+  key_pressed_change_mode();
+  /**  
+  info with SHIFT
   */
   if(key == 'b') manage_border();
 
@@ -836,47 +891,25 @@ void force_keyPressed() {
 
   if(key == 'i') display_info();
   
-  
-
   if(key == 'k') {
     display_cursor();
     // change_cursor_controller(); // switch between mouse or leap motion
   }
   
+  
 
+  /**
+  MISC
+  */
   if(key == 'p') {
     println("export jpg");
     saveFrame();   
   }
 
-  if(key == 'r') {
-    vehicle_reset_gui_is = true;
-    warp_reset_gui_is = true;
-    field_reset_gui_is = true;
-    global_reset();
-  }
-
-
-  if(key == 'v') {
-    vehicle_reset_gui_is = false;
-    warp_reset_gui_is = true;
-    field_reset_gui_is = true;
-    global_reset();
-  }
-
-  if(key == 't') {
-    misc_warp_fx = !!((misc_warp_fx == false));
-  }
-
-  if(key == 'y') {
-    misc_shader_fx = !!((misc_shader_fx == false));
-  }
-
-  if(key == 'u') {
+  // width SHIFT / MAJ
+  if(key == 'V') {
     if(use_video_cam) play_video_switch();
   }
-
-  key_pressed_change_mode();
 
 
   if(key == ' ') {
@@ -896,19 +929,16 @@ void force_keyPressed() {
     select_media_to_display(); 
   }
 }
-void key_pressed_change_mode() {
-  if(key == 'w') next_mode_ff(-1);
-  if(key == 'x') next_mode_ff(+1);
 
-  char [] key_num = {'1','2','3','4','5','6','7','8','9'};
-  
-  for(int i = 0 ; i < num_mode ; i++) {
-    if(key == key_num[i]) {
-      reset_mode();
-      mode[i] = true;
-    }
-  }
-}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -969,6 +999,9 @@ void import_file(int a, int b, int c) {
     play_video(false);
   }
 }
+
+
+
 
 
 // key event
@@ -1200,7 +1233,7 @@ void display_vehicle() {
 display warp
 */
 boolean display_warp_is() {
-  return display_warp ;
+  return display_warp;
 }
 
 void display_warp(boolean is) {

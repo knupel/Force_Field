@@ -5,11 +5,11 @@ coord_connected,,true,0,0
 coord_connected,,true,800,0
 coord_connected,,true,800,500
 coord_connected,,true,0,500
-coord_connected,,true,131,108
+coord_connected,,true,40,40
 coord_connected,,true,760,40
 coord_connected,,true,760,460
-coord_connected,,true,399,208
-coord_block_1,,true,534,40
-coord_block_1,,true,305,98
-coord_block_3,,true,266,460
-coord_block_3,,true,534,460
+coord_connected,,true,40,460
+coord_block_1,,true,532,128
+coord_block_1,,true,248,302
+coord_block_3,,true,270,415
+coord_block_3,,true,596,387

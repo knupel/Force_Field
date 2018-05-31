@@ -1,6 +1,6 @@
 /**
 variable global share with the main sketch
-v 0.0.27
+v 0.0.28
 
 In the future those values must be write in an external file to be read by the main and gui sketche
 */
@@ -19,34 +19,35 @@ int num_mode = 7;
 boolean [] mode = {true,false,false,false,false,false,false};
 boolean mode_perlin, mode_chaos, mode_equation, mode_image, mode_gravity, mode_magnetic, mode_fluid ;
 
-// int num_display = 5;
-boolean [] display_ref = {true,false,false,false,false,false};
-String [] display_method_name = {"bool_background","bool_vehicle","bool_warp","bool_field","bool_spot","bool_other"};
-String [] display_label = {"background","vehicle","warp","force field","spot","other"};
+int num_display = 5;
+boolean [] display_ref = {true,false,false,false,false};
+
 boolean display_background = true;
 boolean display_vehicle = false;
 boolean display_warp = false;
 boolean display_field = false;
 boolean display_spot = false;
 boolean display_other = false;
-// curtain
-boolean misc_curtain_is  =false;
+// 
+boolean curtain_is = true;
+
 // not an interface button
 boolean display_cursor = false;
 
+boolean [] display_mask = {true,true,true,true,true,true,true,true,true,true};
 
 int num_misc = 8;
 boolean [] misc_ref = {false,false,true,true,false,false,false};
-String [] misc_method_name = {"bool_size_window","bool_fit_image","bool_warp_fx","bool_shader_fx","bool_full_reset","bool_show","bool_curtain"};
-String [] misc_label = {"size window","fit image","warp fx","shader fx","full reset field","show must go on","curtain"};
-// maybe change name of variable below, like the variable display_...
+
 // maybe change name of variable below, like the variable display_...
 boolean change_size_window_is = false;
-boolean fullfit_image_is = true;
-boolean show_must_go_on = true; 
+boolean fullfit_image_is = false;
 boolean misc_warp_fx = true; 
-boolean misc_shader_fx = true;
+boolean misc_shader_fx = false;
 boolean full_reset_field_is = false;
+boolean show_must_go_on = false;
+
+
 
 
 // dropdown

@@ -49,7 +49,6 @@ void load_data_from_app_force(int tempo, boolean authorization) {
           row = data_from_app.getRow(rank);
           boolean state = false;
           if(row.getFloat("value") == 1) {
-            println(i, row.getString("name"), row.getFloat("value"));
             state = true ;
           }
           if(state != misc_ref[i]) {
