@@ -34,6 +34,7 @@ void load_data_from_app_force(int tempo, boolean authorization) {
       		rank++;	
       	}
       }
+
       // 
 
       // dropdown
@@ -41,7 +42,7 @@ void load_data_from_app_force(int tempo, boolean authorization) {
 
       // misc mode 
       rank = 22;
-      /*              
+                   
       for(int i = 0 ; i < misc_ref.length ; i++) {
         if(gui_button.getController(misc_method_name[i]) instanceof Toggle) {
           Toggle t = (Toggle) gui_button.getController(misc_method_name[i]);
@@ -57,9 +58,9 @@ void load_data_from_app_force(int tempo, boolean authorization) {
           }
           rank++; 
         }
+      } 
 
-      }
-      */     
+         
 		} 		
 	}
 }
@@ -128,7 +129,7 @@ boolean movie_warp_is() {
 
 // misc
 boolean misc_curtain_is() {
-  return misc_curtain;
+  return misc_curtain_is;
 }
 
 

@@ -31,6 +31,9 @@ boolean display_warp = false;
 boolean display_field = false;
 boolean display_spot = false;
 boolean display_other = false;
+
+
+
 // not an interface button
 boolean display_cursor = false;
 
@@ -46,12 +49,14 @@ String [] misc_label = {"size window","fit image","warp fx","shader fx","full re
 // maybe change name of variable below, like the variable display_...
 // maybe change name of variable below, like the variable display_...
 boolean change_size_window_is = false;
-boolean fullfit_image_is = true;
-boolean show_must_go_on = true; 
+boolean fullfit_image_is = false;
 boolean misc_warp_fx = true; 
-boolean misc_shader_fx = true;
+boolean misc_shader_fx = false;
 boolean full_reset_field_is = false;
-boolean misc_curtain =false;
+boolean show_must_go_on = false;
+boolean curtain_is = true;
+
+
 
 // dropdown
 int which_media;

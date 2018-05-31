@@ -47,7 +47,7 @@ Vec2 size_gui ;
 
 int space_interface ;
 
-CColor yellow_gui, red_gui, grey_0_gui;
+CColor yellow_gui, red_gui, grey_0_gui, on_off_gui;
 
 int col_1_x = 10 ;
 int col_2_x = 200 ;
@@ -64,6 +64,7 @@ void gui_setup(Vec2 pos, Vec2 size) {
   yellow_gui = new CColor(r.OR,r.ORANGE,r.CARMIN,r.WHITE,r.WHITE);
 	red_gui = new CColor(r.BLOOD,r.CARMINE,r.RED,r.WHITE,r.WHITE);
 	grey_0_gui = new CColor(r.GRAY_3,r.GRAY_2,r.GRAY_4,r.WHITE,r.WHITE);
+	on_off_gui = new CColor(r.GRAY_3,r.BLOOD,r.BOUTEILLE,r.WHITE,r.WHITE);
 
 	pos_gui = pos.copy();
 	size_gui = size.copy();
@@ -162,7 +163,9 @@ void gui_button_G(int bar_h) {
   pos.set(0,(bar_h +1)*3);
   size.set(90,bar_h); 
   num_by_line = 1;
-  set_button(pos, size, num_by_line, gui_button, misc_method_name, misc_label, misc_ref, grey_0_gui);
+  set_button(pos, size, num_by_line, gui_button, misc_method_name, misc_label, misc_ref, on_off_gui);
+
+  // set_button(pos, size, num_by_line, gui_button, misc_method_name, misc_label, misc_ref, on_off_gui);
 
 	// dropdown
 	pos.set(0,16);
@@ -265,6 +268,12 @@ void bool_other(boolean state) {
 	display_other = state ;
 }
 
+// curtain
+void bool_curtain(boolean state) {
+	state_button(true);
+	misc_curtain_is = state;
+}
+
 
 
 
@@ -294,10 +303,7 @@ void bool_shader_fx(boolean state) {
 	misc_shader_fx = state;
 }
 
-void bool_curtain(boolean state) {
-	state_button(true);
-	misc_curtain = state;
-}
+
 
 void bool_full_reset(boolean state) {
 	state_button(true);

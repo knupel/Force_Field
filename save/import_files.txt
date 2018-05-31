@@ -1,16 +1,2 @@
 null
 shape//Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/Force_field/import/shape/corbeau.svg
-movie/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Vidéo SD selection/01_1_intro_eau_bleu.mov
-movie/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Vidéo SD selection/02_1_America.mov
-movie/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Vidéo SD selection/03_1_le_chemin.mov
-movie/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Vidéo SD selection/05_1_Grace.mov
-movie/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Vidéo SD selection/05_2_Grace.mov
-movie/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Vidéo SD selection/05_3_Grace.mov
-movie/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Vidéo SD selection/06_0_le_nouvel_homme.mov
-movie/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Vidéo SD selection/06_1_le_nouvel_homme.mov
-movie/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Vidéo SD selection/06_2_le_nouvel_homme.mov
-movie/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Vidéo SD selection/09_0_Gloria.mov
-movie/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Vidéo SD selection/10_1 fille J ATTENDRAIS.mov
-movie/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Vidéo SD selection/25 Young Timer Typo_4.mov
-image/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Image_selection/IMG_3637.jpg
-image/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Périphérique/Pte de Molitor.jpg

@@ -211,7 +211,7 @@ void force_clear_import() {
 
 /**
 SAVE / LOAD
-v 0.0.3
+v 0.0.4
 */
 void save_force() {
   write_file_mask_mapping();
@@ -423,6 +423,10 @@ void save_dial_force(int tempo) {
     if(display_spot) row[12].setInt("value",1); else row[12].setInt("value",0);
     row[13].setString("name", "other");
     if(display_other) row[13].setInt("value",1); else row[13].setInt("value",0);
+    /*
+    row[14].setString("name", "curtain");
+    if(curtain_is) row[14].setInt("value",1); else row[14].setInt("value",0);
+    */
     
     // dropdown
     row[19].setString("name", "type spot");
@@ -436,22 +440,19 @@ void save_dial_force(int tempo) {
 
     // misc
     row[22].setString("name", "resize widow");
-    row[22].setInt("value",1); // not used at this time
-    
+    row[22].setInt("value",1); // not used at this time   
     row[23].setString("name", "full fit image");
     row[23].setInt("value",1); // not used at this time
-    // 
     row[24].setString("name", "show must go on");
-    row[24].setInt("value",1); // not used at this time
-    
+    row[24].setInt("value",1); // not used at this time  
     row[25].setString("name", "warp fx");
     if(warp_fx_is()) row[25].setInt("value",1); else row[25].setInt("value",0);
-
     row[26].setString("name", "shader fx");
     if(shader_fx_is()) row[26].setInt("value",1); else row[26].setInt("value",0);
-
     row[27].setString("name", "full reset field");
     if(full_reset_field_is) row[27].setInt("value",1); else row[27].setInt("value",0);
+    row[28].setString("name", "curtain");
+    if(curtain_is) row[28].setInt("value",1); else row[28].setInt("value",0);
 
     saveTable(table_dial_force,sketchPath(1)+"/save/dialogue_force.csv");
   }  
@@ -799,30 +800,43 @@ void force_keyPressed() {
   that control with advanced method see below, 
   because the azerty keymap is not recognized with multikey
   */
+  /**
+  display 
+  */
+  if(key == 'a') display_vehicle();
 
+  if(key == 'h') display_spot();
+
+  if(key == 'f') display_field();
+
+  if(key == 'n') display_other();
+
+  if(key == 'z') display_warp();
+
+  // CURTAIN 
+  if(key == 'Q') {
+    curtain();
+  }
+
+  // BACKGROUND REFRESH
+  if(key == 'e') display_background();
+
+
+
+  /**
+  info
+  */
   if(key == 'b') manage_border();
 
   if(key == 'c') hide_interface();
 
   if(key == 'd') diaporama_is();
 
-  if(key == 'f') display_field();
-
   if(key == 'g') display_grid();
-
-  if(key == 'h') display_spot();
-
-  if(key == 'n') display_other();
 
   if(key == 'i') display_info();
   
-  if(!checkKey(CONTROL) && !checkKey(157) && !checkKey(SHIFT) && checkKey(KeyEvent.VK_Q)) { 
-    // Q for a
-    display_vehicle();
-    reset_key();
-  } 
-  if(key == 'z') display_warp();
-  if(key == 'e') display_background();
+  
 
   if(key == 'k') {
     display_cursor();
@@ -1056,6 +1070,32 @@ the char assignation must be write before the key and keyCode interrogation ?
   } 
   */
 }
+
+
+
+
+
+
+
+
+
+/**
+display curtain
+*/
+boolean curtain_is() {
+  return curtain_is;
+}
+
+void curtain_is(boolean is) {
+  curtain_is = is;
+}
+
+void curtain() {
+  curtain_is = !!((curtain_is == false));
+}
+
+
+
 
 
 /**

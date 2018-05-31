@@ -1,8 +1,8 @@
 /**
-external GUI Force
+GUI Force
 2017-2018
 http://stanlepunk.xyz/
-v 0.1.0
+v 0.2.0
 */
 import oscP5.*;
 import netP5.*;
@@ -31,13 +31,6 @@ void draw() {
 	set_controller_from_outside();
 	if(mousePressed) update_import_list();
 	load_data_from_app_force(240, !mousePressed);
-
-	if(misc_curtain_is()) {
-		set_state_button(gui_button, display_method_name[0], true);
-		for(int i = 1 ; i < display_method_name.length ; i++) {
-			set_state_button(gui_button, display_method_name[i], false);
-		} 		
-	}
 }
 
 
@@ -93,7 +86,8 @@ void update_import_list() {
 float ref_value_slider ;
 void send_value_controller() {
 	float current_value_slider = sum_slider();
-	if(!misc_curtain_is() && (current_value_slider != ref_value_slider || state_button_is()) ) {
+	if(current_value_slider != ref_value_slider || state_button_is()) {
+	// if(!misc_curtain_is() && (current_value_slider != ref_value_slider || state_button_is()) ) {
 		state_button(false);
 		send();
 		ref_value_slider = current_value_slider ;

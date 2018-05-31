@@ -29,6 +29,8 @@ boolean display_warp = false;
 boolean display_field = false;
 boolean display_spot = false;
 boolean display_other = false;
+// curtain
+boolean misc_curtain_is  =false;
 // not an interface button
 boolean display_cursor = false;
 
@@ -45,7 +47,7 @@ boolean show_must_go_on = true;
 boolean misc_warp_fx = true; 
 boolean misc_shader_fx = true;
 boolean full_reset_field_is = false;
-boolean misc_curtain =false;
+
 
 // dropdown
 int which_media;

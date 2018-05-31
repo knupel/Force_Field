@@ -4,35 +4,35 @@ v 0.1.0
 */
 boolean border_is;
 boolean default_mask_is = true;
-void mask_mapping(boolean change_is, int num) {
-
-   
+void mask_mapping(boolean change_is) {
+  // use border mask
+  mask_mapping(change_is,0,0,0);
+}
+/**
+master method
+*/
+void mask_mapping(boolean change_is, int type_mask, int num_mask, int num_point_mask) {
+  // P3D
   if(get_renderer() == P3D) {
     start_matrix();
     translateZ(1);
   }
-  /*
-  border_is = true ;
-  if(border_is) {
-    if(display_mask_is(0)) {
-      mask_mapping_border(change_is, default_mask_is);
-    }
-    
-    if(num > 1) {
-      for(int i = 1 ; i < num ; i++) {
-        if(display_mask_is(i));
+
+  if(type_mask == 0) {
+      border_is = true ;
+    if(border_is) {
+      if(display_mask_is(0)) {
+        mask_mapping_border(change_is, default_mask_is);
       }
     }
-  }
-  */
-  int num_point_mask = 7; 
-  mask_mapping_blocks(change_is, num, num_point_mask);
-  // mask_mapping_2_blocks(change_is,num);
+  } else {
+    mask_mapping_blocks(change_is, num_mask, num_point_mask);  
+  } 
+
+  // P3D
   if(get_renderer() == P3D) {
     stop_matrix();
   }
-  
-
 }
 
 
@@ -52,9 +52,11 @@ void mask_mapping_blocks(boolean change_is, int num, int num_point_mask) {
       masks[i] = new Mapping(coord_mask[i].get());
     }
   } else {
-    if(display_mask[0]) {
+    if(display_mask_is(0)) {
       for(int i = 0 ; i < num ;i++) {
-        if(display_mask[i +1]) masks[i].draw(change_is);
+        if(display_mask_is(i+1)) {
+          masks[i].draw(change_is);
+        }
       }
     }    
   }
@@ -120,7 +122,9 @@ void mask_mapping_border(boolean change_is, boolean default_mask_is) {
    
   // draw mask
   if(mask_border != null && init_mask_is) {
-    mask_border.draw(change_is);
+    if(display_mask_is(0)) {
+      mask_border.draw(change_is);
+    }
     if(change_is) {
       coord_connected = mask_border.get_coord();
       coord_block_1 = mask_border.get_coord_block_1();

@@ -219,7 +219,56 @@ void force() {
   init_vehicle(get_ff());
   
 
+  if(!curtain_is()) {
+    display_show();
+  } else {
+    background_rope(r.BLACK,25);
+  }
+  
+  
 
+
+  // info();
+
+
+
+  // REVERSE
+  if(force_field != null) force_field.reverse_flow(false);
+
+  // MAPPING
+  // mask border
+  mask_mapping(set_mask_is());
+  /**
+  int type_mask = 1 ; // block
+  int num_mask = 4 ;
+  int point_by_mask = 4 ;
+  mask_mapping(set_mask_is(),type_mask,num_mask,point_by_mask);
+  */
+
+  // GUI
+  update_value(time_count_ff);
+  if(interface_is()) {
+    interface_display(use_leapmotion,force_field);
+  }
+
+  if(!ff_is()) {
+    println("new force field grid, with cell size:",get_size_cell_ff());
+    init_ff(get_type_ff(),get_pattern_ff(),get_size_cell_ff(),g);
+  }
+
+  /**
+  MISC
+  */
+  cursor_manager();
+  diaporama(240);  
+  force_import_update();
+  save_dial_force(30);
+  global_reset();
+}
+
+
+
+void display_show() {
   /** 
   DISPLAY
   */
@@ -244,7 +293,12 @@ void force() {
   if(display_field_is() && !display_info) {
     show_custom_field();
   }
-  
+
+  // SPOT
+  if(display_spot_is()) {
+    show_spot();
+  }
+
   // VEHICLE
   if(display_vehicle_is()) {
     if(!pause_is) {
@@ -253,46 +307,11 @@ void force() {
     show_vehicle(get_rgb_vehicle(), get_alpha_vehicle());
   }
 
-
   // OTHER
   if(display_other_is()) {
     show_other();
   }
-  
 
-
-  // info();
-
-  // SPOT
-  if(display_spot_is()) {
-    show_spot();
-  }
-
-  // REVERSE
-  if(force_field != null) force_field.reverse_flow(false);
-
-  // MAPPING
-  mask_mapping(set_mask_is(),num_mask);
-
-  // GUI
-  update_value(time_count_ff);
-  if(interface_is()) {
-    interface_display(use_leapmotion,force_field);
-  }
-
-  if(!ff_is()) {
-    println("new force field grid, with cell size:",get_size_cell_ff());
-    init_ff(get_type_ff(),get_pattern_ff(),get_size_cell_ff(),g);
-  }
-
-  /**
-  MISC
-  */
-  cursor_manager();
-  diaporama(240);  
-  force_import_update();
-  save_dial_force(30);
-  global_reset();
 }
 
 
