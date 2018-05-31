@@ -47,6 +47,8 @@ boolean misc_shader_fx = false;
 boolean full_reset_field_is = false;
 boolean show_must_go_on = false;
 
+boolean use_sound_is;
+
 
 
 

@@ -43,7 +43,7 @@ PGraphics pg;
 
 
 boolean full_screen_is = false;
-iVec2 size = iVec2(800,500); // Yougtimer CFPTS
+iVec2 size = iVec2(1100,650); // Yougtimer CFPTS
 iVec2 pos_window = iVec2(0,0); // Yougtimer CFPTS
 
 
@@ -105,6 +105,8 @@ void setup() {
   gui_setup(); 
  
   mode_ff();
+
+  sound_system_setup();
 }
 
 
@@ -121,24 +123,14 @@ void draw() {
     if(hide_menu_bar) PApplet.hideMenuBar();
     force();
   } else {
-    // that's a bullshit organisation, it's just for a specific show
-    // iVec2 offset_display = iVec2(get_display_size(target_display).x, get_display_size(target_display).y);
-    int target_display = 0 ;
-    iVec2 offset_display = iVec2(0, -get_display_size(target_display).y);
-    //iVec2 offset_display = iVec2(0, -get_display_size(target_display).y);
-
-    if(get_display_num() > 1) {
-      // other
-      set_window_on_other_display(pos_window,size,offset_display,CENTER);
-    } else {
-      // main
-      set_window_on_main_display(pos_window,size,CENTER);
-    }
-
-    // end of n'importe quoi  
+    // init_display_mac_etienne();
+    init_display_home();  
     init_force = true;
   }
 }
+
+
+
 
 
 
@@ -259,6 +251,7 @@ void force() {
   /**
   MISC
   */
+  sound_system_update();
   cursor_manager();
   diaporama(240);  
   force_import_update();
@@ -310,6 +303,7 @@ void display_show() {
   // OTHER
   if(display_other_is()) {
     show_other();
+    if(use_sound_is()) sound_system_draw();
   }
 
 }

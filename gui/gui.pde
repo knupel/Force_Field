@@ -2,7 +2,7 @@
 GUI Force
 2017-2018
 http://stanlepunk.xyz/
-v 0.2.0
+v 0.2.1
 */
 import oscP5.*;
 import netP5.*;
@@ -55,7 +55,6 @@ void update_import_list() {
 				vehicle.addItem(menu_basic_shape[i],i);
 			}
 
-			println("file imported",files.length);
 			for(int i = 1 ; i < files.length ;i++) {
 				if(type[i].equals("movie") || type[i].equals("image")) {
 					media.addItem(files[i],i-1);

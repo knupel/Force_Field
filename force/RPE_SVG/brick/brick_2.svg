@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new -13.125 -15.875 38.5 38.375" height="38.375px" id="Layer_1" version="1.1" viewBox="-13.125 -15.875 38.5 38.375" width="38.5px" x="0px" xml:space="preserve" y="0px">
-  <polygon fill="#231F20" points="7.832,-11.373 7.832,-10.264 5.535,-10.264 5.535,-15.452 6.381,-15.452 6.381,-15.819      5.133,-15.819 5.133,-10.264 4.303,-10.264 4.303,-9.897 8.226,-9.897 8.226,-11.373    "/>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="Layer_1" style="enable-background:new 0 0 10 10;" version="1.1" viewBox="0 0 10 10" x="0px" xml:space="preserve" y="0px">
+  <ellipse cx="2.4" cy="7.3" rx="1.8" ry="0.7" transform="matrix(0.7106 -0.7036 0.7036 0.7106 -4.4306 3.8269)"/>
 </svg>

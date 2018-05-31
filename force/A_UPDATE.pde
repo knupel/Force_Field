@@ -70,14 +70,6 @@ void must_update_from_gui(int t_count) {
   
   set_sorting_channel_ff_2D(floor(x_sort), floor(y_sort), floor(vel_sort));
   
-  /*
-  set_resize_window(gui_change_size_window_is);
-  set_full_reset_field(gui_fullreset_field_is);
-  set_fit_image(gui_fullfit_image_is);
-  // set_vehicle_pixel_is(get_type_vehicle());
-  display_background(gui_display_bg);
-  show_must_go_on(gui_show_must_go_on);
-  */
   int temp_mode = -1; 
   for(int i = 0 ; i < mode.length; i++) {
     if(mode[i]) {
@@ -227,11 +219,25 @@ float get_size_vehicle() {
   return size;
 }
 
+
+
+float ratio_size_spot = 1 ;
 float get_size_spot() {
   float size = 1 +(size_spot *height *.1);
   if(get_type_spot() == r.PIXEL) size =1;
   if(get_type_spot() == TRIANGLE) size *= .5;
   else if(get_type_spot() == SHAPE) size *= .2;
+  
+  int max_ratio = 2 ;
+  int min = max_ratio / 4;
+  if(use_sound_is()) {
+    if(sounda.beat_is() && ratio_size_spot < min) {
+      ratio_size_spot = max_ratio;
+    } else {
+      ratio_size_spot *= .99;
+    }
+    size *= (1+ratio_size_spot);
+  }
   return size;
 }
 

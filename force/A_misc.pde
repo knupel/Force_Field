@@ -855,6 +855,10 @@ void force_keyPressed() {
     misc_shader_fx = !!((misc_shader_fx == false));
   }
 
+  if(key == 's') {
+    use_sound();
+  }
+
 
   /**
   refresh
@@ -1052,7 +1056,7 @@ void reset_key() {
 
 /**
 DATA CONTROL
-v 0.0.3
+v 0.1.0
 SET and RETURN / boolean, int...
 
 use to dial between the keyboard, the controller and the user
@@ -1125,6 +1129,22 @@ void curtain_is(boolean is) {
 
 void curtain() {
   curtain_is = !!((curtain_is == false));
+}
+
+
+/**
+use_sound_is
+*/
+boolean use_sound_is() {
+  return use_sound_is;
+}
+
+void use_sound_is(boolean is) {
+  use_sound_is = is;
+}
+
+void use_sound() {
+  use_sound_is = !!((use_sound_is == false));
 }
 
 
@@ -1643,23 +1663,23 @@ void set_info(boolean display_info) {
 
 /**
 show vector field
-v 0.2.0
+v 0.2.1
 */
 void show_custom_field() {
   float scale = (height/10) *get_length_field();
-  int c = r.HUE;
-  if(colour_field == 0) c = r.HUE;
-  else if (colour_field == 1) c = r.RED;
-  else if (colour_field == 2) c = r.ORANGE;
-  else if (colour_field == 3) c = r.YELLOW;
-  else if (colour_field == 4) c = r.GREEN;
-  else if (colour_field == 5) c = r.CYAN;
-  else if (colour_field == 6) c = r.BLUE;
-  else if (colour_field == 7) c = r.PURPLE;
-  else if (colour_field == 8) c = r.MAGENTA;
-  else if (colour_field == 9) c = r.WHITE;
-  else if (colour_field == 10) c = r.BLACK;
-  
+  int c = r.RED;
+  if(colour_field == 0) c = r.WHITE;
+  else if (colour_field == 1) c = r.BLACK;
+  else if (colour_field == 2) c = r.RED;
+  else if (colour_field == 3) c = r.ORANGE;
+  else if (colour_field == 4) c = r.YELLOW;
+  else if (colour_field == 5) c = r.GREEN;
+  else if (colour_field == 6) c = r.CYAN;
+  else if (colour_field == 7) c = r.BLUE;
+  else if (colour_field == 8) c = r.PURPLE;
+  else if (colour_field == 9) c = r.MAGENTA;
+  else if (colour_field == 10) c = r.HUE;
+ 
   float min_c = colour_field_min; 
   float max_c = colour_field_max; 
   boolean reverse_c = false;
@@ -1743,33 +1763,19 @@ void pattern_field(Vec2 dir, float mag, Vec2 pos, float scale) {
     value = 1-value ;
   }
 
+  
+
   if(colour_vff == r.HUE) {
     stroke(value,1,1,alpha_vff);
-
-  } else if(colour_vff == r.RED) {
-    stroke(0,1,value,alpha_vff);
-  } else if(colour_vff == r.ORANGE) {
-    stroke(0.08,1,value,alpha_vff);
-  } else if(colour_vff == r.YELLOW) {
-    stroke(0.166,1,value,alpha_vff);
-  } else if(colour_vff == r.GREEN) {
-    stroke(0.333,1,value,alpha_vff);
-  } else if(colour_vff == r.CYAN) {
-    stroke(0.5,1,value,alpha_vff);
-  } else if(colour_vff == r.BLUE) {
-    stroke(0.65,1,value,alpha_vff);
-  } else if(colour_vff == r.PURPLE) {
-    stroke(0.749,1,value,alpha_vff);
-  } else if(colour_vff == r.MAGENTA) {
-    stroke(0.833,1,value,alpha_vff);
-
   } else if(colour_vff == r.WHITE) {
     stroke(0,0,value,alpha_vff);
   } else if(colour_vff == r.BLACK) {
     stroke(0,value,0,alpha_vff);
   } else {
-    stroke(value,1,1,alpha_vff);
+    float hue_val = hue(colour_vff);
+    stroke(hue_val,1,value,alpha_vff);
   }
+
   if(len > scale) len = scale ;
   line(0,0,len,0);
 

@@ -1,30 +1,30 @@
 name,value
-movie position,0.0
-perlin,1
+movie position,0.593973
+perlin,0
 chaos,0
 equation,0
 image,0
 gravity,0
 magnetic,0
-fluid,0
+fluid,1
 background,1
 vehicle,0
-warp,0
+warp,1
 field,0
-spot,0
+spot,1
 other,0
 ,
 ,
 ,
 ,
 ,
-type spot,8
-type vehicle,8
-media,0
+type spot,100001
+type vehicle,100001
+media,11
 resize widow,1
 full fit image,1
 show must go on,1
-warp fx,0
+warp fx,1
 shader fx,0
 full reset field,0
 curtain,1
