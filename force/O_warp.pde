@@ -51,7 +51,7 @@ void warp_init_media(int type_f, int pattern_f,  int size_cell, boolean change_c
   if(folder_selected_is()) {
     movie_warp_is(false);
     add_g_surface();
-    boolean explore_sub_folder = true ;
+    boolean explore_sub_folder = false;
     load_media_folder(explore_sub_folder, "jpg", "JPG", "mp4", "avi", "mov");   
     if(!change_canvas_is) {
       warp.image_library_fit(g, fullfit);

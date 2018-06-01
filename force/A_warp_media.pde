@@ -245,16 +245,17 @@ void load_media_folder(boolean sub_folder, String... type) {
   String path = selected_path_folder();
   explore_folder(path, sub_folder, type);
   if(get_files() != null && get_files().size() > 0) {
-    for(File f : get_files()) {
-      String ext = extension(f.getName());
+    String [] sort = get_files_sort();
+    for(int i = 0 ; i < sort.length ; i++) {
+      String ext = extension(sort[i]);
       // add image to library     
       for(String s : ext_img) {
         if(ext.equals(s)) {
           media_info.add("image",rank_media,rank_img);
           rank_img++;
           rank_media++;
-          file_path("image",f.getAbsolutePath());
-          warp.load_image(f.getAbsolutePath());
+          file_path("image",sort[i]);
+          warp.load_image(sort[i]);
           import_path_save(true);
           warp_media_loaded(true);
           break;
@@ -266,8 +267,8 @@ void load_media_folder(boolean sub_folder, String... type) {
           media_info.add("movie",rank_media,rank_movie);
           rank_movie++;
           rank_media++;
-          file_path("movie",f.getAbsolutePath());
-          load_movie(f.getAbsolutePath());
+          file_path("movie",sort[i]);
+          load_movie(sort[i]);
           import_path_save(true);
           warp_media_loaded(true);
           break;
@@ -282,16 +283,17 @@ void load_media_input(String... type) {
   String path = selected_path_input();
   explore_folder(path, false, type);
   if(get_files() != null && get_files().size() > 0) {
-    for(File f : get_files()) {
-      String ext = extension(f.getName());
+    String [] sort = get_files_sort();
+    for(int i = 0 ; i < sort.length ; i++) {
+      String ext = extension(sort[i]);
       // add image to library
       for(String s : ext_img) {
         if(ext.equals(s)) {
           media_info.add("image",rank_media,rank_img);
           rank_img++;
           rank_media++;
-          file_path("image",f.getAbsolutePath());
-          warp.load_image(f.getAbsolutePath());
+          file_path("image",sort[i]);
+          warp.load_image(sort[i]);
           import_path_save(true);
           warp_media_loaded(true);
           break;
@@ -303,8 +305,8 @@ void load_media_input(String... type) {
           media_info.add("movie",rank_media,rank_movie);
           rank_movie++;
           rank_media++;
-          file_path("movie",f.getAbsolutePath());
-          load_movie(f.getAbsolutePath());
+          file_path("movie",sort[i]);
+          load_movie(sort[i]);
           import_path_save(true);
           warp_media_loaded(true);
           break;

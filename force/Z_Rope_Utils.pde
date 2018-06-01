@@ -1,6 +1,6 @@
 /**
 Rope UTILS 
-v 1.44.1
+v 1.45.0
 * Copyleft (c) 2014-2018 
 * Stan le Punk > http://stanlepunk.xyz/
 Rope – Romanesco Processing Environment – 
@@ -115,7 +115,7 @@ class Constant_list {
 
 /**
 FOLDER & FILE MANAGER
-v 0.2.0
+v 0.2.1
 */
 /*
 INOUT PART
@@ -209,6 +209,21 @@ void set_media_list() {
 
 ArrayList<File> get_files() {
   return files ;
+}
+
+
+String [] get_files_sort() {
+  if(files != null) {
+    String [] list = new String [files.size()];
+    for(int i = 0 ; i < get_files().size() ; i++) {
+      File f = get_files().get(i);
+      list[i] = f.getAbsolutePath();
+    }
+    Arrays.sort(list);
+    return list;
+
+  } else return null ;
+
 }
 
 void explore_folder(String path_folder, String... extension) {

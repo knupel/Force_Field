@@ -1,5 +1,9 @@
 TODO
 --
+*tourver le bug de triage des imports
+
+peut être refaire un tri de façon sytématique après que les fichier aient été importé.
+
 *augmenter la taille maximum du dropdown pour avoir tous les fichiers
 
 Car l'ascenceur de CP5 fonctionne pas ou mal

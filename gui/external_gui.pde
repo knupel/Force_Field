@@ -481,7 +481,7 @@ void gui_vehicle(int space, int max, int w, float pos_x, float pos_y, int from, 
 
 
 void gui_field(ControlP5 cp5, int space, int max, int w, float pos_x, float pos_y, int from, CColor c) {	
-  int num_colour_field = 11;
+  int num_colour_field = 12;
 	cp5.addSlider("colour_field").setPosition(pos_x,pos_slider_y(space, pos_y +0, from)).setWidth(w).setRange(0,num_colour_field-1).setNumberOfTickMarks(num_colour_field).setColor(c);
 	cp5.addSlider("colour_field_min").setLabel("minimum").setPosition(pos_x,pos_slider_y(space, pos_y +2, from)).setWidth(w).setRange(0,1).setColor(c);
 	cp5.addSlider("colour_field_max").setLabel("maximum").setPosition(pos_x,pos_slider_y(space, pos_y +3, from)).setWidth(w).setRange(0,1).setColor(c);
