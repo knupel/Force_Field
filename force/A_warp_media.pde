@@ -81,6 +81,7 @@ void load_movie(String movie_path) {
     movie_warp_list = new ArrayList<Movie>();
     Movie new_movie = new Movie(this, movie_path);
     movie_warp_list.add(new_movie);
+
     movie_warp_is(true);
   } else {
     Movie new_movie = new Movie(this, movie_path);
@@ -240,10 +241,69 @@ image
 */
 String [] ext_img = {"jpg", "JPG", "JPEG", "jpeg", "tif", "TIF", "tiff", "TIFF", "bmp", "BMP", "png", "PNG", "gif", "GIF"};
 String [] ext_movie = {"mov", "MOV", "avi", "AVI", "mp4", "MP4", "mkv", "MKV", "mpg", "MPG"};
+String dead_list ;
+void load_media_save() {
+  // String path = selected_path_folder();
+  String [] save = loadStrings(sketchPath(1)+"/save/import_files.txt");
+  String [] sort = save;
+  for(int i = 0 ; i < sort.length ; i++) {
+    // test the last save path
+    File f = new File(sort[i]);
+    if(f.exists()) {
+      String ext = extension(sort[i]);
+      // add image to library     
+      for(String s : ext_img) {
+        if(ext.equals(s)) {
+          String type = "image";
+          media_info.add(type,rank_media,rank_img);
+          rank_img++;
+          rank_media++;
+          println(type, sort[i]);
+          file_path(sort[i]);
+          warp.load_image(sort[i]);
+          import_path_save(true);
+          warp_media_loaded(true);
+          break;
+        }
+      }
+      // add video to library
+      for(String s : ext_movie) {
+        if(ext.equals(s)) {
+          String type = "movie";
+          media_info.add(type,rank_media,rank_movie);
+          rank_movie++;
+          rank_media++;
+          println(type,sort[i]);
+          file_path(sort[i]);
+          load_movie(sort[i]);
+          import_path_save(true);
+          warp_media_loaded(true);
+          break;
+        }
+      }
+    } else {
+      printErr("load_media_save() don't find the file", sort[i]);
+      if(!sort[i].equals("null")) dead_list += "***"+sort[i];
+    }     
+  }
+}
+
 
 void load_media_folder(boolean sub_folder, String... type) {
   String path = selected_path_folder();
   explore_folder(path, sub_folder, type);
+  add_file();
+}
+
+
+void load_media_input(String... type) {
+  String path = selected_path_input();
+  explore_folder(path, false, type);
+  add_file();
+}
+
+
+void add_file() {
   if(get_files() != null && get_files().size() > 0) {
     String [] sort = get_files_sort();
     for(int i = 0 ; i < sort.length ; i++) {
@@ -254,7 +314,7 @@ void load_media_folder(boolean sub_folder, String... type) {
           media_info.add("image",rank_media,rank_img);
           rank_img++;
           rank_media++;
-          file_path("image",sort[i]);
+          file_path(sort[i]);
           warp.load_image(sort[i]);
           import_path_save(true);
           warp_media_loaded(true);
@@ -267,45 +327,7 @@ void load_media_folder(boolean sub_folder, String... type) {
           media_info.add("movie",rank_media,rank_movie);
           rank_movie++;
           rank_media++;
-          file_path("movie",sort[i]);
-          load_movie(sort[i]);
-          import_path_save(true);
-          warp_media_loaded(true);
-          break;
-        }
-      }    
-    }
-  }
-}
-
-
-void load_media_input(String... type) {
-  String path = selected_path_input();
-  explore_folder(path, false, type);
-  if(get_files() != null && get_files().size() > 0) {
-    String [] sort = get_files_sort();
-    for(int i = 0 ; i < sort.length ; i++) {
-      String ext = extension(sort[i]);
-      // add image to library
-      for(String s : ext_img) {
-        if(ext.equals(s)) {
-          media_info.add("image",rank_media,rank_img);
-          rank_img++;
-          rank_media++;
-          file_path("image",sort[i]);
-          warp.load_image(sort[i]);
-          import_path_save(true);
-          warp_media_loaded(true);
-          break;
-        }
-      }
-      // add video to library
-      for(String s : ext_movie) {
-        if(ext.equals(s)) {
-          media_info.add("movie",rank_media,rank_movie);
-          rank_movie++;
-          rank_media++;
-          file_path("movie",sort[i]);
+          file_path(sort[i]);
           load_movie(sort[i]);
           import_path_save(true);
           warp_media_loaded(true);

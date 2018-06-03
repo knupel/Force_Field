@@ -5,7 +5,14 @@ setting for different kind of project, fullscreen, other screen...
 String [] path_project_shape;
 void project_setup() {
 	project_import_shape();
+  display_mask[0] = false;
+  interface_is = false;
 }
+
+
+
+
+
 
 void project_import_shape() {
 	String path = sketchPath(1)+"/import/shape/";
@@ -13,7 +20,7 @@ void project_import_shape() {
 	// algorave_setup(path);
 
 	for(int i = 0 ; i < path_project_shape.length ;i++) {
-		file_path("shape",path_project_shape[i]);
+		file_path(path_project_shape[i]);
 	}
 
 

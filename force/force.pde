@@ -43,7 +43,7 @@ PGraphics pg;
 
 
 boolean full_screen_is = false;
-iVec2 size = iVec2(1100,650); // Yougtimer CFPTS
+iVec2 size = iVec2(850,550); // Yougtimer CFPTS
 iVec2 pos_window = iVec2(0,0); // Yougtimer CFPTS
 
 
@@ -89,7 +89,7 @@ void setup() {
   if(use_leapmotion) leap_setup();
 
   project_setup();
-  save_import_path();
+  // save_import_path();
 
   set_spot_shape(path_project_shape);
   set_vehicle_shape(path_project_shape);
@@ -107,6 +107,19 @@ void setup() {
   mode_ff();
 
   sound_system_setup();
+
+  load_last_media_save();
+
+}
+
+void load_last_media_save() {
+  movie_warp_is(false);
+  add_g_surface();
+  load_media_save();
+  if(!change_size_window_is) {
+    warp.image_library_fit(g, fullfit_image_is);
+    warp.image_library_crop(g);
+  }
 }
 
 
@@ -122,9 +135,20 @@ void draw() {
     if(use_leapmotion) leap_update();
     if(hide_menu_bar) PApplet.hideMenuBar();
     force();
+    if(dead_list != null) {
+      String [] dead_link = split(dead_list,"***");
+      text("dead link",20,20);
+      for(int i = 0 ; i < dead_link.length ; i++) {
+        if(!dead_link[i].equals("null")) text(dead_link[i], 20, 20*(i+1));
+      }
+    }
   } else {
-    // init_display_mac_etienne();
-    init_display_home();  
+
+    if(full_screen_is) {
+      init_display_mac_etienne();
+    } else {
+      init_display_home();
+    }
     init_force = true;
   }
 }
@@ -201,7 +225,6 @@ void force() {
       update_ff(); 
     } 
   }
-
 
 
   // warp
@@ -286,7 +309,10 @@ void display_show() {
   if(display_field_is() && !display_info) {
     show_custom_field();
   }
-
+  if(get_renderer() == P3D) {
+    start_matrix();
+    translateZ(1);
+  }
   // SPOT
   if(display_spot_is()) {
     show_spot();
@@ -306,6 +332,9 @@ void display_show() {
     if(use_sound_is()) sound_system_draw();
   }
 
+  if(get_renderer() == P3D) {
+    stop_matrix();
+  }
 }
 
 

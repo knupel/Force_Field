@@ -331,25 +331,37 @@ void write_file_mask_mapping() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 /**
 save data dialogue with controller
 */
-String ext_path_file = null;
+String media_path_file = null;
+String separator_path = "*****";
 void file_path_clear() {
-  ext_path_file = null;
+  media_path_file = null;
 }
 
-void file_path(String type,String path) {
-  if(path != null && type != null) {
-    ext_path_file += ("///"+type+path);
+void file_path(String path) {
+  if(path != null) {
+    media_path_file += (separator_path+path);
   }
 }
 
 void save_import_path() {
-  println(ext_path_file);
-  if(ext_path_file != null) {
+  println(media_path_file);
+  if(media_path_file != null) {
     println("save import files");
-    String [] s = split(ext_path_file, "///");
+    String [] s = split(media_path_file, separator_path);
     saveStrings(sketchPath(1)+"/save/import_files.txt",s);
   } else {
     // println("save null import files");
@@ -375,6 +387,31 @@ boolean import_refresh_is() {
 void import_refresh(boolean state) {
   import_refresh_is = state;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
 save dial file
@@ -988,7 +1025,7 @@ int popup_confirm(String message_1, String message_2) {
 void import_folder(int a, int b, int c) {
   // true-true-true
   if(checkKey(a) && checkKey(b) && checkKey(c)) {
-    display_warp(true);
+    // display_warp(true);
     force_import_folder();
     play_video(false);
   }
@@ -998,7 +1035,7 @@ void import_folder(int a, int b, int c) {
 void import_file(int a, int b, int c) {
   // true-false-true
   if(checkKey(a) && !checkKey(b) && checkKey(c)) {
-    display_warp(true);
+    // display_warp(true);
     force_import_input();
     play_video(false);
   }

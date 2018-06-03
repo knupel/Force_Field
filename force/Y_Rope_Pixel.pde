@@ -1,7 +1,7 @@
 
 /**
 CLASS PIX 
-v 0.6.1
+v 0.6.2
 2016-2018
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Pixel
@@ -230,7 +230,7 @@ abstract class Pix implements Rope_Constants {
     if(pos != null) {
       pos(pos.x,pos.y,pos.z);
     } else {
-      printErr("class Pix method pos() cannot set vector because the vector arg pass is null");
+      printErrTempo(60,"class Pix method pos() cannot set vector because the vector arg pass is null");
     }
   }
 
@@ -238,7 +238,7 @@ abstract class Pix implements Rope_Constants {
     if(pos != null) {
       pos(pos.x,pos.y,pos.z);
     } else {
-      printErr("class Pix method pos() cannot set vector because the vector arg pass is null");
+      printErrTempo(60,"class Pix method pos() cannot set vector because the vector arg pass is null");
     }
   }
 

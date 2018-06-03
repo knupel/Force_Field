@@ -1,6 +1,6 @@
 /**
 Rope UTILS 
-v 1.45.0
+v 1.45.1
 * Copyleft (c) 2014-2018 
 * Stan le Punk > http://stanlepunk.xyz/
 Rope – Romanesco Processing Environment – 
@@ -508,13 +508,11 @@ PImage loadImageBMP(String fileName) {
 
 /**
 ROPE IMAGE
-v 0.5.0
+v 0.5.1
 */
-
-
 /**
 PImage manager library
-v 0.4.1
+v 0.4.2
 */
 class ROPImage_Manager {
   ArrayList<ROPImage> library ;
@@ -629,7 +627,7 @@ class ROPImage_Manager {
 
 
   public int get_rank(String target_name) {
-    if(library.size() > 0) {
+    if(library != null && library.size() > 0) {
       int rank = 0 ;
       for(int i = 0 ; i < library.size() ; i++) {
         String final_name = target_name.split("/")[target_name.split("/").length -1].split("\\.")[0] ;

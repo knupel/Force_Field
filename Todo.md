@@ -1,8 +1,8 @@
 TODO
 --
-*tourver le bug de triage des imports
+*Bug chemin de fichier mauvais
 
-peut être refaire un tri de façon sytématique après que les fichier aient été importé.
+Quand un chamin est mauvais load Movie s'arrête mais n'envois pas d'erreur... GROS GROS PROBLEME
 
 *augmenter la taille maximum du dropdown pour avoir tous les fichiers
 

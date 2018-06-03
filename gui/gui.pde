@@ -2,7 +2,7 @@
 GUI Force
 2017-2018
 http://stanlepunk.xyz/
-v 0.2.1
+v 0.3.0
 */
 import oscP5.*;
 import netP5.*;
@@ -35,18 +35,14 @@ void draw() {
 
 
 
+String [] ext_img = {"jpg", "JPG", "JPEG", "jpeg", "tif", "TIF", "tiff", "TIFF", "bmp", "BMP", "png", "PNG", "gif", "GIF"};
+String [] ext_movie = {"mov", "MOV", "avi", "AVI", "mp4", "MP4", "mkv", "MKV", "mpg", "MPG"};
+String [] ext_shape = {"svg", "SVG"};
 
 void update_import_list() {
-	String[] files = loadStrings(sketchPath(1)+"/save/import_files.txt");
-	if(files != null) {
-		String[] type = new String[files.length];
-	  for(int i = 0 ; i < files.length ; i++) {
-	  	String [] s = split(files[i], "/");
-	  	type[i] = s[0];
-	  	files[i] = s[s.length -1];
-
-	  }
-		if(files != null) {
+	String[] file_path = loadStrings(sketchPath(1)+"/save/import_files.txt");
+	if(file_path != null) {
+		if(file_path != null) {
 			media.clear();
 			spot.clear();
 			vehicle.clear();
@@ -55,17 +51,49 @@ void update_import_list() {
 				vehicle.addItem(menu_basic_shape[i],i);
 			}
 
-			for(int i = 1 ; i < files.length ;i++) {
-				if(type[i].equals("movie") || type[i].equals("image")) {
-					media.addItem(files[i],i-1);
+
+      
+			for(int i = 1 ; i < file_path.length ;i++) {
+				String ext = extension(file_path[i]);
+				boolean dead_link = false;
+				File f = new File(file_path[i]);
+				String dead = "*** ";
+				if(!f.exists()) dead_link = true;
+				String [] s = split(file_path[i], "/");
+				for(String str : ext_img) {
+					if(ext.equals(str)) {
+						String file_name = s[s.length -1];
+						if(!dead_link) {
+							media.addItem(file_name,i-1);
+						} else {
+							media.addItem(dead+file_name,i-1);
+						}
+					}
 				}
 
-				if(type[i].equals("shape")) {
-					int target = i-1 +menu_basic_shape.length;
-					spot.addItem(files[i],target);
-					vehicle.addItem(files[i],target);
+				for(String str : ext_movie) {
+					if(ext.equals(str)) {
+						String file_name = s[s.length -1];
+						if(!dead_link) {
+							media.addItem(file_name,i-1);
+						} else {
+							media.addItem(dead+file_name,i-1);
+						}
+					}
 				}
-				
+
+				for(String str : ext_shape) {
+					if(ext.equals(str)) {
+						String file_name = s[s.length -1];
+						if(!dead_link) {
+							spot.addItem(file_name,i-1);
+							vehicle.addItem(file_name,i-1);
+						} else {
+							spot.addItem(dead+file_name,i-1);
+							vehicle.addItem(dead+file_name,i-1);
+						}
+					}
+				}
 			}
 		} else {
 			printErr("method update_media_list() don't find a file to update");

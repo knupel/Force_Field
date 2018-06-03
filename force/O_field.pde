@@ -7,7 +7,7 @@ void show_custom_field() {
   int c = r.RED;
   if(colour_field == 0) c = r.HUE;
   else if (colour_field == 1) c = r.WHITE;
-  else if (colour_field == 2) c = r.BLACK;
+  else if (colour_field == 2) c = r.GRAY_5;
   else if (colour_field == 3) c = r.RED;
   else if (colour_field == 4) c = r.ORANGE;
   else if (colour_field == 5) c = r.YELLOW;

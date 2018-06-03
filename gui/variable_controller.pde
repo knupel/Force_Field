@@ -74,7 +74,7 @@ float cell_force_field = 15.;
 float tempo_refresh = 1.;
 
 // SPOT
-float size_spot = .4;
+float size_spot = .02;
 float alpha_spot = 0.5;
 float red_spot = .9;
 float green_spot = 0;
@@ -91,12 +91,13 @@ float velocity_vehicle = 1;
 int max_vehicle_ff = 100_000;
 
 // WARP IMAGE
-float alpha_warp = 0.;
+float alpha_warp = .2;
 float red_warp = .9;
 float green_warp = .9;
 float blue_warp = .9;
 
-float power_warp = .37;
+//float power_warp = .37;
+float power_warp = .0;
 
 float red_cycling = 0;
 float green_cycling = 0;
@@ -140,12 +141,12 @@ float motion_spot = 0.22;
 
 
 //FIELD
-float colour_field = 1;
+float colour_field = 3;
 float colour_field_min = 0.;
 float colour_field_max = .7;
 float length_field = .25;
-float thickness_field = .05;
-float alpha_field = .5;
+float thickness_field = .25;
+float alpha_field = 1.;
 
 
 
