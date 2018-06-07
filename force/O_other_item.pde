@@ -34,15 +34,15 @@ void cloud_3D_orientation_angle_behavior_costume() {
   cloud_3D.size((height/4) *abs(sin(frameCount *.01)));
   // cloud_3D.orientation_y(map(mouseY,0,height,-PI,PI)) ;
   // cloud_3D.angle(frameCount *.01);
-  cloud_3D.beat(8);
+  cloud_3D.set_beat(8);
   //cloud_3D.behavior("SIN");
   //cloud_3D.behavior("SIN_TAN_POW_SIN");
   // cloud_3D.behavior("POW_SIN_PI");
-  cloud_3D.behavior("SIN_POW_SIN");
+  cloud_3D.set_behavior("SIN_POW_SIN");
 
   int radius = height;
   Vec3 pos = Vec3(width/2, height/2,-(height/2));
-  cloud_3D.radius(radius);
+  cloud_3D.set_radius(radius);
   cloud_3D.pos(pos);
   cloud_3D.update();
 

@@ -217,15 +217,15 @@ void multi_coord_cloud(Vec2 [] pos, iVec2 lead_pos, boolean is, boolean keep_str
     cloud_2D.range(get_min_radius_spot(), get_max_radius_spot());
 
     if(get_motion_spot() > 0) {
-      cloud_2D.growth(get_motion_spot());
+      cloud_2D.set_growth(get_motion_spot());
     }
     ref_growth_spot = cloud_2D.get_growth();
     
     time_count_spot++;
-    cloud_2D.time_count(time_count_spot);
-    cloud_2D.beat(get_beat_spot());
-    cloud_2D.behavior("SIN");
-    cloud_2D.radius(get_radius_spot());
+    cloud_2D.set_time_count(time_count_spot);
+    cloud_2D.set_beat(get_beat_spot());
+    cloud_2D.set_behavior("SIN");
+    cloud_2D.set_radius(get_radius_spot());
   }
 
   if(keep_structure){
