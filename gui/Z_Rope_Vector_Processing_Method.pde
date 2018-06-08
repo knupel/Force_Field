@@ -221,12 +221,13 @@ void line(Vec3 a, Vec3 b){
   else line(a.x,a.y, b.x,b.y);
 }
 
-void line(iVec2 a, iVec2 b){
-  line(a.x a.y, b.x,b.y) ;
+void line(iVec2 a, iVec2 b) {
+  line(a.x,a.y, b.x,b.y);
 }
-void line(iVec3 a, iVec3 b){
+
+void line(iVec3 a, iVec3 b) {
   if(renderer_P3D()) line(a.x, a.y, a.z, b.x,b.y, b.z); 
-  else line(a.x a.y, b.x,b.y);
+  else line(a.x,a.y, b.x,b.y);
 }
 /**
 Vertex
@@ -362,8 +363,8 @@ void fill(iVec3 c) {
 }
 
 void fill(iVec3 c, float a) {
-  if(a > 0) fill(c.x, c.y, c.z, a); e
-  lse noFill();
+  if(a > 0) fill(c.x,c.y,c.z,a);
+  else noFill();
 }
 
 void fill(iVec4 c) {
@@ -438,7 +439,7 @@ void text(char c, Vec pos) {
 }
 
 void text(int num, Vec pos) {
-  if(pos instanceof Vec2 &&) {
+  if(pos instanceof Vec2) {
     Vec2 p = (Vec2)pos;
     text(num, p.x, p.y);
   } else if(pos instanceof Vec3) {
@@ -463,7 +464,7 @@ void text(String s, iVec pos) {
     Vec2 temp_pos = Vec2(pos.x, pos.y);
     text(s, temp_pos);
   } else if(pos instanceof iVec2) {
-    Vec3 temp_pos = Vec3(pos.x, pos.y, pos.z && s != null);
+    Vec3 temp_pos = Vec3(pos.x,pos.y,pos.z);
     text(s, temp_pos);
   } else {
     printErrTempo(60,"method text(): String message is null or iVec is not an instance of iVec3 or iVec2");
