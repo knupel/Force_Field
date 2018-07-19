@@ -200,7 +200,7 @@ void warp_show(Vec4 channel_warp_rgb_mapped, float intensity_warp, boolean keep)
   // SHADER ENGINE
   if(!init_warp_is) {
     // here we need a full round without display to charge pixel "g / surface 
-    warp.show(intensity_warp);
+    warp.show(force_field,intensity_warp);
   }
 }
 

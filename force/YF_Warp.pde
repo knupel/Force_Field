@@ -1,6 +1,6 @@
 /**
 Warp Image
-v 0.4.1
+v 0.4.3
 */
 
 class Warp {
@@ -21,8 +21,16 @@ class Warp {
   }
 
   public void load_shader() {
+    load_shader("shader");
+  }
+
+  public void load_shader(String main_folder_path) {
+    /*
     rope_warp_shader = loadShader("shader/warp/rope_warp_frag.glsl");
-    rope_warp_blur = loadShader("shader/filter/rope_filter_gaussian_blur.glsl"); 
+    rope_warp_blur = loadShader("shader/filter/rope_filter_gaussian_blur.glsl");
+    */
+    rope_warp_shader = loadShader(main_folder_path+"/warp/rope_warp_frag.glsl");
+    rope_warp_blur = loadShader(main_folder_path+"/filter/rope_filter_gaussian_blur.glsl"); 
   }
 
   /*
@@ -152,7 +160,6 @@ class Warp {
 
   /**
   misc
-  v 0.0.3
   */
   public void reset() {
     reset_img = true ;
@@ -185,7 +192,7 @@ class Warp {
   /*
   Main and Public method to show result
   */
-  public void show(float intensity) {
+  public void show(Force_field force_field, float intensity) {
     if(reset_img) {
       draw(img_manager.get());
     }
@@ -194,7 +201,7 @@ class Warp {
     if(pg == null && img_manager.get() != null) { 
       set(img_manager.get());
     } else if(img_manager.get() != null) {   
-      update(img_manager.get(), intensity);
+      update(force_field,img_manager.get(),intensity);
     }
   }
 
@@ -212,6 +219,15 @@ class Warp {
     }
   }
   
+
+  private void update(Force_field force_field, PImage target, float intensity) {
+    PImage inc = target.copy(); 
+    rendering(pg, buffer_img, inc, force_field, intensity);   
+
+    buffer_img.pixels = buffering(pg).pixels;
+    buffer_img.updatePixels();
+  }
+  /*
   private void update(PImage target, float intensity) {
     PImage inc = target.copy(); 
     rendering(pg, buffer_img, inc, force_field, intensity);   
@@ -219,6 +235,7 @@ class Warp {
     buffer_img.pixels = buffering(pg).pixels;
     buffer_img.updatePixels();
   }
+  */
 
 
 

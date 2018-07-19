@@ -201,7 +201,7 @@ public void eq_mult(float mx, float my, float mz) {
 Force Field
 2017-2018
 http://stanlepunk.xyz/
-v 1.11.3
+v 1.11.4
 Processing 3.3.7
 */
 
@@ -289,15 +289,37 @@ public class Force_field implements Rope_Constants {
   CONSTRUCTOR
   v 0.1.1
   */
+  // MINIMUM
+  public Force_field(int resolution, int type, int pattern) {
+    set_resolution(resolution);
+    this.type = type ;
+    init_super_type(this.type);  
+    this.pattern = pattern;
+    this.is = true ;
+    iVec2 canvas_pos = iVec2();
+    iVec2 canvas = iVec2(width,height);
+    set_canvas(iVec2(this.resolution/2 +canvas_pos.x, this.resolution/2 +canvas_pos.y), iVec2(canvas.x,canvas.y));
+
+    cols = NX = canvas.x/this.resolution;
+    rows = NY = canvas.y/this.resolution +1;
+
+    init_field();
+    init_spot();
+    init_texture(cols,rows);
+    border_is = true ;
+
+    if(type == FLUID) {
+      printErr("FLUID have square or cube canvas, the HEIGHT be used for the canvas side");
+      int iteration = 20 ;
+      border_is = false;
+      ns_2D = new Navier_Stokes_2D(iVec2(NX,NY), iteration);
+    } 
+    set_field();
+  }
+
   // CLASSIC
   public Force_field(int resolution, iVec2 canvas_pos, iVec2 canvas, int type, int pattern) {
-    if(resolution <= 0) {
-      printErr("Contructor Force_field: resolution =", resolution, "instead the value 20 is used");
-      this.resolution = 20 ;
-    } else {
-      this.resolution = resolution;
-    }
-    
+    set_resolution(resolution);
     this.type = type ;
     init_super_type(this.type);  
     this.pattern = pattern;
@@ -324,7 +346,7 @@ public class Force_field implements Rope_Constants {
 
   //PImage
   public Force_field(int resolution, iVec2 canvas_pos, PImage src, int... component_sorting) {
-    this.resolution = resolution;
+    set_resolution(resolution);
     this.type = STATIC;
     init_super_type(this.type);
     this.pattern = IMAGE;
@@ -412,8 +434,18 @@ public class Force_field implements Rope_Constants {
 
 
 
-
-
+  /**
+  set resolution
+  v 0.0.1
+  */
+  private void set_resolution(int resolution) {
+    if(resolution <= 0) {
+      printErr("Contructor Force_field: resolution =", resolution, "instead the value 20 is used");
+      this.resolution = 20 ;
+    } else {
+      this.resolution = resolution;
+    }
+  }
   /**
   set field
   v 0.1.1

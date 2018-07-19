@@ -1,29 +1,14 @@
 null
 //Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/Force_field/import/shape/corbeau.svg
 //Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/Force_field/import/shape/fleur_1.svg
-/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Image_selection/YoungTimer.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Image_selection/Youngtimer_voiture.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Image_selection/ecran_younftimer.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Image_selection/ecran_younftimer1080_2.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Image_selection/YoungTimer.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Image_selection/Youngtimer_voiture.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Image_selection/bonjour_corbeau.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Image_selection/ecran_younftimer.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Image_selection/ecran_younftimer1080_2.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Image_selection/fenêtre_corbeau.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Image_selection/magicienne_corbeau.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Image_selection/nouvel_homme.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Image_selection/regard.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Image_selection/trône_corbeau.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Image_selection/voiture_corbeau.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Image_selection/YoungTimer.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Image_selection/Youngtimer_voiture.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Image_selection/bonjour_corbeau.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Image_selection/ecran_younftimer.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Image_selection/ecran_younftimer1080_2.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Image_selection/fenêtre_corbeau.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Image_selection/magicienne_corbeau.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Image_selection/nouvel_homme.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Image_selection/regard.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Image_selection/trône_corbeau.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/PROJET/2018/Youngtimer/média/Sélection/Image_selection/voiture_corbeau.jpg
+/Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/ROMANESCO Github/Software_31/sources/import/bitmap/Liberte.jpg
+/Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/ROMANESCO Github/Software_31/sources/import/bitmap/Lisbonne.jpg
+/Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/ROMANESCO Github/Software_31/sources/import/bitmap/Masque.jpg
+/Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/ROMANESCO Github/Software_31/sources/import/bitmap/RioCarnaval.jpg
+/Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/ROMANESCO Github/Software_31/sources/import/bitmap/banc_public.jpg
+/Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/ROMANESCO Github/Software_31/sources/import/bitmap/joconde.jpg
+/Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/ROMANESCO Github/Software_31/sources/import/bitmap/le coq de France.jpg
+/Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/ROMANESCO Github/Software_31/sources/import/bitmap/mire.jpg
+/Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/ROMANESCO Github/Software_31/sources/import/bitmap/no future.jpg
+/Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/ROMANESCO Github/Software_31/sources/import/bitmap/pirate.jpg
+/Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/ROMANESCO Github/Software_31/sources/import/bitmap/purosGirl.jpg

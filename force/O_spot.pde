@@ -223,7 +223,7 @@ void multi_coord_cloud(Vec2 [] pos, iVec2 lead_pos, boolean is, boolean keep_str
     
     time_count_spot++;
     cloud_2D.set_time_count(time_count_spot);
-    cloud_2D.set_beat(get_beat_spot());
+    // cloud_2D.set_beat(get_beat_spot());
     cloud_2D.set_behavior("SIN");
     cloud_2D.set_radius(get_radius_spot());
   }
