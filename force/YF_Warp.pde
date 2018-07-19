@@ -1,6 +1,6 @@
 /**
 Warp Image
-v 0.4.3
+v 0.4.4
 */
 
 class Warp {
@@ -25,10 +25,6 @@ class Warp {
   }
 
   public void load_shader(String main_folder_path) {
-    /*
-    rope_warp_shader = loadShader("shader/warp/rope_warp_frag.glsl");
-    rope_warp_blur = loadShader("shader/filter/rope_filter_gaussian_blur.glsl");
-    */
     rope_warp_shader = loadShader(main_folder_path+"/warp/rope_warp_frag.glsl");
     rope_warp_blur = loadShader(main_folder_path+"/filter/rope_filter_gaussian_blur.glsl"); 
   }
@@ -227,15 +223,7 @@ class Warp {
     buffer_img.pixels = buffering(pg).pixels;
     buffer_img.updatePixels();
   }
-  /*
-  private void update(PImage target, float intensity) {
-    PImage inc = target.copy(); 
-    rendering(pg, buffer_img, inc, force_field, intensity);   
 
-    buffer_img.pixels = buffering(pg).pixels;
-    buffer_img.updatePixels();
-  }
-  */
 
 
 
@@ -535,7 +523,7 @@ class Warp {
   /**
   WARP CPU
   Computer Processor Unit 
-  v 0.1.3
+  v 0.1.4
   * based on by Felix Woitzel code
   * but the code don't work perfectly, on the top and right direction
   */
@@ -545,7 +533,7 @@ class Warp {
     result.loadPixels();
     int [] c_array = result.pixels ;
 
-    iVec2 canvas = iVec2(force_field.get_canvas());
+    iVec2 canvas = iVec2(ff.get_canvas());
     iVec2 img_canvas = iVec2(result.width, result.height);
     
     Vec2 ratio_canvas = Vec2(1).div(canvas);

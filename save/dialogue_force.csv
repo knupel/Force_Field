@@ -7,10 +7,10 @@ image,0
 gravity,0
 magnetic,0
 fluid,1
-background,0
+background,1
 vehicle,0
 warp,1
-field,1
+field,0
 spot,0
 other,0
 ,
