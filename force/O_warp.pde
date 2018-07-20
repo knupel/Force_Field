@@ -2,15 +2,16 @@
 APP WARP
 v 0.1.2
 */
-Warp warp = new Warp();
+Warp warp ;
 // boolean shader_filter_is = false;
 boolean init_warp_is = false;
 String surface_g = "";
 int ref_warp_w, ref_warp_h ;
 void warp_setup() {
+  warp = new Warp();
   set_size_ref(width, height);
   surface_g = "surface g";
-  warp.load_shader();
+  //warp.load_shader();
   set_media_info();
 }
 
@@ -101,11 +102,11 @@ void add_g_surface() {
       // nothing happen don't add a g surface, this security is necessary in case we add more media
     } else {
       println("add g surface");
-      warp.add_image(g, surface_g);
+      warp.add(g, surface_g);
     }
   } else {
     println("add g surface");
-    warp.add_image(g, surface_g); // take the first place in the list, "0" so when the list is used you must jump the "0"
+    warp.add(g, surface_g); // take the first place in the list, "0" so when the list is used you must jump the "0"
   }
 }
 
@@ -162,15 +163,15 @@ void warp_draw(int tempo, Vec4 rgba_mapped, float intensity, boolean refresh) {
 void warp_media_display() {
   if (video_warp_is()) {
     movie_warp_is(false);
-    warp.select_image(surface_g);
+    warp.select(surface_g);
     display_video(); 
   } else if(movie_warp_is()) {
-    warp.select_image(surface_g);
+    warp.select(surface_g);
     update_movie_warp_interface();
     play_video(false);
     display_movie(g, which_movie);
   } else {
-    warp.select_image(which_img);
+    warp.select(which_img);
     play_video(false);
     movie_warp_is(false);
   }

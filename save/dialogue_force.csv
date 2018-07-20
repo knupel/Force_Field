@@ -18,9 +18,9 @@ other,0
 ,
 ,
 ,
-type spot,100000
-type vehicle,8
-media,3
+type spot,2
+type vehicle,100000
+media,10
 resize widow,1
 full fit image,1
 show must go on,1

@@ -1,6 +1,6 @@
 /**
 Warp Image
-v 0.4.4
+v 0.5.0
 */
 
 class Warp {
@@ -14,45 +14,102 @@ class Warp {
   private boolean reset_img ;
 
   private PShader rope_warp_shader, rope_warp_blur;
-
+  
 
   public Warp() {
-    img_manager = new ROPImage_Manager() ;
+    build("shader");
   }
 
-  public void load_shader() {
-    load_shader("shader");
+  public Warp(String path) {
+     build(path);
   }
 
-  public void load_shader(String main_folder_path) {
+
+  private void build(String path) {
+    img_manager = new ROPImage_Manager();
+    shader("shader");
+  }
+  
+
+  private void shader(String main_folder_path) {
     rope_warp_shader = loadShader(main_folder_path+"/warp/rope_warp_frag.glsl");
     rope_warp_blur = loadShader(main_folder_path+"/filter/rope_filter_gaussian_blur.glsl"); 
   }
 
-  /*
-  Use this method in Processing setup
+
+  /**
+  * Use this method in Processing setup
+  * load PImage from path
+  *
+  * @webref warp:method
+  * @param path array String of path
+  * @return void
+  * @brief load PImage from path to the image manager
   */
-  public void load_image(String... path) {
+  public void load(String... path) {
     img_manager.load(path);
   }
 
-  public void add_image(PImage pg, String target_name) {
-    img_manager.add(pg, target_name);
-  }
 
-  public void set_image(PImage img, String target_name) {
-    img_manager.set(img, target_name);
-  }
+
   
   /**
-  select
+  * add PImage directly
+  *
+  * @webref warp:method
+  * @param pg is PImage to add at the manager
+  * @param name is PImage name to add info at your image
+  * @return none
+  * @brief add PImage direclt
   */
-  public void select_image(int target_img) {
-    img_manager.select(target_img);
+  public void add(PImage pg) {
+    add(pg,"my name is nobody");
   }
 
-  public void select_image(String target_name) {
-    img_manager.select(img_manager.get_rank(target_name)) ;
+  public void add(PImage pg, String name) {
+    img_manager.add(pg,name);
+  }
+
+
+
+  /**
+  * set PImage directly
+  *
+  * @webref warp:method
+  * @param pg is PImage to add at the manager
+  * @param name is PImage name to add info at your image
+  * @return none
+  * @brief add PImage direclt
+  */
+
+  /*
+  public void set(PImage img, String name) {
+    img_manager.set(img,name);
+  }
+  */
+  
+  
+
+
+
+
+
+
+  /**
+  * select PImage in the manager list to use with warp
+  *
+  * @webref warp:method
+  * @param index point PImage in the array list manager
+  * @param name point PImage in the array list manager
+  * @return none
+  * @brief add PImage direclt
+  */
+  public void select(int index) {
+    img_manager.select(index);
+  }
+
+  public void select(String name) {
+    img_manager.select(img_manager.get_rank(name)) ;
   }
 
 
