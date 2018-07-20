@@ -1,6 +1,6 @@
 /**
-Warp Image
-v 0.5.0
+Warp
+v 0.5.2
 */
 
 class Warp {
@@ -17,7 +17,7 @@ class Warp {
   
 
   public Warp() {
-    build("shader");
+    build("shader/");
   }
 
   public Warp(String path) {
@@ -27,13 +27,13 @@ class Warp {
 
   private void build(String path) {
     img_manager = new ROPImage_Manager();
-    shader("shader");
+    shader(path);
   }
   
 
   private void shader(String main_folder_path) {
-    rope_warp_shader = loadShader(main_folder_path+"/warp/rope_warp_frag.glsl");
-    rope_warp_blur = loadShader(main_folder_path+"/filter/rope_filter_gaussian_blur.glsl"); 
+    rope_warp_shader = loadShader(main_folder_path+"warp/rope_warp_frag.glsl");
+    rope_warp_blur = loadShader(main_folder_path+"filter/rope_filter_gaussian_blur.glsl"); 
   }
 
 
@@ -178,8 +178,20 @@ class Warp {
   }
 
 
+
+
+
+
+
   /**
-  refresh
+  *  refresh PImage selected after warp effect
+  *
+  * @webref warp:method
+  * @param ratio is Vec component of refresh / the max Vec is 4
+  * @param value is the array component / the max element is 4
+  * refresh component is must have a normal value 0 > 1
+  * @return none
+  * @brief refresh the PImage to the begin
   */
   public void refresh(Vec ratio) {
     refresh_image_is(true);
@@ -336,7 +348,9 @@ class Warp {
   private void refresh_image_is(boolean refresh_image_is) {
     this.refresh_image_is = refresh_image_is;
   }
-
+  /**
+  refresh component is must have a normal value 0 > 1
+  */
   private Vec4 warp_img_refresh ;
   private void refresh_image(float x, float y, float z, float w) {
     if(this.warp_img_refresh == null) {
@@ -554,13 +568,13 @@ class Warp {
       // blur direction texture
     if(pass1 == null) pass1 = createGraphics(w,h,P2D);
     if(pass2 == null) pass2 = createGraphics(w,h,P2D);
-    rope_warp_blur.set("blurSize", 7);
-    rope_warp_blur.set("sigma", 3f); 
+    rope_warp_blur.set("blurSize",7);
+    rope_warp_blur.set("sigma",3f); 
       // Applying the blur shader along the vertical direction   
     rope_warp_blur.set("horizontalPass", true);
     pass1.beginDraw();            
     pass1.shader(rope_warp_blur);
-    pass1.image(tex, 0, 0); 
+    pass1.image(tex,0,0); 
     pass1.endDraw();
 
    
@@ -568,7 +582,7 @@ class Warp {
     rope_warp_blur.set("horizontalPass", false);
     pass2.beginDraw();            
     pass2.shader(rope_warp_blur);  
-    pass2.image(pass1, 0, 0);
+    pass2.image(pass1,0,0);
     pass2.endDraw(); 
   }
 

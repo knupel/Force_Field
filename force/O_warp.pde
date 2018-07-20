@@ -1,6 +1,6 @@
 /**
 APP WARP
-v 0.1.2
+v 0.1.3
 */
 Warp warp ;
 // boolean shader_filter_is = false;
@@ -11,7 +11,6 @@ void warp_setup() {
   warp = new Warp();
   set_size_ref(width, height);
   surface_g = "surface g";
-  //warp.load_shader();
   set_media_info();
 }
 
@@ -152,7 +151,7 @@ void warp_draw(int tempo, Vec4 rgba_mapped, float intensity, boolean refresh) {
     //background_rope(0, alpha);
     if(frameCount%tempo == 0 ) warp_media_display();
     if(warp.library_size() > 0 && force_field != null) {
-      warp_show(rgba_mapped, intensity, refresh);
+      warp_show(rgba_mapped,intensity,refresh);
       check_current_img_size_against_display();
     }
   }
