@@ -32,14 +32,14 @@ void show_spot(int type) {
 
 // spot pixel
 PGraphics pg_spot;
-void display_pixel_on_PGraphics(PGraphics pg, int c, Vec2 [] coord) {
+void display_pixel_on_PGraphics(PGraphics pg, int c, Vec3 [] coord) {
   if(pg == null || pg.width != width || pg.height != height) {
     pg = createGraphics(width,height,get_renderer());
   } 
   if(pg != null) {
     pg.beginDraw();
     pg.clear();
-    for (Vec2 p : coord) {
+    for (Vec3 p : coord) {
       spot_set(pg,p,c);  
     }
     pg.endDraw();
@@ -47,7 +47,7 @@ void display_pixel_on_PGraphics(PGraphics pg, int c, Vec2 [] coord) {
   }
 }
 
-void spot_set(PGraphics pg, Vec2 pos, int c) {
+void spot_set(PGraphics pg, Vec3 pos, int c) {
   int x = (int)pos.x ;
   int y = (int)pos.y;
   if(x < pg.width && y < pg.height) {
@@ -60,7 +60,7 @@ void spot_set(PGraphics pg, Vec2 pos, int c) {
 
 
 // spot triangle
-void display_spot_triangle(Vec2 pos, int c, float size) {
+void display_spot_triangle(Vec3 pos, int c, float size) {
   // Draw a triangle rotated in the direction of velocity
   float theta = radians(90);
   // v.set_radius(size);
@@ -94,11 +94,11 @@ void set_spot_shape(String... path) {
   // }
 }
 
-void display_spot_shape(Vec2 pos, Vec3 fill, float alpha) {
+void display_spot_shape(Vec3 pos, Vec3 fill, float alpha) {
   display_spot_shape(pos, fill, alpha, 0);
 }
 
-void display_spot_shape(Vec2 pos, Vec3 fill, float alpha, int target) {
+void display_spot_shape(Vec3 pos, Vec3 fill, float alpha, int target) {
   shape_spot[target].fill(fill.x,fill.y,fill.z,alpha);
   shape_spot[target].noStroke();
   shape_spot[target].scaling(get_size_spot());

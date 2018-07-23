@@ -140,7 +140,7 @@ public class Vehicle implements Rope_Constants {
   private void swap_spot(float offset_cell_vehicle) {
     for(int index = 0 ; index < ff.get_spot_num() ; index++) {
       Vec2 pos_vehicle = get_position().copy();
-      Vec2 pos_spot = ff.get_spot_pos(index);
+      Vec2 pos_spot = Vec2(ff.get_spot_pos(index).x,ff.get_spot_pos(index).y);
       Vec2 diam = ff.get_spot_size(index);
       int tesla = ff.get_spot_tesla(index);
       
