@@ -290,14 +290,14 @@ void load_media_save() {
 
 
 void load_media_folder(boolean sub_folder, String... type) {
-  String path = selected_path_folder();
+  String path = folder();
   explore_folder(path, sub_folder, type);
   add_file();
 }
 
 
 void load_media_input(String... type) {
-  String path = selected_path_input();
+  String path = input();
   explore_folder(path, false, type);
   add_file();
 }
