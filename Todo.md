@@ -1,5 +1,10 @@
 TODO
 --
+*Dead link
+
+when the link is updated the warning message stay
+
+
 *Bug chemin de fichier mauvais
 
 Quand un chamin est mauvais load Movie s'arrête mais n'envois pas d'erreur... GROS GROS PROBLEME

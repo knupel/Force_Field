@@ -1,7 +1,7 @@
 
 /**
 CLASS PIX 
-v 0.7.1
+v 0.7.0
 2016-2018
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Pixel
@@ -464,7 +464,8 @@ abstract class Pix implements Rope_Constants {
     return roof ;
   }
 }
-
+// END MOTHER CLASS
+//////////////////////
 
 
 
@@ -483,7 +484,7 @@ abstract class Pix implements Rope_Constants {
 
 /**
 CLOUD
-v 0.3.3
+v 0.3.1
 */
 class Cloud extends Pix implements Rope_Constants {
   int num ;
@@ -684,8 +685,6 @@ class Cloud extends Pix implements Rope_Constants {
     return coord;   
   }
 
-
-
   public void set_behavior(String behavior) {
     this.behavior = behavior ;
   }
@@ -695,15 +694,6 @@ class Cloud extends Pix implements Rope_Constants {
     if(type != r.CARTESIAN) {
       printErrTempo(180, "class Cloud method spiral() is available only for type r.CARTESIAN, not for type r.POLAR");
     }
-  }
-
-
-  /**
-  void range();
-  Use with the bahavior, it's ratio mult for the radius
-  */
-  public void range(Vec2 range) {
-    range(range.x,range.y);
   }
   public void range(float min, float max) {
     if(range == null) {
@@ -843,10 +833,6 @@ class Cloud extends Pix implements Rope_Constants {
 
   public float get_rotation() {
     return dist ;
-  }
-
-  public int length() {
-    return num;
   }
 }
 

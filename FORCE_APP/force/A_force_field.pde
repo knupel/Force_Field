@@ -213,7 +213,7 @@ void num_spot_ff(int num, int level) {
       if(force_field != null && num > force_field.get_spot_num()) {
         println("add", num, "spot to force field");
         force_field.add_spot(num);
-        force_field.set_spot_area_level(level);
+        force_field.set_spot_detection(level);
 
       } else if(force_field == null) {
         if(frameCount < 3) { 
@@ -461,7 +461,7 @@ void update_value_ff_fluid(float freq_norm, float visc_norm, float diff_norm, bo
 float ref_range_min, ref_range_max, ref_power ;
 void update_value_ff_generative(float range_min, float range_max, float power, boolean update_is) {
   if(ref_range_min != range_min || ref_range_max != range_max || ref_power != power || update_is) {
-    force_field.preserve_field();
+    force_field.refresh();
     force_field.map_velocity(0.3,0.6,range_min,range_max);
     ref_range_min = range_min;
     ref_range_max = range_max;

@@ -1,14 +1,4 @@
 null
 //Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/Force_field/FORCE_APP/import/shape/corbeau.svg
 //Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/Force_field/FORCE_APP/import/shape/fleur_1.svg
-/Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/ROMANESCO Github/Software_31/sources/import/bitmap/Liberte.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/ROMANESCO Github/Software_31/sources/import/bitmap/Lisbonne.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/ROMANESCO Github/Software_31/sources/import/bitmap/Masque.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/ROMANESCO Github/Software_31/sources/import/bitmap/RioCarnaval.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/ROMANESCO Github/Software_31/sources/import/bitmap/banc_public.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/ROMANESCO Github/Software_31/sources/import/bitmap/joconde.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/ROMANESCO Github/Software_31/sources/import/bitmap/le coq de France.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/ROMANESCO Github/Software_31/sources/import/bitmap/mire.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/ROMANESCO Github/Software_31/sources/import/bitmap/no future.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/ROMANESCO Github/Software_31/sources/import/bitmap/pirate.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/ROMANESCO Github/Software_31/sources/import/bitmap/purosGirl.jpg
+/Users/stanislasmarcais/Desktop/BOULOT/MEDIA/Media test/medium/medium_leticia_2.jpg

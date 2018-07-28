@@ -47,8 +47,9 @@ void setup() {
 void draw() {
   // println((int)frameRate);
   // SHOW
-  // image(img);
-  movie();
+  background(0);
+  // image(img); // image loading by default
+  // movie(); // press 'o' to choice a movie from folder
 
   force_field.set_spot_pos(mouseX,mouseY);
   force_field.update();
@@ -58,7 +59,7 @@ void draw() {
   float intensity = .6;
   // warp.show(force_field,intensity);
   
-  // show_force_field();
+  show_force_field();
 }
 
 

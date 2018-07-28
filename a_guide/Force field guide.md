@@ -160,8 +160,11 @@ WORK AROUND THE FIELD
 --
 Preserve
 --
-void preserve_field()
+void save()
 >use this method to save you data field at specific moment, useful when method to change field like add, mult, map method is used.
+
+void refresh();
+>use to back to the last previous field. usefull with the mode  MAGNETIC and GRAVITY where there is a detection range around the spot
 
 Change the field methods
 --
