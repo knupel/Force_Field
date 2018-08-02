@@ -57,7 +57,7 @@ void draw() {
   // image(img); // image loading by default
   // movie(); // press 'o' to choice a movie from folder
   
- // force_field.refresh(); // not to refresh the field, if you don't use, the field stay the same out of the renge detection
+  force_field.refresh(); // not to refresh the field, if you don't use, the field stay the same out of the renge detection
   force_field.reset();
   force_field.set_spot_pos(mouseX,mouseY,0);
   force_field.set_spot_pos(width-mouseX,height-mouseY,1);
