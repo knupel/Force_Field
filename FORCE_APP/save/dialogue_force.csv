@@ -4,12 +4,12 @@ perlin,0
 chaos,0
 equation,0
 image,0
-gravity,1
+gravity,0
 magnetic,0
-fluid,0
+fluid,1
 background,0
 vehicle,0
-warp,1
+warp,0
 field,1
 spot,0
 other,0
@@ -24,8 +24,8 @@ media,0
 resize widow,1
 full fit image,1
 show must go on,1
-warp fx,1
-shader fx,1
+warp fx,0
+shader fx,0
 full reset field,0
 curtain,0
 ,

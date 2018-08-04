@@ -60,10 +60,11 @@ void sound_system_setup() {
 
 
 
-
+/*
 void sound_system_update() {
-	sounda.update();
+	// sounda.update();
 }
+*/
 
 void sound_system_draw() {
 	show_beat();
@@ -114,8 +115,8 @@ void show_spectrum() {
 }
 
 void show_spectrum_level(Vec2 pos, int size) {
-	float band_width = width /  sounda.band_num() ;
-  for(int i = 0; i < sounda.band_num(); i++) {
+	float band_width = width /  sounda.spectrum_size();
+  for(int i = 0; i < sounda.spectrum_size() ; i++) {
     float pos_x = i * band_width +pos.x;
     float pos_y = pos.y + abs(size) ;
     float size_x = band_width ;
@@ -125,9 +126,9 @@ void show_spectrum_level(Vec2 pos, int size) {
 }
 
 void show_beat_spectrum_level(Vec2 pos, int size) {
-	float band_width = width /  sounda.band_num() ;
-  for(int i = 0 ; i < sounda.section_num() ; i++) {
-    for(int k = 0; k < sounda.band_num() ; k++) {
+	float band_width = width /  sounda.spectrum_size();
+  for(int i = 0 ; i < sounda.section_size() ; i++) {
+    for(int k = 0; k < sounda.spectrum_size() ; k++) {
       if(sounda.beat_band_is(i,k)) {
         float pos_x = k *band_width +pos.x;
         float pos_y = pos.y +abs(size);

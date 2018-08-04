@@ -274,7 +274,7 @@ void force() {
   /**
   MISC
   */
-  sound_system_update();
+  // sound_system_update();
   cursor_manager();
   diaporama(240);  
   force_import_update();

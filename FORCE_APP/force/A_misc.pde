@@ -574,7 +574,7 @@ void update_rgba_warp(int t_count) {
   float min_src = 0 ;
   float max_src = 1 ;
   float min_dst = .01 ;
-  rgba_warp.set(sin_val.map_vec(Vec4(min_src), Vec4(max_src), Vec4(min_dst), rgba_warp));
+  rgba_warp.set(sin_val.map(Vec4(min_src), Vec4(max_src), Vec4(min_dst), rgba_warp));
 }
 
 

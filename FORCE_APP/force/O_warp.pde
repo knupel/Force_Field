@@ -179,7 +179,7 @@ void warp_media_display() {
 Vec4 ref_rgba_mapped ;
 void warp_show(Vec4 channel_warp_rgb_mapped, float intensity_warp, boolean keep) {
   boolean new_channel_values = false ;
-  if(ref_rgba_mapped == null || !ref_rgba_mapped.compare(channel_warp_rgb_mapped)) {
+  if(ref_rgba_mapped == null || !ref_rgba_mapped.equals(channel_warp_rgb_mapped)) {
     new_channel_values = true;
     if(ref_rgba_mapped == null) ref_rgba_mapped = channel_warp_rgb_mapped.copy();
     else ref_rgba_mapped.set(channel_warp_rgb_mapped);
