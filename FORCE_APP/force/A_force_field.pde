@@ -23,7 +23,7 @@ init
 */
 void init_ff(int type, int pattern, int resolution, PImage src) {
   if(!force_field_init_is) {
-    build_ff(type, pattern, resolution, src);
+    build_ff(type, pattern, resolution, src,get_sorting_channel_ff_2D());
     force_field_init_is = true ;
   }
 }

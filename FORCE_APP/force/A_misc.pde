@@ -636,9 +636,9 @@ void global_reset() {
 
 void reset(bVec3 reset, int type, int pattern, int super_type, int resolution) {
   force_field_init_is = false ;
-  if(reset.x)reset_vehicle(get_num_vehicle(),get_ff());
-  if(reset.y)warp.reset();
-  if(reset.z)reset_field(type, pattern, super_type, resolution);
+  if(reset.x) reset_vehicle(get_num_vehicle(),get_ff());
+  if(reset.y) warp.reset();
+  if(reset.z) reset_field(type, pattern, super_type, resolution);
 }
 
 void reset_field(int type, int pattern, int super_type, int resolution) {

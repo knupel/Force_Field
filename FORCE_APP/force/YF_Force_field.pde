@@ -1134,10 +1134,12 @@ public class Force_field implements rope.core.RConstants {
   refresh
   v 0.0.2
   */
+  /*
   public void refresh_sorting_channel(int... sorting_channel) {
     sorting_channel(sorting_channel);
     set_field_img_2D();
   }
+  */
   
 
 
@@ -1272,8 +1274,7 @@ public class Force_field implements rope.core.RConstants {
           Vec2 pos_cell = mult(coord, resolution);
           pos_cell.add(s.get_pos());
           float theta = theta_2D(pos_cell,Vec2(s.get_pos().x,s.get_pos().y));
-          Vec2 vector = Vec2(cos(theta),sin(theta));  
-          
+          Vec2 vector = Vec2(cos(theta),sin(theta));        
           float force = 0;
           /**
           not sure the secuty max_force work, there is a problem
@@ -1282,9 +1283,7 @@ public class Force_field implements rope.core.RConstants {
           */
           float max_force = .999;
           if(type == GRAVITY) {
-            println("before gravity", frameCount);
             force = spot_gravity_force(s,pos_cell);
-            println("after gravity", frameCount);
           } else if(type == MAGNETIC) {
             force = spot_magnetic_force(s,pos_cell);
           }
@@ -1305,7 +1304,7 @@ public class Force_field implements rope.core.RConstants {
             } else {
               field[x][y].add(vector.x,vector.y,0,0);
             }
-          }        
+          }       
         }       
       }
     }
@@ -1391,8 +1390,8 @@ public class Force_field implements rope.core.RConstants {
   */
   private float spot_gravity_force(Spot s, Vec2 pos_cell) {
     Vec2 spot_pos = Vec2(s.get_pos());
-    float m_2 = s.get_mass() ;
-    float m_1 = mass_field ;
+    float m_2 = s.get_mass();
+    float m_1 = mass_field;
     float dist = dist(spot_pos, pos_cell);
     double gravity = 1. / (g_force(dist, m_1, m_2) *1000000000L);
     return (float)gravity;
@@ -1940,11 +1939,11 @@ public class Force_field implements rope.core.RConstants {
       this.sort = iVec4(sorting[0],sorting[1],sorting[2],sorting[3]);
     } else if(sorting.length > 4){
       this.sort = iVec4(sorting[0],sorting[1],sorting[2],sorting[3]);
-      printErr("void sorting_channel(): Too much channel to sort, the first 4 is used");
+      printErr("method sorting_channel(): Too much channel to sort, the first 4 is used");
     } else {
-      this.sort = iVec4(1) ;
-      printErr("void sorting_channel(): No channel available to sort, the value 1 is used for all component");
-      printErr("because sorting:",sorting);
+      this.sort = iVec4(1);
+      String warning = ("method sorting_channel(): sorting array length is equals to " +sorting.length +", the value 1 is used for all component");
+      printErr(warning);
     }
   }
 }
