@@ -63,7 +63,6 @@ void show_field(Force_field ff) {
   if(ff != null) {
     Vec2 offset = Vec2(ff.get_canvas_pos()) ;
     offset.sub(ff.get_resolution()/2);
-    //
     for (int x = 0; x < ff.cols; x++) {
       for (int y = 0; y < ff.rows; y++) {
         Vec2 pos = Vec2(x *ff.get_resolution(), y *ff.get_resolution());

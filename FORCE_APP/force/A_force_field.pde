@@ -246,7 +246,6 @@ void build_ff(int type_ff, int pattern_ff, int resolution, PImage src, int... so
     canvas = iVec2(width +offset, height +offset);
     canvas_pos = iVec2(0 -offset/2);
   }
-
   if(enought_spots() && type_ff == r.GRAVITY) {
     build_ff_gravity(resolution, canvas_pos, canvas);
   } else if (enought_spots() && type_ff == r.MAGNETIC) {
@@ -259,7 +258,7 @@ void build_ff(int type_ff, int pattern_ff, int resolution, PImage src, int... so
     diff_ff = 1.;  
   } else if(pattern_ff == IMAGE) {
     if(src != null && src.pixels != null) {
-        build_ff_img(resolution, canvas_pos, src, sorting_channel);
+      build_ff_img(resolution, canvas_pos, src, sorting_channel);
     } else {
       printErr("PImage src is null, Force field cannot be build");
     }
@@ -311,7 +310,6 @@ void build_ff_gravity(int resolution, iVec2 canvas_pos, iVec2 canvas) {
 // build force field magnetic
 void build_ff_magnetic(int resolution, iVec2 canvas_pos, iVec2 canvas) {
   force_field = new Force_field(resolution, canvas_pos, canvas, r.MAGNETIC, r.BLANK);
-  // Force_field(int resolution, iVec2 canvas_pos, iVec2 canvas, int type, int pattern)
   force_field_init_is = true ;
 }
 

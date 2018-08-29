@@ -3,7 +3,7 @@ ROPE - Romanesco processing environment –
 * Copyleft (c) 2014-2017 
 * Stan le Punk > http://stanlepunk.xyz/
 Rope Motion  2015 – 2017
-v 1.1.0
+v 1.1.0.1
 Rope – Romanesco Processing Environment – 
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Rope
@@ -329,14 +329,15 @@ class Path extends Motion {
     path = new ArrayList<Vec3>() ;
     pos = Vec3(MAX_INT) ;
   }
-   // set
-   void set_velocity(float velocity) {
+
+  // set
+  void set_velocity(float velocity) {
     if(vel < 0) {
-      System.err.println("negative value, class Path use the abslolute value of") ;
-      System.err.println(vel) ;
+      String warning = ("method set_velocity(): negative value, class Path use the abslolute value of " + vel);
+      System.err.println(warning);
     }
-    this.vel = abs(vel) ;
-   }
+    this.vel = abs(vel);
+  }
 
   
 
