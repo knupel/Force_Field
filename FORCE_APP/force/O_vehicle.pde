@@ -22,15 +22,15 @@ void init_vehicle(Force_field ff) {
 
 void build_vehicle(int num, Force_field ff) {
   if(vehicles == null) vehicles = new ArrayList<Vehicle>();
-  int w = ff.get_canvas().x ;
-  int h = ff.get_canvas().y ;
-      Vec2 range_speed = Vec2(1., 2.);
-    Vec2 range_force = Vec2(.2, 1.);
+  int w = ff.get_canvas().x;
+  int h = ff.get_canvas().y;
+  Vec2 range_speed = Vec2(1., 2.);
+  Vec2 range_force = Vec2(.2, 1.);
 
   for (int i = 0; i < num; i++) {
-    float max_speed = +range_speed.x + random_next_gaussian(range_speed.y, 3) ;
-    float max_force = +range_force.x + random_next_gaussian(range_force.y, 3) ;
-    Vec2 pos = Vec2(r.RANDOM_ZERO, w, h);
+    float max_speed = +range_speed.x + random_next_gaussian(range_speed.y, 3);
+    float max_force = +range_force.x + random_next_gaussian(range_force.y, 3);
+    Vec2 pos = Vec2(r.RANDOM_ZERO,w,h);
     vehicles.add(new Vehicle(pos, max_speed, max_force));
   }
 }
