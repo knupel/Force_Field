@@ -1,9 +1,208 @@
 /**
+EQUATION
+2018-2018
+v 0.0.5
+Processing 3.3.7
+* Equation work with field array 2D
+*/
+public class Equation implements rope.core.RConstants {
+  // ArrayList<Integer> rank ;
+  Vec3 center_eq_dir, center_eq_len;
+  ArrayList<iVec4> pow;
+  ArrayList<iVec4> root;
+  ArrayList<Vec4> mult;
+  boolean reverse_len;
+  int num_op = 0 ;
+  int x = 1;
+  int y = 2;
+  int z = 3;
+
+  Equation() {
+  }
+
+  private void rank() {
+    num_op++;
+  }
+
+  private int get_op() {
+    return num_op;
+  }
+
+  public void swap_xyz(String st_x, String st_y, String st_z) {
+    if(st_x.equals("x")) x = 1 ;
+    else if(st_x.equals("y")) x = 2 ;
+    else if(st_x.equals("z")) x = 3 ;
+    else x = 1 ;
+
+    if(st_y.equals("x")) y = 1 ;
+    else if(st_y.equals("y")) y = 2 ;
+    else if(st_y.equals("z")) y = 3 ;
+    else y = 2 ;
+
+    if(st_z.equals("x")) z = 1 ;
+    else if(st_z.equals("y")) z = 2 ;
+    else if(st_z.equals("z")) z = 3 ;
+    else z = 3 ;
+  }
+
+  public void swap_xy(String x, String y) {
+    swap_xyz(x,y,"z");
+  }
+
+  // operation
+  public void mult(float mx, float my, float mz) {
+    if(mult == null) mult = new ArrayList<Vec4>();
+    int rank = get_op() ;
+    mult.add(Vec4(mx,my,mz,rank));
+    rank();
+  }
+
+  public void pow(int px, int py, int pz) {
+    if(pow == null) pow = new ArrayList<iVec4>();
+    int rank = get_op();
+    if(px < 1) px = 1;
+    if(py < 1) py = 1;
+    if(pz < 1) pz = 1;
+    pow.add(iVec4(px,py,pz,rank));
+    rank();
+  }
+
+  public void root(int rx, int ry, int rz) {
+    if(root == null) root = new ArrayList<iVec4>();
+    int rank = get_op();
+    int min = 1;
+    int max = 4;
+    if(rx < min) rx = min;
+    if(rx > max) rx = max;
+
+    if(ry < min) ry = min;
+    if(ry > max) ry = max;
+
+    if(rz < min) rz = min;
+    if(rz > max) rz = max;
+    root.add(iVec4(rx,ry,rz,rank));
+    rank();
+  }
+
+  // Center dir
+  private void eq_center_dir(float x, float y, float z) {
+    center_eq_dir = Vec3(x,y,z);
+  }
+
+  Vec2 get_center_dir_2D() {
+    if(center_eq_dir != null) return Vec2(center_eq_dir.x,center_eq_dir.y);
+    else return null ;
+  }
+
+  Vec3 get_center_dir_3D() {
+    if(center_eq_dir != null) return Vec3(center_eq_dir.x,center_eq_dir.y,center_eq_dir.z);
+    else return null;
+  }
+
+  // Center len
+  private void eq_center_len(float x, float y, float z) {
+    center_eq_len = Vec3(x,y,z);
+  }
+
+  Vec2 get_center_len_2D() {
+    if(center_eq_len != null) return Vec2(center_eq_len.x,center_eq_len.y);
+    else return null;
+  }
+
+  Vec3 get_center_len_3D() {
+    if(center_eq_len != null) return Vec3(center_eq_len.x,center_eq_dir.y,center_eq_len.z);
+    else return null;
+  }
+}
+
+
+/**
+EQ method
+v 0.0.1
+*/
+Equation eq;
+public void init_eq() {
+  eq = new Equation();
+  // if(eq == null) eq = new Equation();
+}
+/**
+misc
+*/
+// choice a center to compute the vector direction
+public void eq_center_dir(float x, float y) {
+  eq.eq_center_dir(x, y, 0);
+}
+
+public void eq_center_dir(float x, float y, float z) {
+  eq.eq_center_dir(x, y, z);
+}
+
+// choice a center to compute the length vector
+public void eq_center_len(float x, float y) {
+  eq.eq_center_len(x, y, 0);
+}
+
+public void eq_center_len(float x, float y, float z) {
+  eq.eq_center_len(x, y, z);
+}
+
+// reverse len
+public void eq_reverse_len(boolean state){
+  eq.reverse_len = state;
+}
+
+public void eq_swap_xyz(String x, String y, String z) {
+  eq.swap_xyz(x,y,z);
+}
+
+public void eq_swap_xy(String x, String y) {
+  eq_swap_xyz(x,y,"z");
+}
+
+
+/**
+eq operation
+*/
+// pow
+public void eq_pow(int px, int py) {
+  eq_pow(px, py, 1);
+}
+
+public void eq_pow(int px, int py, int pz) {
+  eq.pow(px,py,pz);
+}
+
+//root squareroot, cuberoot and timeroot for 4th dimension
+public void eq_root(int rx, int ry){
+  eq_root(rx,ry,1);
+}
+public void eq_root(int rx, int ry, int rz) {
+  eq.root(rx,ry,rz);
+}
+
+//root squareroot, cuberoot and timeroot for 4th dimension
+public void eq_mult(float mx, float my){
+  eq_mult(mx,my,1);
+}
+public void eq_mult(float mx, float my, float mz) {
+  eq.mult(mx,my,mz);
+}
+
+
+
+
+
+
+
+
+
+
+/**
 Force Field
 2017-2018
 http://stanlepunk.xyz/
-v 1.12.0
-Processing 3.4
+v 1.11.5
+Processing 3.3.7
 */
 
 /**
@@ -146,38 +345,6 @@ public class Force_field implements rope.core.RConstants {
   }
 
   //PImage
-  public Force_field(int resolution, PImage src, int... component_sorting) {
-    set_resolution(resolution);
-    this.type = STATIC;
-    init_super_type(this.type);
-    this.pattern = IMAGE;
-    this.is = true;
-    sorting_channel(component_sorting);
-    
-    if(this.src == null) {
-      this.src = createImage(src.width,src.height,ARGB);
-      src.loadPixels();
-      this.src.pixels = src.pixels;
-      this.src.updatePixels(); 
-    } else {
-      this.src.resize(src.width,src.height);
-      src.loadPixels();
-      this.src.pixels = src.pixels;
-      this.src.updatePixels(); 
-    }
-    // Determine the number of columns and rows based on sketch's width and height
-    set_canvas(iVec2(resolution/2, resolution/2), iVec2(this.src.width,this.src.height));
-    cols = canvas.x/resolution;
-    rows = canvas.y/resolution;
-    init_field();
-
-    init_texture(cols,rows);
-
-    border_is = true ;
-    set_field();
-  }
-
-  
   public Force_field(int resolution, iVec2 canvas_pos, PImage src, int... component_sorting) {
     set_resolution(resolution);
     this.type = STATIC;
@@ -208,7 +375,6 @@ public class Force_field implements rope.core.RConstants {
     border_is = true ;
     set_field();
   }
-  
 
 
 
@@ -266,6 +432,8 @@ public class Force_field implements rope.core.RConstants {
     reset_ref_spot_pos_list_is.add(bool);
   }
 
+
+
   /**
   set resolution
   v 0.0.1
@@ -278,7 +446,6 @@ public class Force_field implements rope.core.RConstants {
       this.resolution = resolution;
     }
   }
-
   /**
   set field
   v 0.1.1
@@ -449,10 +616,12 @@ public class Force_field implements rope.core.RConstants {
         }
         float div = cols+rows;
         float len = eq_len_vector(l.x,l.y,len_offset_x,len_offset_y,div);
+        // if(len > 1) println(len,frameCount,"before");
         if(eq != null ) {
           if(eq.reverse_len) len = 1.3 -len;
           if(len < 0) len = 0;
         }
+        // if(len > 1) println(len,frameCount,"after");
 
         // Polar to cartesian coordinate
         float xx = cos(tx) ;
@@ -597,6 +766,9 @@ public class Force_field implements rope.core.RConstants {
   /**
   velocity
   */
+  /*
+  * map velocity
+  */
   public void map_velocity(float start1, float stop1, float start2, float stop2) {
     if(field != null && field_save != null) {
       for (int x = 0 ; x < cols ; x++) {
@@ -647,6 +819,7 @@ public class Force_field implements rope.core.RConstants {
 
   public void mult_velocity(iVec coord, float mult) {
     if(field != null && field_save != null && coord.x < cols && coord.y < rows) {
+      // field[coord.x][coord.y].set(field_original[coord.x][coord.y]);
       field[coord.x][coord.y].w *= mult;
     } else {
       if(coord.x >= cols || coord.y >= rows || coord.x < 0 || coord.y < 0) {
@@ -974,7 +1147,7 @@ public class Force_field implements rope.core.RConstants {
 
   /**
   CANVAS
-  v 0.0.2
+  v 0.0.3
   */
   /**
   *set canvas
@@ -998,20 +1171,6 @@ public class Force_field implements rope.core.RConstants {
     } else {
       this.canvas = iVec2(canvas);
     }
-  }
-
-  public void set_frequence(float frequence) {
-    this.frequence = frequence ;
-  } 
-  public void set_viscosity(float viscosity) {
-    this.viscosity = viscosity ;
-  }
-  public void set_diffusion(float diffusion) {
-    this.diffusion = diffusion ;
-  }
-
-  public void reverse_flow(boolean reverse_is) {
-    this.reverse_is = reverse_is ;
   }
 
   /*
@@ -1047,13 +1206,22 @@ public class Force_field implements rope.core.RConstants {
 
 
 
+  /**
+  * set specific arg for specificic field
+  */
 
-
-
-
-
-
-
+  /**
+  * fluid field
+  */
+  public void set_frequence(float frequence) {
+    this.frequence = frequence ;
+  } 
+  public void set_viscosity(float viscosity) {
+    this.viscosity = viscosity ;
+  }
+  public void set_diffusion(float diffusion) {
+    this.diffusion = diffusion ;
+  }
 
 
   /**
@@ -1062,6 +1230,52 @@ public class Force_field implements rope.core.RConstants {
   public void set_mass_field(float mass_field) {
     this.mass_field = mass_field ;
   }
+
+
+  /*
+  misc
+  */
+  public void reverse_flow(boolean reverse_is) {
+    this.reverse_is = reverse_is ;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1134,12 +1348,10 @@ public class Force_field implements rope.core.RConstants {
   refresh
   v 0.0.2
   */
-  /*
   public void refresh_sorting_channel(int... sorting_channel) {
     sorting_channel(sorting_channel);
     set_field_img_2D();
   }
-  */
   
 
 
@@ -1274,7 +1486,8 @@ public class Force_field implements rope.core.RConstants {
           Vec2 pos_cell = mult(coord, resolution);
           pos_cell.add(s.get_pos());
           float theta = theta_2D(pos_cell,Vec2(s.get_pos().x,s.get_pos().y));
-          Vec2 vector = Vec2(cos(theta),sin(theta));        
+          Vec2 vector = Vec2(cos(theta),sin(theta));  
+          
           float force = 0;
           /**
           not sure the secuty max_force work, there is a problem
@@ -1304,7 +1517,7 @@ public class Force_field implements rope.core.RConstants {
             } else {
               field[x][y].add(vector.x,vector.y,0,0);
             }
-          }       
+          }        
         }       
       }
     }
@@ -1390,8 +1603,8 @@ public class Force_field implements rope.core.RConstants {
   */
   private float spot_gravity_force(Spot s, Vec2 pos_cell) {
     Vec2 spot_pos = Vec2(s.get_pos());
-    float m_2 = s.get_mass();
-    float m_1 = mass_field;
+    float m_2 = s.get_mass() ;
+    float m_1 = mass_field ;
     float dist = dist(spot_pos, pos_cell);
     double gravity = 1. / (g_force(dist, m_1, m_2) *1000000000L);
     return (float)gravity;
@@ -1618,22 +1831,26 @@ public class Force_field implements rope.core.RConstants {
 
 
 
+  /**
+  * get fluid info
+  */
+  public float get_frequence() {
+    return frequence ;
+  } 
+  public float get_viscosity() {
+    return viscosity ;
+  }
+  public float get_diffusion() {
+    return diffusion ;
+  }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  /**
+  get mass field
+  */
+  public float get_mass_field() {
+    return mass_field ;
+  }
 
 
 
@@ -1771,7 +1988,7 @@ public class Force_field implements rope.core.RConstants {
     return dir ;
   }
 
-  private Vec2 dir_check_rank(int x, int y,Vec2 pos_v) {
+  Vec2 dir_check_rank(int x, int y,Vec2 pos_v) {
     Vec2 dir = Vec2() ;
     if((type == MAGNETIC || type == GRAVITY)) {
       int rank = match_spot(pos_v);
@@ -1860,7 +2077,9 @@ public class Force_field implements rope.core.RConstants {
   v 0.3.1
   Warp position
   */
-  Vec2 field_warp(Vec2 uv, float scale) {
+  
+  public Vec2 field_warp(Vec2 uv, float scale) {
+
     int cell_x = (int) Math.floor(uv.x*NX);
     int cell_y = (int) Math.floor(uv.y*NY);
 
@@ -1906,6 +2125,25 @@ public class Force_field implements rope.core.RConstants {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+  /**
+  end Navier-stokes method
+  */
+
+
+
+
+
   /**
   util v 0.0.3.1
   library private methods
@@ -1939,14 +2177,160 @@ public class Force_field implements rope.core.RConstants {
       this.sort = iVec4(sorting[0],sorting[1],sorting[2],sorting[3]);
     } else if(sorting.length > 4){
       this.sort = iVec4(sorting[0],sorting[1],sorting[2],sorting[3]);
-      printErr("method sorting_channel(): Too much channel to sort, the first 4 is used");
+      printErr("void sorting_channel(): Too much channel to sort, the first 4 is used");
     } else {
-      this.sort = iVec4(1);
-      String warning = ("method sorting_channel(): sorting array length is equals to " +sorting.length +", the value 1 is used for all component");
-      printErr(warning);
+      this.sort = iVec4(1) ;
+      printErr("void sorting_channel(): No channel available to sort, the value 1 is used for all component");
     }
   }
 }
+
+/**
+END class Force_field
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+SPOT
+v 0.2.0
+*/
+public class Spot {
+  private Vec previous_pos;
+  private Vec pos; 
+  // private Vec raw_pos;
+  private Vec size;
+  private boolean reverse_charge_is;
+  private boolean emitter_is;
+
+  ArrayList<iVec2> area_detection;
+
+  private int tesla = 0;
+  private int mass = 0;
+  
+  // constructor
+  public Spot() {
+
+  }
+
+
+
+  // set
+  public void set_pos(Vec pos) {
+    if(pos instanceof Vec2) {
+      if(this.pos == null) {
+        this.previous_pos = Vec2();
+      } else {
+        this.previous_pos = Vec2(this.pos.x, this.pos.y);
+      }
+      this.pos = Vec2((Vec2)pos);
+    } else if(pos instanceof Vec3) {
+      if(this.pos == null) {
+        this.previous_pos = Vec3();
+      } else {
+        this.previous_pos = Vec3(this.pos.x, this.pos.y,this.pos.z);
+      }
+      this.pos = Vec3((Vec3)pos);
+    }
+  }
+
+  public void set_size(Vec size) {
+    if(size instanceof Vec2) {
+      this.size = Vec2((Vec2)size);
+    } else if(size instanceof Vec3) {
+      this.size = Vec3((Vec3)size);
+    }
+  }
+
+  public void reverse_charge(boolean reverse_is) {
+    this.reverse_charge_is = reverse_is ;
+  }
+
+  public void set_tesla(int tesla) {
+    this.tesla = tesla ;
+  }
+
+  public void set_mass(int mass) {
+    this.mass = abs(mass) ;
+  } 
+
+  // get
+  public int get_mass() {
+    return mass;
+  }
+
+  public int get_tesla() {
+    if(!reverse_charge_is) return tesla; else return -tesla ;
+  }
+
+  public Vec get_pos() {
+    return pos;
+  }
+
+  public Vec get_size() {
+    return size;
+  }
+
+  // misc
+  public boolean emitter_is() {
+    if(get_tesla() < 0 || emitter_is) return true ; else return false;
+  }
+
+  public void reverse_emitter(boolean state) {
+    this.emitter_is = state ;
+  }
+  
+
+  // area_detection
+  private void detection(int radius) {
+    if(area_detection == null) {
+      area_detection = new ArrayList<iVec2>(); 
+      add(radius);
+    } else {
+      area_detection.clear();
+      add(radius);
+    }   
+  }
+
+  private void add(int radius) {
+    for(int x = -radius ; x <= radius ; x++) {
+      for(int y = -radius ; y <= radius ; y++) {
+        if(inside(Vec2(0), Vec2(radius), Vec2(x,y), ELLIPSE)) {
+          iVec2 in = iVec2(x,y);
+          area_detection.add(in);
+        }  
+      }
+    }
+  }
+
+  ArrayList<iVec2> get_detection() {
+    return area_detection;
+  }
+
+
+  public boolean activity_is() {
+    if(pos.x != previous_pos.x || pos.y != previous_pos.y || pos.z != previous_pos.z) {
+      return true; 
+    } else {
+      return false;
+    }
+  }
+}
+
+
+
 
 
 

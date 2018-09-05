@@ -27,6 +27,18 @@ void add_spot();
 
 GET
 --
+float get_frequence();
+>return frequence of force field fluid
+
+float get_viscosity();
+>return viscosity of force field fluid
+
+float get_diffusion();
+>return diffusion of force field fluid
+
+float get_mass_field();
+
+
 Vec4 [][] get_field()
 >return force_field
 
