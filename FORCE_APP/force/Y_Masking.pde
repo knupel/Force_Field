@@ -3,7 +3,7 @@ class Mask_mapping
 v 0.0.2
 2018-2018
 */
-public class Mapping {
+public class Masking {
   private iVec3 [] coord;
   private iVec3 [] coord_block_1, coord_block_2, coord_block_3, coord_block_4;
   private boolean init;
@@ -11,7 +11,7 @@ public class Mapping {
   private int c = r.BLACK;
   private int range = 10;
 
-  public Mapping(iVec2 [] list) {
+  public Masking(iVec2 [] list) {
     coord = new iVec3[list.length];
     for(int i = 0 ; i < coord.length ;i++) {
       coord[i] = iVec3(list[i].x,list[i].y,0);
@@ -49,7 +49,7 @@ public class Mapping {
     } else return null;
   }
 
-  public Mapping(iVec2 [] list, iVec2 [] list_block_1, iVec2 [] list_block_2, iVec2 [] list_block_3, iVec2 [] list_block_4) {
+  public Masking(iVec2 [] list, iVec2 [] list_block_1, iVec2 [] list_block_2, iVec2 [] list_block_3, iVec2 [] list_block_4) {
     if(list.length != 8) {
       printErr("class Mask_mapping need exactly 8 points to create a block, no more no less, there is",list.length,"in the list, no mask can be create");
     } else {

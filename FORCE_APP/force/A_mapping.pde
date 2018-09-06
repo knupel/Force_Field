@@ -40,16 +40,16 @@ void mask_mapping(boolean change_is, int type_mask, int num_mask, int num_point_
 /**
 block mask
 */
-Mapping [] masks;
+Masking [] masks;
 Coord_mapping [] coord_mask;
 void mask_mapping_blocks(boolean change_is, int num, int num_point_mask) {
   if(masks == null) {
     coord_mask = new Coord_mapping[num];
-    masks = new Mapping[coord_mask.length];
+    masks = new Masking[coord_mask.length];
     
     data_mask_mapping_blocks(coord_mask, num_point_mask);
     for(int i = 0 ; i < num ; i++) {
-      masks[i] = new Mapping(coord_mask[i].get());
+      masks[i] = new Masking(coord_mask[i].get());
     }
   } else {
     if(display_mask_is(0)) {
@@ -104,17 +104,17 @@ class Coord_mapping {
 /**
 border mask
 */
-Mapping mask_border;
+Masking mask_border;
 boolean init_mask_is;
 void mask_mapping_border(boolean change_is, boolean default_mask_is) {
   // build mask
   if(!init_mask_is) {
     if(mask_border == null || default_mask_is) {
       mask_mapping_border_default();
-      mask_border = new Mapping(coord_connected,coord_block_1,coord_block_2,coord_block_3,coord_block_4);
+      mask_border = new Masking(coord_connected,coord_block_1,coord_block_2,coord_block_3,coord_block_4);
       init_mask_is = true;
     } else if(mask_loaded_is) {
-      mask_border = new Mapping(coord_connected,coord_block_1,coord_block_2,coord_block_3,coord_block_4);
+      mask_border = new Masking(coord_connected,coord_block_1,coord_block_2,coord_block_3,coord_block_4);
       mask_loaded_is = false;
       init_mask_is = true;
     }
@@ -276,7 +276,7 @@ void load_save_mask(File selection) {
       }
       
       // find num
-      masks = new Mapping[coord_mask.length];
+      masks = new Masking[coord_mask.length];
       for(int i = 0 ; i < masks.length ; i++) {
         for (TableRow row : get_file_mask_mapping().findRows("coord_mask_"+i, "name")) {
           int x = row.getInt("x");
