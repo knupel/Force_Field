@@ -1,5 +1,5 @@
 null
-//Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/Force_field/FORCE_APP/import/shape/corbeau.svg
-//Users/stanislasmarcais/Desktop/BOULOT/CODE/GitHub/Force_field/FORCE_APP/import/shape/fleur_1.svg
-/Users/stanislasmarcais/Desktop/BOULOT/MEDIA/Media test/medium/medium_leticia_2.jpg
-/Users/stanislasmarcais/Desktop/BOULOT/GRAPHISME/Brasserie de l'Être/JPEG/feond_2.jpg
+//Users/stan/Desktop/code/GitHub/Force_field/FORCE_APP/import/shape/corbeau.svg
+//Users/stan/Desktop/code/GitHub/Force_field/FORCE_APP/import/shape/fleur_1.svg
+/Volumes/Ame/Users/stanislasmarcais/Desktop/BOULOT/MEDIA/Media test/medium/medium_leticia_2.jpg
+/Volumes/Ame/Users/stanislasmarcais/Desktop/BOULOT/MEDIA/Media test/medium_tdm/P1040857.JPG
