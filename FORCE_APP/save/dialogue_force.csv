@@ -7,10 +7,10 @@ image,0
 gravity,0
 magnetic,0
 fluid,1
-background,0
+background,1
 vehicle,0
 warp,1
-field,0
+field,1
 spot,0
 other,0
 ,
@@ -18,13 +18,13 @@ other,0
 ,
 ,
 ,
-type spot,8
-type vehicle,8
+type spot,0
+type vehicle,0
 media,0
 resize widow,1
 full fit image,1
 show must go on,1
-warp fx,1
+warp fx,0
 shader fx,0
 full reset field,0
 curtain,0
