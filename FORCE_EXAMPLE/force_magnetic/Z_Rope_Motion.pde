@@ -2,8 +2,8 @@
 ROPE - Romanesco processing environment – 
 * Copyleft (c) 2014-2017 
 * Stan le Punk > http://stanlepunk.xyz/
-Rope Motion  2015 – 2017
-v 1.1.0.1
+Rope Motion  2015 – 2018
+v 1.3.0
 Rope – Romanesco Processing Environment – 
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Rope
@@ -14,29 +14,47 @@ Rope – Romanesco Processing Environment –
 
 /**
 Method motion
-v 0.1.0
+v 0.2.0
 */
 Vec2 follow(Vec2 target, float speed) {
-  Vec3 f = follow(Vec3(target.x,target.y,0), speed);
+  Vec3 f = follow(target.x,target.y,0,speed);
   return Vec2(f.x,f.y);
 }
 
-Vec3 dest_3D_follow_rope;
-// Compute position Vector Traveller, give the target pos and the speed to go.
+
+
 Vec3 follow(Vec3 target, float speed) {
+  return follow(target.x,target.y,target.z,speed);
+}
+
+Vec2 follow(float tx, float ty, float speed) {
+  Vec3 f = follow(tx,ty,0,speed);
+  return Vec2(f.x,f.y);
+}
+
+/**
+* master method
+*Compute position Vector Traveller, give the target pos and the speed to go.
+*/
+Vec3 dest_3D_follow_rope;
+Vec3 follow(float tx, float ty, float tz, float speed) {
+  if(speed <= 0 || speed > 1) {
+    printErrTempo(120,"Vec3 follow(): float speed parameter must be a normal value between 0 and 1\n instead value 1 is attribute to speed");
+    speed = 1.;
+  }
   if(dest_3D_follow_rope == null) dest_3D_follow_rope = Vec3();
   // calcul X pos
-  float dx = target.x - dest_3D_follow_rope.x;
+  float dx = tx - dest_3D_follow_rope.x;
   if(abs(dx) != 0) {
     dest_3D_follow_rope.x += dx * speed;
   }
   // calcul Y pos
-  float dy = target.y - dest_3D_follow_rope.y;
+  float dy = ty - dest_3D_follow_rope.y;
   if(abs(dy) != 0) {
     dest_3D_follow_rope.y += dy * speed;
   }
   // calcul Z pos
-  float dz = target.z - dest_3D_follow_rope.z;
+  float dz = tz - dest_3D_follow_rope.z;
   if(abs(dz) != 0) {
     dest_3D_follow_rope.z += dz * speed;
   }
@@ -50,7 +68,8 @@ Vec3 follow(Vec3 target, float speed) {
 
 /**
 Class Motion 
-v 1.0.7.2
+v 1.1.0
+2016-2018
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Motion
 */
@@ -86,6 +105,14 @@ class Motion {
 
   Vec3 get_direction() {
     return dir ;
+  }
+
+  float get_acceleration() {
+    return acc;
+  }
+
+  float get_deceleration() {
+    return dec;
   }
 
   boolean acceleration_is() {
@@ -329,15 +356,14 @@ class Path extends Motion {
     path = new ArrayList<Vec3>() ;
     pos = Vec3(MAX_INT) ;
   }
-
-  // set
-  void set_velocity(float velocity) {
+   // set
+   void set_velocity(float velocity) {
     if(vel < 0) {
-      String warning = ("method set_velocity(): negative value, class Path use the abslolute value of " + vel);
-      System.err.println(warning);
+      System.err.println("negative value, class Path use the abslolute value of") ;
+      System.err.println(vel) ;
     }
-    this.vel = abs(vel);
-  }
+    this.vel = abs(vel) ;
+   }
 
   
 

@@ -3,7 +3,7 @@ Force Field
 2017-2018
 * @see http://stanlepunk.xyz
 * @see https://github.com/StanLepunK/Force_Field
-v 1.11.6
+v 1.11.7
 Processing 3.4
 */
 
@@ -1552,7 +1552,7 @@ public class Force_field implements rope.core.RConstants {
     Vec2 vel = sub(target, pos_ref_2D);
 
     Vec2 cell = canvas.div(ns.get_NX(),ns.get_NY());
-    iVec2 target_cell = floor(div(target,cell));
+    iVec2 target_cell = iVec2(floor(div(target,cell)));
 
     vel.x = (abs(vel.x) > limit_vel)? 
     Math.signum(vel.x) *limit_vel : 
@@ -1574,7 +1574,7 @@ public class Force_field implements rope.core.RConstants {
 
     Vec3 cell = canvas.div(ns.get_N());
     Vec3 vel = sub(target, pos_ref_3D);
-    iVec3 target_cell = floor(div(target,cell));
+    iVec3 target_cell = iVec3(floor(div(target,cell)));
 
     vel.x = (abs(vel.x) > limit_vel)? 
     Math.signum(vel.x) *limit_vel : 
