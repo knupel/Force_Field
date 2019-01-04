@@ -54,7 +54,6 @@ void main() {
   incrementalGaussian.xy *= incrementalGaussian.yz;
  
   // Go through the remaining 8 vertical samples (4 on each side of the center)
-  
   for (float i = 1.0; i <= numBlurPixelsPerSide; i++) { 
     avgValue += texture2D(texture, vertTexCoord.st - i * texOffset * 
                           blurMultiplyVec) * incrementalGaussian.x;         

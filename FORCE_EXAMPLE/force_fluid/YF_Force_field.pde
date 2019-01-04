@@ -1,8 +1,8 @@
-
 /**
 Force Field
 2017-2018
-http://stanlepunk.xyz/
+* @see http://stanlepunk.xyz
+* @see https://github.com/StanLepunK/Force_Field
 v 1.11.6
 Processing 3.4
 */

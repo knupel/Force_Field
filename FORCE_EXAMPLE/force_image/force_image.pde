@@ -1,22 +1,17 @@
 /**
-FORCE
-2017-2018
-by Stan le Punk
+* FORCE by Stan le Punk
+* 2017-2019
+* @see https://github.com/StanLepunK/Force_Field
 * @see http://stanlepunk.xyz/
-* Processing 3.3.7
-*/
-/**
+* Processing 3.4
 * Inspiration
-
 Force Field is a deep refactoring Flow field from The Nature of Code by Daniel Shiffman
 * @see http://natureofcode.com
-
-Flow Field Following / Force Field / Vector field 
-the link below is not up to date
-Via Reynolds:
+* Flow Field Following / Force Field / Vector field 
+* the link below is not up to date
+* Via Reynolds:
 * @see http://www.red3d.com/cwr/steer/FlowFollow.html
-
-Stable fluids from Jos Stam's work on the Navier-Stokes equation
+* Stable fluids from Jos Stam's work on the Navier-Stokes equation
 */
 
 
@@ -30,8 +25,9 @@ void setup() {
   size(125,125,P3D);
   img = loadImage("small_puros_girl.jpg");
   surface.setSize(img.width,img.height);
+  iVec2 canvas_pos = iVec2(0);
 
-  force_field = new Force_field(5,img,r.HUE);
+  force_field = new Force_field(5,canvas_pos,img,r.HUE);
 
 }
 
