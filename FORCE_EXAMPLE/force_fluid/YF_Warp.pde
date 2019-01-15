@@ -3,7 +3,7 @@
 * @see http://stanlepunk.xyz
 * @see https://github.com/StanLepunK/Force_Field
 * 2017-2019
-v 0.6.0
+v 0.7.0
 */
 
 class Warp {
@@ -37,15 +37,12 @@ class Warp {
   private void shader(String main_folder_path) {
     rope_warp_shader = loadShader(main_folder_path+"texture/warp_tex.glsl");
     rope_warp_blur = loadShader(main_folder_path+"texture/blur_gaussian.glsl"); 
-    // rope_warp_shader = loadShader(main_folder_path+"warp/rope_warp_frag.glsl");
-    // rope_warp_blur = loadShader(main_folder_path+"filter/rope_filter_gaussian_blur.glsl"); 
   }
 
 
   /**
   * Use this method in Processing setup
   * load PImage from path
-  *
   * @webref warp:method
   * @param path array String of path
   * @return void
@@ -74,30 +71,6 @@ class Warp {
   public void add(PImage pg, String name) {
     img_manager.add(pg,name);
   }
-
-
-
-  /**
-  * set PImage directly
-  *
-  * @webref warp:method
-  * @param pg is PImage to add at the manager
-  * @param name is PImage name to add info at your image
-  * @return none
-  * @brief add PImage direclt
-  */
-
-  /*
-  public void set(PImage img, String name) {
-    img_manager.set(img,name);
-  }
-  */
-  
-  
-
-
-
-
 
 
   /**
@@ -189,8 +162,7 @@ class Warp {
 
 
   /**
-  *  refresh PImage selected after warp effect
-  *
+  * refresh PImage selected after warp effect
   * @webref warp:method
   * @param ratio is Vec component of refresh / the max Vec is 4
   * @param value is the array component / the max element is 4
@@ -257,10 +229,10 @@ class Warp {
 
 
   /**
-  SHOW
+  * SHOW
   */
-  /*
-  Main and Public method to show result
+  /**
+  * Main and Public method to show result
   */
   public void show(Force_field force_field, float intensity) {
     if(reset_img) {
@@ -276,8 +248,8 @@ class Warp {
   }
 
 
-  /*
-  Follower method
+  /**
+  * Follower method
   */
   private void set(PImage target) {
     if(get_renderer(getGraphics()).equals(P3D) || get_renderer(getGraphics()).equals(P2D)) {
@@ -474,7 +446,7 @@ class Warp {
   /**
   WARP GPU
   Graphic Processor Unit version of fluid image / GLSL
-  v 0.0.4
+  v 0.1.0
   */
   private void rendering_graphic_processor(PGraphics result, PImage buffer, PImage inc, Force_field ff, float intensity) {
     refresh_rendering_gpu(result,buffer,inc,ff,intensity);
@@ -524,9 +496,142 @@ class Warp {
 
 
   // main method
+  private PGraphics tex_dir_blur;
+  private PGraphics tex_vel_blur;
+  private void warp_image_graphic_processor(PGraphics result, PImage tex, Force_field ff, float intensity) {
+    // smooth buffer direction
+    if(tex_dir_blur == null) {
+      tex_dir_blur = createGraphics(tex.width,tex.height,P2D);
+    }
+    if(tex_vel_blur == null) {
+      tex_vel_blur = createGraphics(tex.width,tex.height,P2D);
+    }
+    
+    rope_warp_shader.set("mode",shader_warp_mode);
+    rope_warp_shader.set("strength",intensity);
+
+    rope_warp_shader.set("texture",tex);
+
+    tex_vel_blur = smooth_texture(ff.get_tex_velocity(),tex_vel_blur.width,tex_vel_blur.height);
+    rope_warp_shader.set("texture_velocity",tex_vel_blur);
+
+     tex_dir_blur = smooth_texture(ff.get_tex_direction(),tex_dir_blur.width,tex_dir_blur.height);
+    rope_warp_shader.set("texture_direction",tex_dir_blur);
+    
+    // shader filter
+    if(shader_warp_filter) { 
+      try {   
+        result.filter(rope_warp_shader);
+      } catch(java.lang.RuntimeException e) { 
+        printErrTempo(60,"class Warp void warp_image_graphic_processor: Too many calls to pushMatrix()",frameCount);
+      }
+    } else {  
+      result.shader(rope_warp_shader);
+      result.image(tex,0,0); // don't update the image
+    }
+  }
+ 
+  private PGraphics buffer;
+  private PGraphics smooth_texture(PImage tex, int w, int h) {
+      // blur direction texture
+    if(buffer == null || buffer.width != w || buffer.height != h) {
+      buffer = createGraphics(w,h,P2D);
+      // buffer.loadPixels();
+      // tex.loadPixels();
+      // buffer.pixels = tex.pixels;
+      // buffer.updatePixels();
+    } else {
+      // buffer.loadPixels();
+      // tex.loadPixels();
+      // buffer.pixels = tex.pixels;
+      // buffer.updatePixels();
+    }
+    // if(pass2 == null) pass2 = createGraphics(tex.width,tex.height,P2D);
+    rope_warp_blur.set("texture",tex);
+    rope_warp_blur.set("radius",7);
+    rope_warp_blur.set("sigma",3f); 
+    // Applying the blur shader along the vertical direction   
+    rope_warp_blur.set("horizontal_pass",true);
+    buffer.beginDraw();            
+    buffer.shader(rope_warp_blur);
+    buffer.image(tex,0,0); 
+    buffer.endDraw();
+
+    // Applying the blur shader along the horizontal direction        
+    rope_warp_blur.set("horizontal_pass",false);
+    buffer.beginDraw();            
+    buffer.shader(rope_warp_blur);  
+    buffer.image(buffer,0,0);
+    buffer.endDraw();
+    return buffer;
+  }
+
+
+  /*
+  private PGraphics tex_dir_blur;
+  private PGraphics tex_vel_blur;
+  private void warp_image_graphic_processor(PGraphics result, PImage tex, Force_field ff, float intensity) {
+    // smooth buffer direction
+    if(tex_dir_blur == null) {
+      tex_dir_blur = createGraphics(tex.width,tex.height,P2D);
+    }
+    if(tex_vel_blur == null) {
+      tex_vel_blur = createGraphics(tex.width,tex.height,P2D);
+    }
+    smooth_texture(tex_dir_blur);
+    //smooth_texture(tex_vel_blur);
+    
+    rope_warp_shader.set("mode",shader_warp_mode);
+    rope_warp_shader.set("strength",intensity);
+
+    rope_warp_shader.set("texture",tex);
+    rope_warp_shader.set("texture_velocity",ff.get_tex_velocity());
+    rope_warp_shader.set("texture_direction",pass2);
+    
+    // shader filter
+    if(shader_warp_filter) { 
+      try {   
+        result.filter(rope_warp_shader);
+      } catch(java.lang.RuntimeException e) { 
+        printErrTempo(60,"class Warp void warp_image_graphic_processor: Too many calls to pushMatrix()",frameCount);
+      }
+    } else {  
+      result.shader(rope_warp_shader);
+      result.image(tex,0,0); // don't update the image
+    }
+  }
+ 
+  private PGraphics pass1, pass2;
+  private void smooth_texture(PImage tex) {
+      // blur direction texture
+    if(pass1 == null) pass1 = createGraphics(tex.width,tex.height,P2D);
+    if(pass2 == null) pass2 = createGraphics(tex.width,tex.height,P2D);
+    rope_warp_blur.set("radius",7);
+    rope_warp_blur.set("sigma",3f); 
+    // Applying the blur shader along the vertical direction   
+    rope_warp_blur.set("horizontal_pass",true);
+    pass1.beginDraw();            
+    pass1.shader(rope_warp_blur);
+    pass1.image(tex,0,0); 
+    pass1.endDraw();
+
+    // Applying the blur shader along the horizontal direction        
+    rope_warp_blur.set("horizontal_pass",false);
+    pass2.beginDraw();            
+    pass2.shader(rope_warp_blur);  
+    pass2.image(pass1,0,0);
+    pass2.endDraw(); 
+  }
+  */
+
+ 
+
+
+  /*
   private void warp_image_graphic_processor(PGraphics result, PImage tex, Force_field ff, float intensity) {
     float grid_w = ff.get_tex_velocity().width;
     float grid_h = ff.get_tex_velocity().height;
+
     PImage tex_dir_blur = ff.get_tex_direction().copy();
     smooth_texture(int(grid_w), int(grid_h), tex_dir_blur);
    
@@ -549,15 +654,11 @@ class Warp {
       result.image(tex,0,0); // don't update the image
     }
   }
-
-
-  /**
-  Smooth texture
-  method to blur the texture, before passing this one to the main picture must be warp.
-  This step remove the stair effect.
-  */
+ 
+  // Smooth texture
+  // method to blur the texture, before passing this one to the main picture must be warp.
+  // This step remove the stair effect.
   private PGraphics pass1, pass2;
-
   private void smooth_texture(int w, int h, PImage tex) {
       // blur direction texture
     if(pass1 == null) pass1 = createGraphics(w,h,P2D);
@@ -571,7 +672,6 @@ class Warp {
     pass1.image(tex,0,0); 
     pass1.endDraw();
 
-   
     // Applying the blur shader along the horizontal direction        
     rope_warp_blur.set("horizontal_pass",false);
     pass2.beginDraw();            
@@ -579,6 +679,8 @@ class Warp {
     pass2.image(pass1,0,0);
     pass2.endDraw(); 
   }
+  */
+  
 
 
 
