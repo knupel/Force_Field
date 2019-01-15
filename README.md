@@ -1,4 +1,4 @@
-# Force
+## Force
 
 Force is project to explore the different possibility of vector fields and how to use to steer vehicle and warp image.
 
@@ -14,6 +14,10 @@ The sketch work easily, run and go.
 You can manage your sketch by setting the global variable on the top of the main tab, after you can use the GUI and the keyboard to manage the application :
 switch between particles, image, video or camera ; display grid, vector, spot, image...
 set the refresh color of warping image or particle.
+
+## rope library
+to use the set rope method you need to downlow Rope library
+[download](https://github.com/StanLepunK/Rope/blob/master/Rope.zip)
 
 
 ![La dame à l'hermine](https://github.com/StanLepunK/Force_Field/blob/master/import_github_pic/Dame_a_l_hermine_force_fluide.jpg)
