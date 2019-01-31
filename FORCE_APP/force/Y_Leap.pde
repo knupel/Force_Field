@@ -24,16 +24,16 @@ class FingerLeap {
   private int activefingers ;
   private int [] ID ;
   private int [] IDleap ;
-  private Vec3 [] pos ;
-  private Vec3 [] dir ;
+  private vec3 [] pos ;
+  private vec3 [] dir ;
   private float [] magnitude, roll, pitch, yaw ;
   
   // average data
-  private Vec3 average_pos, average_dir ;
-  private Vec3 add_pos ;
+  private vec3 average_pos, average_dir ;
+  private vec3 add_pos ;
   private float rangeMin = 0 ; 
   private float rangeMax = 0 ;
-  private Vec3 findAveragePos = Vec3() ;
+  private vec3 findAveragePos = vec3() ;
   
   FingerLeap() {
     leap = new com.leapmotion.leap.Controller();
@@ -41,9 +41,9 @@ class FingerLeap {
   }
 
   private void init_var() {
-    if(average_pos == null) average_pos = Vec3() ;
-    if(average_dir == null) average_dir = Vec3() ;
-    if(add_pos == null) add_pos = Vec3() ;
+    if(average_pos == null) average_pos = vec3() ;
+    if(average_dir == null) average_dir = vec3() ;
+    if(add_pos == null) add_pos = vec3() ;
   }
   
   
@@ -58,8 +58,8 @@ class FingerLeap {
     ID = new int[num] ;
     activefingers = 0 ;
     fingerVisible = new boolean [num] ;
-    pos = new Vec3[num] ;
-    dir = new Vec3[num] ;
+    pos = new vec3[num] ;
+    dir = new vec3[num] ;
     magnitude = new float [num] ; 
     roll= new float [num] ; 
     pitch= new float [num] ; 
@@ -77,9 +77,9 @@ class FingerLeap {
       IDleap[i] = object.id() ;
       ID[i] = i  ;
       // return normal position value between 0 to 1 
-      pos[i] = Vec3(normalPos.getX(),normalPos.getY(),normalPos.getZ()) ;
+      pos[i] = vec3(normalPos.getX(),normalPos.getY(),normalPos.getZ()) ;
       // return normal direction between - 1 to 1
-      dir[i] = Vec3(normalPos.getX() *2 -1.0, normalPos.getY() *2 -1.0, normalPos.getZ() *2 -1.0 ) ;
+      dir[i] = vec3(normalPos.getX() *2 -1.0, normalPos.getY() *2 -1.0, normalPos.getZ() *2 -1.0 ) ;
       
       // misc value
       magnitude[i] = normalPos.magnitude() ; 
@@ -93,7 +93,7 @@ class FingerLeap {
     }
     // write the result
     average_pos.set(average_pos(add_pos)) ;
-    average_dir = Vec3(average_pos.x *2 -1.0, average_pos.y *2 -1.0,average_pos.z *2 -1.0) ;
+    average_dir = vec3(average_pos.x *2 -1.0, average_pos.y *2 -1.0,average_pos.z *2 -1.0) ;
   }
   
   
@@ -101,7 +101,7 @@ class FingerLeap {
   // ANNEXE
   
   //check if the finger is visible or not
-  private void find_average_position(Vec3 norm_pos, int whichOne) {
+  private void find_average_position(vec3 norm_pos, int whichOne) {
     if(activefingers < 1) {
       if(norm_pos.z < minValueToCountFinger) {
         add_pos = norm_pos.copy() ;
@@ -151,11 +151,11 @@ class FingerLeap {
     return fingerVisible;
   }
 
-  public Vec3 [] get_pos() {
+  public vec3 [] get_pos() {
     return pos;
   }
 
-  public Vec3 [] get_dir() {
+  public vec3 [] get_dir() {
     return dir;
   }
 
@@ -175,11 +175,11 @@ class FingerLeap {
     return yaw;
   }
 
-  public Vec3 get_average_pos() {
+  public vec3 get_average_pos() {
     return average_pos;
   }
 
-  public Vec3 get_average_dir() {
+  public vec3 get_average_dir() {
     return average_dir;
   }
 
@@ -191,7 +191,7 @@ class FingerLeap {
   
   
   // Function to calcul the average position and smooth this one
-  private Vec3 average_pos(Vec3 target) {
+  private vec3 average_pos(vec3 target) {
     /*
     Average position of all visible fingers
     Finalize the calcule, and dodge the bad value

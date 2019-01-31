@@ -45,7 +45,7 @@ init display
 */
 void init_display_home() {
   int target_display = 0 ;
-  iVec2 offset_display = iVec2(0, -get_display_size(target_display).y);
+  ivec2 offset_display = ivec2(0, -get_display_size(target_display).y);
 
   if(get_display_num() > 1) {
     // other
@@ -58,7 +58,7 @@ void init_display_home() {
 
 
 void init_display_mac_etienne() {
-  iVec2 offset_display = iVec2(0, -get_display_size(1).y);
+  ivec2 offset_display = ivec2(0, -get_display_size(1).y);
   int adj_y = (get_display_size(1).y - get_display_size(0).y)/2;
   int target_display_size = 0;
   size.set(get_display_size(0));

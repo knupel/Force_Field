@@ -17,7 +17,7 @@ void cloud_3D_orientation_angle_behavior_costume() {
   if(cloud_3D == null) cloud_3D = new Cloud_3D(num, P3D, r.ORDER, r.POLAR);
   // if(mousePressed) p.polar(true) ; else p.polar(false);
   // float red_val = abs ( sin(frameCount *.01) *50) ;
-  // cloud_3D.aspect(r.ORANGE, Vec4(0)) ;
+  // cloud_3D.aspect(r.ORANGE, vec4(0)) ;
 
   if(mousePressed) {
     cloud_3D.rotation_x(map(mouseX, 0,width, -PI, PI), true);
@@ -41,7 +41,7 @@ void cloud_3D_orientation_angle_behavior_costume() {
   cloud_3D.set_behavior("SIN_POW_SIN");
 
   int radius = height;
-  Vec3 pos = Vec3(width/2, height/2,-(height/2));
+  vec3 pos = vec3(width/2, height/2,-(height/2));
   cloud_3D.set_radius(radius);
   cloud_3D.pos(pos);
   cloud_3D.update();

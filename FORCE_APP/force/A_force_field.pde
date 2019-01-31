@@ -112,7 +112,7 @@ void mode_ff() {
 
   int super_type_field = r.STATIC ;
   if(type_field != r.STATIC) super_type_field = r.DYNAMIC;
-  bVec3 reset = bVec3(false,false,true);
+  bvec3 reset = bvec3(false,false,true);
   reset(reset,type_field, pattern_field, super_type_field, get_resolution_ff()); 
 }
 
@@ -235,16 +235,16 @@ void build_ff(int type_ff, int pattern_ff, int resolution) {
 }
 
 void build_ff(int type_ff, int pattern_ff, int resolution, PImage src, int... sorting_channel) {
-  iVec2 canvas = iVec2();
-  iVec2 canvas_pos = iVec2();
+  ivec2 canvas = ivec2();
+  ivec2 canvas_pos = ivec2();
   if(src != null) {
     int offset = resolution;
-    canvas = iVec2(src.width +offset, src.height +offset);
-    canvas_pos = iVec2(0 -offset/2);
+    canvas = ivec2(src.width +offset, src.height +offset);
+    canvas_pos = ivec2(0 -offset/2);
   } else {
     int offset = resolution;
-    canvas = iVec2(width +offset, height +offset);
-    canvas_pos = iVec2(0 -offset/2);
+    canvas = ivec2(width +offset, height +offset);
+    canvas_pos = ivec2(0 -offset/2);
   }
   if(enought_spots() && type_ff == r.GRAVITY) {
     build_ff_gravity(resolution, canvas_pos, canvas);
@@ -290,31 +290,31 @@ Different mode to build force field
 v 0.0.2
 */
 // build classic
-void build_ff_classic(int type_force_field, int pattern_force_field, int resolution, iVec2 canvas_pos, iVec2 canvas) {
+void build_ff_classic(int type_force_field, int pattern_force_field, int resolution, ivec2 canvas_pos, ivec2 canvas) {
   force_field = new Force_field(resolution, canvas_pos, canvas, type_force_field, pattern_force_field);
   force_field_init_is = true ;
 }
 
 // build force field image source to generate the vector field
-void build_ff_img(int resolution, iVec2 canvas_pos, PImage img, int... sorting_channel) {
+void build_ff_img(int resolution, ivec2 canvas_pos, PImage img, int... sorting_channel) {
   force_field = new Force_field(resolution, canvas_pos, img, sorting_channel);
   force_field_init_is = true ;
 }
 
 // build force field gravity
-void build_ff_gravity(int resolution, iVec2 canvas_pos, iVec2 canvas) {
+void build_ff_gravity(int resolution, ivec2 canvas_pos, ivec2 canvas) {
   force_field = new Force_field(resolution, canvas_pos, canvas, r.GRAVITY, r.BLANK);
   force_field_init_is = true ;
 }
 
 // build force field magnetic
-void build_ff_magnetic(int resolution, iVec2 canvas_pos, iVec2 canvas) {
+void build_ff_magnetic(int resolution, ivec2 canvas_pos, ivec2 canvas) {
   force_field = new Force_field(resolution, canvas_pos, canvas, r.MAGNETIC, r.BLANK);
   force_field_init_is = true ;
 }
 
 // buid force field FLUID
-void build_ff_fluid(int resolution, iVec2 canvas_pos, iVec2 canvas) {
+void build_ff_fluid(int resolution, ivec2 canvas_pos, ivec2 canvas) {
   force_field = new Force_field(resolution, canvas_pos, canvas, r.FLUID, r.BLANK);
   force_field_init_is = true ;  
 }
@@ -339,7 +339,7 @@ v 0.1.0
 void update_ff() {
   // update spot if there is no coord in the list
   if(spot_list_coord == null) {
-    update_spot_ff_coord(Vec2(width/2,height/2));
+    update_spot_ff_coord(vec2(width/2,height/2));
   }
   if(spot_list_is == null) { 
     update_spot_ff_is(true);
@@ -478,18 +478,18 @@ condition
 tesla
 size
 */
-ArrayList<Vec2> spot_list_coord;
-void update_spot_ff_coord(Vec2... spot_xy) {
+ArrayList<vec2> spot_list_coord;
+void update_spot_ff_coord(vec2... spot_xy) {
   if(spot_list_coord == null) {
-    spot_list_coord = new ArrayList<Vec2>();
+    spot_list_coord = new ArrayList<vec2>();
     for(int i = 0 ; i < spot_xy.length ; i++) {
-      Vec2 coord = spot_xy[i] ;
+      vec2 coord = spot_xy[i] ;
       spot_list_coord.add(coord);
     }
   } else {
     if(spot_list_coord.size() < spot_xy.length) {
       for(int i = spot_xy.length - spot_list_coord.size() ; i < spot_xy.length ; i++) {
-        Vec2 coord = spot_xy[i] ;
+        vec2 coord = spot_xy[i] ;
         spot_list_coord.add(coord);
       }
     } else {

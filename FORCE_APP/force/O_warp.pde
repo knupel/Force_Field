@@ -69,7 +69,7 @@ void warp_init_media(int type_f, int pattern_f,  int size_cell, boolean change_c
 
   if(movie_warp_is() && get_movie_warp(which_movie) != null && get_movie_warp(which_movie).width != 0 && get_movie_warp(which_movie).height != 0) {    
     if(change_canvas_is) {
-      iVec2 temp_size_window = def_window_size(get_movie_warp(which_movie).width, get_movie_warp(which_movie).height);
+      ivec2 temp_size_window = def_window_size(get_movie_warp(which_movie).width, get_movie_warp(which_movie).height);
       set_size_ref(temp_size_window.x,temp_size_window.y);
     } else {
       set_size_ref(get_movie_warp(which_movie).width, get_movie_warp(which_movie).height);
@@ -146,7 +146,7 @@ void add_g_surface() {
 warp draw
 v 0.2.2
 */
-void warp_draw(int tempo, Vec4 rgba_mapped, float intensity, boolean refresh) {
+void warp_draw(int tempo, vec4 rgba_mapped, float intensity, boolean refresh) {
   if(warp_media_is()) {
     //background_rope(0, alpha);
     if(frameCount%tempo == 0 ) warp_media_display();
@@ -176,8 +176,8 @@ void warp_media_display() {
   }
 }
 
-Vec4 ref_rgba_mapped ;
-void warp_show(Vec4 channel_warp_rgb_mapped, float intensity_warp, boolean keep) {
+vec4 ref_rgba_mapped ;
+void warp_show(vec4 channel_warp_rgb_mapped, float intensity_warp, boolean keep) {
   boolean new_channel_values = false ;
   if(ref_rgba_mapped == null || !ref_rgba_mapped.equals(channel_warp_rgb_mapped)) {
     new_channel_values = true;
@@ -216,7 +216,7 @@ post effect test
 */
 boolean effect_is ;
 void warp_post_effect_test() {
-  Vec4 fx = Vec4(1);
+  vec4 fx = vec4(1);
   if(effect_is) warp.effect_multiply(true, fx.x,fx.y,fx.z,fx.w); else warp.effect_multiply(false);
   if(effect_is) warp.effect_overlay(true, fx.x,fx.y,fx.z,fx.w); else warp.effect_overlay(false);
 
@@ -236,9 +236,9 @@ void warp_post_effect_test() {
 
 
 
-void refresh_warp(Vec4 channel_rgba) {
+void refresh_warp(vec4 channel_rgba) {
   
-  // Vec4 rgba = Vec4();
+  // vec4 rgba = vec4();
   /*
   float rgba_x = abs(sin(frameCount * .001));
   float rgba_y = abs(cos(frameCount * .002));
@@ -272,7 +272,7 @@ void refresh_warp(Vec4 channel_rgba) {
   */
    // warp.refresh_mix(true);
    /*
-   Vec4 fx = Vec4();
+   vec4 fx = vec4();
   float fx_x = abs(sin(frameCount * .001));
   float fx_y = abs(cos(frameCount * .01));
   float fx_z = abs(sin(frameCount * .004));

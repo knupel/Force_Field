@@ -1,8 +1,9 @@
 /**
 GUI Force
-2017-2018
+2017-2019
 http://stanlepunk.xyz/
 v 0.3.0
+Processing 3.5.2
 */
 import oscP5.*;
 import netP5.*;
@@ -21,7 +22,7 @@ void setup() {
 	destination = new NetAddress("127.0.0.1",port);
 
 	mode = new boolean[num_mode];
-	gui_setup(Vec2(0), Vec2(250,height));
+	gui_setup(vec2(0), vec2(250,height));
 }
 
 void draw() {

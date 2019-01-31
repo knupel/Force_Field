@@ -25,7 +25,7 @@ void setup() {
   size(125,125,P3D);
   img = loadImage("small_puros_girl.jpg");
   surface.setSize(img.width,img.height);
-  iVec2 canvas_pos = iVec2(0);
+  ivec2 canvas_pos = ivec2(0);
 
   force_field = new Force_field(5,canvas_pos,img,r.HUE);
 
@@ -67,13 +67,13 @@ void show_force_field(int size_vector) {
 
 private void show_field(Force_field ff, float scale, float range_colour, int colour, float thickness) {
   if(ff != null) {
-    Vec2 offset = Vec2(ff.get_resolution());
+    vec2 offset = vec2(ff.get_resolution());
     offset.sub(ff.get_resolution()/2);
     //
     for (int x = 0; x < ff.cols; x++) {
       for (int y = 0; y < ff.rows; y++) {
-        Vec2 pos = Vec2(x *ff.get_resolution(), y *ff.get_resolution());
-        Vec2 dir = Vec2(ff.field[x][y].x,ff.field[x][y].y);
+        vec2 pos = vec2(x *ff.get_resolution(), y *ff.get_resolution());
+        vec2 dir = vec2(ff.field[x][y].x,ff.field[x][y].y);
         if(ff.get_super_type() == r.STATIC) {
           float mag = ff.field[x][y].w;
           pattern_field(dir, mag, pos, ff.resolution *scale,range_colour,colour,thickness);
@@ -88,8 +88,8 @@ private void show_field(Force_field ff, float scale, float range_colour, int col
 }
 
 // Renders a vector object 'v' as an arrow and a position 'x,y'
-private void pattern_field(Vec2 dir, float mag, Vec2 pos, float scale, float range_colour, int c,float thickness) {
-  Vec5 colorMode = Vec5(getColorMode());
+private void pattern_field(vec2 dir, float mag, vec2 pos, float scale, float range_colour, int c,float thickness) {
+  vec5 colorMode = vec5(getColorMode());
   colorMode(HSB,1);
 
   pushMatrix();

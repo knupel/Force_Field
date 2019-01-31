@@ -19,20 +19,20 @@ BIG MESS REWORK ALL THE METHOD
 
 */
 // MAIN
-void set_window_on_main_display(iVec2 size) {
-  iVec2 pos_screen = iVec2(0,0);
-  iVec2 pos_display = iVec2(get_display_size()).sub(size).div(2);
+void set_window_on_main_display(ivec2 size) {
+  ivec2 pos_screen = ivec2(0,0);
+  ivec2 pos_display = ivec2(get_display_size()).sub(size).div(2);
   set_window(pos_screen,size,pos_display);
 }
 
-void set_window_on_main_display(iVec2 pos, iVec2 size) {
+void set_window_on_main_display(ivec2 pos, ivec2 size) {
   set_window(pos,size);
 }
 
-void set_window_on_main_display(iVec2 pos, iVec2 size, int type) {
-  iVec2 pos_display = iVec2();
+void set_window_on_main_display(ivec2 pos, ivec2 size, int type) {
+  ivec2 pos_display = ivec2();
   if(type == CENTER) {  
-    pos_display = iVec2(get_display_size()).sub(size).div(2).add(pos);
+    pos_display = ivec2(get_display_size()).sub(size).div(2).add(pos);
   } else {
     pos_display.set(pos);
   }
@@ -40,40 +40,40 @@ void set_window_on_main_display(iVec2 pos, iVec2 size, int type) {
 }
 
 // OTHER
-void set_window_on_other_display(iVec2 size) {
-  iVec2 pos = iVec2(get_display_size(1).x, 0);
-  iVec2 pos_display = iVec2(get_display_size(1)).sub(size).div(2);
+void set_window_on_other_display(ivec2 size) {
+  ivec2 pos = ivec2(get_display_size(1).x, 0);
+  ivec2 pos_display = ivec2(get_display_size(1)).sub(size).div(2);
   set_window(pos,size,pos_display);
 
 }
 
-void set_window_on_other_display(iVec2 size, int target_display) {
+void set_window_on_other_display(ivec2 size, int target_display) {
   println("display",target_display,get_display_size(target_display));
-  iVec2 pos = iVec2(get_display_size(target_display).x, 0);
-  iVec2 pos_display = iVec2(get_display_size(target_display)).sub(size).div(2);
+  ivec2 pos = ivec2(get_display_size(target_display).x, 0);
+  ivec2 pos_display = ivec2(get_display_size(target_display)).sub(size).div(2);
   set_window(pos,size,pos_display);
 }
 
 
-void set_window_on_other_display(iVec2 pos, iVec2 size) {
-  iVec2 pos_display = iVec2(get_display_size(1).x, 0);
+void set_window_on_other_display(ivec2 pos, ivec2 size) {
+  ivec2 pos_display = ivec2(get_display_size(1).x, 0);
   set_window(pos,size,pos_display);
 }
 
-void set_window_on_other_display(iVec2 pos, iVec2 size, int type) {
+void set_window_on_other_display(ivec2 pos, ivec2 size, int type) {
   set_window_on_other_display(pos,size, 1, type);
 }
 
-void set_window_on_other_display(iVec2 pos, iVec2 size, int target_display, int type) {
-  iVec2 pos_display = iVec2(get_display_size(target_display).x, 0);
+void set_window_on_other_display(ivec2 pos, ivec2 size, int target_display, int type) {
+  ivec2 pos_display = ivec2(get_display_size(target_display).x, 0);
   set_window_on_other_display(pos, size, pos_display, type);
 }
 
-void set_window_on_other_display(iVec2 pos, iVec2 size, iVec2 offset, int type) {
-  //iVec2 pos_screen = iVec2(get_display_size(target_display).x, 0);
-  iVec2 pos_display = iVec2();
+void set_window_on_other_display(ivec2 pos, ivec2 size, ivec2 offset, int type) {
+  //ivec2 pos_screen = ivec2(get_display_size(target_display).x, 0);
+  ivec2 pos_display = ivec2();
   if(type == CENTER) {  
-    pos_display = iVec2(get_display_size(1)).sub(size).div(2).add(pos);
+    pos_display = ivec2(get_display_size(1)).sub(size).div(2).add(pos);
   } else {
     pos_display.set(pos);
   }
@@ -547,7 +547,7 @@ void save_dial_force(int tempo) {
 UPDATE VALUE
 v 0.0.1
 */
-Vec4 rgba_warp = Vec4(1);
+vec4 rgba_warp = vec4(1);
 float power_warp_max;
 void update_rgba_warp(int t_count) {
   float cr = 1.;
@@ -563,7 +563,7 @@ void update_rgba_warp(int t_count) {
     cb = sin(t_count *(blue_cycling *blue_cycling *.1)); 
   }
   
-  Vec4 sin_val = Vec4(1);
+  vec4 sin_val = vec4(1);
   sin_val.set(cr,cg,cb,1);
 
   rgba_warp.set(red_warp,green_warp,blue_warp,1);
@@ -574,7 +574,7 @@ void update_rgba_warp(int t_count) {
   float min_src = 0 ;
   float max_src = 1 ;
   float min_dst = .01 ;
-  rgba_warp.set(sin_val.map(Vec4(min_src), Vec4(max_src), Vec4(min_dst), rgba_warp));
+  rgba_warp.set(sin_val.map(vec4(min_src), vec4(max_src), vec4(min_dst), rgba_warp));
 }
 
 
@@ -626,7 +626,7 @@ v 0.3.0
 */
 void global_reset() {
   if(vehicle_reset_gui_is || warp_reset_gui_is || field_reset_gui_is) {
-    bVec3 reset = bVec3(vehicle_reset_gui_is,warp_reset_gui_is,field_reset_gui_is);
+    bvec3 reset = bvec3(vehicle_reset_gui_is,warp_reset_gui_is,field_reset_gui_is);
     vehicle_reset_gui_is = false;
     warp_reset_gui_is = false;
     field_reset_gui_is = false;
@@ -634,7 +634,7 @@ void global_reset() {
   } 
 }
 
-void reset(bVec3 reset, int type, int pattern, int super_type, int resolution) {
+void reset(bvec3 reset, int type, int pattern, int super_type, int resolution) {
   force_field_init_is = false ;
   if(reset.x) reset_vehicle(get_num_vehicle(),get_ff());
   if(reset.y) warp.reset();
@@ -1495,11 +1495,11 @@ void diaporama(int type, int tempo_diaporama) {
 change size window
 */
 void set_size(int w, int h) {
-  iVec2 s = def_window_size(w,h);
+  ivec2 s = def_window_size(w,h);
   set_size_ref(s.x,s.y);
   if(s.x != width || s.y != height) {
     surface.setSize(s.x,s.y);   
-    iVec2 display = get_display_size();
+    ivec2 display = get_display_size();
     int pos_window_x = (display.x - width)/2;
     int pos_window_y = (display.y - height)/2 -pos_y_window_alway_on_top();
     surface.setLocation(pos_window_x,pos_window_y);
@@ -1516,8 +1516,8 @@ void set_size_ref(int w, int h) {
   ref_warp_h = h;
 }
 
-iVec2 get_size_ref() {
-  return iVec2(ref_warp_w,ref_warp_h);
+ivec2 get_size_ref() {
+  return ivec2(ref_warp_w,ref_warp_h);
 }
 
 void set_resize_window(boolean state) {
@@ -1525,15 +1525,15 @@ void set_resize_window(boolean state) {
 }
 
 void check_current_img_size_against_display() {
-  iVec2 display = get_display_size();
+  ivec2 display = get_display_size();
   if(warp.get_image().width > display.x || warp.get_image().height > display.y) {
-    iVec2 new_size_img = def_window_size(warp.get_image().width, warp.get_image().height);
+    ivec2 new_size_img = def_window_size(warp.get_image().width, warp.get_image().height);
     warp.get_image().resize(new_size_img.x,new_size_img.y);
   }
 }
 
-iVec2 def_window_size(int w, int h) {
-  iVec2 ds = get_display_size();
+ivec2 def_window_size(int w, int h) {
+  ivec2 ds = get_display_size();
   ds.y -= pos_y_window_alway_on_top();
 
   if(w > ds.x || h > ds.y) {
@@ -1547,7 +1547,7 @@ iVec2 def_window_size(int w, int h) {
       h /= ratio_y ;
     }
   }
-  return iVec2(w,h);
+  return ivec2(w,h);
 }
 
 int pos_y_window_alway_on_top() {

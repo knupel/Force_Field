@@ -61,12 +61,12 @@ void reverse_color_field(boolean state) {
 void show_field(Force_field ff) {
   float scale = scale_show_vff;
   if(ff != null) {
-    Vec2 offset = Vec2(ff.get_canvas_pos()) ;
+    vec2 offset = vec2(ff.get_canvas_pos()) ;
     offset.sub(ff.get_resolution()/2);
     for (int x = 0; x < ff.cols; x++) {
       for (int y = 0; y < ff.rows; y++) {
-        Vec2 pos = Vec2(x *ff.get_resolution(), y *ff.get_resolution());
-        Vec2 dir = Vec2(ff.field[x][y].x,ff.field[x][y].y);
+        vec2 pos = vec2(x *ff.get_resolution(), y *ff.get_resolution());
+        vec2 dir = vec2(ff.field[x][y].x,ff.field[x][y].y);
         if(ff.get_super_type() == r.STATIC) {
           float mag = ff.field[x][y].w;
           pattern_field(dir, mag, pos, ff.resolution *scale);
@@ -81,8 +81,8 @@ void show_field(Force_field ff) {
 }
 
 // Renders a vector object 'v' as an arrow and a position 'x,y'
-void pattern_field(Vec2 dir, float mag, Vec2 pos, float scale) {
-  Vec5 colorMode = Vec5(getColorMode());
+void pattern_field(vec2 dir, float mag, vec2 pos, float scale) {
+  vec5 colorMode = vec5(getColorMode());
   colorMode(HSB,1);
 
   pushMatrix();

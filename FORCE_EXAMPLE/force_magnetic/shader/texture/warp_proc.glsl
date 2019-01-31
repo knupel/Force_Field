@@ -38,7 +38,7 @@ uniform vec2 resolution_velocity;
 // uniform int color_mode; // 0 is RGB / 3 is HSB
 
 // uniform int num;
-// uniform iVec3 size;
+// uniform ivec3 size;
 uniform float strength;
 
 uniform float time;

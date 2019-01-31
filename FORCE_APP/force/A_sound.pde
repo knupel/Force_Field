@@ -23,11 +23,11 @@ void sound_system_setup() {
   sounda.set_spectrum(num_spectrum_bands, scale_spectrum_sound) ;
 
   int num_section = 4 ;
-  iVec2 [] section_in_out = new iVec2[num_section];
-  section_in_out[0] = iVec2(0,5);
-  section_in_out[1] = iVec2(5,30);
-  section_in_out[2] = iVec2(30,85);
-  section_in_out[3] = iVec2(85,128);
+  ivec2 [] section_in_out = new ivec2[num_section];
+  section_in_out[0] = ivec2(0,5);
+  section_in_out[1] = ivec2(5,30);
+  section_in_out[2] = ivec2(30,85);
+  section_in_out[3] = ivec2(85,128);
   sounda.set_section(section_in_out);
 
 
@@ -106,15 +106,15 @@ void show_spectrum() {
 
   sounda.audio_buffer(RIGHT) ;
   fill(r.BLOOD);
-  show_spectrum_level(Vec2(0),height/2);
+  show_spectrum_level(vec2(0),height/2);
 
   sounda.audio_buffer(LEFT);
   fill(r.BLOOD);
-  show_spectrum_level(Vec2(0),-height/2);
+  show_spectrum_level(vec2(0),-height/2);
 
 }
 
-void show_spectrum_level(Vec2 pos, int size) {
+void show_spectrum_level(vec2 pos, int size) {
 	float band_width = width /  sounda.spectrum_size();
   for(int i = 0; i < sounda.spectrum_size() ; i++) {
     float pos_x = i * band_width +pos.x;
@@ -125,7 +125,7 @@ void show_spectrum_level(Vec2 pos, int size) {
   }
 }
 
-void show_beat_spectrum_level(Vec2 pos, int size) {
+void show_beat_spectrum_level(vec2 pos, int size) {
 	float band_width = width /  sounda.spectrum_size();
   for(int i = 0 ; i < sounda.section_size() ; i++) {
     for(int k = 0; k < sounda.spectrum_size() ; k++) {

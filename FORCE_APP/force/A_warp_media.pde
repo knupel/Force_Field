@@ -375,11 +375,11 @@ void add_file() {
 video
 */
 Capture video;
-iVec2 video_size ;
+ivec2 video_size ;
 void init_video(int w, int h, int which_cam) {
   if(video == null ) {
     video = new Capture(this,Capture.list()[which_cam]);
-    video_size = iVec2(width,height);
+    video_size = ivec2(width,height);
   } 
 }
 

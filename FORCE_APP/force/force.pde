@@ -43,8 +43,8 @@ PGraphics pg;
 
 
 boolean full_screen_is = false;
-iVec2 size = iVec2(850,550); // Yougtimer CFPTS
-iVec2 pos_window = iVec2(0,0); // Yougtimer CFPTS
+ivec2 size = ivec2(850,550); // Yougtimer CFPTS
+ivec2 pos_window = ivec2(0,0); // Yougtimer CFPTS
 
 
 
@@ -99,7 +99,7 @@ void setup() {
   warp_setup();
   set_info(false); 
   
-  set_interface(Vec2(0), Vec2(250,height));
+  set_interface(vec2(0), vec2(250,height));
   osc_setup();
 
   gui_setup(); 
@@ -177,7 +177,7 @@ void force() {
   if(!pause_is || show_must_go_on_is()) time_count_ff++;
   
   if(interface_is()) {
-    inside_gui = inside(get_pos_interface(), get_size_interface(), Vec2(mouseX,mouseY));
+    inside_gui = inside(get_pos_interface(), get_size_interface(), vec2(mouseX,mouseY));
   } else {
     inside_gui = false;
   }
@@ -199,13 +199,13 @@ void force() {
     } else {
       force_field_spot_condition(true);
       if(!inside_gui){
-        force_field_spot_coord(iVec2(mouseX,mouseY),mousePressed,pause_is);
+        force_field_spot_coord(ivec2(mouseX,mouseY),mousePressed,pause_is);
       } else if(show_must_go_on_is()){
-        force_field_spot_coord(iVec2(mouseX,mouseY),false,pause_is);
+        force_field_spot_coord(ivec2(mouseX,mouseY),false,pause_is);
       } else if(inside_gui && show_must_go_on_is()) {
-        force_field_spot_coord(iVec2(mouseX,mouseY),false,show_must_go_on_is());
+        force_field_spot_coord(ivec2(mouseX,mouseY),false,show_must_go_on_is());
       } else {
-        force_field_spot_coord(iVec2(mouseX,mouseY),false,show_must_go_on_is());
+        force_field_spot_coord(ivec2(mouseX,mouseY),false,show_must_go_on_is());
       }
     }
   }

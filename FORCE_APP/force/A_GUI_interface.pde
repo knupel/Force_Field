@@ -2,8 +2,8 @@
 INTERFACE
 v 0.3.0
 */
-Vec2 pos_gui ;
-Vec2 size_gui ;
+vec2 pos_gui ;
+vec2 size_gui ;
 
 
 boolean gui_warp_is;
@@ -36,7 +36,7 @@ void gui_setup() {
 
 
 
-void set_interface(Vec2 pos, Vec2 size) {
+void set_interface(vec2 pos, vec2 size) {
 	pos_gui = pos.copy();
 	size_gui = size.copy();
 }
@@ -78,7 +78,7 @@ void background_interface() {
 	fill(0,125);
 	noStroke();
 	// right part
-	rect(Vec2(width-size_gui.x,pos_gui.y),size_gui);
+	rect(vec2(width-size_gui.x,pos_gui.y),size_gui);
 	// down part
 	int size_down_y = instruction_height ;
 	rect(width/3,height - size_down_y, width/3,size_down_y);
@@ -269,11 +269,11 @@ float pos_slider_y(int space, float start_pos, int from) {
 
 
 // get
-Vec2 get_pos_interface() {
+vec2 get_pos_interface() {
 	return pos_gui;
 }
 
-Vec2 get_size_interface() {
+vec2 get_size_interface() {
 	return size_gui;
 }
 

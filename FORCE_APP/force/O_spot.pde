@@ -18,7 +18,7 @@ void show_spot(int type) {
   } else {
     for(int i = 0 ; i < force_field.get_spot_num() ; i++) {
       if(type == POINT) {
-        aspect_rope(c,c,get_size_spot());
+        aspect(c,c,get_size_spot());
         point(force_field.get_spot_pos(i));
       } else if(type == TRIANGLE) {
         display_spot_triangle(force_field.get_spot_pos(i), c, get_size_spot());
@@ -32,14 +32,14 @@ void show_spot(int type) {
 
 // spot pixel
 PGraphics pg_spot;
-void display_pixel_on_PGraphics(PGraphics pg, int c, Vec3 [] coord) {
+void display_pixel_on_PGraphics(PGraphics pg, int c, vec3 [] coord) {
   if(pg == null || pg.width != width || pg.height != height) {
     pg = createGraphics(width,height,get_renderer());
   } 
   if(pg != null) {
     pg.beginDraw();
     pg.clear();
-    for (Vec3 p : coord) {
+    for (vec3 p : coord) {
       spot_set(pg,p,c);  
     }
     pg.endDraw();
@@ -47,7 +47,7 @@ void display_pixel_on_PGraphics(PGraphics pg, int c, Vec3 [] coord) {
   }
 }
 
-void spot_set(PGraphics pg, Vec3 pos, int c) {
+void spot_set(PGraphics pg, vec3 pos, int c) {
   int x = (int)pos.x ;
   int y = (int)pos.y;
   if(x < pg.width && y < pg.height) {
@@ -60,7 +60,7 @@ void spot_set(PGraphics pg, Vec3 pos, int c) {
 
 
 // spot triangle
-void display_spot_triangle(Vec3 pos, int c, float size) {
+void display_spot_triangle(vec3 pos, int c, float size) {
   // Draw a triangle rotated in the direction of velocity
   float theta = radians(90);
   // v.set_radius(size);
@@ -94,11 +94,11 @@ void set_spot_shape(String... path) {
   // }
 }
 
-void display_spot_shape(Vec3 pos, Vec3 fill, float alpha) {
+void display_spot_shape(vec3 pos, vec3 fill, float alpha) {
   display_spot_shape(pos, fill, alpha, 0);
 }
 
-void display_spot_shape(Vec3 pos, Vec3 fill, float alpha, int target) {
+void display_spot_shape(vec3 pos, vec3 fill, float alpha, int target) {
   shape_spot[target].fill(fill.x,fill.y,fill.z,alpha);
   shape_spot[target].noStroke();
   shape_spot[target].scaling(get_size_spot());
@@ -127,33 +127,33 @@ spot coord
 v 0.2.1
 */
 float distance ;
-iVec2 ref_lead_pos ;
+ivec2 ref_lead_pos ;
 
-void force_field_spot_coord(iVec2 lead_pos, boolean is, boolean keep_structure) {
+void force_field_spot_coord(ivec2 lead_pos, boolean is, boolean keep_structure) {
   if(ref_lead_pos == null) {
-    ref_lead_pos = iVec2(width/2,height/2);
+    ref_lead_pos = ivec2(width/2,height/2);
   }
   // case 1 : one spot
   if(get_spot_num_ff() > 0) {
-    Vec2 [] pos = new Vec2[get_spot_num_ff()];
+    vec2 [] pos = new vec2[get_spot_num_ff()];
     // case 1
     if(get_spot_num_ff() == 1) {
       if(is) {
-        pos[0] = Vec2(lead_pos.x, lead_pos.y);
+        pos[0] = vec2(lead_pos.x, lead_pos.y);
         ref_lead_pos.set(lead_pos);
       } else {
-        pos[0] = Vec2(ref_lead_pos);
+        pos[0] = vec2(ref_lead_pos);
       }
     }
     // case 2 : Two spot
     if(get_spot_num_ff() == 2) {
       if(is) {
-        pos[0] = Vec2(lead_pos.x, lead_pos.y);
-        pos[1] = Vec2(width -lead_pos.x, height -lead_pos.y);
+        pos[0] = vec2(lead_pos.x, lead_pos.y);
+        pos[1] = vec2(width -lead_pos.x, height -lead_pos.y);
         ref_lead_pos.set(lead_pos);
       } else {
-        pos[0] = Vec2(ref_lead_pos.x, ref_lead_pos.y);
-        pos[1] = Vec2(width -ref_lead_pos.x, height -ref_lead_pos.y);
+        pos[0] = vec2(ref_lead_pos.x, ref_lead_pos.y);
+        pos[1] = vec2(width -ref_lead_pos.x, height -ref_lead_pos.y);
       }
       
     }
@@ -168,14 +168,14 @@ void force_field_spot_coord(iVec2 lead_pos, boolean is, boolean keep_structure) 
 
 
 Cloud_2D cloud_2D;
-Vec2 ref_pos ;
+vec2 ref_pos ;
 boolean reset_cloud_coord = true;
 int num_multi_coord ;
 float angle_step_ref;
 int time_count_spot;
 float ref_sum_spot_param ;
 float ref_growth_spot ;
-void multi_coord_cloud(Vec2 [] pos, iVec2 lead_pos, boolean is, boolean keep_structure) {
+void multi_coord_cloud(vec2 [] pos, ivec2 lead_pos, boolean is, boolean keep_structure) {
   // reset cloud
 	if(num_multi_coord != pos.length) {
 		num_multi_coord = pos.length;
@@ -204,7 +204,7 @@ void multi_coord_cloud(Vec2 [] pos, iVec2 lead_pos, boolean is, boolean keep_str
 
 	if(is) {
     if(ref_pos == null) {
-      ref_pos = Vec2(lead_pos.x,lead_pos.y);
+      ref_pos = vec2(lead_pos.x,lead_pos.y);
     } else {
       ref_pos.set(lead_pos.x,lead_pos.y);
     }
@@ -234,9 +234,9 @@ void multi_coord_cloud(Vec2 [] pos, iVec2 lead_pos, boolean is, boolean keep_str
   cloud_2D.pos(ref_pos);
 	cloud_2D.update();
 
-	Vec3 [] temp = cloud_2D.list();
+	vec3 [] temp = cloud_2D.list();
 	for(int i = 0 ; i <pos.length ; i++) {
-		pos[i] = Vec2(temp[i].x,temp[i].y);
+		pos[i] = vec2(temp[i].x,temp[i].y);
 	}
 }
 
@@ -257,7 +257,7 @@ float sum_spot_param() {
     growth system
     final_angle += step_angle ; 
     final_angle += distance;
-    Vec2 proj = projection(final_angle, get_radius_mouse());
+    vec2 proj = projection(final_angle, get_radius_mouse());
 */
 
 
@@ -339,15 +339,15 @@ void force_field_spot_mass() {
 coord leapmotion
 v 0.2.1
 */
-Vec2 [] pos_finger ;
+vec2 [] pos_finger ;
 void force_field_spot_coord_leapmotion() {
   // init var
   boolean init_finger = false ;
   if(pos_finger == null || pos_finger.length != get_spot_num_ff()) init_finger = true ;
   if(init_finger  && get_spot_num_ff() > 0) {
-    pos_finger = new Vec2[get_spot_num_ff()];
+    pos_finger = new vec2[get_spot_num_ff()];
     for(int i = 0 ; i < pos_finger.length ; i++) {
-      pos_finger[i] = Vec2(width/2,height/2);
+      pos_finger[i] = vec2(width/2,height/2);
     }
   }
 
@@ -358,10 +358,10 @@ void force_field_spot_coord_leapmotion() {
         float x = finger.get_pos()[i].x;
         float y = finger.get_pos()[i].y;
         y = map(y,0,1,1,0);
-        pos_finger[i] = Vec2(x,y);
+        pos_finger[i] = vec2(x,y);
         pos_finger[i].mult(width,height);
       } else {
-        // pos_finger[i] = Vec2(-width,-height);
+        // pos_finger[i] = vec2(-width,-height);
       }
     }
     */
@@ -370,7 +370,7 @@ void force_field_spot_coord_leapmotion() {
         float x = finger.get_pos()[i].x;
         float y = finger.get_pos()[i].y;
         y = map(y,0,1,1,0);
-        pos_finger[i] = Vec2(x,y);
+        pos_finger[i] = vec2(x,y);
         pos_finger[i].mult(width,height);
       }
     }

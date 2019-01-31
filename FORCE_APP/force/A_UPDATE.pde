@@ -267,8 +267,8 @@ float get_blue_vehicle() {
   return map_colour(blue_vehicle, g.colorModeZ);
 }
 
-Vec3 get_rgb_vehicle() {
-  return Vec3(get_red_vehicle(), get_green_vehicle(), get_blue_vehicle());
+vec3 get_rgb_vehicle() {
+  return vec3(get_red_vehicle(), get_green_vehicle(), get_blue_vehicle());
 }
 
 
@@ -279,7 +279,7 @@ float get_alpha_warp() {
   return map_colour(alpha_warp, g.colorModeA);
 }
 
-Vec4 get_rgba_warp_mapped_gui() {
+vec4 get_rgba_warp_mapped_gui() {
   return rgba_warp;
 }
 
@@ -308,8 +308,8 @@ float get_blue_spot() {
   return map_colour(blue_spot, g.colorModeZ);
 }
 
-Vec3 get_rgb_spot() {
-  return Vec3(get_red_spot(), get_green_spot(), get_blue_spot());
+vec3 get_rgb_spot() {
+  return vec3(get_red_spot(), get_green_spot(), get_blue_spot());
 }
 
 float get_speed_spot() {

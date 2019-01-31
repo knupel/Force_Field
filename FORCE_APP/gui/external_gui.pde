@@ -42,8 +42,8 @@ boolean gui_display_vehicle;
 boolean gui_display_warp;
 
 
-Vec2 pos_gui ;
-Vec2 size_gui ;
+vec2 pos_gui ;
+vec2 size_gui ;
 
 int space_interface ;
 
@@ -58,7 +58,7 @@ String [] menu_basic_shape = {"pixel","point","triangle"};;
 /**
 setup
 */
-void gui_setup(Vec2 pos, Vec2 size) {
+void gui_setup(vec2 pos, vec2 size) {
 	build_gui();
 
   yellow_gui = new CColor(r.OR,r.ORANGE,r.CARMIN,r.WHITE,r.WHITE);
@@ -121,10 +121,10 @@ void build_gui() {
 void gui_mode() {
 	String [] station = {"PERLIN","CHAOS","EQUATION","IMAGE","GRAVITY","MAGNETIC","FLUID"};
   String name = "mode";
-  iVec2 pos = iVec2(0,0);
+  ivec2 pos = ivec2(0,0);
   int num_by_line = station.length;
-  iVec2 size = iVec2((int)width/num_by_line,15); 
-  iVec2 spacing = iVec2(0,0);
+  ivec2 size = ivec2((int)width/num_by_line,15); 
+  ivec2 spacing = ivec2(0,0);
   radio_mode = set_radio(name, pos, size, num_by_line, spacing, gui_mode, radio_mode, station, red_gui);
 }
 
@@ -153,10 +153,10 @@ void mode(int n) {
 
 void gui_button_G(int bar_h) {
   //String name = "display";
-  iVec2 pos = iVec2(0,bar_h +1);
+  ivec2 pos = ivec2(0,bar_h +1);
   int num_by_line = display_label.length;
-  iVec2 size = iVec2 (width/num_by_line,bar_h); 
-  // iVec2 spacing = iVec2(0,0);
+  ivec2 size = ivec2 (width/num_by_line,bar_h); 
+  // ivec2 spacing = ivec2(0,0);
   // display
   set_button(pos, size, num_by_line, gui_button, display_method_name, display_label, red_gui);
   // misc
@@ -696,7 +696,7 @@ void show_gui() {
 global method CP5
 v 0.0.2
 */
-RadioButton set_radio(String name, iVec2 pos, iVec2 size, int num, iVec2 spacing, ControlP5 cp5, RadioButton rb, String [] station, CColor c) {
+RadioButton set_radio(String name, ivec2 pos, ivec2 size, int num, ivec2 spacing, ControlP5 cp5, RadioButton rb, String [] station, CColor c) {
   cp5 = new ControlP5(this);
   rb = cp5.addRadioButton(name).setPosition(pos.x,pos.y).setSize(size.x,size.y).setItemsPerRow(num).setSpacingColumn(spacing.x).setSpacingRow(spacing.y);
 
@@ -715,13 +715,13 @@ RadioButton set_radio(String name, iVec2 pos, iVec2 size, int num, iVec2 spacing
 
 
 
-void set_button(iVec2 pos, iVec2 size, int num, ControlP5 cp5, String [] method_name, String [] label, CColor c) {
+void set_button(ivec2 pos, ivec2 size, int num, ControlP5 cp5, String [] method_name, String [] label, CColor c) {
 	boolean [] state = new boolean[method_name.length];
 	set_button(pos,size,num,cp5,method_name,label,state,c);
 }
 
-void set_button(iVec2 pos, iVec2 size, int num, ControlP5 cp5, String [] method_name, String [] label, boolean [] state, CColor c) {
-	iVec2 p = iVec2();
+void set_button(ivec2 pos, ivec2 size, int num, ControlP5 cp5, String [] method_name, String [] label, boolean [] state, CColor c) {
+	ivec2 p = ivec2();
 	int rx = 0;
 	int ry = 0;
   for(int i = 0 ; i < method_name.length ;i++) { 

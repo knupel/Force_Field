@@ -24,13 +24,13 @@ void build_vehicle(int num, Force_field ff) {
   if(vehicles == null) vehicles = new ArrayList<Vehicle>();
   int w = ff.get_canvas().x;
   int h = ff.get_canvas().y;
-  Vec2 range_speed = Vec2(1., 2.);
-  Vec2 range_force = Vec2(.2, 1.);
+  vec2 range_speed = vec2(1., 2.);
+  vec2 range_force = vec2(.2, 1.);
 
   for (int i = 0; i < num; i++) {
     float max_speed = +range_speed.x + random_next_gaussian(range_speed.y, 3);
     float max_force = +range_force.x + random_next_gaussian(range_force.y, 3);
-    Vec2 pos = Vec2(r.RANDOM_ZERO,w,h);
+    vec2 pos = vec2(r.RANDOM_ZERO,w,h);
     vehicles.add(new Vehicle(pos, max_speed, max_force));
   }
 }
@@ -69,7 +69,7 @@ void update_vehicle(Force_field ff, float speed) {
 
 
 
-void show_vehicle(Vec3 colour, float alpha) {
+void show_vehicle(vec3 colour, float alpha) {
   int c = color(colour.x,colour.y,colour.z,alpha);
   int shape_type = 0 ;
   if(get_type_vehicle() == r.PIXEL) {
@@ -149,7 +149,7 @@ void display_vehicle_triangle(Vehicle v, int c, float size) {
 
 // triangle
 void display_vehicle_point(Vehicle v, int fill, int stroke, float thickness, float size) {
-  aspect_rope(fill,stroke,size);
+  aspect(fill,stroke,size);
   point(v.get_position());
 }
 

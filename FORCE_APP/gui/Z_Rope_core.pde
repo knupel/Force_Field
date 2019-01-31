@@ -3,14 +3,13 @@ ROPE - Romanesco processing environment –
 * Copyleft (c) 2014-2018
 * Stan le Punk > http://stanlepunk.xyz/
 ROPE core
-v 0.1.0
+v 0.1.1
 2017-2018
 * @author Stan le Punk
 * @see https://github.com/StanLepunK/Rope
 */
 import rope.core.*;
 import rope.vector.*;
-
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -74,20 +73,21 @@ public void init_rope() {
 event
 v 0.0.2
 */
-Vec2 scroll_event;
+vec2 scroll_event;
 public void scroll(MouseEvent e) {
 	float scroll_x = e.getCount();
 	float scroll_y = e.getCount();
 	if(scroll_event == null) {
-		scroll_event = Vec2(scroll_x,scroll_y);
+		scroll_event = vec2(scroll_x,scroll_y);
 	} else {
 		scroll_event.set(scroll_x,scroll_y);
 	}
 }
 
-public Vec2 get_scroll() {
+
+public vec2 get_scroll() {
 	if(scroll_event == null) {
-		scroll_event = Vec2();
+		scroll_event = vec2();
 		return scroll_event;
 	} else {
 		return scroll_event;
@@ -96,6 +96,7 @@ public Vec2 get_scroll() {
 
 /**
 add for the future
+import java.awt.event.MouseWheelEvent;
 void mouseWheelMoved(MouseWheelEvent e) {
   println(e.getWheelRotation());
   println(e.getScrollType());

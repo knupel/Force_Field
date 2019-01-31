@@ -3,7 +3,7 @@
 * @see http://stanlepunk.xyz
 * @see https://github.com/StanLepunK/Force_Field
 * 2017-2019
-v 0.7.0
+v 0.6.0
 */
 
 class Warp {
@@ -37,12 +37,15 @@ class Warp {
   private void shader(String main_folder_path) {
     rope_warp_shader = loadShader(main_folder_path+"texture/warp_tex.glsl");
     rope_warp_blur = loadShader(main_folder_path+"texture/blur_gaussian.glsl"); 
+    // rope_warp_shader = loadShader(main_folder_path+"warp/rope_warp_frag.glsl");
+    // rope_warp_blur = loadShader(main_folder_path+"filter/rope_filter_gaussian_blur.glsl"); 
   }
 
 
   /**
   * Use this method in Processing setup
   * load PImage from path
+  *
   * @webref warp:method
   * @param path array String of path
   * @return void
@@ -71,6 +74,30 @@ class Warp {
   public void add(PImage pg, String name) {
     img_manager.add(pg,name);
   }
+
+
+
+  /**
+  * set PImage directly
+  *
+  * @webref warp:method
+  * @param pg is PImage to add at the manager
+  * @param name is PImage name to add info at your image
+  * @return none
+  * @brief add PImage direclt
+  */
+
+  /*
+  public void set(PImage img, String name) {
+    img_manager.set(img,name);
+  }
+  */
+  
+  
+
+
+
+
 
 
   /**
@@ -162,7 +189,8 @@ class Warp {
 
 
   /**
-  * refresh PImage selected after warp effect
+  *  refresh PImage selected after warp effect
+  *
   * @webref warp:method
   * @param ratio is Vec component of refresh / the max Vec is 4
   * @param value is the array component / the max element is 4
@@ -170,26 +198,26 @@ class Warp {
   * @return none
   * @brief refresh the PImage to the begin
   */
-  public void refresh(Vec ratio) {
+  public void refresh(vec ratio) {
     refresh_image_is(true);
 
-    if(ratio instanceof Vec2) {
-      Vec2 r = (Vec2) ratio ;
+    if(ratio instanceof vec2) {
+      vec2 r = (vec2) ratio ;
       refresh_image(r.x,r.x,r.x,r.y);
-    } else if (ratio instanceof Vec3) {
-      Vec3 r = (Vec3) ratio ;
+    } else if (ratio instanceof vec3) {
+      vec3 r = (vec3) ratio ;
       refresh_image(r.x,r.y,r.z,1);
-    } else if (ratio instanceof Vec4) {
-      Vec4 r = (Vec4) ratio ;
+    } else if (ratio instanceof vec4) {
+      vec4 r = (vec4) ratio ;
       refresh_image(r.x,r.y,r.z,r.w);
     } else {
-      printErr("method refresh() from class Warp : ratio is not an instance of Vec2, Vec3 or Vec4, instead the value max '.5' is used");
+      printErr("method refresh() from class Warp : ratio is not an instance of vec2, vec3 or vec4, instead the value max '.5' is used");
       refresh_image(.5,.5,.5,.5);
     } 
   }
 
   public void refresh(float... value) {
-    Vec4 v = array_to_Vec4_rgba(value);
+    vec4 v = array_to_vec4_rgba(value);
     refresh_image_is(true);
     refresh_image(v.x,v.y,v.z,v.w);
   }
@@ -229,10 +257,10 @@ class Warp {
 
 
   /**
-  * SHOW
+  SHOW
   */
-  /**
-  * Main and Public method to show result
+  /*
+  Main and Public method to show result
   */
   public void show(Force_field force_field, float intensity) {
     if(reset_img) {
@@ -248,8 +276,8 @@ class Warp {
   }
 
 
-  /**
-  * Follower method
+  /*
+  Follower method
   */
   private void set(PImage target) {
     if(get_renderer(getGraphics()).equals(P3D) || get_renderer(getGraphics()).equals(P2D)) {
@@ -328,10 +356,10 @@ class Warp {
   /**
   refresh component is must have a normal value 0 > 1
   */
-  private Vec4 warp_img_refresh ;
+  private vec4 warp_img_refresh ;
   private void refresh_image(float x, float y, float z, float w) {
     if(this.warp_img_refresh == null) {
-      warp_img_refresh = Vec4(x,y,z,w);
+      warp_img_refresh = vec4(x,y,z,w);
     } else {
       warp_img_refresh.set(x,y,z,w);
     }
@@ -364,11 +392,11 @@ class Warp {
   }
 
   private boolean refresh_multiply_is ;
-  private Vec4 refresh_multiply_value ;
+  private vec4 refresh_multiply_value ;
   public void refresh_multiply(boolean refresh_multiply_is, float... value) {
-    Vec4 v = array_to_Vec4_rgba(value);
+    vec4 v = array_to_vec4_rgba(value);
     if(refresh_multiply_value == null) {
-      refresh_multiply_value = Vec4(v.x,v.y,v.z,v.w);
+      refresh_multiply_value = vec4(v.x,v.y,v.z,v.w);
     } else {
       refresh_multiply_value.set(v.x,v.y,v.z,v.w);
     }
@@ -380,11 +408,11 @@ class Warp {
   }
 
   private boolean refresh_overlay_is ;
-  private Vec4 refresh_overlay_value ;
+  private vec4 refresh_overlay_value ;
   public void refresh_overlay(boolean refresh_overlay_is, float... value) {
-    Vec4 v = array_to_Vec4_rgba(value);
+    vec4 v = array_to_vec4_rgba(value);
     if(refresh_overlay_value == null) {
-      refresh_overlay_value = Vec4(v.x,v.y,v.z,v.w);
+      refresh_overlay_value = vec4(v.x,v.y,v.z,v.w);
     } else {
       refresh_overlay_value.set(v.x,v.y,v.z,v.w);
     }
@@ -396,11 +424,11 @@ class Warp {
 
   // normal effect
   private boolean effect_multiply_is ;
-  private Vec4 effect_multiply_value ;
+  private vec4 effect_multiply_value ;
   public void effect_multiply(boolean effect_multiply_is, float... value) {
-    Vec4 v = array_to_Vec4_rgba(value);
+    vec4 v = array_to_vec4_rgba(value);
     if(effect_multiply_value == null) {
-      effect_multiply_value = Vec4(v.x,v.y,v.z,v.w);
+      effect_multiply_value = vec4(v.x,v.y,v.z,v.w);
     } else {
       effect_multiply_value.set(v.x,v.y,v.z,v.w);
     }
@@ -408,11 +436,11 @@ class Warp {
   }
 
   private boolean effect_overlay_is ;
-  private Vec4 effect_overlay_value ;
+  private vec4 effect_overlay_value ;
   public void effect_overlay(boolean effect_overlay_is, float... value) {
-    Vec4 v = array_to_Vec4_rgba(value);
+    vec4 v = array_to_vec4_rgba(value);
     if(effect_overlay_value == null) {
-      effect_overlay_value = Vec4(v.x,v.y,v.z,v.w);
+      effect_overlay_value = vec4(v.x,v.y,v.z,v.w);
     } else {
       effect_overlay_value.set(v.x,v.y,v.z,v.w);
     }
@@ -446,7 +474,7 @@ class Warp {
   /**
   WARP GPU
   Graphic Processor Unit version of fluid image / GLSL
-  v 0.1.0
+  v 0.0.4
   */
   private void rendering_graphic_processor(PGraphics result, PImage buffer, PImage inc, Force_field ff, float intensity) {
     refresh_rendering_gpu(result,buffer,inc,ff,intensity);
@@ -496,142 +524,9 @@ class Warp {
 
 
   // main method
-  private PGraphics tex_dir_blur;
-  private PGraphics tex_vel_blur;
-  private void warp_image_graphic_processor(PGraphics result, PImage tex, Force_field ff, float intensity) {
-    // smooth buffer direction
-    if(tex_dir_blur == null) {
-      tex_dir_blur = createGraphics(tex.width,tex.height,P2D);
-    }
-    if(tex_vel_blur == null) {
-      tex_vel_blur = createGraphics(tex.width,tex.height,P2D);
-    }
-    
-    rope_warp_shader.set("mode",shader_warp_mode);
-    rope_warp_shader.set("strength",intensity);
-
-    rope_warp_shader.set("texture",tex);
-
-    tex_vel_blur = smooth_texture(ff.get_tex_velocity(),tex_vel_blur.width,tex_vel_blur.height);
-    rope_warp_shader.set("texture_velocity",tex_vel_blur);
-
-     tex_dir_blur = smooth_texture(ff.get_tex_direction(),tex_dir_blur.width,tex_dir_blur.height);
-    rope_warp_shader.set("texture_direction",tex_dir_blur);
-    
-    // shader filter
-    if(shader_warp_filter) { 
-      try {   
-        result.filter(rope_warp_shader);
-      } catch(java.lang.RuntimeException e) { 
-        printErrTempo(60,"class Warp void warp_image_graphic_processor: Too many calls to pushMatrix()",frameCount);
-      }
-    } else {  
-      result.shader(rope_warp_shader);
-      result.image(tex,0,0); // don't update the image
-    }
-  }
- 
-  private PGraphics buffer;
-  private PGraphics smooth_texture(PImage tex, int w, int h) {
-      // blur direction texture
-    if(buffer == null || buffer.width != w || buffer.height != h) {
-      buffer = createGraphics(w,h,P2D);
-      // buffer.loadPixels();
-      // tex.loadPixels();
-      // buffer.pixels = tex.pixels;
-      // buffer.updatePixels();
-    } else {
-      // buffer.loadPixels();
-      // tex.loadPixels();
-      // buffer.pixels = tex.pixels;
-      // buffer.updatePixels();
-    }
-    // if(pass2 == null) pass2 = createGraphics(tex.width,tex.height,P2D);
-    rope_warp_blur.set("texture",tex);
-    rope_warp_blur.set("radius",7);
-    rope_warp_blur.set("sigma",3f); 
-    // Applying the blur shader along the vertical direction   
-    rope_warp_blur.set("horizontal_pass",true);
-    buffer.beginDraw();            
-    buffer.shader(rope_warp_blur);
-    buffer.image(tex,0,0); 
-    buffer.endDraw();
-
-    // Applying the blur shader along the horizontal direction        
-    rope_warp_blur.set("horizontal_pass",false);
-    buffer.beginDraw();            
-    buffer.shader(rope_warp_blur);  
-    buffer.image(buffer,0,0);
-    buffer.endDraw();
-    return buffer;
-  }
-
-
-  /*
-  private PGraphics tex_dir_blur;
-  private PGraphics tex_vel_blur;
-  private void warp_image_graphic_processor(PGraphics result, PImage tex, Force_field ff, float intensity) {
-    // smooth buffer direction
-    if(tex_dir_blur == null) {
-      tex_dir_blur = createGraphics(tex.width,tex.height,P2D);
-    }
-    if(tex_vel_blur == null) {
-      tex_vel_blur = createGraphics(tex.width,tex.height,P2D);
-    }
-    smooth_texture(tex_dir_blur);
-    //smooth_texture(tex_vel_blur);
-    
-    rope_warp_shader.set("mode",shader_warp_mode);
-    rope_warp_shader.set("strength",intensity);
-
-    rope_warp_shader.set("texture",tex);
-    rope_warp_shader.set("texture_velocity",ff.get_tex_velocity());
-    rope_warp_shader.set("texture_direction",pass2);
-    
-    // shader filter
-    if(shader_warp_filter) { 
-      try {   
-        result.filter(rope_warp_shader);
-      } catch(java.lang.RuntimeException e) { 
-        printErrTempo(60,"class Warp void warp_image_graphic_processor: Too many calls to pushMatrix()",frameCount);
-      }
-    } else {  
-      result.shader(rope_warp_shader);
-      result.image(tex,0,0); // don't update the image
-    }
-  }
- 
-  private PGraphics pass1, pass2;
-  private void smooth_texture(PImage tex) {
-      // blur direction texture
-    if(pass1 == null) pass1 = createGraphics(tex.width,tex.height,P2D);
-    if(pass2 == null) pass2 = createGraphics(tex.width,tex.height,P2D);
-    rope_warp_blur.set("radius",7);
-    rope_warp_blur.set("sigma",3f); 
-    // Applying the blur shader along the vertical direction   
-    rope_warp_blur.set("horizontal_pass",true);
-    pass1.beginDraw();            
-    pass1.shader(rope_warp_blur);
-    pass1.image(tex,0,0); 
-    pass1.endDraw();
-
-    // Applying the blur shader along the horizontal direction        
-    rope_warp_blur.set("horizontal_pass",false);
-    pass2.beginDraw();            
-    pass2.shader(rope_warp_blur);  
-    pass2.image(pass1,0,0);
-    pass2.endDraw(); 
-  }
-  */
-
- 
-
-
-  /*
   private void warp_image_graphic_processor(PGraphics result, PImage tex, Force_field ff, float intensity) {
     float grid_w = ff.get_tex_velocity().width;
     float grid_h = ff.get_tex_velocity().height;
-
     PImage tex_dir_blur = ff.get_tex_direction().copy();
     smooth_texture(int(grid_w), int(grid_h), tex_dir_blur);
    
@@ -654,11 +549,15 @@ class Warp {
       result.image(tex,0,0); // don't update the image
     }
   }
- 
-  // Smooth texture
-  // method to blur the texture, before passing this one to the main picture must be warp.
-  // This step remove the stair effect.
+
+
+  /**
+  Smooth texture
+  method to blur the texture, before passing this one to the main picture must be warp.
+  This step remove the stair effect.
+  */
   private PGraphics pass1, pass2;
+
   private void smooth_texture(int w, int h, PImage tex) {
       // blur direction texture
     if(pass1 == null) pass1 = createGraphics(w,h,P2D);
@@ -672,6 +571,7 @@ class Warp {
     pass1.image(tex,0,0); 
     pass1.endDraw();
 
+   
     // Applying the blur shader along the horizontal direction        
     rope_warp_blur.set("horizontal_pass",false);
     pass2.beginDraw();            
@@ -679,8 +579,6 @@ class Warp {
     pass2.image(pass1,0,0);
     pass2.endDraw(); 
   }
-  */
-  
 
 
 
@@ -723,10 +621,10 @@ class Warp {
     result.loadPixels();
     int [] c_array = result.pixels ;
 
-    iVec2 canvas = iVec2(ff.get_canvas());
-    iVec2 img_canvas = iVec2(result.width, result.height);
+    ivec2 canvas = ivec2(ff.get_canvas());
+    ivec2 img_canvas = ivec2(result.width, result.height);
     
-    Vec2 ratio_canvas = Vec2(1).div(canvas);
+    vec2 ratio_canvas = vec2(1).div(canvas);
 
     int start_x = 0 ;
     int start_y = 0 ;
@@ -736,15 +634,15 @@ class Warp {
     // this part must be send to shader GLSL  
     for (int x = start_x ; x < end_x ; x++) {
       for (int y = start_y ; y < end_y ; y++) {
-        Vec2 uv = ratio_canvas.copy().mult(x,y);
-        Vec2 warp = ff.field_warp(uv,intensity);
+        vec2 uv = ratio_canvas.copy().mult(x,y);
+        vec2 warp = ff.field_warp(uv,intensity);
         if(warp != null) {
           warp.mult(canvas);
           int c = apply_warp(warp,c_array,result,inc);
           result.set(x,y,c);
 
         } else {
-          printErr("error in fluid_image() caught Vec2 warp is null for " + uv);
+          printErr("error in fluid_image() caught vec2 warp is null for " + uv);
           int c = color(r.BLACK);
           result.set(x,y,c);
         }
@@ -755,7 +653,7 @@ class Warp {
   /**
   * problem the pixel have a tendances to go on the the right :(
   */
-  public int apply_warp(Vec2 warp, int [] pix, PImage src, PImage img_fluid) {
+  public int apply_warp(vec2 warp, int [] pix, PImage src, PImage img_fluid) {
     // security out bound
     if (warp.x < 0) warp.x = 0;
     if (warp.y < 0 ) warp.y = 0;
