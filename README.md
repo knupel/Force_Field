@@ -17,7 +17,7 @@ set the refresh color of warping image or particle.
 
 ## rope library
 to use the set rope method you need to downlow Rope library
-[download](https://github.com/StanLepunK/Rope/blob/master/Rope.zip)
+[download](https://github.com/StanLepunK/Rope/blob/master/build_rope/Rope.zip)
 
 
 ![La dame à l'hermine](https://github.com/StanLepunK/Force_Field/blob/master/import_github_pic/Dame_a_l_hermine_force_fluide.jpg)
