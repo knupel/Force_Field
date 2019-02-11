@@ -30,7 +30,7 @@ void build_vehicle(int num, Force_field ff) {
   for (int i = 0; i < num; i++) {
     float max_speed = +range_speed.x + random_next_gaussian(range_speed.y, 3);
     float max_force = +range_force.x + random_next_gaussian(range_force.y, 3);
-    vec2 pos = vec2(r.RANDOM_ZERO,w,h);
+    vec2 pos = vec2().rand(vec2(0,w),vec2(0,h));
     vehicles.add(new Vehicle(pos, max_speed, max_force));
   }
 }
