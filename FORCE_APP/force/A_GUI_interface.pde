@@ -134,16 +134,16 @@ void show_info(Force_field ff) {
 
 
 	// library
-	int items = warp.library_size();
+	int items = force.library_size();
 	if(items < 0) items = 0 ;
 	info_line("Media library" + " " +items + " items", pos_x, space_interface, 3 +step_y, TOP);
   
   String diaporama_state = "not available";
-  if(warp.library_size() > 0) {
+  if(force.library_size() > 0) {
   	if(diaporama_is) diaporama_state = "play" ; else diaporama_state = "stop" ;
   } 
   // image display
-  info_line("media" + " " +warp.get_name(), pos_x, space_interface, 		4 +step_y, TOP);
+  info_line("media" + " " +force.get_name(), pos_x, space_interface, 		4 +step_y, TOP);
   // diaporama
 	info_line("Diaporama" + " " +diaporama_state, pos_x, space_interface, 5 +step_y, TOP);
 	// sorting channel
@@ -165,7 +165,7 @@ void show_info(Force_field ff) {
 
   info_line("DISPLAY", pos_x, space_interface, 													15 +step_y, TOP);
 	info_line("vehicles: "+ display_vehicle_is(), pos_x, space_interface, 16 +step_y, TOP);
-	info_line("warp: "+ display_warp_is(), pos_x, space_interface, 				17 +step_y, TOP);
+	info_line("force: "+ display_warp_is(), pos_x, space_interface, 				17 +step_y, TOP);
 	info_line("background: "+ display_background_is(), pos_x, space_interface, 		18 +step_y, TOP);
 
 

@@ -192,7 +192,7 @@ void force_clear_import() {
     // part for img and movie
     warp_media_loaded(false);
     get_files().clear();
-    warp.image_library_clear();
+    force.image_library_clear();
     movie_library_clear();
 
     file_path_clear();
@@ -637,7 +637,7 @@ void global_reset() {
 void reset(bvec3 reset, int type, int pattern, int super_type, int resolution) {
   force_field_init_is = false ;
   if(reset.x) reset_vehicle(get_num_vehicle(),get_ff());
-  if(reset.y) warp.reset();
+  if(reset.y) force.reset();
   if(reset.z) reset_field(type, pattern, super_type, resolution);
 }
 
@@ -676,7 +676,7 @@ void reset_field(int type, int pattern, int super_type, int resolution) {
   }
 
   if(pattern == IMAGE) {
-    build_ff(type,pattern,resolution, warp.get_image(), get_sorting_channel_ff_2D());
+    build_ff(type,pattern,resolution, force.get_image(), get_sorting_channel_ff_2D());
   } else {
     build_ff(type,pattern,resolution);
     num_spot_ff(get_spot_num_ff(), get_spot_area_level_ff());
@@ -1463,18 +1463,18 @@ void diaporama(int tempo_diaporama) {
 }
 
 void diaporama(int type, int tempo_diaporama) {
-  if(warp.library_size() > 1 && diaporama_is) {
+  if(force.library_size() > 1 && diaporama_is) {
     if(frameCount%tempo_diaporama == 0) {
       tempo_diaporama = int(random(240,1200));
       if(type == r.CHAOS) {
-        which_img = floor(random(warp.library_size()));
-        if(which_img >= warp.library_size()) {
+        which_img = floor(random(force.library_size()));
+        if(which_img >= force.library_size()) {
           // 0 is the surface g, not a media loaded
           which_img = 1; 
         }
       } else{
         which_img++;
-        if(which_img >= warp.library_size()) {
+        if(which_img >= force.library_size()) {
           // 0 is the surface g, not a media loaded
           which_img = 1; 
         }
@@ -1526,9 +1526,9 @@ void set_resize_window(boolean state) {
 
 void check_current_img_size_against_display() {
   ivec2 display = get_display_size();
-  if(warp.get_image().width > display.x || warp.get_image().height > display.y) {
-    ivec2 new_size_img = def_window_size(warp.get_image().width, warp.get_image().height);
-    warp.get_image().resize(new_size_img.x,new_size_img.y);
+  if(force.get_image().width > display.x || force.get_image().height > display.y) {
+    ivec2 new_size_img = def_window_size(force.get_image().width, force.get_image().height);
+    force.get_image().resize(new_size_img.x,new_size_img.y);
   }
 }
 

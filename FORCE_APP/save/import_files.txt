@@ -1,10 +1,4 @@
 null
-//Users/stan/En cours/code/github/PROJET/Force_field/FORCE_APP/import/shape/corbeau.svg
-//Users/stan/En cours/code/github/PROJET/Force_field/FORCE_APP/import/shape/fleur_1.svg
-/Users/stan/En cours/BOULOT/MEDIA/MEDIA ROMANESCO/IMAGE/medium/medium_leticia.jpg
-/Users/stan/En cours/BOULOT/MEDIA/MEDIA ROMANESCO/IMAGE/medium/medium_leticia_2.jpg
-/Users/stan/En cours/BOULOT/MEDIA/MEDIA ROMANESCO/IMAGE/medium/medium_manhaus.jpg
-/Users/stan/En cours/BOULOT/MEDIA/MEDIA ROMANESCO/IMAGE/medium/medium_mokha.jpg
-/Users/stan/En cours/BOULOT/MEDIA/MEDIA ROMANESCO/IMAGE/medium/medium_nancy_cameron.jpg
-/Users/stan/En cours/BOULOT/MEDIA/MEDIA ROMANESCO/IMAGE/medium/medium_pirate.jpg
-/Users/stan/En cours/BOULOT/MEDIA/MEDIA ROMANESCO/IMAGE/medium/medium_puros_girl.jpg
+//Users/stan/En_cours/code/github/PROJET/Force_field/FORCE_APP/import/shape/corbeau.svg
+//Users/stan/En_cours/code/github/PROJET/Force_field/FORCE_APP/import/shape/fleur_1.svg
+/Users/stan/En_cours/BOULOT/MEDIA/MEDIA ROMANESCO/FILM/extrait_film/blade_runner_intro.mp4

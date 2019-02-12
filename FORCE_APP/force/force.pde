@@ -117,8 +117,8 @@ void load_last_media_save() {
   add_g_surface();
   load_media_save();
   if(!change_size_window_is) {
-    warp.image_library_fit(g, fullfit_image_is);
-    warp.image_library_crop(g);
+    force.image_library_fit(g, fullfit_image_is);
+    force.image_library_crop(g);
   }
 }
 
