@@ -134,16 +134,16 @@ void show_info(Force_field ff) {
 
 
 	// library
-	int items = force.library_size();
+	int items = warp_force.library_size();
 	if(items < 0) items = 0 ;
 	info_line("Media library" + " " +items + " items", pos_x, space_interface, 3 +step_y, TOP);
   
   String diaporama_state = "not available";
-  if(force.library_size() > 0) {
+  if(warp_force.library_size() > 0) {
   	if(diaporama_is) diaporama_state = "play" ; else diaporama_state = "stop" ;
   } 
   // image display
-  info_line("media" + " " +force.get_name(), pos_x, space_interface, 		4 +step_y, TOP);
+  info_line("media" + " " +warp_force.get_name(), pos_x, space_interface, 		4 +step_y, TOP);
   // diaporama
 	info_line("Diaporama" + " " +diaporama_state, pos_x, space_interface, 5 +step_y, TOP);
 	// sorting channel

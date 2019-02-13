@@ -260,7 +260,7 @@ void load_media_save() {
           rank_media++;
           println(type, sort[i]);
           file_path(sort[i]);
-          force.load(sort[i]);
+          warp_force.load(sort[i]);
           import_path_save(true);
           warp_media_loaded(true);
           break;
@@ -315,7 +315,7 @@ void add_file() {
           rank_img++;
           rank_media++;
           file_path(sort[i]);
-          force.load(sort[i]);
+          warp_force.load(sort[i]);
           import_path_save(true);
           warp_media_loaded(true);
           break;

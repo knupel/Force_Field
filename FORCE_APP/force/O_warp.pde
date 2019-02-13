@@ -1,14 +1,14 @@
 /**
-APP WARP
-v 0.1.3
+APP WARP FORCE
+v 0.1.4
 */
-Force force ;
+Warp_Force warp_force ;
 // boolean shader_filter_is = false;
 boolean init_warp_is = false;
 String surface_g = "";
 int ref_warp_w, ref_warp_h ;
 void warp_setup() {
-  force = new Force();
+  warp_force = new Warp_Force();
   set_size_ref(width, height);
   surface_g = "surface g";
   set_media_info();
@@ -40,8 +40,8 @@ void warp_init_video(int type_f, int pattern_f, int size_cell, int which_cam) {
   init_video(width,height, which_cam);
   add_g_surface();
   if(!init_video_is) {
-    println("force init video");
-    build_ff(type_f, pattern_f, size_cell, force.get_image());
+    println("warp_force init video");
+    build_ff(type_f, pattern_f, size_cell, warp_force.get_image());
     init_video_is = true ;
     warp_media_loaded(true);
   } 
@@ -54,16 +54,16 @@ void warp_init_media(int type_f, int pattern_f,  int size_cell, boolean change_c
     boolean explore_sub_folder = false;
     load_media_folder(explore_sub_folder, "jpg", "JPG", "mp4", "avi", "mov");   
     if(!change_canvas_is) {
-      force.image_library_fit(g, fullfit);
-      force.image_library_crop(g);
+      warp_force.image_library_fit(g, fullfit);
+      warp_force.image_library_crop(g);
     }
   } else if(input_selected_is()) {
     movie_warp_is(false);
     add_g_surface();
     load_media_input("jpg", "JPG", "mp4", "avi", "mov");  
     if(!change_canvas_is) {
-      force.image_library_fit(g, fullfit);
-      force.image_library_crop(g);
+      warp_force.image_library_fit(g, fullfit);
+      warp_force.image_library_crop(g);
     }
   }
 
@@ -74,38 +74,38 @@ void warp_init_media(int type_f, int pattern_f,  int size_cell, boolean change_c
     } else {
       set_size_ref(get_movie_warp(which_movie).width, get_movie_warp(which_movie).height);
     }
-  } else if(force.get_width() > 0 && force.get_height() > 0) {
-    if(!def_window_size(force.get_width(), force.get_height()).equals(get_size_ref())) {
-      set_size_ref(force.get_width(), force.get_height());
+  } else if(warp_force.get_width() > 0 && warp_force.get_height() > 0) {
+    if(!def_window_size(warp_force.get_width(), warp_force.get_height()).equals(get_size_ref())) {
+      set_size_ref(warp_force.get_width(), warp_force.get_height());
     }
   } 
 
   if(change_canvas_is && (width != ref_warp_w || height != ref_warp_h)) {
-    println("force init media");
+    println("warp_force init media");
     init_warp_is = true ;
     set_size(ref_warp_w,ref_warp_h);
-    force.reset(); 
-    build_ff(type_f, pattern_f, size_cell, force.get_image());
+    warp_force.reset(); 
+    build_ff(type_f, pattern_f, size_cell, warp_force.get_image());
 
   } else if(!change_canvas_is && !build_ff_is()) {
-    println("force init classic");
-    build_ff(type_f, pattern_f, size_cell, force.get_image());
+    println("warp_force init classic");
+    build_ff(type_f, pattern_f, size_cell, warp_force.get_image());
   }
 }
 
 
 // local method
 void add_g_surface() {
-  if(force.library() != null && force.library_size() > 0 ) {
-    if(force.get_name(0).equals(surface_g)) {
+  if(warp_force.library() != null && warp_force.library_size() > 0 ) {
+    if(warp_force.get_name(0).equals(surface_g)) {
       // nothing happen don't add a g surface, this security is necessary in case we add more media
     } else {
       println("add g surface");
-      force.add(g, surface_g);
+      warp_force.add(g, surface_g);
     }
   } else {
     println("add g surface");
-    force.add(g, surface_g); // take the first place in the list, "0" so when the list is used you must jump the "0"
+    warp_force.add(g, surface_g); // take the first place in the list, "0" so when the list is used you must jump the "0"
   }
 }
 
@@ -150,7 +150,7 @@ void warp_draw(int tempo, vec4 rgba_mapped, float intensity, boolean refresh) {
   if(warp_media_is()) {
     //background_rope(0, alpha);
     if(frameCount%tempo == 0 ) warp_media_display();
-    if(force.library_size() > 0 && force_field != null) {
+    if(warp_force.library_size() > 0 && force_field != null) {
       warp_show(rgba_mapped,intensity,refresh);
       check_current_img_size_against_display();
     }
@@ -162,15 +162,15 @@ void warp_draw(int tempo, vec4 rgba_mapped, float intensity, boolean refresh) {
 void warp_media_display() {
   if (video_warp_is()) {
     movie_warp_is(false);
-    force.select(surface_g);
+    warp_force.select(surface_g);
     display_video(); 
   } else if(movie_warp_is()) {
-    force.select(surface_g);
+    warp_force.select(surface_g);
     update_movie_warp_interface();
     play_video(false);
     display_movie(g, which_movie);
   } else {
-    force.select(which_img);
+    warp_force.select(which_img);
     play_video(false);
     movie_warp_is(false);
   }
@@ -185,10 +185,10 @@ void warp_show(vec4 channel_warp_rgb_mapped, float intensity_warp, boolean keep)
     else ref_rgba_mapped.set(channel_warp_rgb_mapped);
   }
   if(!keep || new_channel_values) {
-    force.refresh(channel_warp_rgb_mapped);
-    force.shader_init();
-    force.shader_filter(shader_fx_is());
-    force.shader_mode(0);
+    warp_force.refresh(channel_warp_rgb_mapped);
+    warp_force.shader_init();
+    warp_force.shader_filter(shader_fx_is());
+    warp_force.shader_mode(0);
   }
   /**
   * A TESTER
@@ -200,7 +200,10 @@ void warp_show(vec4 channel_warp_rgb_mapped, float intensity_warp, boolean keep)
   // SHADER ENGINE
   if(!init_warp_is) {
     // here we need a full round without display to charge pixel "g / surface 
-    force.show(force_field,intensity_warp);
+    warp_force.shader_mode(0);
+    warp_force.shader_mode(0);
+    warp_force.shader_mode(0);
+    warp_force.show(force_field,intensity_warp);
   }
 }
 
@@ -217,8 +220,16 @@ post effect test
 boolean effect_is ;
 void warp_post_effect_test() {
   vec4 fx = vec4(1);
-  if(effect_is) force.effect_multiply(true, fx.x,fx.y,fx.z,fx.w); else force.effect_multiply(false);
-  if(effect_is) force.effect_overlay(true, fx.x,fx.y,fx.z,fx.w); else force.effect_overlay(false);
+    warp_force.shader_mode(0);
+    warp_force.shader_mode(0);
+    warp_force.shader_mode(0);
+    warp_force.shader_mode(0);
+  if(effect_is) warp_force.effect_multiply(true, fx.x,fx.y,fx.z,fx.w); else warp_force.effect_multiply(false);
+    warp_force.shader_mode(0);
+    warp_force.shader_mode(0);
+    warp_force.shader_mode(0);
+    warp_force.shader_mode(0);
+  if(effect_is) warp_force.effect_overlay(true, fx.x,fx.y,fx.z,fx.w); else warp_force.effect_overlay(false);
 
   if(keyPressed && key == 'x') {
     effect_is = true ;
@@ -261,7 +272,9 @@ void refresh_warp(vec4 channel_rgba) {
 
   //rgba.set(channel_rgba);
   //rgba.mult(power_channel_max);
-  force.refresh(channel_rgba);
+    warp_force.shader_mode(0);
+    warp_force.shader_mode(0);
+  warp_force.refresh(channel_rgba);
   
   /**
   refresh value simple

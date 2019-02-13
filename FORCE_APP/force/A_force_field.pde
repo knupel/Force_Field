@@ -86,7 +86,7 @@ void mode_ff() {
     pattern_field = r.EQUATION; 
     mode_perlin=false; mode_chaos=false; mode_equation=true; mode_image=false; mode_gravity=false; mode_magnetic=false; mode_fluid=false;
   } else if(mode_ff == 3) {
-    if(force.library() != null && force.library_size() > 0) {
+    if(warp_force.library() != null && warp_force.library_size() > 0) {
       type_field = r.STATIC; 
       pattern_field = IMAGE ;
       mode_perlin=false; mode_chaos=false; mode_equation=false; mode_image=true; mode_gravity=false; mode_magnetic=false; mode_fluid=false;

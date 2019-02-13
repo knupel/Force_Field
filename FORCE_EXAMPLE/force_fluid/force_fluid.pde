@@ -19,7 +19,7 @@ import processing.video.*;
 Movie movie;
 PImage img;
 Force_field force_field;
-Force force;
+Warp_Force warp_force;
 
 void setup() {
   size(125,125,P3D);
@@ -29,8 +29,8 @@ void setup() {
   force_field = new Force_field(10,r.FLUID,r.BLANK);
   force_field.add_spot();
 
-  force = new Force();
-  force.add(g);
+  warp_force = new Warp_Force();
+  warp_force.add(g);
   // warp.select(0);
 }
 
@@ -48,10 +48,10 @@ void draw() {
   force_field.set_spot_pos(mouseX,mouseY);
   force_field.update();
   
-  force.refresh(1,.5,1,1);
-  force.shader_init();
+  warp_force.refresh(1,.5,1,1);
+  warp_force.shader_init();
   float intensity = .6;
-  force.show(force_field,intensity);
+  warp_force.show(force_field,intensity);
   
   // show_force_field();
 }
@@ -108,8 +108,8 @@ void resize_window(int w, int h) {
     // here need to rebuild with the new window size
     force_field = new Force_field(10,r.FLUID,r.BLANK);
     force_field.add_spot();
-    force = new Force();
-    force.add(g);
+    warp_force = new Warp_Force();
+    warp_force.add(g);
   }
 }
 
