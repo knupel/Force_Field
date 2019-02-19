@@ -1,7 +1,8 @@
 /**
+* Gausian blur
 * Stan le punk refactoring version
 * @see https://github.com/StanLepunK/Filter
-* v 0.0.6
+* v 0.0.8
 * 2018-2019
 * Adapted from:
 * @see http://callumhay.blogspot.com/2010/09/gaussian-blur-shader-glsl.html
@@ -13,18 +14,24 @@ precision mediump int;
 #endif
 // Processing implementation
 #define PROCESSING_TEXTURE_SHADER
-uniform vec2 texOffset; // The inverse of the texture dimensions along X and Y
 varying vec4 vertColor;
 varying vec4 vertTexCoord;
-
-
+/**
+WARNING VERY IMPORTANT
+*/
+uniform vec2 resolution; // need this name for unknow reason :( here your pass your resolution texture
+// vec2 texOffset   = vec2(1) / resolution; // only work with uniform resolution
 
 #define PI 3.1415926535897932384626433832795
- 
-uniform sampler2D texture;
 
-uniform int radius;       
+
+uniform sampler2D texture_source;
+uniform vec2 resolution_source;
+uniform bvec2 flip_source;
+
+uniform float size;       
 uniform bool horizontal_pass; // 0 or 1 to indicate vertical or horizontal pass
+
        
 /*
 The sigma value for the gaussian function: higher value means more blur
@@ -36,9 +43,49 @@ The sigma value for the gaussian function: higher value means more blur
 uniform float sigma; 
 
 
+/**
+UTIL TEMPLATE
+*/
+vec2 set_uv(bool flip_vertical, bool flip_horizontal, vec2 res) {
+  vec2 uv;
+  if(all(equal(vec2(0),res))) {
+    uv = vertTexCoord.st;
+  } else if(all(greaterThan(res,vertTexCoord.st))) {
+    uv = vertTexCoord.st;
+  } else {
+    uv = res;
+  }
+  // flip 
+  if(!flip_vertical && !flip_horizontal) {
+    return uv;
+  } else if(flip_vertical && !flip_horizontal) {
+    uv.y = 1 -uv.y;
+    return uv;
+  } else if(!flip_vertical && flip_horizontal) {
+    uv.x = 1 -uv.x;
+    return uv;
+  } else if(flip_vertical && flip_horizontal) {
+    return vec2(1) -uv;
+  } return uv;
+}
+
+vec2 set_uv(bvec2 flip, vec2 res) {
+  return set_uv(flip.x,flip.y,res);
+}
+
+
+
+
+
+
+
+
+
+
 vec4 gaussian_blur() {
-  float num_pass = float(radius *.5);
-  float sigma_def = radius *sigma *.5; // calcule to be a good value all the time, like toward.
+  vec2 uv = set_uv(flip_source,resolution_source);
+  float num_pass = size *.5;
+  float sigma_def = size *sigma *.5; // calcule to be a good value all the time, like toward.
  
   vec2 ratio = horizontal_pass? vec2(1,0) : vec2(0,1);
  
@@ -52,14 +99,23 @@ vec4 gaussian_blur() {
   float coef_sum = 0;
  
   // Take the central sample first...
-  average_value += texture2D(texture, vertTexCoord.st) * inc_gaussian.x;
+  average_value += texture2D(texture_source,uv) * inc_gaussian.x;
   coef_sum += inc_gaussian.x;
   inc_gaussian.xy *= inc_gaussian.yz;
  
   // Go through the remaining 8 vertical samples (4 on each side of the center)
+  // vec2 texOffset   = vertTexCoord.st;
+  vec2 texOffset   = vec2(1) / resolution; // only work with uniform resolution
+  // vec2 texOffset   = vec2(1) / vertTexCoord.st;
+
   for (float i = 1.0; i <= num_pass; i++) { 
-    average_value += texture2D(texture, vertTexCoord.st - i * texOffset * ratio) * inc_gaussian.x;         
-    average_value += texture2D(texture, vertTexCoord.st + i * texOffset * ratio) * inc_gaussian.x;         
+    /*
+    average_value += texture2D(texture, uv - i * ratio) * inc_gaussian.x;         
+    average_value += texture2D(texture, uv + i * ratio) * inc_gaussian.x; 
+    */
+    average_value += texture2D(texture_source, uv - i * texOffset * ratio) * inc_gaussian.x;         
+    average_value += texture2D(texture_source, uv + i * texOffset * ratio) * inc_gaussian.x;    
+        
     coef_sum += 2.0 * inc_gaussian.x;
     inc_gaussian.xy *= inc_gaussian.yz;
   }
@@ -68,112 +124,13 @@ vec4 gaussian_blur() {
 }
 
 
+
 void main() {
   gl_FragColor = gaussian_blur();
-
 }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-float normpdf(in float x, in float sigma) {
-  return 0.39894*exp(-0.5*x*x/(sigma*sigma))/sigma;
-}
-
-
-void main() {
-  vec3 c = texture(texture, vertTexCoord.xy).rgb;
-  // vec3 c = texture(texture, vertTexCoord.xy / resolution).rgb;
-  if (vertTexCoord.x < .5) {
-    gl_FragColor = vec4(c, 1.0); 
-  } else {
-    
-    //declare stuff
-    const int mSize = 11;
-    const int kSize = (mSize-1)/2;
-    float kernel[mSize];
-    vec3 final_colour = vec3(0);
-    
-    //create the 1-D kernel
-    // float sigma = 7.0;
-    float Z = 0.0;
-    for (int j = 0; j <= kSize; ++j) {
-      kernel[kSize+j] = kernel[kSize-j] = normpdf(float(j), sigma);
-    }
-    
-    //get the normalization factor (as the gaussian has been clamped)
-    for (int j = 0; j < mSize; ++j) {
-      Z += kernel[j];
-    }
-    
-    //read out the texels
-    for (int i=-kSize; i <= kSize; ++i) {
-      for (int j=-kSize; j <= kSize; ++j) {
-        // final_colour += kernel[kSize+j]*kernel[kSize+i]*texture(texture, (vertTexCoord.xy+vec2(float(i),float(j))) / resolution.xy).rgb;
-        final_colour += kernel[kSize+j] *kernel[kSize+i] *texture(texture,(vertTexCoord.xy+vec2(float(i),float(j)))/ texOffset).rgb;
-      }
-    }
-    
-    
-    gl_FragColor = vec4(final_colour/(Z*Z), 1.0);
-  }
-}
-*/
-
-
-
-
-
-
-
-
-
-
-
-/*
-void main() {
-  vec2 i_res = texOffset.xy;
-  float tau = 6.28318530718; // Pi*2
-  
-  // GAUSSIAN BLUR SETTINGS {{{
-  float dir = 16.0; // BLUR DIRECTIONS (Default 16.0 - More is better but slower)
-  float quality = 3.0; // BLUR QUALITY (Default 4.0 - More is better but slower)
-  float radius = 8.0; // BLUR SIZE (Radius)
-  // GAUSSIAN BLUR SETTINGS }}}
- 
-  vec2 rad = vec2(i_res /radius);
-  
-  // Normalized pixel coordinates (from 0 to 1)
-   vec2 uv = vertTexCoord.st /i_res;
-  // vec2 uv = vertTexCoord.st; // texel coordinates
-  // vec2 uv = vec2(vertTexCoord.x,vertTexCoord.y);
-  // Pixel colour
-  vec4 result = texture(texture,uv);
-  
-  // Blur calculations
-  for(float d = 0.0; d < tau ; d += tau/dir) {
-    for(float i = 1.0 / quality ; i <= 1.0 ; i +=1.0/quality) {
-      result += texture(texture, uv +vec2(cos(d),sin(d)) *rad *i);    
-    }
-  }
-  
-  result /= quality * dir + 1.0;
-  gl_FragColor =  result;
-}
-*/
 
 
 

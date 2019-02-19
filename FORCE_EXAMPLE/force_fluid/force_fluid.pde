@@ -25,14 +25,37 @@ void setup() {
   size(125,125,P3D);
   img = loadImage("small_puros_girl.jpg");
   surface.setSize(img.width,img.height);
-
-  force_field = new Force_field(10,r.FLUID,r.BLANK);
-  force_field.add_spot();
-
-  warp_force = new Warp_Force();
-  warp_force.add(g);
   // warp.select(0);
 }
+
+
+void test_warp_force() {
+  if(force_field == null) {
+    force_field = new Force_field(10,r.FLUID,r.BLANK);
+    force_field.add_spot();
+    warp_force = new Warp_Force();
+    warp_force.add(g);
+  }
+  force_field.set_spot_pos(mouseX,mouseY);
+  force_field.update();
+  
+  warp_force.refresh(1,.5,1,1);
+  warp_force.shader_init();
+  float intensity = .6;
+  warp_force.show(force_field,intensity);
+
+    // show_force_field();
+  // for(int i = 0 ; i < force_field.get_field().length ; i++) {
+  //   for(int j = 0 ; j < force_field.get_field()[0].length ; j++) {
+  //     println(force_field.get_field()[i][j]);
+  //   }
+  // }
+
+
+}
+
+
+
 
 
 
@@ -41,19 +64,10 @@ void draw() {
   surface.setTitle(rate);
   // println((int)frameRate);
   // SHOW
-  background(0);
-  image(img); // image loading by default
-  // movie(); // press 'o' to choice a movie from folder
+  image(img);
+  test_warp_force();
 
-  force_field.set_spot_pos(mouseX,mouseY);
-  force_field.update();
   
-  warp_force.refresh(1,.5,1,1);
-  warp_force.shader_init();
-  float intensity = .6;
-  warp_force.show(force_field,intensity);
-  
-  // show_force_field();
 }
 
 
@@ -187,41 +201,3 @@ private void pattern_field(vec2 dir, float mag, vec2 pos, float scale, float ran
 
   colorMode(colorMode);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
