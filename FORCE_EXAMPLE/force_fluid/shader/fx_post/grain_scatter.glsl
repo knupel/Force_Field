@@ -1,7 +1,8 @@
 /**
 Grain scatter refactoring
 Stan le Punk 
-@see https://github.com/StanLepunK
+* @see http://stanlepunk.xyz
+* @see https://github.com/StanLepunK/Shader
 v 0.0.4
 2018-2019
 Based https://www.shadertoy.com/view/XtsBz8 by FlexMonkey

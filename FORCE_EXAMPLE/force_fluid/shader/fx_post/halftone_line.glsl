@@ -1,7 +1,7 @@
 /**
 * Halftone line full refactoring Stan le Punk 
-* @see https://github.com/StanLepunK
-* @see https://github.com/StanLepunK/Filter
+* @see http://stanlepunk.xyz
+* @see https://github.com/StanLepunK/Shader
 * v 0.0.5
 * 2018-2019
 * Based https://www.shadertoy.com/view/4dXBRf by Cacheflowe

@@ -1,7 +1,8 @@
 /**
-* warp texture by Stan le punk
-* @see http://stanlepunk.xyz 
-* @see https://github.com/StanLepunK/Filter
+* warp texture type A
+* this warp use two textures, one for direction and other one for intensity
+* @see http://stanlepunk.xyz
+* @see https://github.com/StanLepunK/Shader
 * v 0.0.8
 * 2018-2019
 */
