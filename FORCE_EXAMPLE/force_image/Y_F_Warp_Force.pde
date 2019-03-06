@@ -3,7 +3,7 @@
 * @author @stanlepunk
 * @see https://github.com/StanLepunK/Force_Field
 * 2017-2019
-v 0.9.1
+v 0.9.2
 */
 
 class Warp_Force {
@@ -31,8 +31,10 @@ class Warp_Force {
   
 
   private void shader(String main_folder_path) {
-    rope_warp_shader = loadShader(main_folder_path+"fx_post/warp_tex_a.glsl");
-    rope_warp_blur = loadShader(main_folder_path+"fx_post/blur_gaussian.glsl"); 
+    String path = main_folder_path+"fx_post/warp_tex_a.glsl";
+    rope_warp_shader = loadShader(path);
+    path = main_folder_path+"fx_post/blur_gaussian.glsl";
+    rope_warp_blur = loadShader(path); 
   }
 
 
