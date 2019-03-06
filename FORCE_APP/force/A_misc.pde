@@ -547,7 +547,7 @@ void save_dial_force(int tempo) {
 UPDATE VALUE
 v 0.0.1
 */
-vec4 rgba_warp = vec4(1);
+vec3 rgb_warp = vec3(1);
 float power_warp_max;
 void update_rgba_warp(int t_count) {
   float cr = 1.;
@@ -563,18 +563,18 @@ void update_rgba_warp(int t_count) {
     cb = sin(t_count *(blue_cycling *blue_cycling *.1)); 
   }
   
-  vec4 sin_val = vec4(1);
-  sin_val.set(cr,cg,cb,1);
+  vec3 sin_val = vec3(1);
+  sin_val.set(cr,cg,cb);
 
-  rgba_warp.set(red_warp,green_warp,blue_warp,1);
+  rgb_warp.set(red_warp,green_warp,blue_warp);
   power_warp_max = (power_warp *power_warp) *10f;
   
-  rgba_warp.mult(power_warp_max);
+  rgb_warp.mult(power_warp_max);
   
   float min_src = 0 ;
   float max_src = 1 ;
   float min_dst = .01 ;
-  rgba_warp.set(sin_val.map(vec4(min_src), vec4(max_src), vec4(min_dst), rgba_warp));
+  rgb_warp.set(sin_val.map(vec3(min_src), vec3(max_src), vec3(min_dst), rgb_warp));
 }
 
 

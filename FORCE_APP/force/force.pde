@@ -297,11 +297,11 @@ void display_show() {
   if(display_warp_is()) {
     tint(g.colorModeX,g.colorModeY,g.colorModeZ,get_alpha_warp());
     if(show_must_go_on_is()) {
-      warp_draw(get_tempo_refresh_gui(), get_rgba_warp_mapped_gui(), get_power_cycling_gui(), true);
+      warp_draw(get_tempo_refresh_gui(), get_rgb_warp_mapped_gui(), get_power_cycling_gui(), true);
     } else if(!show_must_go_on_is() && pause_is) {
-      warp_draw(get_tempo_refresh_gui(), get_rgba_warp_mapped_gui(), get_power_cycling_gui(), false);
+      warp_draw(get_tempo_refresh_gui(), get_rgb_warp_mapped_gui(), get_power_cycling_gui(), false);
     } else {
-      warp_draw(get_tempo_refresh_gui(), get_rgba_warp_mapped_gui(), get_power_cycling_gui(), false);
+      warp_draw(get_tempo_refresh_gui(), get_rgb_warp_mapped_gui(), get_power_cycling_gui(), false);
     }
   }
 

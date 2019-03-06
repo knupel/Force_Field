@@ -279,8 +279,8 @@ float get_alpha_warp() {
   return map_colour(alpha_warp, g.colorModeA);
 }
 
-vec4 get_rgba_warp_mapped_gui() {
-  return rgba_warp;
+vec3 get_rgb_warp_mapped_gui() {
+  return rgb_warp;
 }
 
 float get_power_cycling_gui() {

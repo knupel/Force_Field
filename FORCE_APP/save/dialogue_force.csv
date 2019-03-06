@@ -1,5 +1,5 @@
 name,value
-movie position,0.3542511
+movie position,0.35114488
 perlin,0
 chaos,0
 equation,0
@@ -7,10 +7,10 @@ image,0
 gravity,0
 magnetic,0
 fluid,1
-background,0
+background,1
 vehicle,0
 warp,1
-field,1
+field,0
 spot,0
 other,0
 ,
@@ -18,7 +18,7 @@ other,0
 ,
 ,
 ,
-type spot,8
+type spot,2
 type vehicle,8
 media,0
 resize widow,1

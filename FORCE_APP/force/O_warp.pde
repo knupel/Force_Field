@@ -1,6 +1,6 @@
 /**
 APP WARP FORCE
-v 0.1.4
+v 0.2.0
 */
 Warp_Force warp_force ;
 // boolean shader_filter_is = false;
@@ -144,11 +144,10 @@ void add_g_surface() {
 
 /**
 warp draw
-v 0.2.2
+v 0.2.3
 */
-void warp_draw(int tempo, vec4 rgba_mapped, float intensity, boolean refresh) {
+void warp_draw(int tempo, vec3 rgba_mapped, float intensity, boolean refresh) {
   if(warp_media_is()) {
-    //background_rope(0, alpha);
     if(frameCount%tempo == 0 ) warp_media_display();
     if(warp_force.library_size() > 0 && force_field != null) {
       warp_show(rgba_mapped,intensity,refresh);
@@ -168,7 +167,7 @@ void warp_media_display() {
     warp_force.select(surface_g);
     update_movie_warp_interface();
     play_video(false);
-    display_movie(g, which_movie);
+    display_movie(g,which_movie);
   } else {
     warp_force.select(which_img);
     play_video(false);
@@ -176,13 +175,13 @@ void warp_media_display() {
   }
 }
 
-vec4 ref_rgba_mapped ;
-void warp_show(vec4 channel_warp_rgb_mapped, float intensity_warp, boolean keep) {
+vec3 ref_rgb_mapped ;
+void warp_show(vec3 channel_warp_rgb_mapped, float intensity_warp, boolean keep) {
   boolean new_channel_values = false ;
-  if(ref_rgba_mapped == null || !ref_rgba_mapped.equals(channel_warp_rgb_mapped)) {
+  if(ref_rgb_mapped == null || !ref_rgb_mapped.equals(channel_warp_rgb_mapped)) {
     new_channel_values = true;
-    if(ref_rgba_mapped == null) ref_rgba_mapped = channel_warp_rgb_mapped.copy();
-    else ref_rgba_mapped.set(channel_warp_rgb_mapped);
+    if(ref_rgb_mapped == null) ref_rgb_mapped = channel_warp_rgb_mapped.copy();
+    else ref_rgb_mapped.set(channel_warp_rgb_mapped);
   }
   if(!keep || new_channel_values) {
     warp_force.refresh(channel_warp_rgb_mapped);
@@ -190,18 +189,12 @@ void warp_show(vec4 channel_warp_rgb_mapped, float intensity_warp, boolean keep)
     warp_force.shader_filter(shader_fx_is());
     warp_force.shader_mode(0);
   }
-  /**
-  * A TESTER
-  refresh_warp(channel_rgba);
-  warp_post_effect_test();
-  */
+
 
 
   // SHADER ENGINE
   if(!init_warp_is) {
     // here we need a full round without display to charge pixel "g / surface 
-    warp_force.shader_mode(0);
-    warp_force.shader_mode(0);
     warp_force.shader_mode(0);
     warp_force.show(force_field,intensity_warp);
   }
@@ -212,95 +205,10 @@ void warp_show(vec4 channel_warp_rgb_mapped, float intensity_warp, boolean keep)
 
 
 
-/**
-
-post effect test
-
-*/
-boolean effect_is ;
-void warp_post_effect_test() {
-  vec4 fx = vec4(1);
-    warp_force.shader_mode(0);
-    warp_force.shader_mode(0);
-    warp_force.shader_mode(0);
-    warp_force.shader_mode(0);
-  if(effect_is) warp_force.effect_multiply(true, fx.x,fx.y,fx.z,fx.w); else warp_force.effect_multiply(false);
-    warp_force.shader_mode(0);
-    warp_force.shader_mode(0);
-    warp_force.shader_mode(0);
-    warp_force.shader_mode(0);
-  if(effect_is) warp_force.effect_overlay(true, fx.x,fx.y,fx.z,fx.w); else warp_force.effect_overlay(false);
-
-  if(keyPressed && key == 'x') {
-    effect_is = true ;
-  } else {
-    effect_is = false;
-  }
-}
 
 
 
 
-
-
-
-
-
-
-void refresh_warp(vec4 channel_rgba) {
-  
-  // vec4 rgba = vec4();
-  /*
-  float rgba_x = abs(sin(frameCount * .001));
-  float rgba_y = abs(cos(frameCount * .002));
-  float rgba_z = abs(sin(frameCount * .005));
-  float rgba_w = abs(sin(frameCount * .001));
-  */
-  /*
-  rgba.x = abs(sin(frameCount * .001));
-  rgba.y = abs(cos(frameCount * .002));
-  rgba.z = abs(sin(frameCount * .005));
-  rgba.w = abs(sin(frameCount * .001));
-  */
-   
-   /*
-  rgba.x = sin(frameCount * .001);
-  rgba.y = cos(frameCount * .002);
-  rgba.z = sin(frameCount * .005);
-  rgba.w = sin(frameCount * .001);
-  */
-
-  //rgba.set(channel_rgba);
-  //rgba.mult(power_channel_max);
-    warp_force.shader_mode(0);
-    warp_force.shader_mode(0);
-  warp_force.refresh(channel_rgba);
-  
-  /**
-  refresh value simple
-  */
-  /*
-  float value = 2;
-  warp.refresh(value);
-  */
-   // warp.refresh_mix(true);
-   /*
-   vec4 fx = vec4();
-  float fx_x = abs(sin(frameCount * .001));
-  float fx_y = abs(cos(frameCount * .01));
-  float fx_z = abs(sin(frameCount * .004));
-  float fx_w = abs(sin(frameCount * .3));
-  fx.set(fx_x,fx_y,fx_z,fx_w);
-  // fx.set(.1,1,1,1);
-  // fx.set(.25);
-  // warp.refresh_mix(true);
-  warp.refresh_multiply(true, fx.x,fx.y,fx.z,fx.w);
-  */
-  //if(effect_is) warp.refresh_overlay(true, fx.x,fx.y,fx.z,fx.w); else warp.refresh_overlay(false);
-  //if(effect_is) warp.refresh_multiply(true, fx.x,fx.y,fx.z,fx.w); else warp.refresh_multiply(false);
-
-  //if(effect_is) warp.refresh_overlay(true); else warp.refresh_overlay(false);
-}
 
 
 int ellipse_pos_x, ellipse_pos_y;
