@@ -3,7 +3,7 @@
 * @see http://stanlepunk.xyz
 * @see https://github.com/StanLepunK/Force_Field
 * 2017-2019
-v 0.8.3
+v 0.8.4
 */
 
 class Warp_Force {
@@ -21,10 +21,6 @@ class Warp_Force {
 
   public Warp_Force() {
     build("shader/");
-  }
-
-  public Warp_Force(String path) {
-     build(path);
   }
 
 
