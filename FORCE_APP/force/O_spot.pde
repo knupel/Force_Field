@@ -186,7 +186,7 @@ void multi_coord_cloud(vec2 [] pos, ivec2 lead_pos, boolean is, boolean keep_str
     reset_cloud_coord = true;
   }
   if(cloud_2D == null || reset_cloud_coord) {
-    cloud_2D = new Cloud_2D(num_multi_coord,r.ORDER,angle_step_ref);
+    cloud_2D = new Cloud_2D(this,num_multi_coord,r.ORDER,angle_step_ref);
     reset_cloud_coord = false;
   }
   

@@ -1,17 +1,23 @@
-
 /**
-CLASS PIX 
-v 0.10.0
-2016-2018
-* @author Stan le Punk
+* CLASS PIX 
+* v 0.10.2
+* 2016-2018
+* Processing 3.5.3
+* Rope library 0.4.0
+* @author @stanlepunk
 * @see https://github.com/StanLepunK/Pixel
 */
 
 
-abstract class Pix implements rope.core.RConstants {
+abstract class Pix implements rope.core.R_Constants {
+  PApplet p5;
+
+  Pix(PApplet p5) {
+    this.p5 = p5;
+  }
   // P3D mode
-  vec3 pos, new_pos ;
-  vec3 size  ;
+  vec3 pos, new_pos;
+  vec3 size;
   
   // in cartesian mode
   vec3 dir = null ;
@@ -103,7 +109,7 @@ abstract class Pix implements rope.core.RConstants {
   // set costume
   public void costume(int type) {
     if(costume == null) {
-      costume = new Costume(type);
+      costume = new Costume(p5,type);
     } else {
       this.costume.set_type(type);
     }
@@ -286,7 +292,7 @@ abstract class Pix implements rope.core.RConstants {
   */
   public void aspect() {
     float thickness = 1 ;
-    if(costume == null) costume = new Costume();
+    if(costume == null) costume = new Costume(p5);
     costume.aspect(colour,colour,thickness);
   }
 
@@ -298,7 +304,7 @@ abstract class Pix implements rope.core.RConstants {
     } else {
       color_choice.set(colour);
     }
-    if(costume == null) costume = new Costume();
+    if(costume == null) costume = new Costume(p5);
     costume.aspect(color_choice,color_choice,thickness) ;
   }
 
@@ -309,35 +315,35 @@ abstract class Pix implements rope.core.RConstants {
     } else {
       color_choice.set(colour);
     }
-    if(costume == null) costume = new Costume();
+    if(costume == null) costume = new Costume(p5);
     costume.aspect(color_choice,color_choice,thickness);
   }
 
   public void aspect(float thickness) {
-    if(costume == null) costume = new Costume();
+    if(costume == null) costume = new Costume(p5);
     costume.aspect(colour,colour,thickness);
   }
 
   public void aspect(int c) {
     float thickness = 1 ;
     vec4 color_pix = int_color_to_vec4_color(c).copy();
-    if(costume == null) costume = new Costume();
+    if(costume == null) costume = new Costume(p5);
     costume.aspect(color_pix, color_pix, thickness);
   }
 
   public void aspect(vec4 color_pix) {
     float thickness = 1 ;
-    if(costume == null) costume = new Costume();
+    if(costume == null) costume = new Costume(p5);
     costume.aspect(color_pix, color_pix, thickness) ;
   }
 
   public void aspect(vec4 color_pix, float thickness) {
-    if(costume == null) costume = new Costume();
+    if(costume == null) costume = new Costume(p5);
     costume.aspect(color_pix, color_pix, thickness) ;
   }
   
   public void aspect(vec4 color_fill, vec4 color_stroke, float thickness) {
-    if(costume == null) costume = new Costume();
+    if(costume == null) costume = new Costume(p5);
     costume.aspect(color_fill,color_stroke,thickness);
   }
   
@@ -391,47 +397,47 @@ abstract class Pix implements rope.core.RConstants {
   // HSB change
   void set_hue(int new_hue, int start, int end, boolean use_new_colour) {
     float hue_temp ; ;
-    if(!use_new_colour) hue_temp = set_color_component_from_specific_component("hue", colour.r, new_hue, start, end) ; 
-    else hue_temp = set_color_component_from_specific_component("hue", new_colour.r, new_hue, start, end) ;
+    if(!use_new_colour) hue_temp = set_color_component_from_specific_component("hue", colour.hue(), new_hue, start, end) ; 
+    else hue_temp = set_color_component_from_specific_component("hue", new_colour.hue(), new_hue, start, end) ;
     new_colour = vec4(hue_temp, new_colour.y, new_colour.z, new_colour.w)  ;
   }
   void set_saturation(int new_saturation, int start, int end, boolean use_new_colour) {
     float saturation_temp ;
-    if(!use_new_colour) saturation_temp = set_color_component_from_specific_component("saturation", colour.g, new_saturation, start, end) ;
-    else saturation_temp = set_color_component_from_specific_component("saturation", new_colour.g, new_saturation, start, end) ;
+    if(!use_new_colour) saturation_temp = set_color_component_from_specific_component("saturation", colour.sat(), new_saturation, start, end) ;
+    else saturation_temp = set_color_component_from_specific_component("saturation", new_colour.sat(), new_saturation, start, end) ;
     new_colour = vec4(new_colour.x, saturation_temp, new_colour.z, new_colour.w)  ;
   }
   void set_brightness(int new_brightness, int start, int end, boolean use_new_colour) {
     float brightness_temp ;
-    if(!use_new_colour) brightness_temp = set_color_component_from_specific_component("brightness", colour.b, new_brightness, start, end) ;
-    else brightness_temp = set_color_component_from_specific_component("brightness", new_colour.b, new_brightness, start, end) ;
+    if(!use_new_colour) brightness_temp = set_color_component_from_specific_component("brightness", colour.bri(), new_brightness, start, end) ;
+    else brightness_temp = set_color_component_from_specific_component("brightness", new_colour.bri(), new_brightness, start, end) ;
     new_colour = vec4(new_colour.x, new_colour.y, brightness_temp, new_colour.w)  ;
   }
   // RGB change
   void set_red(int new_red, int start, int end, boolean use_new_colour) {
     float red_temp ;
-    if(!use_new_colour) red_temp = set_color_component_from_specific_component("red", colour.r, new_red, start, end) ;
-    else red_temp = set_color_component_from_specific_component("red", new_colour.r, new_red, start, end) ;
+    if(!use_new_colour) red_temp = set_color_component_from_specific_component("red", colour.red(), new_red, start, end) ;
+    else red_temp = set_color_component_from_specific_component("red", new_colour.red(), new_red, start, end) ;
     new_colour = vec4(red_temp, new_colour.y, new_colour.z, new_colour.w)  ;
   }
   void set_green(int new_green, int start, int end, boolean use_new_colour) {
     float green_temp ;
-    if(!use_new_colour) green_temp = set_color_component_from_specific_component("green", colour.g, new_green, start, end) ;
-    else green_temp = set_color_component_from_specific_component("green", new_colour.g, new_green, start, end) ;
+    if(!use_new_colour) green_temp = set_color_component_from_specific_component("green", colour.gre(), new_green, start, end) ;
+    else green_temp = set_color_component_from_specific_component("green", new_colour.gre(), new_green, start, end) ;
     new_colour = vec4(new_colour.x, green_temp, new_colour.z, new_colour.w)  ;
   }
   void set_blue(int new_blue, int start, int end, boolean use_new_colour) {
     float blue_temp ;
-    if(!use_new_colour) blue_temp = set_color_component_from_specific_component("blue", colour.b, new_blue, start, end) ;
-    else blue_temp = set_color_component_from_specific_component("blue", new_colour.b, new_blue, start, end) ;
+    if(!use_new_colour) blue_temp = set_color_component_from_specific_component("blue", colour.blu(), new_blue, start, end) ;
+    else blue_temp = set_color_component_from_specific_component("blue", new_colour.blu(), new_blue, start, end) ;
     new_colour = vec4(new_colour.x, new_colour.y, blue_temp, new_colour.w)  ;
   }
 
   // ALPHA change
   void set_alpha(int new_alpha, int start, int end, boolean use_new_colour) {
     float alpha_temp ;
-    if(!use_new_colour) alpha_temp = set_color_component_from_specific_component("alpha", colour.a, new_alpha, start, end) ;
-    else alpha_temp = set_color_component_from_specific_component("alpha", new_colour.a, new_alpha, start, end) ;
+    if(!use_new_colour) alpha_temp = set_color_component_from_specific_component("alpha", colour.alp(), new_alpha, start, end) ;
+    else alpha_temp = set_color_component_from_specific_component("alpha", new_colour.alp(), new_alpha, start, end) ;
     new_colour = vec4(new_colour.x, new_colour.y, new_colour.z, alpha_temp)  ;
   }
 
@@ -499,7 +505,7 @@ abstract class Pix implements rope.core.RConstants {
 
 /**
 CLOUD
-v 0.3.3
+v 0.3.4
 */
 class Cloud extends Pix {
   int num ;
@@ -524,7 +530,8 @@ class Cloud extends Pix {
   vec2 range;
 
 
-  public Cloud(int num, String renderer_dimension) {
+  public Cloud(PApplet p5,int num, String renderer_dimension) {
+    super(p5);
     init_mother_arg();
     this.num = num ;
     coord = new vec3[num];
@@ -885,22 +892,22 @@ CLOUD 2D
 */
 class Cloud_2D extends Cloud {
  
-  public Cloud_2D(int num) {
-    super(num,P3D);
+  public Cloud_2D(PApplet p5,int num) {
+    super(p5,num,P3D);
     // choice_renderer_dimension(renderer_dimension);
     this.distribution = ORDER;
     orientation = vec3(0,PI/2,0); 
     init() ;
   }
 
-  public Cloud_2D(int num, int distribution) {
-    super(num,P2D);
+  public Cloud_2D(PApplet p5,int num, int distribution) {
+    super(p5,num,P2D);
     this.distribution = distribution ;
     init();
   }
 
-  public Cloud_2D(int num, int distribution, float angle_step) {
-    super(num,P2D);
+  public Cloud_2D(PApplet p5,int num, int distribution, float angle_step) {
+    super(p5,num,P2D);
     this.distribution = distribution ;
     set_angle_step(angle_step);
     init();
@@ -941,8 +948,8 @@ class Cloud_3D extends Cloud {
   boolean rotation_fx_x, rotation_fx_y, rotation_fx_z;
   float dist_fx_x, dist_fx_y, dist_fx_z;
  
-  public Cloud_3D(int num) {
-    super(num,P3D);
+  public Cloud_3D(PApplet p5, int num) {
+    super(p5,num,P3D);
     // choice_renderer_dimension(renderer_dimension);
     this.distribution = ORDER;
     this.orientation = vec3(0,PI/2,0); 
@@ -953,23 +960,23 @@ class Cloud_3D extends Cloud {
   Use this constructor if you want build a cartesian sphere with a real coord in the 3D space, you must ask a "POINT" costume
   */
 
-  public Cloud_3D(int num, String renderer_dimension) {
-    super(num, renderer_dimension);
+  public Cloud_3D(PApplet p5, int num, String renderer_dimension) {
+    super(p5, num, renderer_dimension);
     this.distribution = ORDER;
     this.orientation = vec3(0,PI/2,0); 
     init();
   }
 
 
-  public Cloud_3D(int num, String renderer_dimension, int distribution) {
-    super(num, renderer_dimension);
+  public Cloud_3D(PApplet p5, int num, String renderer_dimension, int distribution) {
+    super(p5, num, renderer_dimension);
     this.distribution = distribution ;
     this.orientation = vec3(0,PI/2,0); 
     init();
   }
 
-  public Cloud_3D(int num, String renderer_dimension, int distribution, int type) {
-    super(num, renderer_dimension);
+  public Cloud_3D(PApplet p5, int num, String renderer_dimension, int distribution, int type) {
+    super(p5,num, renderer_dimension);
     this.type = type ;
     if(renderer_dimension == P2D && type == r.POLAR) {
       printErr("class Cloud_3D cannot work good with 2D String renderer_dimension and type int r.POLAR");
@@ -985,8 +992,8 @@ class Cloud_3D extends Cloud {
     init() ;
   }
 
-  public Cloud_3D(int num, String renderer_dimension, float step_angle) {
-    super(num, renderer_dimension);
+  public Cloud_3D(PApplet p5, int num, String renderer_dimension, float step_angle) {
+    super(p5,num, renderer_dimension);
     polar(false);
     this.distribution = r.ORDER ;
     this.orientation = vec3(0,PI/2,0);
@@ -1204,25 +1211,28 @@ class Cloud_3D extends Cloud {
 
 /**
 Class pixel Basic
-v 0.0.2
+v 0.0.3
 */
 class Pixel extends Pix  {
   // CONSTRUCTOR
   
   // PIXEL 2D
-  public Pixel(vec2 pos_2D) {
+  public Pixel(PApplet p5, vec2 pos_2D) {
+    super(p5);
     init_mother_arg() ;
     this.pos = new vec3(pos_2D.x,pos_2D.y, 0)  ;
   }
 
-  public Pixel(vec2 pos_2D, vec2 size_2D) {
+  public Pixel(PApplet p5, vec2 pos_2D, vec2 size_2D) {
+    super(p5);
     init_mother_arg() ;
     this.pos = new vec3(pos_2D.x,pos_2D.y, 0)  ;
     this.size = new vec3(size_2D.x,size_2D.y,0) ; ;
   }
   
   // Constructor plus color components
-  public Pixel(vec2 pos_2D, vec4 color_vec) {
+  public Pixel(PApplet p5, vec2 pos_2D, vec4 color_vec) {
+    super(p5);
     init_mother_arg() ;
     this.pos = new vec3(pos_2D.x,pos_2D.y, 0)  ;
     colour = vec4(color_vec) ;
@@ -1230,7 +1240,8 @@ class Pixel extends Pix  {
     
   }
 
-  public Pixel(vec2 pos_2D, vec2 size_2D, vec4 color_vec) {
+  public Pixel(PApplet p5, vec2 pos_2D, vec2 size_2D, vec4 color_vec) {
+    super(p5);
     init_mother_arg() ;
     this.pos = new vec3(pos_2D.x,pos_2D.y, 0)  ;
     this.size = new vec3(size_2D.x,size_2D.y,0) ;
@@ -1242,25 +1253,29 @@ class Pixel extends Pix  {
  
 
   //PIXEL 3D
-  public Pixel(vec3 pos_3D) {
+  public Pixel(PApplet p5, vec3 pos_3D) {
+    super(p5);
     init_mother_arg() ;
     this.pos = pos_3D  ;
   }
 
-  public Pixel(vec3 pos_3D, vec3 size_3D) {
+  public Pixel(PApplet p5, vec3 pos_3D, vec3 size_3D) {
+    super(p5);
     init_mother_arg() ;
     this.pos = pos_3D ;
     this.size = size_3D ;
   }
   // constructor plus color component
-  public Pixel(vec3 pos_3D,  vec4 color_vec) {
+  public Pixel(PApplet p5, vec3 pos_3D,  vec4 color_vec) {
+    super(p5);
     init_mother_arg() ;
     this.pos = pos_3D ;
     colour = color_vec.copy() ;
     new_colour = colour.copy() ;
   }
   
-  public Pixel(vec3 pos_3D, vec3 size_3D, vec4 color_vec) {
+  public Pixel(PApplet p5, vec3 pos_3D, vec3 size_3D, vec4 color_vec) {
+    super(p5);
     init_mother_arg() ;
     this.pos = pos_3D ;
     this.size = size_3D ;
@@ -1271,17 +1286,20 @@ class Pixel extends Pix  {
 
   
   //RANK PIXEL CONSTRUCTOR
-  public Pixel(int rank) {
+  public Pixel(PApplet p5, int rank) {
+    super(p5);
     init_mother_arg() ;
     this.rank = rank ;
   }
   
-  public Pixel(int rank, vec2 grid_position_2D) {
+  public Pixel(PApplet p5, int rank, vec2 grid_position_2D) {
+    super(p5);
     init_mother_arg() ;
     this.rank = rank ;
     this.grid_position = new vec3(grid_position_2D.x,grid_position_2D.y,0) ;
   }
-  public Pixel(int rank, vec3 grid_position) {
+  public Pixel(PApplet p5, int rank, vec3 grid_position) {
+    super(p5);
     init_mother_arg() ;
     this.rank = rank ;
     this.grid_position = grid_position ;
@@ -1359,7 +1377,8 @@ class Pixel_motion extends Pix  {
   float life = 1.0 ;
 
   // CONSTRUCTOR 2D
-  Pixel_motion(vec2 pos_2D, float field, int colour_int) {
+  Pixel_motion(PApplet p5, vec2 pos_2D, float field, int colour_int) {
+    super(p5);
     init_mother_arg() ;
     this.pos = vec3(pos_2D) ;
     this.field = field ;
@@ -1367,7 +1386,8 @@ class Pixel_motion extends Pix  {
     new_colour = vec4(colour) ;
   }
 
-  Pixel_motion(vec2 pos_2D, float field, vec4 colour_vec) {
+  Pixel_motion(PApplet p5, vec2 pos_2D, float field, vec4 colour_vec) {
+    super(p5);
     init_mother_arg() ;
     this.pos = vec3(pos_2D) ;
     this.field = field ;
@@ -1375,14 +1395,16 @@ class Pixel_motion extends Pix  {
     new_colour = vec4(colour) ;
   }
 
-  Pixel_motion(vec2 pos_2D, float field) {
+  Pixel_motion(PApplet p5, vec2 pos_2D, float field) {
+    super(p5);
     init_mother_arg() ;
     this.pos = vec3(pos_2D) ;
     this.field = field ;
   }
   
   // CONSTRUCTOR 3D
-  Pixel_motion(vec3 pos, float field, int colour_int) {
+  Pixel_motion(PApplet p5, vec3 pos, float field, int colour_int) {
+    super(p5);
     init_mother_arg() ;
     this.pos = vec3(pos) ;
     this.field = field ;
@@ -1390,7 +1412,8 @@ class Pixel_motion extends Pix  {
     new_colour = vec4(colour) ;
   }
 
-  Pixel_motion(vec3 pos, float field, vec4 colour_vec) {
+  Pixel_motion(PApplet p5, vec3 pos, float field, vec4 colour_vec) {
+    super(p5);
     init_mother_arg() ;
     this.pos = vec3(pos) ;
     this.field = field ;
@@ -1398,7 +1421,8 @@ class Pixel_motion extends Pix  {
     new_colour = vec4(colour) ;
   }
 
-  Pixel_motion(vec3 pos, float field) {
+  Pixel_motion(PApplet p5, vec3 pos, float field) {
+    super(p5);
     init_mother_arg() ;
     this.pos = vec3(pos) ;
     this.field = field ;

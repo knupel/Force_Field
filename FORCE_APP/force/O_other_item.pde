@@ -14,7 +14,7 @@ void show_other() {
 Cloud_3D cloud_3D ;
 void cloud_3D_orientation_angle_behavior_costume() {
   int num = 200 ;
-  if(cloud_3D == null) cloud_3D = new Cloud_3D(num, P3D, r.ORDER, r.POLAR);
+  if(cloud_3D == null) cloud_3D = new Cloud_3D(this,num, P3D, r.ORDER, r.POLAR);
   // if(mousePressed) p.polar(true) ; else p.polar(false);
   // float red_val = abs ( sin(frameCount *.01) *50) ;
   // cloud_3D.aspect(r.ORANGE, vec4(0)) ;
