@@ -1,15 +1,35 @@
 /**
-ROPE SCIENCE
-v 0.7.0
+* ROPE SCIENCE
+* v 0.7.4
 * Copyleft (c) 2014-2019 
-* Stan le Punk > http://stanlepunk.xyz/
-* @author Stan le Punk
-* @see https://github.com/StanLepunK/Rope_method
-*
-the sketch method tab is not included on this repository if you need
-* @see https://github.com/StanLepunK/Old_code/tree/master/Science_rope_2017_12_8
+* @author @stanlepunk
+* @see https://github.com/StanLepunK/Rope_framework
 * Processing 3.5.3
 */
+
+
+
+
+/**
+* check if int number is prime number
+*/
+boolean is_prime(int n) {
+  if(n == 2) {
+    return true;
+  } else if (n%2==0) {
+    return false;
+  } else {
+    for(int i=3; i*i<=n ; i+=2) {
+      if(n%i==0) {
+        return false;
+      }
+    }
+    return true;
+  } 
+}
+
+
+
 
 /**
 Gaussian randomize
@@ -99,7 +119,7 @@ Physic Rope
 v 0.0.2
 */
 public double g_force(double dist, double m_1, double m_2) {
-  return RConstants.G *(dist*dist)/(m_1 *m_2);
+  return R_Constants.G *(dist*dist)/(m_1 *m_2);
 }
 
 
@@ -235,7 +255,11 @@ vec3 to_polar(vec3 cart) {
 }
 
 
-///////////////
+
+
+
+
+
 // Cartesian 3D
 /*
 @ return vec3
@@ -288,25 +312,26 @@ vec3 to_cartesian_3D(float longitude, float latitude, float radius) {
 
 
 
-//Step 1 : translate the mouse position x and y  on the sphere, we must do that separately
-/*
-@ return vec2 
-return linear value on the circle perimeter
-*/
-vec2 to_cartesian_2D (float posMouse, vec2 range, vec2 targetRadian, float distance) {
-  float rotationPlan = map(posMouse, range.x, range.y, targetRadian.x, targetRadian.y)  ;
-  return to_cartesian_2D (rotationPlan, distance) ;
+
+
+
+
+// To cartesian 2D
+vec2 to_cartesian_2D (float pos, vec2 range, vec2 target_rad, float distance) {
+  float rotation_plan = map(pos, range.x, range.y, target_rad.x, target_rad.y)  ;
+  return to_cartesian_2D (rotation_plan, distance) ;
 }
 
-vec2 to_cartesian_2D (float angle) {
-  float radius_normal = 1 ;
-  return to_cartesian_2D (angle, radius_normal) ;
+
+vec2 to_cartesian_2D (float angle, float radius) {
+  return to_cartesian_2D(angle).mult(radius);
 }
+
 
 // main method
-vec2 to_cartesian_2D (float angle, float radius) {
-  float x = cos(angle) *radius;
-  float y = sin(angle) *radius ;
+vec2 to_cartesian_2D (float angle) {
+  float x = cos(angle);
+  float y = sin(angle);
   return vec2(x,y) ;
 }
 
@@ -928,7 +953,6 @@ void polyhedron_draw_vertex(String name) {
     rotateY(PI/4) ;
     int n = 4 ; // quantity of face of Tetrahedron
     for(int i = 0 ; i < n ; i++) {
-      // println("je suis là face",i);
       // choice of each point
       int a = i ;
       int b = i+1 ;

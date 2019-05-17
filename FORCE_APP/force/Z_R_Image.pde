@@ -1,9 +1,9 @@
 /**
-* ROPE FRAMEWORK IMAGE
-* Rope – Romanesco Processing Environment – 
-* v 0.4.2
+* Rope framework image
+* v 0.4.4
 * Copyleft (c) 2014-2019
-* Processing 3.5.3
+* Processing 3.5.3.269
+* Rope library 0.7.1.25
 * @author @stanlepunk
 * @see https://github.com/StanLepunK/Rope_framework
 */
@@ -959,7 +959,7 @@ void show_canvas(int num) {
 
 /**
 * BACKGROUND
-* v 0.2.3
+* v 0.2.4
 * 2015-2019
 */
 /**
@@ -1035,7 +1035,13 @@ void background(PImage src, vec2 pos, vec2 scale, vec3 colour_background, vec4 p
 
 PShader img_shader_calc_rope;
 void background_calc(PImage src, vec2 pos, vec2 scale, vec3 colour_background, vec4 pos_curtain, int mode) {
-  if(src != null && src.width > 0 && src.height > 0) {
+  boolean context_ok = false ;
+  if(get_renderer().equals(P2D) || get_renderer().equals(P3D)) {
+    context_ok = true;
+  } else {
+    printErrTempo(180,"method background(PImage img) need context in P3D or P2D to work");
+  }
+  if(context_ok && src != null && src.width > 0 && src.height > 0) {
     if(img_shader_calc_rope == null) {
       img_shader_calc_rope = loadShader("shader/fx_post/image.glsl");
     }
@@ -1229,8 +1235,8 @@ void background_rope(float x, float y, float z) {
 
 
 /**
-GRAPHICS METHOD
-v 0.3.3
+* GRAPHICS METHOD
+* v 0.4.0
 */
 /**
 SCREEN
@@ -1385,10 +1391,20 @@ static final javax.swing.JFrame getJFrame(final PSurface surface) {
 
 
 /**
-Check renderer
+* Check renderer
 */
+boolean renderer_dimension_tested_is ;
+boolean three_dim_is = false;
 boolean renderer_P3D() {
-  if(get_renderer(getGraphics()).equals("processing.opengl.PGraphics3D")) return true ; else return false ;
+  if(!renderer_dimension_tested_is) {
+    if(get_renderer(getGraphics()).equals("processing.opengl.PGraphics3D")) {
+      three_dim_is = true ; 
+    } else {
+      three_dim_is = false ;
+    }
+    renderer_dimension_tested_is =true;
+  }
+  return three_dim_is;
 }
 
 

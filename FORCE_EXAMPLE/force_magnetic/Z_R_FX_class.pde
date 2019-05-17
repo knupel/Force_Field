@@ -1,9 +1,11 @@
 /**
  * CLASS FX 
- * v 0.4.2
+ * v 0.4.4
  * @author @stanlepunk
  * @see https://github.com/StanLepunK/Shader
  * 2019-2019
+ * Processing 3.5.3
+ * Rope library 0.7.1
  * class used to create easy setting for shader fx
 */
 public class FX {
@@ -19,6 +21,7 @@ public class FX {
 	private String version;
 	private int revision;
 	private boolean on_g = true;
+	private boolean pg_filter_is = true;
 
 
 	// glsl parameter
@@ -64,10 +67,6 @@ public class FX {
   public FX () {}
 
   // set
-  public void set_on_g(boolean is) {
-  	on_g = is;
-  }
-
   public void set_canvas(int x, int y) {
   	if(this.canvas == null) {
   		this.canvas = ivec2(x,y);
@@ -127,6 +126,10 @@ public class FX {
   		set_quality((float)arg[0]);
   	} else if(which == 3) {
   		set_time((float)arg[0]);
+  	} else if(which == 4) {
+  		set_on_g((boolean)arg[0]);
+  	} else if(which == 5) {
+  		set_pg_filter((boolean)arg[0]);
   	}
 
   		else if(which == 10) {
@@ -220,6 +223,16 @@ public class FX {
   		}
   	}
   	return b;
+  }
+
+
+
+  public void set_on_g(boolean is) {
+  	on_g = is;
+  }
+
+  public void set_pg_filter(boolean is) {
+  	pg_filter_is = is;
   }
 
 
@@ -401,6 +414,10 @@ public class FX {
 	public boolean on_g() {
 		return on_g;
 	}
+
+	public boolean pg_filter_is() {
+  	return pg_filter_is;
+  }
 
 	public String get_name() {
 		return name;
@@ -598,7 +615,19 @@ public class FX {
 				printErr("class FX method get_matrix(): arg",null,"instead set arg and return",matrix[which]);
 			}
 			return matrix[which];
-		} else return null;
+		} else if(matrix == null) {
+			printErrTempo(180,"class FX method get_matrix(): matrix list is",null);
+			return vec3(0);
+		} else {
+			if(matrix[0] == null) {
+				matrix[0] = vec3(0);
+				printErr("class FX method get_matrix(",which,") is out of the list available\nthe first component is used and not this is null too\nmatrix '0' is used");
+				return matrix[0];
+			} else {
+				printErr("class FX method get_matrix(",which,") is out of the list available\nthe first component is used");
+				return matrix[0];
+			}
+		}
 	}
 
 	public vec3 [] get_matrix() {
@@ -615,7 +644,19 @@ public class FX {
 				printErr("class FX method get_pair(): arg",null,"instead set arg and return",pair[which]);
 			}
 			return pair[which];
-		} else return null;
+		} else if(pair == null)  {
+			printErrTempo(180,"class FX method get_pair(): pair list is",null);
+			return vec2(0);
+		} else {
+			if(pair[0] == null) {
+				pair[0] = vec2(0);
+				printErr("class FX method get_pair(",which,") is out of the list available\nthe first component is used and not this is null too\npair double '0' is used");
+				return pair[0];
+			} else {
+				printErr("class FX method get_pair(",which,") is out of the list available\nthe first component is used");
+				return pair[0];
+			}
+		}
 	}
 
 	public vec2 [] get_pair() {
@@ -628,16 +669,27 @@ public class FX {
   public bvec4 get_event(int which) {
 		if(event != null && which < event.length  && which >= 0) {
 			return event[which];
+		} else if(event == null) {
+			printErrTempo(180,"class FX method get_event(): event list is null\n bvec false is return");
+			return bvec4(false);
 		} else {
-			printErr("class FX method get_event(",which,") is out of the list available");
-			return null;
+			if(event[0] == null) {
+				event[0] = bvec4(false);
+				printErr("class FX method get_event(",which,") is out of the list available\nthe first component is used and not this is null too\nevent 'false is used");
+				return event[0];
+			} else {
+				printErr("class FX method get_event(",which,") is out of the list available\nthe first component is used");
+				return event[0];
+			}
 		}
 	}
 
 	public bvec4 [] get_event() {
 		if(event != null) {
 			return event;
-		} else return null;
+		} else {
+			return null;
+		}
 	}
 
 	// util
