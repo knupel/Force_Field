@@ -7,7 +7,7 @@ void show_custom_field() {
   int c = r.RED;
   if(colour_field == 0) c = r.HUE;
   else if (colour_field == 1) c = r.WHITE;
-  else if (colour_field == 2) c = r.GRAY_5;
+  else if (colour_field == 2) c = r.GRAY[10];
   else if (colour_field == 3) c = r.RED;
   else if (colour_field == 4) c = r.ORANGE;
   else if (colour_field == 5) c = r.YELLOW;
@@ -82,7 +82,8 @@ void show_field(Force_field ff) {
 
 // Renders a vector object 'v' as an arrow and a position 'x,y'
 void pattern_field(vec2 dir, float mag, vec2 pos, float scale) {
-  vec5 colorMode = vec5(getColorMode());
+  int color_mode_ref = (int)getColorMode()[0];
+  vec4 color_arg_ref = vec4(getColorMode()[1],getColorMode()[2],getColorMode()[3],getColorMode()[4]);
   colorMode(HSB,1);
 
   pushMatrix();
@@ -118,5 +119,5 @@ void pattern_field(vec2 dir, float mag, vec2 pos, float scale) {
 
   popMatrix();
 
-  colorMode(colorMode);
+  colorMode(color_mode_ref,color_arg_ref.red(),color_arg_ref.gre(),color_arg_ref.blu(),color_arg_ref.alp());
 }

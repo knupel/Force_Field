@@ -36,9 +36,9 @@ void draw() {
 
 
 
-String [] ext_img = {"jpg", "JPG", "JPEG", "jpeg", "tif", "TIF", "tiff", "TIFF", "bmp", "BMP", "png", "PNG", "gif", "GIF"};
-String [] ext_movie = {"mov", "MOV", "avi", "AVI", "mp4", "MP4", "mkv", "MKV", "mpg", "MPG"};
-String [] ext_shape = {"svg", "SVG"};
+// String [] ext_img = {"jpg", "JPG", "JPEG", "jpeg", "tif", "TIF", "tiff", "TIFF", "bmp", "BMP", "png", "PNG", "gif", "GIF"};
+// String [] ext_movie = {"mov", "MOV", "avi", "AVI", "mp4", "MP4", "mkv", "MKV", "mpg", "MPG"};
+// String [] ext_shape = {"svg", "SVG"};
 
 void update_import_list() {
 	String[] file_path = loadStrings(sketchPath(1)+"/save/import_files.txt");
@@ -61,8 +61,8 @@ void update_import_list() {
 				String dead = "*** ";
 				if(!f.exists()) dead_link = true;
 				String [] s = split(file_path[i], "/");
-				for(String str : ext_img) {
-					if(ext.equals(str)) {
+				for(String str : ext_image) {
+					if(ext.toLowerCase().equals(str)) {
 						String file_name = s[s.length -1];
 						if(!dead_link) {
 							media.addItem(file_name,i-1);
@@ -73,7 +73,7 @@ void update_import_list() {
 				}
 
 				for(String str : ext_movie) {
-					if(ext.equals(str)) {
+					if(ext.toLowerCase().equals(str)) {
 						String file_name = s[s.length -1];
 						if(!dead_link) {
 							media.addItem(file_name,i-1);
@@ -84,7 +84,7 @@ void update_import_list() {
 				}
 
 				for(String str : ext_shape) {
-					if(ext.equals(str)) {
+					if(ext.toLowerCase().equals(str)) {
 						String file_name = s[s.length -1];
 						if(!dead_link) {
 							spot.addItem(file_name,i-1);

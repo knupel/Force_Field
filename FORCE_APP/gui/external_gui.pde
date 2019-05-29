@@ -63,8 +63,8 @@ void gui_setup(vec2 pos, vec2 size) {
 
   yellow_gui = new CColor(r.OR,r.ORANGE,r.CARMIN,r.WHITE,r.WHITE);
 	red_gui = new CColor(r.BLOOD,r.CARMINE,r.RED,r.WHITE,r.WHITE);
-	grey_0_gui = new CColor(r.GRAY_3,r.GRAY_2,r.GRAY_4,r.WHITE,r.WHITE);
-	on_off_gui = new CColor(r.GRAY_3,r.BLOOD,r.BOUTEILLE,r.WHITE,r.WHITE);
+	grey_0_gui = new CColor(r.GRAY[6],r.GRAY[4],r.GRAY[8],r.WHITE,r.WHITE);
+	on_off_gui = new CColor(r.GRAY[6],r.BLOOD,r.BOUTEILLE,r.WHITE,r.WHITE);
 
 	pos_gui = pos.copy();
 	size_gui = size.copy();

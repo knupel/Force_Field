@@ -310,7 +310,7 @@ void display_show() {
     show_custom_field();
   }
   if(get_renderer() == P3D) {
-    start_matrix();
+    push();
     translateZ(1);
   }
   // SPOT
@@ -333,7 +333,7 @@ void display_show() {
   }
 
   if(get_renderer() == P3D) {
-    stop_matrix();
+    pop();
   }
 }
 

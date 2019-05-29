@@ -239,8 +239,8 @@ void reset_media_info() {
 /**
 image
 */
-String [] ext_img = {"jpg", "JPG", "JPEG", "jpeg", "tif", "TIF", "tiff", "TIFF", "bmp", "BMP", "png", "PNG", "gif", "GIF"};
-String [] ext_movie = {"mov", "MOV", "avi", "AVI", "mp4", "MP4", "mkv", "MKV", "mpg", "MPG"};
+// String [] ext_img = {"jpg", "JPG", "JPEG", "jpeg", "tif", "TIF", "tiff", "TIFF", "bmp", "BMP", "png", "PNG", "gif", "GIF"};
+//String [] ext_movie = {"mov", "MOV", "avi", "AVI", "mp4", "MP4", "mkv", "MKV", "mpg", "MPG"};
 String dead_list ;
 void load_media_save() {
   // String path = selected_path_folder();
@@ -252,8 +252,8 @@ void load_media_save() {
     if(f.exists()) {
       String ext = extension(sort[i]);
       // add image to library     
-      for(String s : ext_img) {
-        if(ext.equals(s)) {
+      for(String s : ext_image) {
+        if(ext.toLowerCase().equals(s)) {
           String type = "image";
           media_info.add(type,rank_media,rank_img);
           rank_img++;
@@ -268,7 +268,7 @@ void load_media_save() {
       }
       // add video to library
       for(String s : ext_movie) {
-        if(ext.equals(s)) {
+        if(ext.toLowerCase().equals(s)) {
           String type = "movie";
           media_info.add(type,rank_media,rank_movie);
           rank_movie++;
@@ -309,8 +309,8 @@ void add_file() {
     for(int i = 0 ; i < sort.length ; i++) {
       String ext = extension(sort[i]);
       // add image to library     
-      for(String s : ext_img) {
-        if(ext.equals(s)) {
+      for(String s : ext_image) {
+        if(ext.toLowerCase().equals(s)) {
           media_info.add("image",rank_media,rank_img);
           rank_img++;
           rank_media++;

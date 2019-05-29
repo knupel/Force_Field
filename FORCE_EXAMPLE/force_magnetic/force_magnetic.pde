@@ -164,7 +164,8 @@ private void show_field(Force_field ff, float scale, float range_colour, int col
 
 // Renders a vector object 'v' as an arrow and a position 'x,y'
 private void pattern_field(vec2 dir, float mag, vec2 pos, float scale, float range_colour, int c,float thickness) {
-  vec5 colorMode = vec5(getColorMode());
+  int color_mode_ref = (int)getColorMode()[0];
+  vec4 color_arg_ref = vec4(getColorMode()[1],getColorMode()[2],getColorMode()[3],getColorMode()[4]);
   colorMode(HSB,1);
 
   pushMatrix();
@@ -193,7 +194,7 @@ private void pattern_field(vec2 dir, float mag, vec2 pos, float scale, float ran
 
   popMatrix();
 
-  colorMode(colorMode);
+  colorMode(color_mode_ref,color_arg_ref.red(),color_arg_ref.gre(),color_arg_ref.blu(),color_arg_ref.alp());
 }
 
 

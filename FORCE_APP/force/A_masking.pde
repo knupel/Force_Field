@@ -14,7 +14,7 @@ master method
 void mask_mapping(boolean change_is, int type_mask, int num_mask, int num_point_mask) {
   // P3D
   if(get_renderer() == P3D) {
-    start_matrix();
+    push();
     translateZ(1);
   }
 
@@ -31,7 +31,7 @@ void mask_mapping(boolean change_is, int type_mask, int num_mask, int num_point_
 
   // P3D
   if(get_renderer() == P3D) {
-    stop_matrix();
+    pop();
   }
 }
 

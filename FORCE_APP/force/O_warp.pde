@@ -26,7 +26,7 @@ void warp_setup() {
  init for media or camera
  */
 void warp_init(int type_f, int pattern_f, int size_cell, int which_cam, boolean change_canvas_is, boolean fullfit) {
-  if((folder_selected_is() || !init_warp_is) && !video_warp_is() ) {
+  if((folder_is() || !init_warp_is) && !video_warp_is() ) {
     warp_init_media(type_f, pattern_f, size_cell, change_canvas_is, fullfit);
   } else if(video_warp_is()) {
     warp_init_video(type_f, pattern_f, size_cell, which_cam);
@@ -48,7 +48,7 @@ void warp_init_video(int type_f, int pattern_f, int size_cell, int which_cam) {
 }
 
 void warp_init_media(int type_f, int pattern_f,  int size_cell, boolean change_canvas_is, boolean fullfit) {
-  if(folder_selected_is()) {
+  if(folder_is()) {
     movie_warp_is(false);
     add_g_surface();
     boolean explore_sub_folder = false;
@@ -57,7 +57,7 @@ void warp_init_media(int type_f, int pattern_f,  int size_cell, boolean change_c
       warp_force.image_library_fit(g, fullfit);
       warp_force.image_library_crop(g);
     }
-  } else if(input_selected_is()) {
+  } else if(input_is()) {
     movie_warp_is(false);
     add_g_surface();
     load_media_input("jpg", "JPG", "mp4", "avi", "mov");  

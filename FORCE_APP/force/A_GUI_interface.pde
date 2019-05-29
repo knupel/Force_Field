@@ -48,13 +48,13 @@ void interface_display(boolean mouse_is, Force_field ff) {
 	background_interface();
 	// check for P3D position
 	if(get_renderer() == P3D) {
-		start_matrix();
+		push();
 		translateZ(1);
 	}
 	instruction();
 	show_info(ff);
   // check for P3D position
-	if(get_renderer() == P3D) stop_matrix();
+	if(get_renderer() == P3D) pop();
 }
 
 

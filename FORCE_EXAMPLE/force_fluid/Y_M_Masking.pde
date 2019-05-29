@@ -15,7 +15,7 @@ public class Masking implements rope.core.R_Constants {
   private ivec3 [] coord_block_1, coord_block_2, coord_block_3, coord_block_4;
   private boolean init;
   private boolean block_is;
-  private int c = BLACK;
+  private int c = r.BLACK;
   private int range = 10;
   
 
@@ -131,7 +131,7 @@ public class Masking implements rope.core.R_Constants {
       pg.beginDraw();
       if(modify_is) {
         if(pg != null) {      
-          pg.fill(RED);
+          pg.fill(r.RED);
           pg.noStroke();
         }
       } else {
@@ -182,7 +182,7 @@ public class Masking implements rope.core.R_Constants {
   private void show_point(PGraphics pg,ivec3 [] list) {
     for(ivec3 iv : list) {
       pg.beginDraw();
-      pg.stroke(WHITE);
+      pg.stroke(r.WHITE);
       pg.strokeWeight(range);
       pg.point(iv.x,iv.y);
       pg.endDraw();
