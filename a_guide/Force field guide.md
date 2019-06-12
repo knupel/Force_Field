@@ -2,20 +2,28 @@ Force field guide
 v 0.2.0
 --
 
-FORCE FIELD class
---
-Constructor
---
+*FORCE FIELD class
+
+*Constructor
+
+Force_field(int resolution, int type, int pattern);
+
 Force_field(int resolution, iVec2 canvas_pos, iVec2 canvas, int type, int pattern);
 
 Force_field(int resolution, iVec2 canvas_pos, PImage img, int component_sorting_color_velocity);
+
 component_sorting_color_velocity can be RED, GREEN, BLUE, HUE, SATURATION, BRIGHTNESS or ALPHA
 
 constructor arguments
 --
 to define the type of force field, you must use constants : FLUID, CHAOS, PERLIN, GRAVITY, MAGNETIC
 
+private int type : STATIC, FLUID, GRAVITY, MAGNETIC, CHAOS
 
+private int pattern : CHAOS, PERLIN, BLANK, IMAGE, EQUATION
+
+
+*METHODES
 
 void ref_spot();
 >make the reference position of the spot is updated, before using, can be util in case the spot make jump move !
@@ -25,8 +33,8 @@ void add_spot(int num);
 void add_spot();
 
 
-GET
---
+*GET
+
 float get_frequence();
 >return frequence of force field fluid
 
@@ -39,7 +47,7 @@ float get_diffusion();
 float get_mass_field();
 
 
-Vec4 [][] get_field()
+vec4 [][] get_field()
 >return force_field
 
 boolean border_is();
@@ -97,8 +105,8 @@ public float get_activity()
 
 
 
-SET
---
+*SET
+
 void reverse_flow(boolean state) ;
 multiply the direction vector by `-1` the result : direction is opposite, this method must change the method reset() at the end of the draw() ?????
 
@@ -168,8 +176,8 @@ void reset_spot_area()();
 
 
 
-WORK AROUND THE FIELD
---
+*WORK AROUND THE FIELD
+
 Preserve
 --
 void save()
