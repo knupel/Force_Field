@@ -35,6 +35,17 @@ void add_spot();
 
 *GET
 
+vec4 [][] get_field()
+>return force_field
+
+int get_cols();
+
+int get_rows();
+
+int get_resolution();
+
+
+
 float get_frequence();
 >return frequence of force field fluid
 
@@ -47,8 +58,7 @@ float get_diffusion();
 float get_mass_field();
 
 
-vec4 [][] get_field()
->return force_field
+
 
 boolean border_is();
 
@@ -75,7 +85,7 @@ iVec2 get_canvas();
 
 iVec2 get_canvas_pos();
 
-int get_resolution();
+
 
 int get_type();
 >return the type of DYNAMIC of Force_field : MAGNETIC, FLUID, if it's not a DYNAMIC one type returned is STATIC like the the super_type

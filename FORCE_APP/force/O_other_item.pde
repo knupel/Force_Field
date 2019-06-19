@@ -46,6 +46,6 @@ void cloud_3D_orientation_angle_behavior_costume() {
   cloud_3D.pos(pos);
   cloud_3D.update();
 
-  cloud_3D.costume(PENTAGON_ROPE) ;
+  cloud_3D.costume(PENTAGON) ;
   cloud_3D.show() ;
 }
