@@ -3,7 +3,7 @@ Force Field
 2017-2019
 * @see @stanlepunk
 * @see https://github.com/StanLepunK/Force_Field
-* v 1.12.3
+* v 1.12.4
 * Processing 3.5.3.269
 * Rope library 0.7.1.25
 */
@@ -1950,7 +1950,7 @@ public class Force_field implements rope.core.R_Constants, rope.core.R_Constants
 
 
   /**
-  util v 0.0.3.1
+  util v 0.0.4
   library private methods
   */
   /**
@@ -1961,7 +1961,7 @@ public class Force_field implements rope.core.R_Constants, rope.core.R_Constants
     current_cell_pos.add(resolution *.5);
     vec2 dir = look_at(current_cell_pos, target);
     // why multiply by '-1' it's a mistery
-    return -1 *dir.angle();
+    return dir.angle();
   }
 
 
